@@ -30,7 +30,7 @@ schematic.Comp.forEach(generate_footprint);
 
 
 // Create html document displaying the kicad schematic
-htmlWriter(schematic);
+htmlWriter(schematic, lib);
 
 // inspect(schematic.Comp);
 // inspect(default_fields);
