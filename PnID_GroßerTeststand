@@ -4,7 +4,7 @@
     <title>PNID Chart</title>
 </head>
 <body>
-<svg width="1760" height="2200">
+<svg width="1760" height="1320">
     <g id="TK_RE_F1" stroke="black" fill="none" >
         <!-- coordinates: x = 763.2653061224489 y = 635.2713178294573 -->
         <path d="M 820 567 A 110 110 0 0 0 706 567" />
@@ -13,7 +13,8 @@
         <path d="M 820 567 L 820 703 " />
         <path d="M 763 738 L 763 721" />
         <path d="M 763 533 L 763 550" />
-undefined    </g>
+    </g>
+        <text x="751" y="640" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">Fuel</text>
     <g id="TK_RE_O1" stroke="black" fill="none" >
         <!-- coordinates: x = 1032.6530612244896 y = 635.2713178294573 -->
         <path d="M 1090 567 A 110 110 0 0 0 976 567" />
@@ -22,7 +23,8 @@ undefined    </g>
         <path d="M 1090 567 L 1090 703 " />
         <path d="M 1033 738 L 1033 721" />
         <path d="M 1033 533 L 1033 550" />
-undefined    </g>
+    </g>
+        <text x="1008" y="640" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">Oxidizer</text>
     <g id="PV_RE_F1" stroke="black" fill="none" transform="rotate(90,763,866)">
         <!-- coordinates: x = 763.2653061224489 y = 865.5038759689922 -->
         <circle cx="763" cy="823" r="16" />
@@ -30,7 +32,7 @@ undefined    </g>
         <path d="M 731 840 L 731 891 L 796 840 L 796 891 L 731 840 " />
         <path d="M 714 866 L 731 866" />
         <path d="M 812 866 L 796 866" />
-        <text x="763" y="823" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="763" y="823" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,763,823)">P<text>
     </g>
     <g id="VT_RE_MF1" stroke="black" fill="none" transform="rotate(180,820,1079)">
         <!-- coordinates: x = 820.408163265306 y = 1078.6821705426357 -->
@@ -39,7 +41,7 @@ undefined    </g>
         <rect x="788" y="1062" width="65" height="34" />
         <path d="M 771 1079 L 788 1079" />
         <path d="M 869 1079 L 853 1079" />
-undefined    </g>
+    </g>
     <g id="MV_RE_FC1" stroke="black" fill="none" transform="rotate(-90,592,985)">
         <!-- coordinates: x = 591.8367346938775 y = 984.8837209302326 -->
         <circle cx="592" cy="934" r="16" />
@@ -48,7 +50,7 @@ undefined    </g>
         <path d="M 559 959 L 559 1010 L 624 959 L 624 1010 L 559 959 " />
         <path d="M 543 985 L 559 985" />
         <path d="M 641 985 L 624 985" />
-        <text x="592" y="934" dominant-baseline="middle" text-anchor="middle">M<text>
+        <text x="592" y="934" dominant-baseline="middle" text-anchor="middle" >M<text>
     </g>
     <g id="VT_RE_FC1" stroke="black" fill="none" >
         <!-- coordinates: x = 697.9591836734693 y = 1151.1627906976744 -->
@@ -57,7 +59,7 @@ undefined    </g>
         <rect x="665" y="1134" width="66" height="34" />
         <path d="M 649 1151 L 665 1151" />
         <path d="M 747 1151 L 731 1151" />
-undefined    </g>
+    </g>
     <g id="CV_RE_OF1" stroke="black" fill="none" transform="rotate(180,1192,767)">
         <!-- coordinates: x = 1191.8367346938774 y = 767.4418604651163 -->
         <path d="M 1159 767 L 1176 767 " />
@@ -66,7 +68,7 @@ undefined    </g>
         <path d="M 1176 750 L 1176 784 L 1208 767 L 1176 750 " />
         <path d="M 1143 767 L 1159 767" />
         <path d="M 1241 767 L 1224 767" />
-undefined    </g>
+    </g>
     <g id="QC_RE_O" stroke="black" fill="none" >
         <!-- coordinates: x = 1306.1224489795918 y = 767.4418604651163 -->
         <circle cx="1282" cy="767" r="8" />
@@ -80,7 +82,7 @@ undefined    </g>
         <path d="M 1306 767 L 1314 767 L 1331 750 " />
         <path d="M 1257 767 L 1273 767" />
         <path d="M 1355 767 L 1339 767" />
-undefined    </g>
+    </g>
     <g id="MV_OF_VT1" stroke="black" fill="none" transform="rotate(-90,1400,695)">
         <!-- coordinates: x = 1400 y = 694.9612403100775 -->
         <circle cx="1400" cy="652" r="16" />
@@ -88,7 +90,7 @@ undefined    </g>
         <path d="M 1367 669 L 1367 721 L 1433 669 L 1433 721 L 1367 669 " />
         <path d="M 1351 695 L 1367 695" />
         <path d="M 1449 695 L 1433 695" />
-        <text x="1400" y="652" dominant-baseline="middle" text-anchor="middle">M<text>
+        <text x="1400" y="652" dominant-baseline="middle" text-anchor="middle" >M<text>
     </g>
     <g id="MV_OF_OF1" stroke="black" fill="none" >
         <!-- coordinates: x = 1526.5306122448978 y = 767.4418604651163 -->
@@ -97,7 +99,7 @@ undefined    </g>
         <path d="M 1494 742 L 1494 793 L 1559 742 L 1559 793 L 1494 742 " />
         <path d="M 1478 767 L 1494 767" />
         <path d="M 1576 767 L 1559 767" />
-        <text x="1527" y="725" dominant-baseline="middle" text-anchor="middle">M<text>
+        <text x="1527" y="725" dominant-baseline="middle" text-anchor="middle" >M<text>
     </g>
     <g id="GB_OF1" stroke="black" fill="none" transform="rotate(180,1649,516)">
         <!-- coordinates: x = 1648.9795918367345 y = 515.8914728682171 -->
@@ -107,7 +109,8 @@ undefined    </g>
         <path d="M 1657 456 L 1657 439 " />
         <path d="M 1616 465 L 1616 601 L 1682 601 L 1682 465 " />
         <path d="M 1649 414 L 1649 431" />
-undefined    </g>
+    </g>
+        <text x="1661" y="512" dominant-baseline="middle" text-anchor="end" style="font-size: 10px">N2O</text>
     <g id="HV_OF1" stroke="black" fill="none" transform="rotate(90,1649,678)">
         <!-- coordinates: x = 1648.9795918367345 y = 677.9069767441861 -->
         <path d="M 1633 644 L 1665 644 " />
@@ -115,13 +118,13 @@ undefined    </g>
         <path d="M 1616 652 L 1616 703 L 1682 652 L 1682 703 L 1616 652 " />
         <path d="M 1600 678 L 1616 678" />
         <path d="M 1698 678 L 1682 678" />
-undefined    </g>
+    </g>
     <g id="VT_OF1" stroke="black" fill="none" transform="rotate(-90,1400,584)">
         <!-- coordinates: x = 1400 y = 584.1085271317829 -->
         <path d="M 1400 584 L 1367 584 " />
         <path d="M 1384 567 L 1400 584 L 1384 601 " />
         <path d="M 1351 584 L 1367 584" />
-undefined    </g>
+    </g>
     <g id="BD_OF1" stroke="black" fill="none" >
         <!-- coordinates: x = 1714.2857142857142 y = 767.4418604651163 -->
         <path d="M 1706 784 A 19 19 0 0 0 1706 750" />
@@ -130,63 +133,71 @@ undefined    </g>
         <path d="M 1706 793 L 1706 784 " />
         <path d="M 1706 742 L 1706 750 " />
         <path d="M 1665 767 L 1682 767" />
-undefined    </g>
+    </g>
     <g id="PS_RE_CH1" stroke="black" fill="none" >
         <!-- coordinates: x = 1004.0816326530611 y = 1172.4806201550387 -->
         <circle cx="1004" cy="1172" r="16" />
         <path d="M 971 1172 L 988 1172 " />
         <path d="M 955 1172 L 971 1172" />
-        <text x="1004" y="1172" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1004" y="1172" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1020" y="1168" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">60bar, 10kHz</text>
     <g id="PS_IG_CH1" stroke="black" fill="none" >
         <!-- coordinates: x = 1012.2448979591836 y = 1074.4186046511627 -->
         <circle cx="1012" cy="1074" r="16" />
         <path d="M 980 1074 L 996 1074 " />
         <path d="M 963 1074 L 980 1074" />
-        <text x="1012" y="1074" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1012" y="1074" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1053" y="1100" dominant-baseline="middle" text-anchor="end" style="font-size: 10px">60bar, 10kHz</text>
     <g id="PS_RE_OV1" stroke="black" fill="none" transform="rotate(180,878,925)">
         <!-- coordinates: x = 877.5510204081631 y = 925.1937984496124 -->
         <circle cx="878" cy="925" r="16" />
         <path d="M 845 925 L 861 925 " />
         <path d="M 829 925 L 845 925" />
-        <text x="878" y="925" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="878" y="925" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,878,925)">P<text>
     </g>
+        <text x="980" y="934" dominant-baseline="middle" text-anchor="end" style="font-size: 10px">60bar, 10kHz</text>
     <g id="PS_RE_FV1" stroke="black" fill="none" >
         <!-- coordinates: x = 820.408163265306 y = 959.3023255813953 -->
         <circle cx="820" cy="959" r="16" />
         <path d="M 788 959 L 804 959 " />
         <path d="M 771 959 L 788 959" />
-        <text x="820" y="959" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="820" y="959" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="820" y="921" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 10kHz</text>
     <g id="PS_RE_FC1" stroke="black" fill="none" transform="rotate(180,535,1151)">
         <!-- coordinates: x = 534.6938775510204 y = 1151.1627906976744 -->
         <circle cx="535" cy="1151" r="16" />
         <path d="M 502 1151 L 518 1151 " />
         <path d="M 486 1151 L 502 1151" />
-        <text x="535" y="1151" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="535" y="1151" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,535,1151)">P<text>
     </g>
+        <text x="518" y="1190" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 10kHz</text>
     <g id="PS_RE_FT1" stroke="black" fill="none" transform="rotate(180,698,797)">
         <!-- coordinates: x = 697.9591836734693 y = 797.2868217054263 -->
         <circle cx="698" cy="797" r="16" />
         <path d="M 665 797 L 682 797 " />
         <path d="M 649 797 L 665 797" />
-        <text x="698" y="797" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="698" y="797" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,698,797)">P<text>
     </g>
+        <text x="755" y="802" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_RE_OT1" stroke="black" fill="none" transform="rotate(180,878,789)">
         <!-- coordinates: x = 877.5510204081631 y = 788.7596899224806 -->
         <circle cx="878" cy="789" r="16" />
         <path d="M 845 789 L 861 789 " />
         <path d="M 829 789 L 845 789" />
-        <text x="878" y="789" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="878" y="789" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,878,789)">P<text>
     </g>
+        <text x="935" y="797" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_OF_OB1" stroke="black" fill="none" transform="rotate(-90,1592,695)">
         <!-- coordinates: x = 1591.8367346938774 y = 694.9612403100775 -->
         <circle cx="1592" cy="695" r="16" />
         <path d="M 1559 695 L 1576 695 " />
         <path d="M 1543 695 L 1559 695" />
-        <text x="1592" y="695" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1592" y="695" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1616" y="695" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="GB_PG1" stroke="black" fill="none" >
         <!-- coordinates: x = 179.59183673469386 y = 1125.5813953488373 -->
         <path d="M 212 1074 A 68 68 0 0 0 147 1074" />
@@ -195,7 +206,8 @@ undefined    </g>
         <path d="M 188 1066 L 188 1049 " />
         <path d="M 147 1074 L 147 1211 L 212 1211 L 212 1074 " />
         <path d="M 180 1023 L 180 1040" />
-undefined    </g>
+    </g>
+        <text x="171" y="1130" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">N2</text>
     <g id="PR_PG1" stroke="black" fill="none" transform="scale(-1,1) translate(-481.63265306122446,0)">
         <!-- coordinates: x = 240.81632653061223 y = 1010.4651162790698 -->
         <path d="M 257 985 A 24 24 0 0 0 224 985" />
@@ -205,7 +217,7 @@ undefined    </g>
         <path d="M 208 985 L 208 1036 L 273 985 L 273 1036 L 208 985 " />
         <path d="M 192 1010 L 208 1010" />
         <path d="M 290 1010 L 273 1010" />
-undefined    </g>
+    </g>
     <g id="HV_PG1" stroke="black" fill="none" transform="rotate(90,310,1083)">
         <!-- coordinates: x = 310.204081632653 y = 1082.9457364341085 -->
         <path d="M 294 1049 L 327 1049 " />
@@ -213,7 +225,7 @@ undefined    </g>
         <path d="M 278 1057 L 278 1109 L 343 1057 L 343 1109 L 278 1057 " />
         <path d="M 261 1083 L 278 1083" />
         <path d="M 359 1083 L 343 1083" />
-undefined    </g>
+    </g>
     <g id="SV_PG1" stroke="black" fill="none" >
         <!-- coordinates: x = 379.59183673469386 y = 1010.4651162790698 -->
         <rect x="363" y="951" width="33" height="34" />
@@ -221,20 +233,21 @@ undefined    </g>
         <path d="M 347 985 L 347 1036 L 412 985 L 412 1036 L 347 985 " />
         <path d="M 331 1010 L 347 1010" />
         <path d="M 429 1010 L 412 1010" />
-        <text x="380" y="968" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="380" y="968" dominant-baseline="middle" text-anchor="middle" >S<text>
     </g>
     <g id="VT_PG1" stroke="black" fill="none" transform="rotate(90,310,1194)">
         <!-- coordinates: x = 310.204081632653 y = 1193.7984496124031 -->
         <path d="M 310 1194 L 278 1194 " />
         <path d="M 294 1177 L 310 1194 L 294 1211 " />
         <path d="M 261 1194 L 278 1194" />
-undefined    </g>
+    </g>
     <g id="VT_RE_PG1" stroke="black" fill="none" >
         <!-- coordinates: x = 824.4897959183672 y = 1210.8527131782946 -->
         <path d="M 824 1211 L 792 1211 " />
         <path d="M 808 1194 L 824 1211 L 808 1228 " />
         <path d="M 776 1211 L 792 1211" />
-undefined    </g>
+    </g>
+        <text x="678" y="1219" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">Fire Suppression Ring</text>
     <g id="PR_FP1" stroke="black" fill="none" transform="scale(-1,1) translate(-751.0204081632653,0)">
         <!-- coordinates: x = 375.51020408163265 y = 336.8217054263566 -->
         <path d="M 392 311 A 24 24 0 0 0 359 311" />
@@ -244,7 +257,7 @@ undefined    </g>
         <path d="M 343 311 L 343 362 L 408 311 L 408 362 L 343 311 " />
         <path d="M 327 337 L 343 337" />
         <path d="M 424 337 L 408 337" />
-undefined    </g>
+    </g>
     <g id="HV_FP_1" stroke="black" fill="none" transform="rotate(90,445,409)">
         <!-- coordinates: x = 444.89795918367344 y = 409.30232558139534 -->
         <path d="M 429 375 L 461 375 " />
@@ -252,7 +265,7 @@ undefined    </g>
         <path d="M 412 384 L 412 435 L 478 384 L 478 435 L 412 384 " />
         <path d="M 396 409 L 412 409" />
         <path d="M 494 409 L 478 409" />
-undefined    </g>
+    </g>
     <g id="SV_FP_PR1" stroke="black" fill="none" >
         <!-- coordinates: x = 514.2857142857142 y = 336.8217054263566 -->
         <rect x="498" y="277" width="33" height="34" />
@@ -260,14 +273,14 @@ undefined    </g>
         <path d="M 482 311 L 482 362 L 547 311 L 547 362 L 482 311 " />
         <path d="M 465 337 L 482 337" />
         <path d="M 563 337 L 547 337" />
-        <text x="514" y="294" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="514" y="294" dominant-baseline="middle" text-anchor="middle" >S<text>
     </g>
     <g id="VT_FP_1" stroke="black" fill="none" transform="rotate(90,445,520)">
         <!-- coordinates: x = 444.89795918367344 y = 520.1550387596899 -->
         <path d="M 445 520 L 412 520 " />
         <path d="M 429 503 L 445 520 L 429 537 " />
         <path d="M 396 520 L 412 520" />
-undefined    </g>
+    </g>
     <g id="PR_OP1" stroke="black" fill="none" >
         <!-- coordinates: x = 1363.265306122449 y = 336.8217054263566 -->
         <path d="M 1380 311 A 24 24 0 0 0 1347 311" />
@@ -277,7 +290,7 @@ undefined    </g>
         <path d="M 1331 311 L 1331 362 L 1396 311 L 1396 362 L 1331 311 " />
         <path d="M 1314 337 L 1331 337" />
         <path d="M 1412 337 L 1396 337" />
-undefined    </g>
+    </g>
     <g id="HV_OP_1" stroke="black" fill="none" transform="rotate(90,1294,409) scale(1,-1) translate(0,-818.6046511627907)">
         <!-- coordinates: x = 1293.877551020408 y = 409.30232558139534 -->
         <path d="M 1278 375 L 1310 375 " />
@@ -285,7 +298,7 @@ undefined    </g>
         <path d="M 1261 384 L 1261 435 L 1327 384 L 1327 435 L 1261 384 " />
         <path d="M 1245 409 L 1261 409" />
         <path d="M 1343 409 L 1327 409" />
-undefined    </g>
+    </g>
     <g id="SV_OP_PR1" stroke="black" fill="none" transform="scale(-1,1) translate(-2448.9795918367345,0)">
         <!-- coordinates: x = 1224.4897959183672 y = 336.8217054263566 -->
         <rect x="1208" y="277" width="33" height="34" />
@@ -293,14 +306,14 @@ undefined    </g>
         <path d="M 1192 311 L 1192 362 L 1257 311 L 1257 362 L 1192 311 " />
         <path d="M 1176 337 L 1192 337" />
         <path d="M 1273 337 L 1257 337" />
-        <text x="1224" y="294" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="1224" y="294" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-2448.9795918367345,0)">S<text>
     </g>
     <g id="VT_OP_1" stroke="black" fill="none" transform="rotate(90,1294,520) scale(1,-1) translate(0,-1040.3100775193798)">
         <!-- coordinates: x = 1293.877551020408 y = 520.1550387596899 -->
         <path d="M 1294 520 L 1261 520 " />
         <path d="M 1278 503 L 1294 520 L 1278 537 " />
         <path d="M 1245 520 L 1261 520" />
-undefined    </g>
+    </g>
     <g id="SV_FP_VT1" stroke="black" fill="none" transform="rotate(90,584,409)">
         <!-- coordinates: x = 583.6734693877551 y = 409.30232558139534 -->
         <rect x="567" y="350" width="33" height="34" />
@@ -308,7 +321,7 @@ undefined    </g>
         <path d="M 551 384 L 551 435 L 616 384 L 616 435 L 551 384 " />
         <path d="M 535 409 L 551 409" />
         <path d="M 633 409 L 616 409" />
-        <text x="584" y="367" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="584" y="367" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,584,367)">S<text>
     </g>
     <g id="SV_OP_DP1" stroke="black" fill="none" transform="rotate(90,1159,409) scale(1,-1) translate(0,-818.6046511627907)">
         <!-- coordinates: x = 1159.1836734693877 y = 409.30232558139534 -->
@@ -317,20 +330,20 @@ undefined    </g>
         <path d="M 1127 384 L 1127 435 L 1192 384 L 1192 435 L 1127 384 " />
         <path d="M 1110 409 L 1127 409" />
         <path d="M 1208 409 L 1192 409" />
-        <text x="1159" y="367" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="1159" y="367" dominant-baseline="middle" text-anchor="middle" transform="scale(1,-1) translate(0,-733.3333333333333)">S<text>
     </g>
     <g id="VT_FP_2" stroke="black" fill="none" transform="rotate(90,584,520)">
         <!-- coordinates: x = 583.6734693877551 y = 520.1550387596899 -->
         <path d="M 584 520 L 551 520 " />
         <path d="M 567 503 L 584 520 L 567 537 " />
         <path d="M 535 520 L 551 520" />
-undefined    </g>
+    </g>
     <g id="VT_OP_2" stroke="black" fill="none" transform="rotate(90,1159,520)">
         <!-- coordinates: x = 1159.1836734693877 y = 520.1550387596899 -->
         <path d="M 1159 520 L 1127 520 " />
         <path d="M 1143 503 L 1159 520 L 1143 537 " />
         <path d="M 1110 520 L 1127 520" />
-undefined    </g>
+    </g>
     <g id="CV_OP_1" stroke="black" fill="none" transform="rotate(180,1094,337)">
         <!-- coordinates: x = 1093.877551020408 y = 336.8217054263566 -->
         <path d="M 1061 337 L 1078 337 " />
@@ -339,7 +352,7 @@ undefined    </g>
         <path d="M 1078 320 L 1078 354 L 1110 337 L 1078 320 " />
         <path d="M 1045 337 L 1061 337" />
         <path d="M 1143 337 L 1127 337" />
-undefined    </g>
+    </g>
     <g id="OV_OP_1" stroke="black" fill="none" transform="rotate(90,1033,269)">
         <!-- coordinates: x = 1032.6530612244896 y = 268.6046511627907 -->
         <path d="M 1033 269 L 1033 234 " />
@@ -347,19 +360,19 @@ undefined    </g>
         <path d="M 1000 243 L 1000 294 L 1065 243 L 1065 294 L 1000 243 " />
         <path d="M 984 269 L 1000 269" />
         <path d="M 1082 269 L 1065 269" />
-undefined    </g>
+    </g>
     <g id="VT_FP_4" stroke="black" fill="none" transform="rotate(-90,763,158)">
         <!-- coordinates: x = 763.2653061224489 y = 157.75193798449612 -->
         <path d="M 763 158 L 731 158 " />
         <path d="M 747 141 L 763 158 L 747 175 " />
         <path d="M 714 158 L 731 158" />
-undefined    </g>
+    </g>
     <g id="VT_OP_4" stroke="black" fill="none" transform="rotate(-90,1033,158)">
         <!-- coordinates: x = 1032.6530612244896 y = 157.75193798449612 -->
         <path d="M 1033 158 L 1000 158 " />
         <path d="M 1016 141 L 1033 158 L 1016 175 " />
         <path d="M 984 158 L 1000 158" />
-undefined    </g>
+    </g>
     <g id="HV_FP_2" stroke="black" fill="none" transform="rotate(-90,669,269)">
         <!-- coordinates: x = 669.3877551020407 y = 268.6046511627907 -->
         <path d="M 653 234 L 686 234 " />
@@ -367,19 +380,19 @@ undefined    </g>
         <path d="M 637 243 L 637 294 L 702 243 L 702 294 L 637 243 " />
         <path d="M 620 269 L 637 269" />
         <path d="M 718 269 L 702 269" />
-undefined    </g>
+    </g>
     <g id="VT_FP_3" stroke="black" fill="none" transform="rotate(-90,669,158)">
         <!-- coordinates: x = 669.3877551020407 y = 157.75193798449612 -->
         <path d="M 669 158 L 637 158 " />
         <path d="M 653 141 L 669 158 L 653 175 " />
         <path d="M 620 158 L 637 158" />
-undefined    </g>
+    </g>
     <g id="VT_OB_1" stroke="black" fill="none" transform="rotate(180,861,478)">
         <!-- coordinates: x = 861.2244897959183 y = 477.51937984496124 -->
         <path d="M 861 478 L 829 478 " />
         <path d="M 845 460 L 861 478 L 845 495 " />
         <path d="M 812 478 L 829 478" />
-undefined    </g>
+    </g>
     <g id="MV_OB_VT1" stroke="black" fill="none" >
         <!-- coordinates: x = 967.3469387755101 y = 477.51937984496124 -->
         <circle cx="967" cy="435" r="16" />
@@ -387,7 +400,7 @@ undefined    </g>
         <path d="M 935 452 L 935 503 L 1000 452 L 1000 503 L 935 452 " />
         <path d="M 918 478 L 935 478" />
         <path d="M 1016 478 L 1000 478" />
-        <text x="967" y="435" dominant-baseline="middle" text-anchor="middle">M<text>
+        <text x="967" y="435" dominant-baseline="middle" text-anchor="middle" >M<text>
     </g>
     <g id="GB_FP1" stroke="black" fill="none" >
         <!-- coordinates: x = 314.2857142857143 y = 451.93798449612405 -->
@@ -397,7 +410,8 @@ undefined    </g>
         <path d="M 322 392 L 322 375 " />
         <path d="M 282 401 L 282 537 L 347 537 L 347 401 " />
         <path d="M 314 350 L 314 367" />
-undefined    </g>
+    </g>
+        <text x="306" y="456" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">N2</text>
     <g id="GB_OP1" stroke="black" fill="none" >
         <!-- coordinates: x = 1424.4897959183672 y = 451.93798449612405 -->
         <path d="M 1457 401 A 68 68 0 0 0 1392 401" />
@@ -406,7 +420,8 @@ undefined    </g>
         <path d="M 1433 392 L 1433 375 " />
         <path d="M 1392 401 L 1392 537 L 1457 537 L 1457 401 " />
         <path d="M 1424 350 L 1424 367" />
-undefined    </g>
+    </g>
+        <text x="1416" y="456" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">N2</text>
     <g id="GB_IG_O1" stroke="black" fill="none" transform="rotate(-90,1673,1062)">
         <!-- coordinates: x = 1673.469387755102 y = 1061.6279069767443 -->
         <path d="M 1706 1010 A 68 68 0 0 0 1641 1010" />
@@ -415,7 +430,8 @@ undefined    </g>
         <path d="M 1682 1002 L 1682 985 " />
         <path d="M 1641 1010 L 1641 1147 L 1706 1147 L 1706 1010 " />
         <path d="M 1673 959 L 1673 976" />
-undefined    </g>
+    </g>
+        <text x="1673" y="1070" dominant-baseline="middle" text-anchor="end" style="font-size: 10px">O2</text>
     <g id="GB_IG_F1" stroke="black" fill="none" transform="rotate(-90,1673,947)">
         <!-- coordinates: x = 1673.469387755102 y = 946.5116279069767 -->
         <path d="M 1706 895 A 68 68 0 0 0 1641 895" />
@@ -424,7 +440,8 @@ undefined    </g>
         <path d="M 1682 887 L 1682 870 " />
         <path d="M 1641 895 L 1641 1032 L 1706 1032 L 1706 895 " />
         <path d="M 1673 844 L 1673 861" />
-undefined    </g>
+    </g>
+        <text x="1673" y="955" dominant-baseline="middle" text-anchor="end" style="font-size: 10px">H2</text>
     <g id="PR_IG_O1" stroke="black" fill="none" >
         <!-- coordinates: x = 1518.3673469387754 y = 1061.6279069767443 -->
         <path d="M 1535 1036 A 24 24 0 0 0 1502 1036" />
@@ -434,7 +451,7 @@ undefined    </g>
         <path d="M 1486 1036 L 1486 1087 L 1551 1036 L 1551 1087 L 1486 1036 " />
         <path d="M 1469 1062 L 1486 1062" />
         <path d="M 1567 1062 L 1551 1062" />
-undefined    </g>
+    </g>
     <g id="PR_IG_F1" stroke="black" fill="none" >
         <!-- coordinates: x = 1518.3673469387754 y = 946.5116279069767 -->
         <path d="M 1535 921 A 24 24 0 0 0 1502 921" />
@@ -444,7 +461,7 @@ undefined    </g>
         <path d="M 1486 921 L 1486 972 L 1551 921 L 1551 972 L 1486 921 " />
         <path d="M 1469 947 L 1486 947" />
         <path d="M 1567 947 L 1551 947" />
-undefined    </g>
+    </g>
     <g id="CV_IG_O1" stroke="black" fill="none" transform="rotate(180,1143,1062)">
         <!-- coordinates: x = 1142.8571428571427 y = 1061.6279069767443 -->
         <path d="M 1110 1062 L 1127 1062 " />
@@ -453,7 +470,7 @@ undefined    </g>
         <path d="M 1127 1045 L 1127 1079 L 1159 1062 L 1127 1045 " />
         <path d="M 1094 1062 L 1110 1062" />
         <path d="M 1192 1062 L 1176 1062" />
-undefined    </g>
+    </g>
     <g id="CV_IG_F1" stroke="black" fill="none" transform="rotate(180,1143,947)">
         <!-- coordinates: x = 1142.8571428571427 y = 946.5116279069767 -->
         <path d="M 1110 947 L 1127 947 " />
@@ -462,7 +479,7 @@ undefined    </g>
         <path d="M 1127 929 L 1127 964 L 1159 947 L 1127 929 " />
         <path d="M 1094 947 L 1110 947" />
         <path d="M 1192 947 L 1176 947" />
-undefined    </g>
+    </g>
     <g id="HV_IG_O1" stroke="black" fill="none" >
         <!-- coordinates: x = 1383.673469387755 y = 1010.4651162790698 -->
         <path d="M 1367 976 L 1400 976 " />
@@ -470,7 +487,7 @@ undefined    </g>
         <path d="M 1351 985 L 1351 1036 L 1416 985 L 1416 1036 L 1351 985 " />
         <path d="M 1335 1010 L 1351 1010" />
         <path d="M 1433 1010 L 1416 1010" />
-undefined    </g>
+    </g>
     <g id="HV_IG_F1" stroke="black" fill="none" >
         <!-- coordinates: x = 1383.673469387755 y = 886.8217054263566 -->
         <path d="M 1367 853 L 1400 853 " />
@@ -478,19 +495,19 @@ undefined    </g>
         <path d="M 1351 861 L 1351 912 L 1416 861 L 1416 912 L 1351 861 " />
         <path d="M 1335 887 L 1351 887" />
         <path d="M 1433 887 L 1416 887" />
-undefined    </g>
+    </g>
     <g id="VT_IG_F1" stroke="black" fill="none" transform="rotate(180,1282,887)">
         <!-- coordinates: x = 1281.6326530612243 y = 886.8217054263566 -->
         <path d="M 1282 887 L 1249 887 " />
         <path d="M 1265 870 L 1282 887 L 1265 904 " />
         <path d="M 1233 887 L 1249 887" />
-undefined    </g>
+    </g>
     <g id="VT_IG_O1" stroke="black" fill="none" transform="rotate(180,1282,1010)">
         <!-- coordinates: x = 1281.6326530612243 y = 1010.4651162790698 -->
         <path d="M 1282 1010 L 1249 1010 " />
         <path d="M 1265 993 L 1282 1010 L 1265 1028 " />
         <path d="M 1233 1010 L 1249 1010" />
-undefined    </g>
+    </g>
     <g id="SV_IG_F1" stroke="black" fill="none" >
         <!-- coordinates: x = 1248.9795918367347 y = 946.5116279069767 -->
         <rect x="1233" y="887" width="32" height="34" />
@@ -498,7 +515,7 @@ undefined    </g>
         <path d="M 1216 921 L 1216 972 L 1282 921 L 1282 972 L 1216 921 " />
         <path d="M 1200 947 L 1216 947" />
         <path d="M 1298 947 L 1282 947" />
-        <text x="1249" y="904" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="1249" y="904" dominant-baseline="middle" text-anchor="middle" >S<text>
     </g>
     <g id="SV_IG_O1" stroke="black" fill="none" >
         <!-- coordinates: x = 1248.9795918367347 y = 1061.6279069767443 -->
@@ -507,7 +524,7 @@ undefined    </g>
         <path d="M 1216 1036 L 1216 1087 L 1282 1036 L 1282 1087 L 1216 1036 " />
         <path d="M 1200 1062 L 1216 1062" />
         <path d="M 1298 1062 L 1282 1062" />
-        <text x="1249" y="1019" dominant-baseline="middle" text-anchor="middle">S<text>
+        <text x="1249" y="1019" dominant-baseline="middle" text-anchor="middle" >S<text>
     </g>
     <g id="PV_RE_O1" stroke="black" fill="none" transform="rotate(90,1033,866) scale(1,-1) translate(0,-1731.0077519379845)">
         <!-- coordinates: x = 1032.6530612244896 y = 865.5038759689922 -->
@@ -516,98 +533,110 @@ undefined    </g>
         <path d="M 1000 840 L 1000 891 L 1065 840 L 1065 891 L 1000 840 " />
         <path d="M 984 866 L 1000 866" />
         <path d="M 1082 866 L 1065 866" />
-        <text x="1033" y="823" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1033" y="823" dominant-baseline="middle" text-anchor="middle" transform="scale(1,-1) translate(0,-1645.7364341085272)">P<text>
     </g>
     <g id="(PS_OP_PB1)1" stroke="black" fill="none" >
         <!-- coordinates: x = 1489.7959183673468 y = 336.8217054263566 -->
         <circle cx="1490" cy="337" r="16" />
         <path d="M 1457 337 L 1473 337 " />
         <path d="M 1441 337 L 1457 337" />
-        <text x="1490" y="337" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1490" y="337" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1490" y="298" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">300bar, 1kHz</text>
     <g id="PS_OP_PR1" stroke="black" fill="none" transform="rotate(-90,1298,192)">
         <!-- coordinates: x = 1297.9591836734694 y = 191.86046511627907 -->
         <circle cx="1298" cy="192" r="16" />
         <path d="M 1265 192 L 1282 192 " />
         <path d="M 1249 192 L 1265 192" />
-        <text x="1298" y="192" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1298" y="192" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1290" y="252" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_OP_SP1" stroke="black" fill="none" transform="rotate(-90,1159,166)">
         <!-- coordinates: x = 1159.1836734693877 y = 166.27906976744185 -->
         <circle cx="1159" cy="166" r="16" />
         <path d="M 1127 166 L 1143 166 " />
         <path d="M 1110 166 L 1127 166" />
-        <text x="1159" y="166" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1159" y="166" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1151" y="226" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_OP_OT1" stroke="black" fill="none" >
         <!-- coordinates: x = 1097.9591836734694 y = 451.93798449612405 -->
         <circle cx="1098" cy="452" r="16" />
         <path d="M 1065 452 L 1082 452 " />
         <path d="M 1049 452 L 1065 452" />
-        <text x="1098" y="452" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1098" y="452" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1098" y="414" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_OB_OT1" stroke="black" fill="none" transform="scale(-1,1) translate(-1934.6938775510203,0)">
         <!-- coordinates: x = 967.3469387755101 y = 511.62790697674416 -->
         <circle cx="967" cy="512" r="16" />
         <path d="M 935 512 L 951 512 " />
         <path d="M 918 512 L 935 512" />
-        <text x="967" y="512" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="967" y="512" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-1934.6938775510203,0)">P<text>
     </g>
+        <text x="1024" y="499" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="TS_RE_O5" stroke="black" fill="none" >
         <!-- coordinates: x = 1138.7755102040815 y = 567.0542635658915 -->
         <circle cx="1139" cy="567" r="16" />
         <path d="M 1106 567 L 1122 567 " />
         <path d="M 1090 567 L 1106 567" />
-        <text x="1139" y="567" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1139" y="567" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1192" y="563" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_RE_O4" stroke="black" fill="none" >
         <!-- coordinates: x = 1138.7755102040815 y = 601.1627906976744 -->
         <circle cx="1139" cy="601" r="16" />
         <path d="M 1106 601 L 1122 601 " />
         <path d="M 1090 601 L 1106 601" />
-        <text x="1139" y="601" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1139" y="601" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1192" y="597" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_RE_O3" stroke="black" fill="none" >
         <!-- coordinates: x = 1138.7755102040815 y = 635.2713178294573 -->
         <circle cx="1139" cy="635" r="16" />
         <path d="M 1106 635 L 1122 635 " />
         <path d="M 1090 635 L 1106 635" />
-        <text x="1139" y="635" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1139" y="635" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1192" y="631" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_RE_O1" stroke="black" fill="none" >
         <!-- coordinates: x = 1138.7755102040815 y = 703.4883720930233 -->
         <circle cx="1139" cy="703" r="16" />
         <path d="M 1106 703 L 1122 703 " />
         <path d="M 1090 703 L 1106 703" />
-        <text x="1139" y="703" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1139" y="703" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1192" y="699" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_RE_O2" stroke="black" fill="none" >
         <!-- coordinates: x = 1138.7755102040815 y = 669.3798449612403 -->
         <circle cx="1139" cy="669" r="16" />
         <path d="M 1106 669 L 1122 669 " />
         <path d="M 1090 669 L 1106 669" />
-        <text x="1139" y="669" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1139" y="669" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1192" y="665" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_RE_OV1" stroke="black" fill="none" transform="rotate(180,976,964)">
         <!-- coordinates: x = 975.5102040816325 y = 963.5658914728682 -->
         <circle cx="976" cy="964" r="16" />
         <path d="M 943 964 L 959 964 " />
         <path d="M 927 964 L 943 964" />
-        <text x="976" y="964" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="976" y="964" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,976,964)">T<text>
     </g>
+        <text x="1029" y="972" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_OP_PB1" stroke="black" fill="none" >
         <!-- coordinates: x = 1506.1224489795918 y = 430.62015503875966 -->
         <circle cx="1506" cy="431" r="16" />
         <path d="M 1473 431 L 1490 431 " />
         <path d="M 1457 431 L 1473 431" />
-        <text x="1506" y="431" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="1506" y="431" dominant-baseline="middle" text-anchor="middle" >T<text>
     </g>
+        <text x="1506" y="392" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-20...70°C</text>
     <g id="VT_OP_3" stroke="black" fill="none" transform="rotate(180,853,324)">
         <!-- coordinates: x = 853.0612244897959 y = 324.031007751938 -->
         <path d="M 853 324 L 820 324 " />
         <path d="M 837 307 L 853 324 L 837 341 " />
         <path d="M 804 324 L 820 324" />
-undefined    </g>
+    </g>
     <g id="MV_OP_VT1" stroke="black" fill="none" >
         <!-- coordinates: x = 959.1836734693877 y = 324.031007751938 -->
         <circle cx="959" cy="281" r="16" />
@@ -615,190 +644,212 @@ undefined    </g>
         <path d="M 927 298 L 927 350 L 992 298 L 992 350 L 927 298 " />
         <path d="M 910 324 L 927 324" />
         <path d="M 1008 324 L 992 324" />
-        <text x="959" y="281" dominant-baseline="middle" text-anchor="middle">M<text>
+        <text x="959" y="281" dominant-baseline="middle" text-anchor="middle" >M<text>
     </g>
+        <text x="959" y="396" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">Valve_Servo</text>
     <g id="TS_OB_TT1" stroke="black" fill="none" transform="rotate(180,927,567)">
         <!-- coordinates: x = 926.5306122448978 y = 567.0542635658915 -->
         <circle cx="927" cy="567" r="16" />
         <path d="M 894 567 L 910 567 " />
         <path d="M 878 567 L 894 567" />
-        <text x="927" y="567" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="927" y="567" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,927,567)">T<text>
     </g>
+        <text x="980" y="580" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="TS_OB_TB1" stroke="black" fill="none" transform="rotate(180,927,703)">
         <!-- coordinates: x = 926.5306122448978 y = 703.4883720930233 -->
         <circle cx="927" cy="703" r="16" />
         <path d="M 894 703 L 910 703 " />
         <path d="M 878 703 L 894 703" />
-        <text x="927" y="703" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="927" y="703" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,927,703)">T<text>
     </g>
+        <text x="980" y="716" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200...70°C</text>
     <g id="(PS_FP_PB1)1" stroke="black" fill="none" transform="rotate(180,249,337)">
         <!-- coordinates: x = 248.97959183673467 y = 336.8217054263566 -->
         <circle cx="249" cy="337" r="16" />
         <path d="M 216 337 L 233 337 " />
         <path d="M 200 337 L 216 337" />
-        <text x="249" y="337" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="249" y="337" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,249,337)">P<text>
     </g>
+        <text x="249" y="311" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">300bar, 1kHz</text>
     <g id="PS_FP_PR1" stroke="black" fill="none" transform="rotate(-90,445,269)">
         <!-- coordinates: x = 444.89795918367344 y = 268.6046511627907 -->
         <circle cx="445" cy="269" r="16" />
         <path d="M 412 269 L 429 269 " />
         <path d="M 396 269 L 412 269" />
-        <text x="445" y="269" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="445" y="269" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="469" y="269" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_FP_FT1" stroke="black" fill="none" transform="rotate(180,698,456)">
         <!-- coordinates: x = 697.9591836734693 y = 456.2015503875969 -->
         <circle cx="698" cy="456" r="16" />
         <path d="M 665 456 L 682 456 " />
         <path d="M 649 456 L 665 456" />
-        <text x="698" y="456" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="698" y="456" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,698,456)">P<text>
     </g>
+        <text x="698" y="495" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="TS_RE_FB1" stroke="black" fill="none" transform="scale(-1,1) translate(-1314.2857142857142,0)">
         <!-- coordinates: x = 657.1428571428571 y = 703.4883720930233 -->
         <circle cx="657" cy="703" r="16" />
         <path d="M 624 703 L 641 703 " />
         <path d="M 608 703 L 624 703" />
-        <text x="657" y="703" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="657" y="703" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-1314.2857142857142,0)">T<text>
     </g>
+        <text x="710" y="695" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-20...70°C</text>
     <g id="TS_RE_FT1" stroke="black" fill="none" transform="scale(-1,1) translate(-1314.2857142857142,0)">
         <!-- coordinates: x = 657.1428571428571 y = 567.0542635658915 -->
         <circle cx="657" cy="567" r="16" />
         <path d="M 624 567 L 641 567 " />
         <path d="M 608 567 L 624 567" />
-        <text x="657" y="567" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="657" y="567" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-1314.2857142857142,0)">T<text>
     </g>
+        <text x="710" y="559" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-20...70°C</text>
     <g id="TS_FP_PB1" stroke="black" fill="none" transform="scale(-1,1) translate(-465.3061224489796,0)">
         <!-- coordinates: x = 232.6530612244898 y = 400.7751937984496 -->
         <circle cx="233" cy="401" r="16" />
         <path d="M 200 401 L 216 401 " />
         <path d="M 184 401 L 200 401" />
-        <text x="233" y="401" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="233" y="401" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-465.3061224489796,0)">T<text>
     </g>
+        <text x="233" y="362" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-20...70°C</text>
     <g id="TS_RE_FV1" stroke="black" fill="none" transform="scale(-1,1) translate(-1412.2448979591836,0)">
         <!-- coordinates: x = 706.1224489795918 y = 946.5116279069767 -->
         <circle cx="706" cy="947" r="16" />
         <path d="M 673 947 L 690 947 " />
         <path d="M 657 947 L 673 947" />
-        <text x="706" y="947" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="706" y="947" dominant-baseline="middle" text-anchor="middle" transform="scale(-1,1) translate(-1412.2448979591836,0)">T<text>
     </g>
+        <text x="759" y="938" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-20...70°C</text>
     <g id="MS_RE_FM1" stroke="black" fill="none" transform="rotate(90,763,1010)">
         <!-- coordinates: x = 763.2653061224489 y = 1010.4651162790698 -->
         <circle cx="763" cy="1010" r="16" />
         <path d="M 731 1010 L 747 1010" />
         <path d="M 796 1010 L 780 1010" />
-        <text x="763" y="1010" dominant-baseline="middle" text-anchor="middle">q<text>
+        <text x="763" y="1010" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,763,1010)">q<text>
     </g>
     <g id="MS_RE_FC1" stroke="black" fill="none" transform="rotate(90,592,1087)">
         <!-- coordinates: x = 591.8367346938775 y = 1087.2093023255813 -->
         <circle cx="592" cy="1087" r="16" />
         <path d="M 559 1087 L 576 1087" />
         <path d="M 624 1087 L 608 1087" />
-        <text x="592" y="1087" dominant-baseline="middle" text-anchor="middle">q<text>
+        <text x="592" y="1087" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,592,1087)">q<text>
     </g>
     <g id="MS_RE_O1" stroke="black" fill="none" transform="rotate(90,918,1040)">
         <!-- coordinates: x = 918.3673469387754 y = 1040.3100775193798 -->
         <circle cx="918" cy="1040" r="16" />
         <path d="M 886 1040 L 902 1040" />
         <path d="M 951 1040 L 935 1040" />
-        <text x="918" y="1040" dominant-baseline="middle" text-anchor="middle">q<text>
+        <text x="918" y="1040" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,918,1040)">q<text>
     </g>
+        <text x="922" y="993" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">-200°C</text>
     <g id="(PS_RE_E1)1" stroke="black" fill="none" >
         <!-- coordinates: x = 1004.0816326530611 y = 1215.1162790697674 -->
         <circle cx="1004" cy="1215" r="16" />
         <path d="M 971 1215 L 988 1215 " />
         <path d="M 955 1215 L 971 1215" />
-        <text x="1004" y="1215" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1004" y="1215" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1020" y="1211" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">60bar, 10kHz</text>
     <g id="TS_RE_E2" stroke="black" fill="none" transform="rotate(90,878,1253)">
         <!-- coordinates: x = 877.5510204081631 y = 1253.4883720930231 -->
         <circle cx="878" cy="1253" r="16" />
         <path d="M 845 1253 L 861 1253 " />
         <path d="M 829 1253 L 845 1253" />
-        <text x="878" y="1253" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="878" y="1253" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,878,1253)">T<text>
     </g>
     <g id="TS_RE_E1" stroke="black" fill="none" transform="rotate(180,837,1181)">
         <!-- coordinates: x = 836.734693877551 y = 1181.0077519379845 -->
         <circle cx="837" cy="1181" r="16" />
         <path d="M 804 1181 L 820 1181 " />
         <path d="M 788 1181 L 804 1181" />
-        <text x="837" y="1181" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="837" y="1181" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,837,1181)">T<text>
     </g>
     <g id="TS_RE_E3" stroke="black" fill="none" transform="rotate(90,927,1253)">
         <!-- coordinates: x = 926.5306122448978 y = 1253.4883720930231 -->
         <circle cx="927" cy="1253" r="16" />
         <path d="M 894 1253 L 910 1253 " />
         <path d="M 878 1253 L 894 1253" />
-        <text x="927" y="1253" dominant-baseline="middle" text-anchor="middle">T<text>
+        <text x="927" y="1253" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,927,1253)">T<text>
     </g>
     <g id="PS_OF_FP1" stroke="black" fill="none" transform="rotate(-90,1461,699)">
         <!-- coordinates: x = 1461.2244897959183 y = 699.2248062015503 -->
         <circle cx="1461" cy="699" r="16" />
         <path d="M 1429 699 L 1445 699 " />
         <path d="M 1412 699 L 1429 699" />
-        <text x="1461" y="699" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1461" y="699" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1486" y="699" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="(PS_PG_PB1)1" stroke="black" fill="none" transform="rotate(180,114,1010)">
         <!-- coordinates: x = 114.28571428571428 y = 1010.4651162790698 -->
         <circle cx="114" cy="1010" r="16" />
         <path d="M 82 1010 L 98 1010 " />
         <path d="M 65 1010 L 82 1010" />
-        <text x="114" y="1010" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="114" y="1010" dominant-baseline="middle" text-anchor="middle" transform="rotate(180,114,1010)">P<text>
     </g>
+        <text x="90" y="985" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">300bar, 1kHz</text>
     <g id="PS_PG_PR1" stroke="black" fill="none" transform="rotate(-90,310,942)">
         <!-- coordinates: x = 310.204081632653 y = 942.2480620155038 -->
         <circle cx="310" cy="942" r="16" />
         <path d="M 278 942 L 294 942 " />
         <path d="M 261 942 L 278 942" />
-        <text x="310" y="942" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="310" y="942" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="335" y="942" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_PG_PG1" stroke="black" fill="none" transform="rotate(-90,449,861)">
         <!-- coordinates: x = 448.97959183673464 y = 861.2403100775193 -->
         <circle cx="449" cy="861" r="16" />
         <path d="M 416 861 L 433 861 " />
         <path d="M 400 861 L 416 861" />
-        <text x="449" y="861" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="449" y="861" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="473" y="861" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="(PS_IG_FB1)1" stroke="black" fill="none" transform="rotate(-90,1571,878)">
         <!-- coordinates: x = 1571.4285714285713 y = 878.2945736434108 -->
         <circle cx="1571" cy="878" r="16" />
         <path d="M 1539 878 L 1555 878 " />
         <path d="M 1522 878 L 1539 878" />
-        <text x="1571" y="878" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1571" y="878" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1559" y="819" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">300bar, 1kHz</text>
     <g id="(PS_IG_OB1)1" stroke="black" fill="none" transform="rotate(-90,1571,993)">
         <!-- coordinates: x = 1571.4285714285713 y = 993.4108527131783 -->
         <circle cx="1571" cy="993" r="16" />
         <path d="M 1539 993 L 1555 993 " />
         <path d="M 1522 993 L 1539 993" />
-        <text x="1571" y="993" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1571" y="993" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1559" y="934" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">300bar, 1kHz</text>
     <g id="PS_IG_RF1" stroke="black" fill="none" transform="rotate(-90,1461,870)">
         <!-- coordinates: x = 1461.2244897959183 y = 869.767441860465 -->
         <circle cx="1461" cy="870" r="16" />
         <path d="M 1429 870 L 1445 870 " />
         <path d="M 1412 870 L 1429 870" />
-        <text x="1461" y="870" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1461" y="870" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1453" y="814" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_IG_RO1" stroke="black" fill="none" transform="rotate(-90,1461,989)">
         <!-- coordinates: x = 1461.2244897959183 y = 989.1472868217054 -->
         <circle cx="1461" cy="989" r="16" />
         <path d="M 1429 989 L 1445 989 " />
         <path d="M 1412 989 L 1429 989" />
-        <text x="1461" y="989" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1461" y="989" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1453" y="934" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_IG_SF1" stroke="black" fill="none" transform="rotate(-90,1196,878)">
         <!-- coordinates: x = 1195.9183673469386 y = 878.2945736434108 -->
         <circle cx="1196" cy="878" r="16" />
         <path d="M 1163 878 L 1180 878 " />
         <path d="M 1147 878 L 1163 878" />
-        <text x="1196" y="878" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1196" y="878" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1188" y="934" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="PS_IG_SO1" stroke="black" fill="none" transform="rotate(-90,1196,993)">
         <!-- coordinates: x = 1195.9183673469386 y = 993.4108527131783 -->
         <circle cx="1196" cy="993" r="16" />
         <path d="M 1163 993 L 1180 993 " />
         <path d="M 1147 993 L 1163 993" />
-        <text x="1196" y="993" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1196" y="993" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1188" y="1049" dominant-baseline="middle" text-anchor="middle" style="font-size: 10px">60bar, 1kHz</text>
     <g id="CV_RE_PG1" stroke="black" fill="none" >
         <!-- coordinates: x = 518.3673469387754 y = 925.1937984496124 -->
         <path d="M 486 925 L 502 925 " />
@@ -807,7 +858,7 @@ undefined    </g>
         <path d="M 502 908 L 502 942 L 535 925 L 502 908 " />
         <path d="M 469 925 L 486 925" />
         <path d="M 567 925 L 551 925" />
-undefined    </g>
+    </g>
     <g id="OV_FP_FT1" stroke="black" fill="none" transform="rotate(-90,763,269)">
         <!-- coordinates: x = 763.2653061224489 y = 268.6046511627907 -->
         <path d="M 763 269 L 763 234 " />
@@ -815,14 +866,15 @@ undefined    </g>
         <path d="M 731 243 L 731 294 L 796 243 L 796 294 L 731 243 " />
         <path d="M 714 269 L 731 269" />
         <path d="M 812 269 L 796 269" />
-undefined    </g>
+    </g>
     <g id="(PS_RE_E2)1" stroke="black" fill="none" >
         <!-- coordinates: x = 1004.0816326530611 y = 1257.7519379844962 -->
         <circle cx="1004" cy="1258" r="16" />
         <path d="M 971 1258 L 988 1258 " />
         <path d="M 955 1258 L 971 1258" />
-        <text x="1004" y="1258" dominant-baseline="middle" text-anchor="middle">P<text>
+        <text x="1004" y="1258" dominant-baseline="middle" text-anchor="middle" >P<text>
     </g>
+        <text x="1020" y="1253" dominant-baseline="middle" text-anchor="start" style="font-size: 10px">60bar, 10kHz</text>
     <g id="RE1" stroke="black" fill="none" >
         <!-- coordinates: x = 902.0408163265305 y = 1134.108527131783 -->
         <rect x="878" y="1117" width="49" height="43" />
@@ -836,7 +888,7 @@ undefined    </g>
         <path d="M 861 1151 L 878 1151" />
         <path d="M 918 1100 L 918 1117" />
         <path d="M 1000 1134 L 984 1134" />
-undefined    </g>
+    </g>
     <g id="HV_RE_1" stroke="black" fill="none" >
         <!-- coordinates: x = 693.8775510204081 y = 754.6511627906976 -->
         <path d="M 678 721 L 710 721 " />
@@ -844,7 +896,7 @@ undefined    </g>
         <path d="M 661 729 L 661 780 L 727 729 L 727 780 L 661 729 " />
         <path d="M 645 755 L 661 755" />
         <path d="M 743 755 L 727 755" />
-undefined    </g>
+    </g>
     <g id="QC_RE_F" stroke="black" fill="none" transform="rotate(180,584,755)">
         <!-- coordinates: x = 583.6734693877551 y = 754.6511627906976 -->
         <circle cx="559" cy="755" r="8" />
@@ -853,7 +905,245 @@ undefined    </g>
         <path d="M 584 738 L 584 772 " />
         <path d="M 584 755 L 576 755 L 559 738 " />
         <path d="M 535 755 L 551 755" />
-undefined    </g>
+    </g>
+
+<!-- Wires-->
+
+    <line x1="763" y1="738" x2="763" y2="755" stroke="red" />
+    <line x1="1033" y1="738" x2="1033" y2="767" stroke="red" />
+    <line x1="763" y1="917" x2="763" y2="925" stroke="red" />
+    <line x1="886" y1="1079" x2="886" y2="1100" stroke="red" />
+    <line x1="1033" y1="917" x2="1033" y2="925" stroke="red" />
+    <line x1="763" y1="925" x2="592" y2="925" stroke="red" />
+    <line x1="592" y1="925" x2="592" y2="934" stroke="red" />
+    <line x1="763" y1="925" x2="763" y2="947" stroke="red" />
+    <line x1="747" y1="1151" x2="861" y2="1151" stroke="red" />
+    <line x1="1143" y1="767" x2="1033" y2="767" stroke="red" />
+    <line x1="1257" y1="767" x2="1241" y2="767" stroke="red" />
+    <line x1="1478" y1="767" x2="1461" y2="767" stroke="red" />
+    <line x1="1400" y1="746" x2="1400" y2="767" stroke="red" />
+    <line x1="1400" y1="767" x2="1355" y2="767" stroke="red" />
+    <line x1="1649" y1="729" x2="1649" y2="767" stroke="red" />
+    <line x1="1649" y1="618" x2="1649" y2="627" stroke="red" />
+    <line x1="1400" y1="635" x2="1400" y2="644" stroke="red" />
+    <line x1="1665" y1="767" x2="1649" y2="767" stroke="red" />
+    <line x1="1592" y1="746" x2="1592" y2="767" stroke="red" />
+    <line x1="927" y1="789" x2="1033" y2="789" stroke="red" />
+    <line x1="747" y1="797" x2="763" y2="797" stroke="red" />
+    <line x1="963" y1="1074" x2="951" y2="1074" stroke="red" />
+    <line x1="771" y1="959" x2="763" y2="959" stroke="red" />
+    <line x1="927" y1="925" x2="1033" y2="925" stroke="red" />
+    <line x1="943" y1="1151" x2="951" y2="1151" stroke="red" />
+    <line x1="192" y1="1010" x2="180" y2="1010" stroke="red" />
+    <line x1="180" y1="1010" x2="180" y2="1023" stroke="red" />
+    <line x1="290" y1="1010" x2="310" y2="1010" stroke="red" />
+    <line x1="310" y1="1032" x2="310" y2="1010" stroke="red" />
+    <line x1="310" y1="1010" x2="331" y2="1010" stroke="red" />
+    <line x1="310" y1="1134" x2="310" y2="1143" stroke="red" />
+    <line x1="429" y1="1010" x2="449" y2="1010" stroke="red" />
+    <line x1="327" y1="337" x2="314" y2="337" stroke="red" />
+    <line x1="314" y1="337" x2="314" y2="350" stroke="red" />
+    <line x1="424" y1="337" x2="445" y2="337" stroke="red" />
+    <line x1="445" y1="358" x2="445" y2="337" stroke="red" />
+    <line x1="445" y1="337" x2="465" y2="337" stroke="red" />
+    <line x1="445" y1="460" x2="445" y2="469" stroke="red" />
+    <line x1="1412" y1="337" x2="1424" y2="337" stroke="red" />
+    <line x1="1424" y1="337" x2="1424" y2="350" stroke="red" />
+    <line x1="1314" y1="337" x2="1298" y2="337" stroke="red" />
+    <line x1="1294" y1="358" x2="1294" y2="337" stroke="red" />
+    <line x1="1294" y1="337" x2="1273" y2="337" stroke="red" />
+    <line x1="1294" y1="460" x2="1294" y2="469" stroke="red" />
+    <line x1="584" y1="460" x2="584" y2="469" stroke="red" />
+    <line x1="1159" y1="460" x2="1159" y2="469" stroke="red" />
+    <line x1="563" y1="337" x2="584" y2="337" stroke="red" />
+    <line x1="584" y1="358" x2="584" y2="337" stroke="red" />
+    <line x1="584" y1="337" x2="669" y2="337" stroke="red" />
+    <line x1="1045" y1="337" x2="1033" y2="337" stroke="red" />
+    <line x1="1033" y1="337" x2="1033" y2="452" stroke="red" />
+    <line x1="763" y1="217" x2="763" y2="209" stroke="red" />
+    <line x1="1033" y1="217" x2="1033" y2="209" stroke="red" />
+    <line x1="1033" y1="320" x2="1033" y2="324" stroke="red" />
+    <line x1="763" y1="320" x2="763" y2="337" stroke="red" />
+    <line x1="1176" y1="337" x2="1159" y2="337" stroke="red" />
+    <line x1="1159" y1="358" x2="1159" y2="337" stroke="red" />
+    <line x1="1159" y1="337" x2="1143" y2="337" stroke="red" />
+    <line x1="669" y1="217" x2="669" y2="209" stroke="red" />
+    <line x1="918" y1="478" x2="910" y2="478" stroke="red" />
+    <line x1="1016" y1="478" x2="1033" y2="478" stroke="red" />
+    <line x1="1033" y1="478" x2="1033" y2="512" stroke="red" />
+    <line x1="1567" y1="947" x2="1571" y2="947" stroke="red" />
+    <line x1="1567" y1="1062" x2="1571" y2="1062" stroke="red" />
+    <line x1="1469" y1="947" x2="1461" y2="947" stroke="red" />
+    <line x1="1200" y1="947" x2="1196" y2="947" stroke="red" />
+    <line x1="1469" y1="1062" x2="1461" y2="1062" stroke="red" />
+    <line x1="1200" y1="1062" x2="1196" y2="1062" stroke="red" />
+    <line x1="1094" y1="1062" x2="1090" y2="1062" stroke="red" />
+    <line x1="1090" y1="1062" x2="1090" y2="1134" stroke="red" />
+    <line x1="1090" y1="1134" x2="1000" y2="1134" stroke="red" />
+    <line x1="1094" y1="947" x2="1073" y2="947" stroke="red" />
+    <line x1="1073" y1="947" x2="1073" y2="1117" stroke="red" />
+    <line x1="1073" y1="1117" x2="1000" y2="1117" stroke="red" />
+    <line x1="1335" y1="887" x2="1331" y2="887" stroke="red" />
+    <line x1="1335" y1="1010" x2="1331" y2="1010" stroke="red" />
+    <line x1="1433" y1="887" x2="1449" y2="887" stroke="red" />
+    <line x1="1449" y1="887" x2="1449" y2="947" stroke="red" />
+    <line x1="1449" y1="947" x2="1298" y2="947" stroke="red" />
+    <line x1="1433" y1="1010" x2="1449" y2="1010" stroke="red" />
+    <line x1="1449" y1="1010" x2="1449" y2="1062" stroke="red" />
+    <line x1="1449" y1="1062" x2="1298" y2="1062" stroke="red" />
+    <line x1="1441" y1="337" x2="1424" y2="337" stroke="red" />
+    <line x1="1298" y1="243" x2="1298" y2="337" stroke="red" />
+    <line x1="1298" y1="337" x2="1294" y2="337" stroke="red" />
+    <line x1="1159" y1="217" x2="1159" y2="337" stroke="red" />
+    <line x1="1049" y1="452" x2="1033" y2="452" stroke="red" />
+    <line x1="1033" y1="452" x2="1033" y2="478" stroke="red" />
+    <line x1="1016" y1="512" x2="1033" y2="512" stroke="red" />
+    <line x1="1033" y1="512" x2="1033" y2="533" stroke="red" />
+    <line x1="1024" y1="964" x2="1033" y2="964" stroke="red" />
+    <line x1="910" y1="324" x2="902" y2="324" stroke="red" />
+    <line x1="1008" y1="324" x2="1033" y2="324" stroke="red" />
+    <line x1="1033" y1="324" x2="1033" y2="337" stroke="red" />
+    <line x1="298" y1="337" x2="314" y2="337" stroke="red" />
+    <line x1="445" y1="320" x2="445" y2="337" stroke="red" />
+    <line x1="747" y1="456" x2="763" y2="456" stroke="red" />
+    <line x1="763" y1="456" x2="763" y2="533" stroke="red" />
+    <line x1="869" y1="1079" x2="886" y2="1079" stroke="red" />
+    <line x1="584" y1="1151" x2="592" y2="1151" stroke="red" />
+    <line x1="763" y1="947" x2="763" y2="959" stroke="red" />
+    <line x1="763" y1="1045" x2="763" y2="1079" stroke="red" />
+    <line x1="763" y1="1079" x2="771" y2="1079" stroke="red" />
+    <line x1="592" y1="1036" x2="592" y2="1053" stroke="red" />
+    <line x1="592" y1="1121" x2="592" y2="1151" stroke="red" />
+    <line x1="592" y1="1151" x2="649" y2="1151" stroke="red" />
+    <line x1="918" y1="985" x2="918" y2="1006" stroke="red" />
+    <line x1="918" y1="1100" x2="918" y2="1074" stroke="red" />
+    <line x1="947" y1="1215" x2="955" y2="1215" stroke="red" />
+    <line x1="1461" y1="750" x2="1461" y2="767" stroke="red" />
+    <line x1="163" y1="1010" x2="180" y2="1010" stroke="red" />
+    <line x1="310" y1="993" x2="310" y2="1010" stroke="red" />
+    <line x1="1310" y1="797" x2="1824" y2="797" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1824" y1="797" x2="1824" y2="379" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1824" y1="379" x2="1555" y2="379" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1555" y1="379" x2="1555" y2="550" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1555" y1="550" x2="1310" y2="550" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1310" y1="550" x2="1310" y2="797" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1571" y1="929" x2="1571" y2="947" stroke="red" />
+    <line x1="1571" y1="1045" x2="1571" y2="1062" stroke="red" />
+    <line x1="1571" y1="947" x2="1576" y2="947" stroke="red" />
+    <line x1="1571" y1="1062" x2="1576" y2="1062" stroke="red" />
+    <line x1="1461" y1="921" x2="1461" y2="947" stroke="red" />
+    <line x1="1461" y1="947" x2="1449" y2="947" stroke="red" />
+    <line x1="1461" y1="1040" x2="1461" y2="1062" stroke="red" />
+    <line x1="1461" y1="1062" x2="1449" y2="1062" stroke="red" />
+    <line x1="1196" y1="929" x2="1196" y2="947" stroke="red" />
+    <line x1="1196" y1="1045" x2="1196" y2="1062" stroke="red" />
+    <line x1="1196" y1="947" x2="1192" y2="947" stroke="red" />
+    <line x1="1196" y1="1062" x2="1192" y2="1062" stroke="red" />
+    <line x1="1816" y1="1104" x2="1816" y2="806" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1061" y1="1023" x2="939" y2="1023" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="939" y1="1023" x2="939" y2="1147" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1127" y1="1104" x2="1816" y2="1104" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="94" y1="797" x2="506" y2="797" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="94" y1="1296" x2="94" y2="797" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="567" y1="925" x2="592" y2="925" stroke="red" />
+    <line x1="176" y1="132" x2="176" y2="546" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1543" y1="132" x2="1543" y2="541" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1020" y1="371" x2="1020" y2="541" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="506" y1="546" x2="506" y2="1296" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="833" y1="371" x2="1020" y2="371" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="176" y1="132" x2="1543" y2="132" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="833" y1="733" x2="959" y2="733" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="959" y1="733" x2="959" y2="541" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="959" y1="541" x2="1543" y2="541" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="176" y1="546" x2="833" y2="546" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="155" y1="584" x2="473" y2="584" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="473" y1="584" x2="473" y2="759" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="473" y1="759" x2="155" y2="759" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="155" y1="759" x2="155" y2="584" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="763" y1="337" x2="763" y2="456" stroke="red" />
+    <line x1="669" y1="320" x2="669" y2="337" stroke="red" />
+    <line x1="669" y1="337" x2="763" y2="337" stroke="red" />
+    <line x1="833" y1="733" x2="833" y2="132" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1302" y1="806" x2="1302" y2="541" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="1061" y1="806" x2="1061" y2="1023" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="469" y1="925" x2="449" y2="925" stroke="red" />
+    <line x1="449" y1="925" x2="449" y2="1010" stroke="red" />
+    <line x1="449" y1="1010" x2="449" y2="1211" stroke="red" />
+    <line x1="449" y1="1211" x2="776" y2="1211" stroke="red" />
+    <line x1="449" y1="912" x2="449" y2="925" stroke="red" />
+    <line x1="1033" y1="767" x2="1033" y2="789" stroke="red" />
+    <line x1="1592" y1="767" x2="1576" y2="767" stroke="red" />
+    <line x1="1592" y1="767" x2="1649" y2="767" stroke="red" />
+    <line x1="1400" y1="767" x2="1461" y2="767" stroke="red" />
+    <line x1="1033" y1="789" x2="1033" y2="814" stroke="red" />
+    <line x1="763" y1="797" x2="763" y2="814" stroke="red" />
+    <line x1="755" y1="947" x2="763" y2="947" stroke="red" />
+    <line x1="1033" y1="964" x2="1033" y2="985" stroke="red" />
+    <line x1="918" y1="985" x2="1033" y2="985" stroke="red" />
+    <line x1="1033" y1="925" x2="1033" y2="964" stroke="red" />
+    <line x1="763" y1="959" x2="763" y2="976" stroke="red" />
+    <line x1="951" y1="1074" x2="951" y2="1091" stroke="red" />
+    <line x1="1127" y1="1104" x2="1127" y2="1296" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="94" y1="1296" x2="1127" y2="1296" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="939" y1="1147" x2="1127" y2="1147" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="951" y1="1151" x2="951" y2="1172" stroke="red" />
+    <line x1="951" y1="1172" x2="955" y2="1172" stroke="red" />
+    <line x1="914" y1="1172" x2="947" y2="1172" stroke="red" />
+    <line x1="947" y1="1172" x2="947" y2="1215" stroke="red" />
+    <line x1="955" y1="1258" x2="951" y2="1258" stroke="red" />
+    <line x1="951" y1="1258" x2="951" y2="1224" stroke="red" />
+    <line x1="951" y1="1224" x2="939" y2="1224" stroke="red" />
+    <line x1="939" y1="1224" x2="939" y2="1190" stroke="red" />
+    <line x1="939" y1="1190" x2="922" y2="1190" stroke="red" />
+    <line x1="1061" y1="806" x2="1816" y2="806" stroke="blue" stroke-dasharray="5,10" />
+    <line x1="743" y1="755" x2="763" y2="755" stroke="red" />
+    <line x1="763" y1="755" x2="763" y2="797" stroke="red" />
+    <line x1="645" y1="755" x2="633" y2="755" stroke="red" />
+
+<!-- Connections-->
+
+    <circle cx="763" cy="925" r="2" fill="green" />
+    <circle cx="1400" cy="767" r="2" fill="green" />
+    <circle cx="1649" cy="767" r="2" fill="green" />
+    <circle cx="310" cy="1010" r="2" fill="green" />
+    <circle cx="445" cy="337" r="2" fill="green" />
+    <circle cx="1294" cy="337" r="2" fill="green" />
+    <circle cx="584" cy="337" r="2" fill="green" />
+    <circle cx="1033" cy="337" r="2" fill="green" />
+    <circle cx="763" cy="337" r="2" fill="green" />
+    <circle cx="1159" cy="337" r="2" fill="green" />
+    <circle cx="1033" cy="478" r="2" fill="green" />
+    <circle cx="1449" cy="947" r="2" fill="green" />
+    <circle cx="1449" cy="1062" r="2" fill="green" />
+    <circle cx="1424" cy="337" r="2" fill="green" />
+    <circle cx="1298" cy="337" r="2" fill="green" />
+    <circle cx="1033" cy="452" r="2" fill="green" />
+    <circle cx="1033" cy="512" r="2" fill="green" />
+    <circle cx="1033" cy="324" r="2" fill="green" />
+    <circle cx="314" cy="337" r="2" fill="green" />
+    <circle cx="763" cy="456" r="2" fill="green" />
+    <circle cx="763" cy="947" r="2" fill="green" />
+    <circle cx="592" cy="1151" r="2" fill="green" />
+    <circle cx="180" cy="1010" r="2" fill="green" />
+    <circle cx="1571" cy="947" r="2" fill="green" />
+    <circle cx="1571" cy="1062" r="2" fill="green" />
+    <circle cx="1461" cy="947" r="2" fill="green" />
+    <circle cx="1461" cy="1062" r="2" fill="green" />
+    <circle cx="1196" cy="947" r="2" fill="green" />
+    <circle cx="1196" cy="1062" r="2" fill="green" />
+    <circle cx="592" cy="925" r="2" fill="green" />
+    <circle cx="669" cy="337" r="2" fill="green" />
+    <circle cx="449" cy="1010" r="2" fill="green" />
+    <circle cx="449" cy="925" r="2" fill="green" />
+    <circle cx="1033" cy="767" r="2" fill="green" />
+    <circle cx="1592" cy="767" r="2" fill="green" />
+    <circle cx="1461" cy="767" r="2" fill="green" />
+    <circle cx="1033" cy="789" r="2" fill="green" />
+    <circle cx="763" cy="797" r="2" fill="green" />
+    <circle cx="1033" cy="964" r="2" fill="green" />
+    <circle cx="1033" cy="925" r="2" fill="green" />
+    <circle cx="763" cy="959" r="2" fill="green" />
+    <circle cx="763" cy="755" r="2" fill="green" />
 </svg>
 </body>
 </html>
