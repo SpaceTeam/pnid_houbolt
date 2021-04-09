@@ -1,0 +1,132 @@
+:root {
+    --open: blue;
+    --closed: orange;
+    --undefined: gray;
+    --high: red;
+    --low: blue;
+    --neutral: green;
+}
+
+text {
+    dominant-baseline: middle;
+    text-anchor: middle;
+    font-family: "Times New Roman", Times, serif;
+}
+.comp {
+    stroke-width: 8;
+    stroke: black;
+    fill: none;
+}
+
+.sensor-letter {
+    font-size: 100px;
+    stroke-width: 4;
+}
+
+.note-line {
+    stroke-width: 6;
+    stroke: blue;
+    stroke-dasharray: 25,50
+}
+
+.wire {
+    stroke-width: 8;
+    stroke: red;
+}
+
+.value, .reference {
+    font-size: 70px;
+    stroke-width: 4;
+}
+
+.PnID-Tank .rect {
+    stroke-width: 0;
+}
+
+
+[data-pnid-valve_pneumatic=open] {
+    stroke: var(--open);
+}
+
+[data-pnid-valve_pneumatic=closed] {
+    stroke: var(--closed);
+}
+
+[data-pnid-valve_pneumatic=undefined] {
+    stroke: var(--undefined);
+}
+
+[data-pnid-valve_servo=open] {
+    fill: none;
+}
+
+[data-pnid-valve_servo=closed] path {
+    fill: black;
+}
+
+[data-pnid-valve_servo=throttle] path:nth-of-type(3) {
+    fill: black;
+}
+
+[data-pnid-sensor_pressure=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_pressure=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_pressure=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-sensor_temperature=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_temperature=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_temperature=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-sensor_massflow=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_massflow=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_massflow=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-valve_solenoid=open] {
+    stroke: var(--open);
+}
+
+[data-pnid-valve_solenoid=closed] {
+    stroke: var(--closed);
+}
+
+[data-pnid-valve_solenoid=undefined] {
+    stroke: var(--undefined);
+}
+
+[data-pnid-valve_overpressure=open] {
+    stroke: var(--open);
+}
+
+[data-pnid-valve_overpressure=closed] {
+    stroke: var(--closed);
+}
+
+[data-pnid-valve_overpressure=undefined] {
+    stroke: var(--undefined);
+}
+
+
+
