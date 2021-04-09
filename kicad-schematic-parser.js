@@ -20,13 +20,13 @@ const lib = libReader(
     fs.readFileSync(process.argv[3], 'utf-8'));
 
 // Loop over all components and set default fields and values:
-schematic.Comp.forEach(set_defaults);
+//schematic.Comp.forEach(set_defaults);
 
 // Some components support generating footprint names from attributes:
-schematic.Comp.forEach(generate_footprint);
+//schematic.Comp.forEach(generate_footprint);
 
 // Dump the whole thing to stdout:
-//console.log(writer(schematic));
+console.log(writer(schematic));
 
 
 // Create html document displaying the kicad schematic
