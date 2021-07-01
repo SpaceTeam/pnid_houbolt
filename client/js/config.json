@@ -1,0 +1,12 @@
+{
+    "solenoid" :
+    {
+        "states" : [],
+        "eval": "val > 10 ? out['color']='#FFFFFF' : out['color']='#FFFFFF'"
+    },
+    "customSolenoid"
+    {
+        "solenoid4"
+        "eval": ""
+    }
+}

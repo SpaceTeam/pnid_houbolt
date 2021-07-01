@@ -22,6 +22,20 @@ function startLoop() {
 	
 }
 
+var testData = [{"name": "solenoid1", "value": 12.0},{"name": "solenoid2", "value": 8.0}]
+
+function updatePNID(stateList)
+{
+	$('.' + stateList[0].name).eval(config[stateName]["eval"])
+}
+
+function setConfig()
+{
+
+}
+
+function saveConfig()
+
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
