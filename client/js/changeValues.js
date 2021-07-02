@@ -22,11 +22,32 @@ function startLoop() {
 	
 }
 
-var testData = [{"name": "solenoid1", "value": 12.0},{"name": "solenoid2", "value": 8.0}]
+var testData = [{"name": "solenoid1", "value": 12.0}, {"name": "solenoid2", "value": 8.0}];
 
+//updatePNID([{"name": "solenoid1", "value": 12.0}, {"name": "solenoid2", "value": 8.0}]);
+//updatePNID([{"name": "PnID-Valve_Solenoid", "value": 12.0}, {"name": "solenoid2", "value": 8.0}]);
 function updatePNID(stateList)
 {
-	$('.' + stateList[0].name).eval(config[stateName]["eval"])
+	console.log(stateList);
+	
+	for (stateIndex in stateList)
+	{
+		let stateName = stateList[stateIndex]["name"];
+		let stateValue = stateList[stateIndex]["value"];
+		console.log("out name: '", stateName, "' value:",  stateValue);
+		setState(stateList[stateIndex]);
+	}
+	
+	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
+}
+
+function setState(state)
+{
+	$(document).find("g." + state["name"]).find("text.value").text(state["value"]);
+	
+	$.getJSON("client/js/config.json", function (config) {
+		console.log(config["solenoid"]);
+	});
 }
 
 function setConfig()
@@ -35,7 +56,11 @@ function setConfig()
 }
 
 function saveConfig()
+{
+	
+}
 
-function sleep (time) {
+function sleep (time)
+{
   return new Promise((resolve) => setTimeout(resolve, time));
 }
