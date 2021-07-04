@@ -45,7 +45,7 @@ Output variables (addresible via `outVars[<variable name>]`), only have an effec
 }
 ```
 
-Here the "solenoid" group contains a list of states (names) that belong to this group. If a state update message is sent for any of these elements the code in the "eval" block will be executed. 
+Here the "solenoid" group contains a list of states (names) that belong to this group. If a state update message is sent for any of these elements the code in the "eval" block will be executed. Later in the document in "customSolenoid" the "fuel_pressurize_solenoid" gets a cusstom behavior defined in its own "eval" block, which will *run after the previous (default or already another custom behavior) eval*. This means if both evals set the same outputs the eval further down in the config will override the one further up, however, if they write to different outputs, results of both evals can be visible (or one eval could set several outVars and a later one overwrites only one of those).
 
 ## pnid.css
 
