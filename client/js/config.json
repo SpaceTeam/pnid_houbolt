@@ -1,12 +1,17 @@
 {
-    "solenoid" :
-    {
-        "states" : [],
-        "eval": "val > 10 ? out['color']='#FFFFFF' : out['color']='#FFFFFF'"
-    },
-    "customSolenoid"
-    {
-        "solenoid4"
-        "eval": ""
-    }
+  "solenoid": {
+    "states": [
+      "purge_solenoid",
+      "fuel_pressurize_solenoid",
+      "ox_pressurize_solenoid",
+      "fuel_depressurize_solenoid"
+    ],
+    "eval": "inVars['val'] > 10 ? outVars['color']='open' : outVars['color']='closed'"
+  },
+  "customSolenoid": {
+    "states": [
+      "fuel_pressurize_solenoid"
+    ],
+    "eval": "if (inVars['val'] > 10) { outVars['color']='undefined'; outVars['value']='open'+inVars['value'] } else { outVars['color']='undefined'; outVars['value']='open'+inVars['value']}"
+  }
 }

@@ -10,7 +10,8 @@
 text {
     dominant-baseline: middle;
     text-anchor: middle;
-    font-family: "Times New Roman", Times, serif;
+    /*font-family: "Times New Roman", Times, serif;*/
+	font-family: "Montserrat";
 }
 .comp {
     stroke-width: 8;
@@ -21,6 +22,7 @@ text {
 .sensor-letter {
     font-size: 100px;
     stroke-width: 4;
+	fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though*/
 }
 
 .note-line {
