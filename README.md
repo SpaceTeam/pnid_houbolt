@@ -22,6 +22,7 @@ Input variables (addressible via `inVars[<variable name>]`):
 Output variables (addresible via `outVars[<variable name>]`), only have an effect if set by the eval block:
 * color - tries to set the color of the *parent* element to the value of this variable. Which colors are valid depends on the type of element (see pnid.css "data-pnid-" declarations for valid values)
 * value - overrides the value field with custom content
+* crossUpdate - If set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message (EXPERIMENTAL!)
 
 ### Example
 

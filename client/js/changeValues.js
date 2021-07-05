@@ -111,7 +111,7 @@ function setState(state)
 		console.log("Checking attribute", classIndex, classes);
 		if ("wire" in classes)
 		{
-			typeClass = "PnID-Sensor_Pressure";
+			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
 		let typeClass = classes[classIndex];
 		let re = /PnID-\S*/;
@@ -173,9 +173,9 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	{
 		elementGroup.find("text.value").text(outVars["value"]);
 	}
-	if ("wireUpdate" in outVars)
+	if ("crossUpdate" in outVars)
 	{
-		updatePnID(outVars["wireUpdate"]);
+		updatePnID(outVars["crossUpdate"]);
 	}
 }
 
