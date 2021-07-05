@@ -33,7 +33,7 @@ text {
 
 .wire {
     stroke-width: 8;
-    stroke: red;
+    stroke: black; /*default color, will be overridden by --high and --low by code*/
 }
 
 .value, .reference {
@@ -45,6 +45,13 @@ text {
     stroke-width: 0;
 }
 
+[data-pnid-wire=high] {
+	stroke: var(--high);
+}
+
+[data-pnid-wire=low] {
+	stroke: var(--low);
+}
 
 [data-pnid-valve_pneumatic=open] {
     stroke: var(--open);
