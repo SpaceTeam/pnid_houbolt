@@ -10,10 +10,12 @@ var configString = `{
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 const defaultConfigString = `{
   "PnID-Valve_Solenoid": {
-    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'"
+    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
+	"popup": "value:checkbox:0:100"
   },
   "PnID-Sensor_Pressure": {
-    "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'"
+    "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'",
+	"popup": "value:display"
   }
 }`;
 

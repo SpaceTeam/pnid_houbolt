@@ -5,14 +5,17 @@
     --high: red;
     --low: blue;
     --neutral: green;
+	
+	background-color: white;
 }
 
-text {
+.popup, text {
     dominant-baseline: middle;
     text-anchor: middle;
     /*font-family: "Times New Roman", Times, serif;*/
 	font-family: "Montserrat";
 }
+
 .comp {
     stroke-width: 8;
     stroke: black;
