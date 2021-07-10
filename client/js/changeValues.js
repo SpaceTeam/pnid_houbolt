@@ -1,15 +1,23 @@
-var configString = `{
+var config = {
   "solenoid": {
     "states": [
       "fuel_pressurize_solenoid"
     ],
     "eval": "if (inVars['value'] > 10) { outVars['color']='undefined'; outVars['value']='open'+inVars['value'] } else { outVars['color']='undefined'; outVars['value']='open'+inVars['value']}"
   }
-}`;
+};
 
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
-const defaultConfigString = `{
+const defaultConfig = {
   "PnID-Valve_Solenoid": {
+    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
+	"popup": "value:checkbox:0:100"
+  },
+  "PnID-Valve_Pneumatic": {
+    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
+	"popup": "value:checkbox:0:100"
+  },
+  "PnID-Valve_Servo": {
     "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
 	"popup": "value:checkbox:0:100"
   },
@@ -17,10 +25,7 @@ const defaultConfigString = `{
     "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'",
 	"popup": "value:display"
   }
-}`;
-
-const defaultConfig = JSON.parse(defaultConfigString);
-var config = JSON.parse(configString);
+};
 
 function startLoop() {
 	var i;
