@@ -174,13 +174,16 @@ function updatePNID(stateList)
 function setState(state)
 {
 	let elementGroup = $(document).find("g." + state["name"]);
-	elementGroup.find("text.value").text(state["value"]);
+    let unit = elementGroup.attr("data-unit");
+	elementGroup.find("text.value").text(state["value"] + unit);
 	console.log("Found following elements to update:", $(document).find("g." + state["name"]));
 	
 	//----- prepare for eval behavior block
 	//In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
+
 	const inVars = {
-		"value" : state["value"]
+		"value" : state["value"],
+		"unit" : elementGroup.attr("data-unit")
 	};
 	
 	//State storage for the eval() code specified in config.json //TBD (let eval code create entries? pre-define generic name entries? are they even persistent between loops right now?)
