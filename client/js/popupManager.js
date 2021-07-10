@@ -83,14 +83,10 @@ function createPopup(parent, type, name, contentList)
 }
 
 function destroyPopup(popupName)
-{
-	let id = popupName.attr('id');	
+{	
 	console.log(activePopups[popupName]);
-	//console.log("popup:", activePopups[popupName], "filtered for visible:", activePopups[popupName].filter(":visible"));
-	//activePopups[popupName].fadeOut(2000/*, activePopups[popupName].remove()); 
-	//activePopups[popupName].fadeOut(2000, console.log("fade out complete"));
-	activePopups[id].remove();
-	delete activePopups[id];
+	activePopups[popupName].remove();
+	delete activePopups[popupName];
 }
 
 function pinPopup()

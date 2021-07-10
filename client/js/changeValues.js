@@ -116,8 +116,8 @@ function startLoop() {
 			if (j > 99 || j < 2) {
 				increasing = !increasing;
 			}
-			document.getElementById("OV_FP_FT1").setAttribute("stroke-width", (j/10).toString());
-			document.getElementById("PS_FP_FT1_Text").innerHTML = j;
+			$("#OV_FP_FT1").css("stroke-width", (j/10).toString());
+			$("#OV_FP_FT1").text(j);
 		}, 10);
 		
 	
