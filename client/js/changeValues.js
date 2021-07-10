@@ -13,6 +13,10 @@ const defaultConfigString = `{
     "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
 	"popup": "value:checkbox:0:100"
   },
+  "PnID-Valve_Servo": {
+    "eval": "if (inVars['value'] > 70) { outVars['color']='open' } else if (inVars['value'] > 30) { outVars['color']='throttle'} else { outVars['color']='closed' }",
+	"popup": "value:slider:0:100"
+  },
   "PnID-Sensor_Pressure": {
     "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'",
 	"popup": "value:display"
@@ -28,9 +32,6 @@ var config = JSON.parse(configString);
 
 //setup tanks for filling visuals
 tankSetup();
-
-var testData = [{"name": "Fuel", "value": 35.0}];
-updatePNID(testData);
 
 function tankSetup()
 {
@@ -126,13 +127,13 @@ async function runTests()
 	var testData = [{"name": "Fuel", "value": 95.0}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 12.0}];
+	var testData = [{"name": "purge_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 10}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_depressurize_solenoid", "value": 12.0}];
+	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}];
+	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}];
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}];
