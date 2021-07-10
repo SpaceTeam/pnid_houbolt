@@ -65,6 +65,7 @@
 
 [data-pnid-valve_pneumatic=closed] {
     stroke: var(--closed);
+    fill: var(--closed)
 }
 
 [data-pnid-valve_pneumatic=undefined] {
@@ -73,14 +74,19 @@
 
 [data-pnid-valve_servo=open] {
     fill: none;
+    stroke: var(--open);
 }
 
 [data-pnid-valve_servo=closed] path {
-    fill: black;
+    /*stroke: var(--closed);*/
+    stroke: black;
+    fill: var(--closed);
 }
 
 [data-pnid-valve_servo=throttle] path:nth-of-type(3) {
-    fill: black;
+    /*stroke: var(--open);*/
+    stroke: black;
+    fill: var(--open);
 }
 
 [data-pnid-sensor_pressure=high] {
@@ -120,11 +126,15 @@
 }
 
 [data-pnid-valve_solenoid=open] {
-    stroke: var(--open);
+    /*stroke: var(--open);*/
+    stroke: black;
+    fill: var(--open);
 }
 
 [data-pnid-valve_solenoid=closed] {
-    stroke: var(--closed);
+    /*stroke: var(--closed);*/
+    stroke: black;
+    fill: var(--closed);
 }
 
 [data-pnid-valve_solenoid=undefined] {
