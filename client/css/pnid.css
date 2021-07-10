@@ -5,6 +5,9 @@
     --high: red;
     --low: blue;
     --neutral: green;
+
+    --fuel: brown;
+    --ox: lightblue;
 	
 	background-color: white;
 }
@@ -140,5 +143,10 @@
     stroke: var(--undefined);
 }
 
+[data-pnid-tank_content=fuel] {
+    fill: var(--fuel);
+}
 
-
+[data-pnid-tank_content=ox] {
+    fill: var(--ox);
+}
