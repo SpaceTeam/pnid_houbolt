@@ -16,11 +16,88 @@ const defaultConfigString = `{
   "PnID-Sensor_Pressure": {
     "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'",
 	"popup": "value:display"
+  },
+  "PnID-Tank": {
+    "eval": "",
+    "popup": ""
   }
 }`;
 
 const defaultConfig = JSON.parse(defaultConfigString);
 var config = JSON.parse(configString);
+
+//setup tanks for filling visuals
+tankSetup();
+
+var testData = [{"name": "Fuel", "value": 35.0}];
+updatePNID(testData);
+
+function tankSetup()
+{
+    let tanks = $(document).find("g.PnID-Tank");
+    let fuelPaths = tanks.filter(".Fuel").find("path[d*=' A ']");
+    let oxPaths = tanks.filter(".Oxidizer").find("path[d*=' A ']");
+    fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
+    oxPaths.attr(`data-pnid-tank_content`, `ox`);
+    createTankContent(tanks);
+}
+
+function createTankContent(tanks)
+{
+    let fuelPaths = extractContentPathsFromTank(tanks.filter(".Fuel"));
+    let oxPaths = extractContentPathsFromTank(tanks.filter(".Oxidizer"));
+
+    let fuelContentRect = tanks.filter(".Fuel").find("rect.rect");
+    fuelContentRect.attr("data-pnid-tank_content", "fuel");
+    fuelContentRect.attr("transform-origin", "center center");
+    fuelContentRect.attr("transform", "scale(1,0) translate(0,0)");
+
+    let oxContentRect = tanks.filter(".Oxidizer").find("rect.rect");
+    oxContentRect.attr("data-pnid-tank_content", "ox");
+    oxContentRect.attr("transform-origin", "center center");
+    oxContentRect.attr("transform", "scale(1,0) translate(0,0)");
+}
+
+function updateTankContent(tank, fillPercent)
+{
+    let contentRect = tank.find("rect.rect");
+    let scale = fillPercent / 100.0;
+    let transformOffset = ((contentRect.attr("height") - contentRect.attr("height") * scale) / 2.0) / scale;
+    console.log("scale:", scale, "\noffset:", transformOffset);
+    //transformOffset = 0;
+    contentRect.attr("transform", `scale(1,${scale}) translate(0,${transformOffset})`);
+}
+
+function extractContentPathsFromTank(tank)
+{
+    let contentPaths = tank.find("path[d*=' L ']");
+    let minPathX = 9999999;
+    let maxPathX = 0;
+    let pathY = 0;
+    for (pathIndex in contentPaths) {
+        if (pathIndex === "length") {
+            break;
+        }
+        let pos = extractXYFromPath(contentPaths[pathIndex]);
+        if (pos[0] < minPathX) {
+            minPathX = pos[0];
+            pathY = pos[1];
+        }
+        else if (pos[0] > maxPathX) {
+            maxPathX = pos[0];
+            pathY = pos[1];
+        }
+    }
+    return [tank.find(`path[d*='${minPathX} ${pathY} L']`), tank.find(`path[d*='${maxPathX} ${pathY} L']`)];
+}
+
+//extract XY position from start point of path
+function extractXYFromPath(path)
+{
+    pathAttr = $(path).attr("d").split(" ");
+    return [pathAttr[1], pathAttr[2]];
+}
+
 
 function startLoop() {
 	var i;
@@ -46,6 +123,9 @@ function startLoop() {
 
 async function runTests()
 {
+	var testData = [{"name": "Fuel", "value": 95.0}];
+	updatePNID(testData);
+	await sleep(1000);
 	var testData = [{"name": "purge_solenoid", "value": 12.0}];
 	updatePNID(testData);
 	await sleep(1000);
@@ -53,6 +133,9 @@ async function runTests()
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}];
+	updatePNID(testData);
+	await sleep(1000);
+	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}];
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}];
@@ -110,16 +193,20 @@ function setState(state)
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
-		console.log("Checking attribute", classIndex, classes);
+		let typeClass = classes[classIndex];
 		if ("wire" in classes)
 		{
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
-		let typeClass = classes[classIndex];
+
 		let re = /PnID-\S*/;
 		if (re.test(typeClass) && (typeClass in defaultConfig))
 		{
 			eval(defaultConfig[typeClass]["eval"]);
+            if (typeClass === "PnID-Tank")
+            {
+                updateTankContent(elementGroup, state["value"]);
+            }
 		}
 	}
 
@@ -130,7 +217,6 @@ function setState(state)
 		//console.log("searching for state", state["name"], "from available states:", config[configProperties[propIndex]]["states"]);
 		if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
 		{
-			console.log("Found following code to run for element:", config[configProperties[propIndex]]["eval"]);
 			eval(config[configProperties[propIndex]]["eval"]);
 		}
 	}
