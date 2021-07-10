@@ -1,0 +1,44 @@
+.custom-control-label::before,
+.custom-control-label::after {
+    top: 0rem;
+    left: -1.4rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #522e63;
+    background-color: #522e63;
+}
+
+.input-label {
+    font-size: 1rem;
+    width: 100%;
+    margin: 0;
+}
+
+.control-row {
+    width: auto;
+}
+
+.row {
+    margin: auto !important;
+}
+
+.ckbx {
+    transform: scale(2) !important;
+    top: 25%;
+    margin-top: 0px;
+}
+
+.ckbx-label {
+    padding-left: 0.5rem;
+    margin-right: 1rem;
+}
+
+.form-control {
+    background-color: unset !important;
+    border: unset !important;
+    color: inherit !important;
+}

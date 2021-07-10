@@ -5,9 +5,8 @@
 /* Popup container - can be anything you want */
 .popup {
 	color: black;
-	background-color: lightgrey;
-	border-radius: 2px;
-	font-size: 0.8rem;
+	background-color: #F0F0F0;
+	border-radius: 0.2rem;
 	padding: 0.8rem;
 	display: inline-block;
 	cursor: pointer;
@@ -15,6 +14,10 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	border-style: solid;
+	border-color: black;
+	border-width: 0.1rem;
+	position: absolute;
 }
 
 /* The actual popup */
@@ -52,6 +55,22 @@
 	animation: fadeIn 0.2s;
 }
 
+.btn-close
+{
+	padding: 0 !important;
+	width: 1.5rem;
+	height: 1.5rem;
+	float: right;
+}
+
+.btn-drag
+{
+	padding: 0 !important;
+	width: 1.5rem;
+	height: 1.5rem;
+	float: left;
+}
+
 /* Add animation (fade in the popup) */
 @-webkit-keyframes fadeIn {
 	from {opacity: 0;} 
@@ -62,3 +81,14 @@
 	from {opacity: 0;}
 	to {opacity: 1 ;}
 }
+
+@-webkit-keyframes highlight {
+	from {box-shadow: 0 0 10px 5px cornflowerblue;} 
+	to {box-shadow: 0 0 0 0;}
+}
+
+/* The animation code */
+@keyframes highlight {
+	from {box-shadow: 0 0 10px 5px cornflowerblue;} 
+	to {box-shadow: 0 0 0 0;}
+  }
