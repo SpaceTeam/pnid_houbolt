@@ -19,6 +19,11 @@
 	font-family: "Montserrat";
 }
 
+body {
+    width: auto;
+    height: 1000px;
+}
+
 .comp {
     stroke-width: 8;
     stroke: black;

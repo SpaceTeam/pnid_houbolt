@@ -19,6 +19,12 @@ const schematic = reader(
 const lib = libReader(
     fs.readFileSync(process.argv[3], 'utf-8'));
 
+const exportFilePath = "client/PnID_Franz.pnid";
+if (process.argv.length > 4)
+{
+    exportFilePath = process.argv[4];
+}
+
 // Loop over all components and set default fields and values:
 //schematic.Comp.forEach(set_defaults);
 
@@ -30,7 +36,7 @@ const lib = libReader(
 
 
 // Create html document displaying the kicad schematic
-htmlWriter(schematic, lib);
+htmlWriter(schematic, lib, exportFilePath);
 
 // inspect(schematic.Comp);
 // inspect(default_fields);
