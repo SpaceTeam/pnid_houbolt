@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <title>PNID Chart</title>
+    <link rel="stylesheet" href="css/pnid.css">
+    <link rel="stylesheet" href="css/popup.css">
+    <link rel="stylesheet" href="css/inputs.css">
+    <link rel="stylesheet" href="css/slider.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="lib/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div hidden id="templates">
+        <div id="closeButtonTemp" class="row control-row justify-content-end">
+            <!-- <div class="col"></div> -->
+            <button type="button" class="btn btn-light btn-drag">
+                <i class="bi bi-arrows-move"></i>
+            </button>
+            <div class="col"></div>
+            <button type="button" class="btn btn-outline-danger btn-close">
+                <i class="bi bi-x"></i>
+            </button> 
+            
+        </div>
+          <div id="sliderTemp" class="row control-row">
+            <div class="range-slider col">
+                <label class="range-slider-label input-label">Oxidizer Main Valve</label><br>
+                <input class="range-slider__range servo-slider manual-obj servo-enable-obj"
+                    oninput="onServoSliderInput($(this));" type="range" value="0" min="0" max="100" step="1">
+                <span class="range-slider__value">0</span> 
+                <span class="range-slider__feedback servo-feedback">0</span>
+                <div class="range-slider-caption">
+                    <div class="range-slider-caption_left"> Closed </div>
+                    <div class="range-slider-caption_right"> Open </div>
+                </div>
+            </div>
+            </div>
+            <div id="digitalOutTemp" class="row control-row">
+                <div class="form-control custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input ckbx manual-obj servo-enable-obj digitalOut" id="tempDigitalOut"
+                        onclick="onDigitalCheck(this);">
+                    <label class="custom-control-label ckbx-label" for="tempDigitalOut">Temp Digital Out</label>
+                </div>
+            </div>
+    </div>
+    <div id="pnid"></div>
+
+<script src="js/changeValues.js"></script>
+<script src="js/popupManager.js"></script>
+<script src="js/Slider.js"></script>
+<script src="js/inputs.js"></script>
+<script src="lib/bootstrap-input-spinner.js"></script>
+<script src="lib/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="lib/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+        <script src="js/pnidLoader.js"></script>
+</body>
+</html>
