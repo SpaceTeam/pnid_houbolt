@@ -20,6 +20,11 @@
     fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
 }
 
+body {
+    width: auto;
+    height: 1000px;
+}
+
 .comp {
     stroke-width: 8;
     stroke: black;

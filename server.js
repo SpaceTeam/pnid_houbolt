@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
 var http = require('http').Server(app);
-const path = __dirname + '/client/';
+var fs = require('fs');
 
+const bp = require('body-parser');
+app.use(bp.json())
+app.use(bp.urlencoded({ extended: true }))
+
+const path = __dirname + '/client/';
+const pnidPath = path + "PnID_Franz.pnid";
 
 var port = 80;
 
@@ -24,7 +30,14 @@ app.use(express.static(path));
 
 
 app.get('/', (req, res) => {
-	res.sendFile(path + 'PnID_GroßerTeststand.html')
+    let rawdata = fs.readFileSync(pnidPath);
+	res.sendFile(path + 'PnID_Franz.html')
+});
+
+//Big no no security wise
+app.post('/pnid', (req, res) => {
+    console.log(req.body);
+    res.sendFile(path + req.body.file);
 });
 
 app.listen(port, function(err){
