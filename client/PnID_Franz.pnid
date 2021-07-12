@@ -291,8 +291,8 @@
         <path d="M 2095 5830 L 2095 5830" />
         <path d="M 2495 5830 L 2495 5830" />
         <text class="sensor-letter static-color" x="2295" y="5580">S</text>
-        <text class="reference static-color" x="2295" y="5405" visibility="visible">S1</text>
-        <text class="value" x="2295" y="5430" visibility="visible">purge_solenoid:state</text>
+        <text class="reference static-color" x="2295" y="5425" visibility="visible">S1</text>
+        <text class="value" x="2295" y="6025" visibility="visible">purge_solenoid:state</text>
     </g>
     <g class="VT_PG1 PnID-Vent Vent comp" data-value="40" data-unit="" data-pnid-vent="" pointer-events="bounding-box" onclick="clickEventListenever('VT_PG1', 'PnID-Vent', 'Vent')"transform="rotate(90,1870,6905)">
         <!-- coordinates: x = 1870 y = 6905 -->
@@ -320,7 +320,7 @@
         <path d="M 2470 1730 L 2270 1880 L 2470 2030 L 2470 1730 " />
         <path d="M 2070 1880 L 2070 1880" />
         <path d="M 2470 1880 L 2470 1880" />
-        <text class="reference static-color" x="2270" y="1595" visibility="visible" transform="scale(-1,1) translate(-4540,0)">R2</text>
+        <text class="reference static-color" x="2270" y="1580" visibility="visible" transform="scale(-1,1) translate(-4540,0)">R2</text>
         <text class="value" x="2270" y="2075" visibility="visible" transform="scale(-1,1) translate(-4540,0)">fuel_pressurant_regulator_pressure</text>
     </g>
     <g class="V1 PnID-Valve_Manual   comp" data-value="40" data-unit="" data-pnid-valve_manual="" pointer-events="bounding-box" onclick="clickEventListenever('V1', 'PnID-Valve_Manual', ' ')"transform="rotate(90,2695,2305)">
@@ -343,7 +343,7 @@
         <path d="M 2920 1880 L 2920 1880" />
         <path d="M 3320 1880 L 3320 1880" />
         <text class="sensor-letter static-color" x="3120" y="1630">S</text>
-        <text class="reference static-color" x="3120" y="1485" visibility="visible">S2</text>
+        <text class="reference static-color" x="3120" y="1475" visibility="visible">S2</text>
         <text class="value" x="3120" y="2075" visibility="visible">fuel_pressurize_solenoid:state</text>
     </g>
     <g class="VT_FP_1 PnID-Vent Vent comp" data-value="40" data-unit="" data-pnid-vent="" pointer-events="bounding-box" onclick="clickEventListenever('VT_FP_1', 'PnID-Vent', 'Vent')"transform="rotate(90,2695,2955)">

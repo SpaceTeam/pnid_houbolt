@@ -228,17 +228,7 @@ function setState(state)
 			eval(config[configProperties[propIndex]]["eval"]);
 		}
 	}
-	
-	//----- apply results of eval behavior blocks to element
-	/*if ("PnID-Sensor_Pressure" in classes) //if the element currently being updated is a pressure sensor, update its corresponding wire group
-	{
-		console.log("Need to update wire group:", state["name"]);
-		updatePNID([{"name": state["name"] + "_wire", "value": state["value"]}])
-	}
-	else
-	{
-		
-	}*/
+
 	applyUpdatesToPnID(elementGroup, outVars);
 }
 
