@@ -128,33 +128,33 @@ function startLoop() {
 
 async function runTests()
 {
-	var testData = [{"name": "Fuel", "value": 95.0}];
+	var testData = [{"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
 	updatePNID(testData);
-	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 10}];
+	await sleep(500);
+	var testData = [{"name": "purge_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
 	updatePNID(testData);
-	await sleep(1000);
+	await sleep(500);
 	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
-	await sleep(1000);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}];
+	await sleep(500);
+	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
 	updatePNID(testData);
-	await sleep(1000);
-	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}];
+	await sleep(500);
+	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
 	updatePNID(testData);
-	await sleep(1000);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}];
+	await sleep(500);
+	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}, {"name": "ox_bottom_temp", "value": -4}];
 	updatePNID(testData);
-	await sleep(1000);
+	await sleep(500);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
 	updatePNID(testData);
-	await sleep(1000);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}];
+	await sleep(500);
+	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}, {"name": "ox_depressurize_solenoid", "value": 20.0}];
 	updatePNID(testData);
-	await sleep(1000);
+	await sleep(500);
 	var testData = [{"name": "fuel_pressurize_solenoid", "value": 5.0}, {"name": "fuel_depressurize_solenoid", "value": 1.0}];
 	updatePNID(testData);
-	await sleep(1000);
+	await sleep(500);
 }
 
 //updatePNID(testData);
