@@ -157,11 +157,25 @@ async function runTests()
 	await sleep(500);
 }
 
+function runRandom()
+{
+	var states = [];
+	$(".value").each(function(index)
+	{
+		var state = {};
+		state["name"] = $(this).text().replace(":state", "");
+		state["value"] = (Math.random()*100).toPrecision(4);
+		if (state["name"] != " ")
+		states.push(state);
+	});
+	updatePNID(states);
+}
+
 //updatePNID(testData);
 //updatePNID([{"name": "PnID-Valve_Solenoid", "value": 12.0}, {"name": "solenoid2", "value": 8.0}]);
 function updatePNID(stateList)
 {
-	console.log("Updating PnID with:", stateList);
+	// console.log("Updating PnID with:", stateList);
 	
 	for (stateIndex in stateList)
 	{
@@ -177,10 +191,14 @@ function updatePNID(stateList)
 function setState(state)
 {
 	let elementGroup = $(document).find("g." + state["name"]);
+	if (elementGroup.length === 0)
+	{
+		return;
+	}	
     let unit = elementGroup.attr("data-unit");
 	elementGroup.find("text.value").text(state["value"] + unit);
-	console.log("Found following elements to update:", $(document).find("g." + state["name"]));
-	
+	// console.log("Found following elements to update:", $(document).find("g." + state["name"]));
+
 	//----- prepare for eval behavior block
 	//In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
 
