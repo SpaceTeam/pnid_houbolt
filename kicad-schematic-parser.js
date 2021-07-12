@@ -19,7 +19,7 @@ const schematic = reader(
 const lib = libReader(
     fs.readFileSync(process.argv[3], 'utf-8'));
 
-const exportFilePath = "client/PnID_Franz.pnid";
+var exportFilePath = "client/PnID_Franz.pnid";
 if (process.argv.length > 4)
 {
     exportFilePath = process.argv[4];
