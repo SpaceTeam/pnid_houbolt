@@ -1,4 +1,6 @@
 :root {
+    --default-stroke: black;
+
     --open: blue;
     --closed: orange;
     --undefined: gray;
@@ -8,8 +10,6 @@
 
     --fuel: brown;
     --ox: lightblue;
-	
-	background-color: white;
 }
 
 .popup, text {
@@ -17,6 +17,7 @@
     text-anchor: middle;
     /*font-family: "Times New Roman", Times, serif;*/
 	font-family: "Montserrat";
+    fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
 }
 
 body {
@@ -33,7 +34,10 @@ body {
 .sensor-letter {
     font-size: 100px;
     stroke-width: 4;
-	fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though*/
+}
+
+.static-color {
+    stroke: var(--default-stroke);
 }
 
 .note-line {
@@ -44,7 +48,7 @@ body {
 
 .wire {
     stroke-width: 8;
-    stroke: black; /*default color, will be overridden by --high and --low by code*/
+    stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
 }
 
 .value, .reference {
@@ -83,15 +87,24 @@ body {
 }
 
 [data-pnid-valve_servo=closed] path {
-    /*stroke: var(--closed);*/
     stroke: black;
     fill: var(--closed);
 }
 
+[data-pnid-valve_servo=closed] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed);
+}
+
 [data-pnid-valve_servo=throttle] path:nth-of-type(3) {
-    /*stroke: var(--open);*/
     stroke: black;
-    fill: var(--open);
+    fill: var(--closed);
+}
+
+
+[data-pnid-valve_servo=throttle] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed);
 }
 
 [data-pnid-sensor_pressure=high] {
@@ -131,14 +144,18 @@ body {
 }
 
 [data-pnid-valve_solenoid=open] {
-    /*stroke: var(--open);*/
-    stroke: black;
-    fill: var(--open);
+    stroke: var(--open);
+    fill: none;
 }
 
-[data-pnid-valve_solenoid=closed] {
-    /*stroke: var(--closed);*/
+[data-pnid-valve_solenoid=closed] path {
     stroke: black;
+    fill: var(--closed);
+}
+
+
+[data-pnid-valve_solenoid=closed] text:not(.static-color) {
+    stroke: var(--closed);
     fill: var(--closed);
 }
 
