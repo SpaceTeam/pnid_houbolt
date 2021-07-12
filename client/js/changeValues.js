@@ -32,8 +32,6 @@ const defaultConfig = {
 };
 
 //setup tanks for filling visuals
-tankSetup();
-
 function tankSetup()
 {
     let tanks = $(document).find("g.PnID-Tank");
@@ -41,25 +39,28 @@ function tankSetup()
     let oxPaths = tanks.filter(".Oxidizer").find("path[d*=' A ']");
     fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
     oxPaths.attr(`data-pnid-tank_content`, `ox`);
-    createTankContent(tanks);
+    initTankContent(tanks);
 }
 
-function createTankContent(tanks)
+function initTankContent(tanks)
 {
-    let fuelPaths = extractContentPathsFromTank(tanks.filter(".Fuel"));
-    let oxPaths = extractContentPathsFromTank(tanks.filter(".Oxidizer"));
+    let fuelPaths = extractArcPathsFromTank(tanks.filter(".Fuel"));
+    let oxPaths = extractArcPathsFromTank(tanks.filter(".Oxidizer"));
 
     let fuelContentRect = tanks.filter(".Fuel").find("rect.rect");
+    let fuelTransformOriginY = +fuelContentRect.attr("y") + +(fuelContentRect.attr("height") / 2.0);
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
-    fuelContentRect.attr("transform-origin", "center center");
+    fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0) translate(0,0)");
 
     let oxContentRect = tanks.filter(".Oxidizer").find("rect.rect");
+    let oxTransformOriginY = +oxContentRect.attr("y") + +(oxContentRect.attr("height") / 2.0);
     oxContentRect.attr("data-pnid-tank_content", "ox");
-    oxContentRect.attr("transform-origin", "center center");
+    oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
     oxContentRect.attr("transform", "scale(1,0) translate(0,0)");
 }
 
+//update the percent of the content that is filled
 function updateTankContent(tank, fillPercent)
 {
     let contentRect = tank.find("rect.rect");
@@ -70,7 +71,9 @@ function updateTankContent(tank, fillPercent)
     contentRect.attr("transform", `scale(1,${scale}) translate(0,${transformOffset})`);
 }
 
-function extractContentPathsFromTank(tank)
+//extract the curved paths from a tank to fill them in tank color
+//this code relies on tanks being upright, very likely that it breaks if a tank is turned on its side
+function extractArcPathsFromTank(tank)
 {
     let contentPaths = tank.find("path[d*=' L ']");
     let minPathX = 9999999;
@@ -140,7 +143,7 @@ async function runTests()
 	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}];
+	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}];
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
