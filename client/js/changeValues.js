@@ -48,16 +48,16 @@ function initTankContent(tanks)
     let oxPaths = extractArcPathsFromTank(tanks.filter(".Oxidizer"));
 
     let fuelContentRect = tanks.filter(".Fuel").find("rect.rect");
-    let fuelTransformOriginY = +fuelContentRect.attr("y") + +(fuelContentRect.attr("height") / 2.0);
+    let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
-    fuelContentRect.attr("transform", "scale(1,0) translate(0,0)");
+    fuelContentRect.attr("transform", "scale(1,0)");
 
     let oxContentRect = tanks.filter(".Oxidizer").find("rect.rect");
-    let oxTransformOriginY = +oxContentRect.attr("y") + +(oxContentRect.attr("height") / 2.0);
+    let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
-    oxContentRect.attr("transform", "scale(1,0) translate(0,0)");
+    oxContentRect.attr("transform", "scale(1,0)");
 }
 
 //update the percent of the content that is filled
@@ -65,10 +65,7 @@ function updateTankContent(tank, fillPercent)
 {
     let contentRect = tank.find("rect.rect");
     let scale = fillPercent / 100.0;
-    let transformOffset = ((contentRect.attr("height") - contentRect.attr("height") * scale) / 2.0) / scale;
-    console.log("scale:", scale, "\noffset:", transformOffset);
-    //transformOffset = 0;
-    contentRect.attr("transform", `scale(1,${scale}) translate(0,${transformOffset})`);
+    contentRect.attr("transform", `scale(1,${scale})`);
 }
 
 //extract the curved paths from a tank to fill them in tank color
@@ -160,13 +157,17 @@ async function runTests()
 function runRandom()
 {
 	var states = [];
-	$(".value").each(function(index)
+	$("g.comp").each(function(index)
 	{
 		var state = {};
-		state["name"] = $(this).text().replace(":state", "");
-		state["value"] = (Math.random()*100).toPrecision(4);
-		if (state["name"] != " ")
-		states.push(state);
+        let name = $(this).attr("class").split(" ")[2];
+        if (name !== "comp" && name !== "wire" && name !== "")
+        {
+            state["name"] = name.replace(":state", "");
+		    state["value"] = (Math.random()*100).toPrecision(4);
+		    if (state["name"] != " ")
+		    states.push(state);
+        }
 	});
 	updatePNID(states);
 }
@@ -181,7 +182,7 @@ function updatePNID(stateList)
 	{
 		let stateName = stateList[stateIndex]["name"];
 		let stateValue = stateList[stateIndex]["value"];
-		//console.log("out name: '", stateName, "' value:",  stateValue);
+		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
 		setState(stateList[stateIndex]);
 	}
 	

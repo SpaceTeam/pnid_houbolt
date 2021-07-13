@@ -4,6 +4,6 @@ $.post( "/pnid", data={"file": "PnID_Franz.pnid"}, function( data ) {
     tankSetup();
     setInterval(() => {
         runRandom()
-    }, 1000);    
+    }, 1000);
   });
   

@@ -14,10 +14,21 @@
 
 .popup, text {
     dominant-baseline: middle;
-    text-anchor: middle;
     /*font-family: "Times New Roman", Times, serif;*/
 	font-family: "Montserrat";
     fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
+}
+
+text.text-C {
+    text-anchor: middle;
+}
+
+text.text-L {
+    text-anchor: start;
+}
+
+text.text-R {
+    text-anchor: end;
 }
 
 body {
@@ -69,10 +80,16 @@ body {
 }
 
 [data-pnid-valve_pneumatic=open] {
+    fill: none;
     stroke: var(--open);
 }
 
-[data-pnid-valve_pneumatic=closed] {
+[data-pnid-valve_pneumatic=closed] path {
+    stroke: black;
+    fill: var(--closed)
+}
+
+[data-pnid-valve_pneumatic=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed)
 }
