@@ -9,7 +9,7 @@ function clickEventListenever(dispReference, dispType, dispValReference)
 	}
 	else
 	{
-		console.log(popupName);
+		printLog("info", popupName);
 		activePopups[popupName].css({"animation-name": "none"});
 		setTimeout(function(){activePopups[popupName].css({"animation-name": "highlight", "animation-duration": "2s"});}, 100)
 		
@@ -37,9 +37,9 @@ function createPopup(parent, type, name, contentList)
 	let popupName = type + "_" + name;
 	let parentPosition = parent.offset();
 	//let parentPosition = parent.getBoundingClientRect();
-	//console.log(parent);
-	//console.log("parentpos:", parentPosition, "top:", parentPosition.top, "left", parentPosition.left);
-	//console.log("parent width:", parent[0].getBoundingClientRect().width);
+	//printLog("info", parent);
+	//printLog("info", "parentpos: " + parentPosition + " top: " + parentPosition.top + " left: " + parentPosition.left);
+	//printLog("info", "parent width: " + parent[0].getBoundingClientRect().width);
 	var popup = $(`<div style='width: auto; height: auto; position: absolute; top: ` + parentPosition.top + `px; left: ` +
 	(parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px; display: none;' class="container-fluid popup"></div>`);
 	$(document.body).append(popup);
@@ -116,7 +116,7 @@ document.addEventListener('mousemove', function(event) {
     // event.preventDefault();
 	
     if (isDown) {
-		console.log("here");
+		printLog("info", "here");
         mousePosition = {
 
             x : event.clientX,

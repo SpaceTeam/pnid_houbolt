@@ -49,19 +49,19 @@ function printLog(level, message)
     let severityIcon = "";
     switch (level)
     {
-        case 0: //info
+        case "info":
             severityIcon = `<i class="bi bi-info-circle"></i>`;
             nrInfo += 1;
             break;
-        case 1: //warning
+        case "warning":
             severityIcon = `<i class="bi bi-exclamation-triangle btn-outline-warning"></i>`;
             nrWarning += 1;
             break;
-        case 2: //error
+        case "error":
             severityIcon = `<i class="bi bi-x-square btn-outline-danger"></i>`;
             nrError += 1;
             break;
-        case 3: //hardware error
+        case "hardwareerror":
             severityIcon = `<i class="bi bi-bug btn-outline-danger"></i>`;
             nrHardwareError += 1;
             break;
@@ -76,4 +76,5 @@ function printLog(level, message)
     logEntryClone.removeAttr('style');
     logTextArea.append(logEntryClone);
     updateOverviewCounters();
+    console.log(level + ":", message);
 }
