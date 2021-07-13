@@ -1,0 +1,83 @@
+.logContainer {
+    max-width: 20%;
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.logMenu {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+
+.logTextArea {
+
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    margin: 0.2rem 0 0.2rem 0;
+    padding: 0.2rem;
+    padding-bottom: 0;
+    background: lightgrey;
+    border-radius: 0.2rem;
+}
+
+.logOverview {
+    display: flex;
+    margin-left: 0.25rem;
+    padding: 0.4375rem;
+
+    /*border-style: solid;
+    border-color: var(--default-stroke);
+    border-width: 0.1rem;*/
+    border-radius: 0.2rem;
+
+    background: var(--log-overview-background);
+}
+
+.logCategory {
+    flex: 25%;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+
+    border: black;
+    border-radius: 2px;
+
+    cursor: default;
+}
+
+.logCategoryNumber {
+    
+}
+
+.logEntry {
+    border-radius: 0.2rem;
+    background: var(--popup-background);
+    padding: 0.2rem;
+    margin-bottom: 0.2rem;
+    margin-top: 0;
+}
+
+.logEntryIcon {
+    top: 0.2rem;
+    left: 0.2rem;
+}
+
+.iconInfo {
+    color: black;
+}
+
+.iconWarning {
+    color: #ffc107;
+}
+
+.iconError {
+    color: #dc3545;
+}
