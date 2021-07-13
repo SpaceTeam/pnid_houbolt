@@ -149,6 +149,8 @@ function startLoop() {
 
 async function runTests()
 {
+	var testNames = [{"name": "fuel_top_tank_temp", "readable": "hope so"}, {"name": "ox_pressurant_press_pressure", "readable": "adf"}];
+	setStateNamesPNID(testNames);
 	var testData = [{"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
 	updatePNID(testData);
 	await sleep(500);
@@ -196,6 +198,28 @@ function runRandom()
         }
 	});
 	updatePNID(states);
+}
+
+function setStateNamesPNID(stateNameList)
+{
+	for (stateIndex in stateNameList)
+	{
+		let stateName = stateNameList[stateIndex]["name"];
+		let stateReadable = stateNameList[stateIndex]["readable"];
+		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
+		setStateName(stateNameList[stateIndex]);
+	}
+}
+
+function setStateName(state)
+{
+	let elementGroup = $(document).find("g." + state["name"]);
+	if (elementGroup.length === 0)
+	{
+		return;
+	}
+
+	elementGroup.find("text.reference").text(state["readable"]);
 }
 
 //updatePNID(testData);
