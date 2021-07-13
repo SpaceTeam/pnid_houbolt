@@ -18,8 +18,8 @@
 
 
 .logTextArea {
-
-    overflow: auto;
+    /*max-height: 50%;
+    overflow: scroll;*/
     display: flex;
     flex-direction: column;
     margin: 0.2rem 0 0.2rem 0;
@@ -43,9 +43,10 @@
 }
 
 .logCategory {
+    min-width: 60px;
     flex: 25%;
-    margin-left: 0.3rem;
-    margin-right: 0.3rem;
+    margin: 0 auto;
+    text-align: center;
 
     border: black;
     border-radius: 2px;
@@ -58,6 +59,7 @@
 }
 
 .logEntry {
+    min-width: 250px;
     border-radius: 0.2rem;
     background: var(--popup-background);
     padding: 0.2rem;

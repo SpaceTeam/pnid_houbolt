@@ -66,7 +66,7 @@ function printLog(level, message)
             nrHardwareError += 1;
             break;
         default:
-            printLog(1, `Encountered unknown log severity level: "${level}"\nDefaulting to "warning"`);
+            printLog("info", `Encountered unknown log severity level: "${level}"\nDefaulting to "warning"`);
             severityIcon = `<i class="bi bi-exclamation-triangle btn-outline-warning"></i>`;
             nrWarning += 1;
             break;
