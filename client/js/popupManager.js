@@ -2,7 +2,6 @@ var activePopups = {};
 
 function clickEventListenever(dispReference, dispType, dispValReference)
 {
-	console.log(dispReference, dispValReference, dispType);
 	let popupName = dispType + "_" + dispValReference;
 	if (!(popupName in activePopups)) //check if popup already exists
 	{
@@ -24,7 +23,6 @@ function showPopup(dispReference, dispType, dispValReference)
 	{
 		if ("popup" in defaultConfig[dispType])
 		{
-			console.log("found popup behavior");
 			popupData = defaultConfig[dispType]["popup"].split(":"); //todo: this supports only one item per popup, need to expand with a line/item delimiter
 			popupParent = $(document).find("g." + dispReference + "." + dispType + "." + dispValReference);
 			createPopup(popupParent, dispType, dispValReference, popupData);
@@ -39,9 +37,9 @@ function createPopup(parent, type, name, contentList)
 	let popupName = type + "_" + name;
 	let parentPosition = parent.offset();
 	//let parentPosition = parent.getBoundingClientRect();
-	console.log(parent);
-	console.log("parentpos:", parentPosition, "top:", parentPosition.top, "left", parentPosition.left);
-	console.log("parent width:", parent[0].getBoundingClientRect().width);
+	//console.log(parent);
+	//console.log("parentpos:", parentPosition, "top:", parentPosition.top, "left", parentPosition.left);
+	//console.log("parent width:", parent[0].getBoundingClientRect().width);
 	var popup = $(`<div style='width: auto; height: auto; position: absolute; top: ` + parentPosition.top + `px; left: ` +
 	(parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px; display: none;' class="container-fluid popup"></div>`);
 	$(document.body).append(popup);
@@ -75,7 +73,7 @@ function createPopup(parent, type, name, contentList)
 			break;
 	}
 
-	popup.fadeIn(50);
+	popup.fadeIn(100);
 
 	rangeSlider();
 	
@@ -84,17 +82,9 @@ function createPopup(parent, type, name, contentList)
 
 function destroyPopup(popupName)
 {	
-	console.log(activePopups[popupName]);
-	activePopups[popupName].remove();
+    activePopups[popupName].fadeOut(100, activePopups[popupName].remove);
 	delete activePopups[popupName];
 }
-
-function pinPopup()
-{
-	
-}
-
-//need an unpin popup or can this be done via destroy?
 
 //if changes are made to an element while popup is open it might need to update values in the popup
 function updatePopup()

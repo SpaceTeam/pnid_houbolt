@@ -1,34 +1,54 @@
 var config = {
-  "solenoid": {
-    "states": [
-      "fuel_pressurize_solenoid"
-    ],
-    "eval": "if (inVars['value'] > 10) { outVars['color']='undefined'; outVars['value']='open'+inVars['value'] } else { outVars['color']='undefined'; outVars['value']='open'+inVars['value']}"
-  }
+    "pressure": {
+        "states": [
+            "chamber_pressure"
+        ],
+        "eval": "if (inVars['value'] > 9) { outVars['color']='high' } else if (inVars['value'] > 7) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "temperature_oxidizer_tank": {
+        "states": [
+            "ox_top_temp",
+            "ox_mid_top_temp",
+            "ox_mid_temp",
+            "ox_mid_bottom_temp",
+            "ox_bottom_temp",
+            "ox_top_temp_backup",
+            "ox_bottom_temp_backup"
+        ],
+        "eval": "if (inVars['value'] > 35) { outVars['color']='high' } else if (inVars['value'] > 2) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    }
 };
 
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 const defaultConfig = {
-  "PnID-Valve_Solenoid": {
-    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
-	"popup": "value:checkbox:0:100"
-  },
-  "PnID-Valve_Pneumatic": {
-    "eval": "inVars['value'] > 10 ? outVars['color']='open' : outVars['color']='closed'",
-	"popup": "value:checkbox:0:100"
-  },
-  "PnID-Valve_Servo": {
-    "eval": "if (inVars['value'] > 70) { outVars['color']='open' } else if (inVars['value'] > 30) { outVars['color']='throttle'} else { outVars['color']='closed' }",
-	"popup": "value:slider:0:100"
-  },
-  "PnID-Sensor_Pressure": {
-    "eval": "inVars['value'] > 1 ? outVars['color']='high' : outVars['color']='low'",
-	"popup": "value:display"
-  },
-  "PnID-Tank": {
-    "eval": "",
-    "popup": ""
-  }
+    "PnID-Valve_Solenoid": {
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": "value:checkbox:0:100"
+    },
+    "PnID-Valve_Pneumatic": {
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": "value:checkbox:0:100"
+    },
+    "PnID-Valve_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": "value:slider:0:100"
+    },
+    "PnID-Sensor_Pressure": {
+        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": "value:display"
+    },
+    "PnID-Sensor_Temperature": {
+        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": "value:display"
+    },
+    "PnID-Sensor_MassFlow": {
+        "eval": "",
+	    "popup": "value:display"
+    },
+    "PnID-Tank": {
+        "eval": "",
+        "popup": ""
+    }
 };
 
 //setup tanks for filling visuals
@@ -195,7 +215,8 @@ function setState(state)
 	if (elementGroup.length === 0)
 	{
 		return;
-	}	
+	}
+
     let unit = elementGroup.attr("data-unit");
 	elementGroup.find("text.value").text(state["value"] + unit);
 	// console.log("Found following elements to update:", $(document).find("g." + state["name"]));
