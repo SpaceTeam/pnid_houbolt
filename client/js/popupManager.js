@@ -58,7 +58,9 @@ function createPopup(parent, type, name, contentList)
 	popup.append(closeBtnClone);
 	switch (type)
 	{
+		//todo use input config for manual control inputs
 		case "PnID-Valve_Servo":
+		case "PnID-Valve_Needle_Servo":
 			let newSlider = $("#sliderTemp").clone();
 			newSlider.removeAttr("id");
 			newSlider.find(".range-slider-label").first().text(name);

@@ -33,6 +33,10 @@ const defaultConfig = {
         "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": "value:slider:0:100"
     },
+	"PnID-Valve_Needle_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": "value:slider:0:100"
+    },
     "PnID-Sensor_Pressure": {
         "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
 	    "popup": "value:display"
@@ -186,7 +190,9 @@ function runRandom()
             state["name"] = name.replace(":state", "");
 		    state["value"] = (Math.random()*100).toPrecision(4);
 		    if (state["name"] != " ")
-		    states.push(state);
+			{
+				states.push(state);
+			}
         }
 	});
 	updatePNID(states);
