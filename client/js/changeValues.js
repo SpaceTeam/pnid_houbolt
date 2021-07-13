@@ -55,6 +55,8 @@ const defaultConfig = {
     }
 };
 
+createLogBox();
+
 //setup tanks for filling visuals
 function tankSetup()
 {
@@ -204,8 +206,8 @@ function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
 	{
-		let stateName = stateNameList[stateIndex]["name"];
-		let stateReadable = stateNameList[stateIndex]["readable"];
+		//let stateName = stateNameList[stateIndex]["name"];
+		//let stateReadable = stateNameList[stateIndex]["readable"];
 		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
 		setStateName(stateNameList[stateIndex]);
 	}
@@ -230,8 +232,8 @@ function updatePNID(stateList)
 	
 	for (stateIndex in stateList)
 	{
-		let stateName = stateList[stateIndex]["name"];
-		let stateValue = stateList[stateIndex]["value"];
+		//let stateName = stateList[stateIndex]["name"];
+		//let stateValue = stateList[stateIndex]["value"];
 		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
 		setState(stateList[stateIndex]);
 	}
