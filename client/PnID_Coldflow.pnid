@@ -1005,7 +1005,6 @@
         <line x1="3595" y1="5330" x2="3595" y2="5480" />
         <line x1="3245" y1="5330" x2="3595" y2="5330" />
         <line x1="4645" y1="5180" x2="4645" y2="5330" />
-        <line x1="4615" y1="5480" x2="4645" y2="5480" />
         <line x1="4695" y1="5480" x2="4645" y2="5480" />
         <line x1="4645" y1="5480" x2="4645" y2="6230" />
         <line x1="4645" y1="6230" x2="4795" y2="6230" />
@@ -1096,15 +1095,6 @@
         <line x1="6295" y1="1680" x2="6295" y2="1880" />
         <line x1="6295" y1="1880" x2="6570" y2="1880" />
     </g>
-    <g class="ox_main_pressure wire" data-pnid-wire="">
-        <line x1="6245" y1="5605" x2="6295" y2="5605" />
-        <line x1="6295" y1="5605" x2="6295" y2="5730" />
-        <line x1="6295" y1="5330" x2="6295" y2="5605" />
-        <line x1="5595" y1="5730" x2="6295" y2="5730" />
-        <line x1="5595" y1="5730" x2="5595" y2="6455" />
-        <line x1="6120" y1="5330" x2="6295" y2="5330" />
-        <line x1="6295" y1="5180" x2="6295" y2="5330" />
-    </g>
     <g class="fuel_pressurant_bottle_pressure wire" data-pnid-wire="">
         <line x1="1795" y1="1880" x2="1895" y2="1880" />
         <line x1="1895" y1="1880" x2="2070" y2="1880" />
@@ -1145,6 +1135,13 @@
         <line x1="6295" y1="4130" x2="6295" y2="4405" />
         <line x1="6295" y1="4530" x2="6295" y2="4780" />
         <line x1="6295" y1="4405" x2="7270" y2="4405" />
+    </g>
+    <g class="ox_main_pressure wire" data-pnid-wire="">
+        <line x1="5595" y1="5730" x2="6295" y2="5730" />
+        <line x1="5595" y1="5730" x2="5595" y2="6455" />
+        <line x1="6295" y1="5330" x2="6295" y2="5730" />
+        <line x1="6120" y1="5330" x2="6295" y2="5330" />
+        <line x1="6295" y1="5180" x2="6295" y2="5330" />
     </g>
     <g class="chamber_pressure wire" data-pnid-wire="">
         <line x1="5795" y1="6655" x2="5795" y2="6780" />
@@ -1222,10 +1219,10 @@
     <g class="wire" data-pnid-wire="">
         <line x1="10070" y1="3430" x2="10070" y2="3680" />
     </g>
-    <g class="wire" data-pnid-wire="">
+    <g class="igniter_fuel_solenoid wire" data-pnid-wire="">
         <line x1="7070" y1="5455" x2="7420" y2="5455" />
     </g>
-    <g class="wire" data-pnid-wire="">
+    <g class="igniter_ox_solenoid wire" data-pnid-wire="">
         <line x1="7070" y1="6130" x2="7420" y2="6130" />
     </g>
     <line class="note-line" x1="7995" y1="4580" x2="11145" y2="4580" />
@@ -1291,7 +1288,6 @@
     <circle cx="4645" cy="4580" r="2" fill="green" />
     <circle cx="6295" cy="5330" r="2" fill="green" />
     <circle cx="4645" cy="4330" r="2" fill="green" />
-    <circle cx="6295" cy="5605" r="2" fill="green" />
     <circle cx="6295" cy="2620" r="2" fill="green" />
     <circle cx="4645" cy="5480" r="2" fill="green" />
 </svg>
