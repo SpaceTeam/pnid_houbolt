@@ -56,7 +56,6 @@ function updateScroll()
 
 function disableAutoScroll()
 {
-    console.log("disabling auto scroll");
     autoScroll = false;
     let logContainer = $(document).find(".logContainer:not(#logBox)");
     let logTextArea = logContainer.find(".logTextArea");
@@ -65,7 +64,6 @@ function disableAutoScroll()
 
 function activateAutoScroll()
 {
-    console.log("enabling auto scroll");
     autoScroll = true;
     let logContainer = $(document).find(".logContainer:not(#logBox)");
     let logTextArea = logContainer.find(".logTextArea");
