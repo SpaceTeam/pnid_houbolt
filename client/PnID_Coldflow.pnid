@@ -1132,7 +1132,7 @@
         <line x1="9470" y1="6130" x2="9595" y2="6130" />
         <line x1="9595" y1="6130" x2="9720" y2="6130" />
     </g>
-    <g class="purge_solenoid wire" data-pnid-wire="">
+    <g class="purge_solenoid_wire wire" data-pnid-wire="">
         <line x1="2720" y1="5330" x2="2720" y2="5830" />
         <line x1="2720" y1="5830" x2="2720" y2="7005" />
         <line x1="2720" y1="5330" x2="3045" y2="5330" />
@@ -1168,7 +1168,7 @@
         <line x1="5395" y1="6230" x2="5395" y2="6455" />
         <line x1="5195" y1="6230" x2="5395" y2="6230" />
     </g>
-    <g class="film_cooling_pressure wire" data-pnid-wire="">
+    <g class="film_cooling_valve wire" data-pnid-wire="">
         <line x1="4445" y1="6655" x2="5345" y2="6655" />
     </g>
     <g class="wire" data-pnid-wire="">

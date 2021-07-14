@@ -16,6 +16,12 @@ var config = {
             "ox_bottom_temp_backup"
         ],
         "eval": "if (inVars['value'] > 35) { outVars['color']='high' } else if (inVars['value'] > 2) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "purge_solenoid_pressure": {
+        "states": [
+            "purge_solenoid"
+        ],
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open'; stateVars['crossVal']=$(document).find('g.purge_regulator_pressure').find('text.value').text().replace('bar',''); outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':stateVars['crossVal']}] } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     }
 };
 
@@ -227,8 +233,8 @@ function updatePNID(stateList)
 	
 	for (stateIndex in stateList)
 	{
-		let stateName = stateList[stateIndex]["name"];
-		let stateValue = stateList[stateIndex]["value"];
+		//let stateName = stateList[stateIndex]["name"];
+		//let stateValue = stateList[stateIndex]["value"];
 		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
 		setState(stateList[stateIndex]);
 	}
@@ -328,7 +334,8 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("crossUpdate" in outVars)
 	{
-		updatePnID(outVars["crossUpdate"]);
+        //console.log(outVars["crossUpdate"]);
+		//updatePnID(outVars["crossUpdate"]);
 	}
 }
 
