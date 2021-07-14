@@ -49,10 +49,11 @@
 
               </button>
         <div id="logBox" class="logContainer">
-            <div class="logTextArea" style="display: none;">
-                <div id="logEntryTemp" class="logEntry" style="display: none;">
-                    
-                </div>
+            <div class="logTextArea" onwheel="disableAutoScroll()" style="display: none;">
+                <div id="logEntryTemp" class="logEntry" style="display: none;"></div>
+                <button type="button" class="btn btn-outline-primary scrollButton" onclick="activateAutoScroll()" style="display: none;">
+                    <i class="bi bi-chevron-double-down"></i>
+                </button>
             </div>
             <div class="logMenu">
                 <button type="button" class="btn btn-primary" onclick="toggleLogBox()" disabled>

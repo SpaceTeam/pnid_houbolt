@@ -1,5 +1,5 @@
 .logContainer {
-    max-width: 20%;
+    max-width: 30%;
     position: fixed;
     bottom: 0.5rem;
     right: 0.5rem;
@@ -7,7 +7,7 @@
 
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: stretch;
 }
 
 .logMenu {
@@ -18,15 +18,22 @@
 
 
 .logTextArea {
-    /*max-height: 50%;
-    overflow: scroll;*/
+    max-height: 600px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    margin: 0.2rem 0 0.2rem 0;
-    padding: 0.2rem;
-    padding-bottom: 0;
+    margin: 0.2rem 0 0.4rem 0;
+    padding: 0.2rem 0.1rem 0 0.2rem;
     background: lightgrey;
     border-radius: 0.2rem;
+}
+
+.scrollButton {
+    position: absolute;
+    z-index: 15;
+    bottom: 2.95rem;
+    right: 0.85rem;
 }
 
 .logOverview {
@@ -82,4 +89,9 @@
 
 .iconError {
     color: #dc3545;
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
 }

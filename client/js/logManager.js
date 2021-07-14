@@ -3,6 +3,9 @@ var nrWarning = 0;
 var nrError = 0;
 var nrHardwareError = 0;
 
+var autoScroll = true;
+var detectScrolling = true;
+
 function createLogBox()
 {
     let logBoxClone = $("#logBox").clone();
@@ -22,12 +25,13 @@ function toggleLogBox()
     if (logTextArea.is(":visible"))
     {
         logButton.html(`<i class="bi bi-arrow-up"></i>`);
+        logTextArea.fadeToggle(100, disableAutoScroll);
     }
     else
     {
         logButton.html(`<i class="bi bi-arrow-down"></i>`);
+        logTextArea.fadeToggle(100, activateAutoScroll);
     }
-    logTextArea.fadeToggle(100);
 }
 
 function updateOverviewCounters()
@@ -38,6 +42,35 @@ function updateOverviewCounters()
     logOverview.find("#logWarning").find(".logCategoryNumber").text(nrWarning);
     logOverview.find("#logError").find(".logCategoryNumber").text(nrError);
     logOverview.find("#logHardwareError").find(".logCategoryNumber").text(nrHardwareError);
+}
+
+function updateScroll()
+{
+    if (autoScroll === true)
+    {
+        let logContainer = $(document).find(".logContainer:not(#logBox)");
+        let logTextArea = logContainer.find(".logTextArea");
+        logTextArea.scrollTop(logTextArea.prop('scrollHeight'));
+    }
+}
+
+function disableAutoScroll()
+{
+    console.log("disabling auto scroll");
+    autoScroll = false;
+    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logTextArea = logContainer.find(".logTextArea");
+    logTextArea.find("button.scrollButton").fadeIn(100);
+}
+
+function activateAutoScroll()
+{
+    console.log("enabling auto scroll");
+    autoScroll = true;
+    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logTextArea = logContainer.find(".logTextArea");
+    logTextArea.animate({scrollTop: $(logTextArea).prop('scrollHeight')}, 200);
+    logTextArea.find("button.scrollButton").fadeOut(200);
 }
 
 function printLog(level, message)
@@ -76,5 +109,6 @@ function printLog(level, message)
     logEntryClone.removeAttr('style');
     logTextArea.append(logEntryClone);
     updateOverviewCounters();
+    updateScroll();
     console.log(level + ":", message);
 }
