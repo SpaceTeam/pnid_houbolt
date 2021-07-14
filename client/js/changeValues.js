@@ -21,7 +21,13 @@ var config = {
         "states": [
             "purge_solenoid"
         ],
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open'; stateVars['crossVal']=$(document).find('g.purge_regulator_pressure').find('text.value').text().replace('bar',''); outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':stateVars['crossVal']}] } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "purge_solenoid_wire_pressure": {
+        "states": [
+            "purge_regulator_pressure"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     }
 };
 
@@ -157,25 +163,25 @@ async function runTests()
 {
 	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
+	var testData = [{"name": "purge_regulator_pressure", "value": 95.0}, {"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "purge_solenoid", "value": 1.0}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "purge_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
+	await sleep(1000);
+	var testData = [{"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
+	await sleep(1000);
+	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
+	await sleep(1000);
+	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
+	await sleep(1000);
+	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}, {"name": "ox_bottom_temp", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
+	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}, {"name": "ox_depressurize_solenoid", "value": 20.0}];
@@ -233,9 +239,12 @@ function updatePNID(stateList)
 	
 	for (stateIndex in stateList)
 	{
-		//let stateName = stateList[stateIndex]["name"];
-		//let stateValue = stateList[stateIndex]["value"];
-		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
+		let stateName = stateList[stateIndex]["name"];
+		let stateValue = stateList[stateIndex]["value"];
+		if (stateName === "purge_solenoid_wire")
+		{
+		    console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
+		}
 		setState(stateList[stateIndex]);
 	}
 	
@@ -271,12 +280,27 @@ function setState(state)
 	//----- search applicable eval behavior blocks from config files (either default config or custom config)
 	//fetch all classes of the element group into an array
 	let classes = elementGroup.attr("class").split(" ");
+	if (state["name"] === "purge_solenoid_wire")
+    {
+        console.log("classes", classes);
+    }
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
+	    if (state["name"] === "purge_solenoid_wire")
+        {
+            console.log("class loop", classIndex, classes[classIndex]);
+            if (classes.includes("wire")) {
+                console.log("found wire");
+            }
+        }
 		let typeClass = classes[classIndex];
-		if ("wire" in classes)
+		if (classes.includes("wire"))
 		{
+		    if (state["name"] === "purge_solenoid_wire")
+            {
+                console.log("identified as wire", classIndex);
+            }
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
 
@@ -334,8 +358,8 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("crossUpdate" in outVars)
 	{
-        //console.log(outVars["crossUpdate"]);
-		//updatePnID(outVars["crossUpdate"]);
+	    console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
+		updatePNID(outVars["crossUpdate"]);
 	}
 }
 
