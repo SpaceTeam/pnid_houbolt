@@ -1,9 +1,30 @@
+const thresholds = {
+    "oxPressure": {
+        "low": 32.0,
+        "high": 42.0,
+        "safe": 2.0
+    },
+    "oxTemp": {
+        "low": 2.0,
+        "high": 35.0
+    },
+    "fuelPressure": {
+        "low": 30.0,
+        "high": 34.0,
+        "safe": 2.0
+    },
+    "chamberPressure": {
+        "low": 7.0,
+        "high": 9.0
+    }
+};
+
 var config = {
     "pressure": {
         "states": [
             "chamber_pressure"
         ],
-        "eval": "if (inVars['value'] > 9) { outVars['color']='high' } else if (inVars['value'] > 7) { outVars['color']='neutral' } else { outVars['color']='low' }"
+        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "temperature_oxidizer_tank": {
         "states": [
@@ -15,7 +36,7 @@ var config = {
             "ox_top_temp_backup",
             "ox_bottom_temp_backup"
         ],
-        "eval": "if (inVars['value'] > 35) { outVars['color']='high' } else if (inVars['value'] > 2) { outVars['color']='neutral' } else { outVars['color']='low' }"
+        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "purge_solenoid_pressure": {
         "states": [
