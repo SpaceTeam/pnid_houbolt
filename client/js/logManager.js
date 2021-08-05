@@ -81,19 +81,19 @@ function printLog(level, message)
     switch (level)
     {
         case "info":
-            severityIcon = `<i class="bi bi-info-circle"></i>`;
+            severityIcon = `<i class="bi bi-info-circle iconInfo"></i>`;
             nrInfo += 1;
             break;
         case "warning":
-            severityIcon = `<i class="bi bi-exclamation-triangle btn-outline-warning"></i>`;
+            severityIcon = `<i class="bi bi-exclamation-triangle iconWarning"></i>`;
             nrWarning += 1;
             break;
         case "error":
-            severityIcon = `<i class="bi bi-x-square btn-outline-danger"></i>`;
+            severityIcon = `<i class="bi bi-x-square iconError"></i>`;
             nrError += 1;
             break;
         case "hardwareerror":
-            severityIcon = `<i class="bi bi-bug btn-outline-danger"></i>`;
+            severityIcon = `<i class="bi bi-bug iconError"></i>`;
             nrHardwareError += 1;
             break;
         default:

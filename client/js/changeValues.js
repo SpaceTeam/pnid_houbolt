@@ -282,16 +282,16 @@ function setState(state)
 	let classes = elementGroup.attr("class").split(" ");
 	if (state["name"] === "purge_solenoid_wire")
     {
-        console.log("classes", classes);
+        printLog("info", "classes " + classes);
     }
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
 	    if (state["name"] === "purge_solenoid_wire")
         {
-            console.log("class loop", classIndex, classes[classIndex]);
+            printLog("info", "class loop " + classIndex + " " + classes[classIndex]);
             if (classes.includes("wire")) {
-                console.log("found wire");
+                printLog("info", "found wire");
             }
         }
 		let typeClass = classes[classIndex];
@@ -299,7 +299,7 @@ function setState(state)
 		{
 		    if (state["name"] === "purge_solenoid_wire")
             {
-                console.log("identified as wire", classIndex);
+                printLog("info", "identified as wire " + classIndex);
             }
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
