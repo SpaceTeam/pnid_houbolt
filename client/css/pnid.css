@@ -10,9 +10,14 @@
 
     --fuel: chocolate;
     --ox: lightblue;
+
+    --popup-background: #EEEEEE;
+    /*--log-overview-background: #007BFF;*/
+    --log-overview-background: #77b2ff;
+
 }
 
-.popup, text {
+.logBox, .popup, text {
     dominant-baseline: middle;
     /*font-family: "Times New Roman", Times, serif;*/
 	font-family: "Montserrat";

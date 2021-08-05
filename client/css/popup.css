@@ -6,7 +6,7 @@
 /* Popup container - can be anything you want */
 .popup {
 	color: black;
-	background-color: #F0F0F0;
+	background-color: var(--popup-background);
 	border-radius: 0.2rem;
 	padding: 0.8rem;
 	display: inline-block;
@@ -16,7 +16,7 @@
 	-ms-user-select: none;
 	user-select: none;
 	border-style: solid;
-	border-color: black;
+	border-color: var(--default-stroke);
 	border-width: 0.1rem;
 	position: absolute;
 }

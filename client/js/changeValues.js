@@ -67,6 +67,8 @@ const defaultConfig = {
     }
 };
 
+createLogBox();
+
 //setup tanks for filling visuals
 function tankSetup()
 {
@@ -142,7 +144,7 @@ function startLoop() {
 	var x = 100;
 	var j = 2;
 	var increasing = true;
-	console.log(document.getElementById("PS_FP_FT1_Text"));
+	printLog("info", document.getElementById("PS_FP_FT1_Text"));
 	setInterval(function(){
 			if (increasing) {
 			j += 1;
@@ -216,6 +218,9 @@ function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
 	{
+		//let stateName = stateNameList[stateIndex]["name"];
+		//let stateValue = stateNameList[stateIndex]["value"];
+		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setStateName(stateNameList[stateIndex]);
 	}
 }
@@ -231,20 +236,15 @@ function setStateName(state)
 	elementGroup.find("text.reference").text(state["label"]);
 }
 
-//updatePNID(testData);
-//updatePNID([{"name": "PnID-Valve_Solenoid", "value": 12.0}, {"name": "solenoid2", "value": 8.0}]);
 function updatePNID(stateList)
 {
-	// console.log("Updating PnID with:", stateList);
+	//printLog("info", "Updating PnID with: " + stateList);
 	
 	for (stateIndex in stateList)
 	{
-		let stateName = stateList[stateIndex]["name"];
-		let stateValue = stateList[stateIndex]["value"];
-		if (stateName === "purge_solenoid_wire")
-		{
-		    console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
-		}
+		//let stateName = stateList[stateIndex]["name"];
+		//let stateValue = stateList[stateIndex]["value"];
+		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setState(stateList[stateIndex]);
 	}
 	
@@ -261,7 +261,7 @@ function setState(state)
 
     let unit = elementGroup.attr("data-unit");
 	elementGroup.find("text.value").text(state["value"] + unit);
-	// console.log("Found following elements to update:", $(document).find("g." + state["name"]));
+	//printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 
 	//----- prepare for eval behavior block
 	//In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
@@ -319,7 +319,7 @@ function setState(state)
 	let configProperties = Object.keys(config);
 	for (propIndex in configProperties)
 	{
-		//console.log("searching for state", state["name"], "from available states:", config[configProperties[propIndex]]["states"]);
+		//printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
 		if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
 		{
 			eval(config[configProperties[propIndex]]["eval"]);
@@ -333,7 +333,7 @@ function applyUpdatesToPnID(elementGroup, outVars)
 {
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
-	//console.log("Found these attributes:", attributes);
+	//printLog("info", "Found these attributes:" + attributes);
 	
 	//apply all outVars to PnID
 	if ("color" in outVars)
