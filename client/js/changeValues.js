@@ -56,35 +56,115 @@ var config = {
 const defaultConfig = {
     "PnID-Valve_Solenoid": {
         "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
     },
     "PnID-Valve_Pneumatic": {
         "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
     },
     "PnID-Valve_Servo": {
         "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
     },
 	"PnID-Valve_Needle_Servo": {
         "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
     },
     "PnID-Sensor_Pressure": {
         "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
     },
     "PnID-Sensor_Temperature": {
         "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
     },
     "PnID-Sensor_MassFlow": {
         "eval": "",
-	    "popup": "value:display"
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
     },
     "PnID-Tank": {
         "eval": "",
-        "popup": ""
+        "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_low"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_high"
+            }
+        ]
     }
 };
 
@@ -157,29 +237,6 @@ function extractXYFromPath(path)
 {
     pathAttr = $(path).attr("d").split(" ");
     return [pathAttr[1], pathAttr[2]];
-}
-
-
-function startLoop() {
-	var i;
-	var x = 100;
-	var j = 2;
-	var increasing = true;
-	printLog("info", document.getElementById("PS_FP_FT1_Text"));
-	setInterval(function(){
-			if (increasing) {
-			j += 1;
-			} else {
-				j -= 1;
-			}
-			if (j > 99 || j < 2) {
-				increasing = !increasing;
-			}
-			$("#OV_FP_FT1").css("stroke-width", (j/10).toString());
-			$("#OV_FP_FT1").text(j);
-		}, 10);
-		
-	
 }
 
 async function runTests()
@@ -257,6 +314,16 @@ function setStateName(state)
 	elementGroup.find("text.reference").text(state["label"]);
 }
 
+function getElementValue(name, rawValue)
+{
+    let searchString = "text.value";
+    if (rawValue === true)
+    {
+        searchString = "text.valueRaw";
+    }
+    return $(document).find(`g.${name}`).find(searchString).text();
+}
+
 function updatePNID(stateList)
 {
 	//printLog("info", "Updating PnID with: " + stateList);
@@ -281,6 +348,9 @@ function setState(state)
 	}
 
     let unit = elementGroup.attr("data-unit");
+    //raw value without any processing
+    elementGroup.find("text.valueRaw").text(state["value"]);
+    //human visible value that may contain units or further processing
 	elementGroup.find("text.value").text(state["value"] + unit);
 	//printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 
@@ -308,20 +378,9 @@ function setState(state)
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
-	    if (state["name"] === "purge_solenoid_wire")
-        {
-            printLog("info", "class loop " + classIndex + " " + classes[classIndex]);
-            if (classes.includes("wire")) {
-                printLog("info", "found wire");
-            }
-        }
 		let typeClass = classes[classIndex];
 		if (classes.includes("wire"))
 		{
-		    if (state["name"] === "purge_solenoid_wire")
-            {
-                printLog("info", "identified as wire " + classIndex);
-            }
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
 

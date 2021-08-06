@@ -15,20 +15,24 @@
 </head>
 <body>
     <div hidden id="templates">
-        <div id="closeButtonTemp" class="row control-row justify-content-end">
-            <!-- <div class="col"></div> -->
+        <div id="headerTemp" class="row control-row justify-content-end">
             <button type="button" class="btn btn-light btn-drag">
                 <i class="bi bi-arrows-move"></i>
             </button>
-            <div class="col"></div>
+            <div class="col popup-heading">Temp Name</div>
             <button type="button" class="btn btn-outline-danger btn-close">
                 <i class="bi bi-x"></i>
             </button> 
-            
+        </div>
+        <div id="textDisplayTemp" class="row control-row">
+            <label class="popup-value-out"></label>
+        </div>
+        <div id="graphDisplayTemp" class="row control-row">
+            <label>graph placeholder</label>
         </div>
         <div id="sliderTemp" class="row control-row">
             <div class="range-slider col">
-                <label class="range-slider-label input-label">Oxidizer Main Valve</label><br>
+                <label class="range-slider-label input-label">Temp Label</label><br>
                 <input class="range-slider__range servo-slider manual-obj servo-enable-obj"
                     oninput="onServoSliderInput($(this));" type="range" value="0" min="0" max="100" step="1">
                 <span class="range-slider__value">0</span> 
@@ -46,8 +50,6 @@
                 <label class="custom-control-label ckbx-label" for="tempDigitalOut">Temp Digital Out</label>
             </div>
         </div>
-
-              </button>
         <div id="logBox" class="logContainer">
             <div class="logTextArea" onwheel="disableAutoScroll()" style="display: none;">
                 <div id="logEntryTemp" class="logEntry" style="display: none;"></div>

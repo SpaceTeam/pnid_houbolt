@@ -23,16 +23,15 @@ function showPopup(dispReference, dispType, dispValReference)
 	{
 		if ("popup" in defaultConfig[dispType])
 		{
-			popupData = defaultConfig[dispType]["popup"].split(":"); //todo: this supports only one item per popup, need to expand with a line/item delimiter
 			popupParent = $(document).find("g." + dispReference + "." + dispType + "." + dispValReference);
-			createPopup(popupParent, dispType, dispValReference, popupData);
+			createPopup(popupParent, dispType, dispValReference);
 		}
 		
 	}
 }
 
 //create the actual html elements for the popup
-function createPopup(parent, type, name, contentList)
+function createPopup(parent, type, name)
 {
 	let popupName = type + "_" + name;
 	let parentPosition = parent.offset();
@@ -44,10 +43,10 @@ function createPopup(parent, type, name, contentList)
 	(parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px; display: none;' class="container-fluid popup"></div>`);
 	$(document.body).append(popup);
 
-	let closeBtnClone = $("#closeButtonTemp").clone();
-	closeBtnClone.removeAttr('id');
-	closeBtnClone.find(".btn-close").first().on('click', function(){destroyPopup(popupName);});
-	closeBtnClone.find(".btn-drag").first().on('mousedown', function(e) {
+	let headerClone = $("#headerTemp").clone();
+	headerClone.removeAttr('id');
+	headerClone.find(".btn-close").first().on('click', function(){destroyPopup(popupName);});
+	headerClone.find(".btn-drag").first().on('mousedown', function(e) {
 		isDown = true;
 		target = popup[0];
 		offset = [
@@ -55,25 +54,70 @@ function createPopup(parent, type, name, contentList)
 			popup[0].offsetTop - e.clientY
 		];
 	});
-	popup.append(closeBtnClone);
-	switch (type)
-	{
-		//todo use input config for manual control inputs
-		case "PnID-Valve_Servo":
-		case "PnID-Valve_Needle_Servo":
-			let newSlider = $("#sliderTemp").clone();
-			newSlider.removeAttr("id");
-			newSlider.find(".range-slider-label").first().text(name);
-			popup.append(newSlider);
-			break;
-		case "PnID-Valve_Solenoid":
-		case "PnID-Valve_Pneumatic":
-			let newCheckbox = $("#digitalOutTemp").clone();
-			newCheckbox.find(".ckbx-label").first().text(name).attr('for',popupName);
-			newCheckbox.find("input").first().attr('id', popupName);
-			popup.append(newCheckbox);
-			break;
-	}
+    headerClone.find("div.popup-heading").first().text(name);
+	popup.append(headerClone);
+
+    //get popup config data
+    let popupConfigContents = defaultConfig[type]["popup"];
+
+    //construct popup popup
+    for (contentIndex in popupConfigContents)
+    {
+        let classes = $(parent[0]).attr("class").split(" ");
+
+        //I really dislike having this hardcoded to the 2nd entry in the classes, but it's the quickest and safest way to do it right now.
+        let curValue = getElementValue(classes[2], false);
+        let curRawValue = getElementValue(classes[2], true)
+        let contentType = popupConfigContents[contentIndex]["type"];
+        switch (contentType)
+        {
+            case "display":
+                let newValueDisplay;
+                switch (popupConfigContents[contentIndex]["style"])
+                {
+                    case "text":
+                        printLog("info", "trying to create text display");
+                        newValueDisplay = $("#textDisplayTemp").clone();
+                        newValueDisplay.find(".popup-value-out").first().text(curValue);
+                        break;
+                    case "graph":
+                        break;
+                    default:
+                        printLog("warning", "Unknown display type for popup encountered in config: '" + popupConfigContents["style"] + "'");
+                        break;
+                }
+                popup.append(newValueDisplay);
+                break;
+            case "checkbox":
+                let newCheckbox = $("#digitalOutTemp").clone();
+                newCheckbox.find(".ckbx-label").first().text(name).attr('for', popupName);
+                newCheckbox.find("input").first().attr('id', popupName);
+                if (curValue === "Open")
+                {
+                    newCheckbox.find("input").prop("checked", true);
+                }
+                else if (curValue === "Closed")
+                {
+                    newCheckbox.find("input").prop("checked", false);
+                }
+                else
+                {
+                    newCheckbox.find("input").prop("checked", false);
+                }
+                popup.append(newCheckbox);
+                break;
+            case "slider":
+                let newSlider = $("#sliderTemp").clone();
+                newSlider.removeAttr("id");
+                newSlider.find(".range-slider-label").first().text(name);
+                //curRawValue needs checking for filtering out invalid values (non-number values)
+                newSlider.find("input").first().attr("value", Math.round(curRawValue));
+                popup.append(newSlider);
+                break;
+            default:
+                printLog("warning", "Unknown content type for popup encountered in config: '" + contentType + "'");
+        }
+    }
 
 	popup.fadeIn(100);
 
