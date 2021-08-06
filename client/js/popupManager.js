@@ -83,9 +83,11 @@ function createPopup(parent, type, name, contentList)
 }
 
 function destroyPopup(popupName)
-{	
-    activePopups[popupName].fadeOut(100, activePopups[popupName].remove);
-	delete activePopups[popupName];
+{
+    $(activePopups[popupName]).fadeOut(100, function() {
+        activePopups[popupName].remove();
+        delete activePopups[popupName];
+    });
 }
 
 //if changes are made to an element while popup is open it might need to update values in the popup
