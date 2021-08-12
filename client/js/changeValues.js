@@ -272,6 +272,11 @@ async function runTests()
 	await sleep(500);
 }
 
+function test()
+{
+    console.log(activePopups);
+}
+
 function runRandom()
 {
 	var states = [];

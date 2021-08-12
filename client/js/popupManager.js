@@ -76,9 +76,10 @@ function createPopup(parent, type, name)
                 switch (popupConfigContents[contentIndex]["style"])
                 {
                     case "text":
-                        printLog("info", "trying to create text display");
                         newValueDisplay = $("#textDisplayTemp").clone();
-                        newValueDisplay.find(".popup-value-out").first().text(curValue);
+                        newValueDisplay.removeAttr("id");
+                        newValueDisplay.find(".popup-value-out").attr("for", popupName);
+                        newValueDisplay.find(".popup-value-out").text(curValue);
                         break;
                     case "graph":
                         break;
@@ -90,8 +91,9 @@ function createPopup(parent, type, name)
                 break;
             case "checkbox":
                 let newCheckbox = $("#digitalOutTemp").clone();
-                newCheckbox.find(".ckbx-label").first().text(name).attr('for', popupName);
-                newCheckbox.find("input").first().attr('id', popupName);
+                newCheckbox.removeAttr("id");
+                newCheckbox.find(".ckbx-label").text(name).attr('for', popupName);
+                newCheckbox.find("input").attr('id', popupName);
                 if (curValue === "Open")
                 {
                     newCheckbox.find("input").prop("checked", true);
@@ -126,18 +128,19 @@ function createPopup(parent, type, name)
 	activePopups[popupName] = popup;
 }
 
+//if changes are made to an element while popup is open it might need to update values in the popup
+function updatePopup(popupName, variableName, value)
+{
+    let popup = activePopups[popupName];
+
+}
+
 function destroyPopup(popupName)
 {
     $(activePopups[popupName]).fadeOut(100, function() {
         activePopups[popupName].remove();
         delete activePopups[popupName];
     });
-}
-
-//if changes are made to an element while popup is open it might need to update values in the popup
-function updatePopup()
-{
-	
 }
 
 var mousePosition;
