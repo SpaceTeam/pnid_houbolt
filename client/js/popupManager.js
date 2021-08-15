@@ -78,7 +78,7 @@ function createPopup(parent, type, name)
                     case "text":
                         newValueDisplay = $("#textDisplayTemp").clone();
                         newValueDisplay.removeAttr("id");
-                        newValueDisplay.find(".popup-value-out").attr("for", popupName);
+                        newValueDisplay.find(".popup-value-out").attr("display", popupName);
                         newValueDisplay.find(".popup-value-out").text(curValue);
                         break;
                     case "graph":
@@ -92,7 +92,8 @@ function createPopup(parent, type, name)
             case "checkbox":
                 let newCheckbox = $("#digitalOutTemp").clone();
                 newCheckbox.removeAttr("id");
-                newCheckbox.find(".ckbx-label").text(name).attr('for', popupName);
+                //newCheckbox.find(".ckbx-label").text(name).attr('for', popupName); //do we need this 'for' attribute? Gets in the way of the 'for' attribute. Actually, maybe rename the other one to "display"?
+                newCheckbox.find(".ckbx-label").text(name);
                 newCheckbox.find("input").attr('id', popupName);
                 if (curValue === "Open")
                 {
@@ -129,10 +130,52 @@ function createPopup(parent, type, name)
 }
 
 //if changes are made to an element while popup is open it might need to update values in the popup
-function updatePopup(popupName, variableName, value)
+function updatePopup(elementType, variableName, value, rawValue)
 {
+    let popupName = elementType + "_" + variableName;
+    if (!(popupName in activePopups)) //if popup doesn't exist, don't update it
+    {
+        return;
+    }
     let popup = activePopups[popupName];
-
+    //--- updating "type": "display"
+    //"style": "text"
+    
+    
+    //--- updating "type": "checkbox"
+    
+    
+    //--- updating "type": "slider"
+    //elements = $(popup).find(`input#`);
+    
+    for (contentIndex in defaultConfig[elementType]["popup"])
+    {
+        let contentType = defaultConfig[elementType]["popup"][contentIndex]["type"];
+        let elements = {};
+        switch (contentType)
+        {
+            case "display":
+                elements = $(popup).find(`[display="${popupName}"]`);
+                elements.text(value);
+                break;
+            case "checkbox":
+                elements = $(popup).find(`input#${popupName}[type=checkbox]`);
+                if (value === defaultConfig[elementType]["popup"][contentIndex]["low"])
+                {
+                    elements.prop("checked", false);
+                }
+                else
+                {
+                    elements.prop("checked", true);
+                }
+                break;
+            case "slider":
+                
+                break;
+            default:
+                printLog("warning", "Tried updating popup with unknown content type for popup encountered in config: '" + contentType + "'");
+        }
+    }
 }
 
 function destroyPopup(popupName)

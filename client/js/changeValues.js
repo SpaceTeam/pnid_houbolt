@@ -55,7 +55,7 @@ var config = {
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 const defaultConfig = {
     "PnID-Valve_Solenoid": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
 	    "popup": [
             {
                 "type": "display",
@@ -65,8 +65,8 @@ const defaultConfig = {
             {
                 "type": "checkbox",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "low": "Closed",
+                "high": "Open"
             }
         ]
     },
@@ -81,8 +81,8 @@ const defaultConfig = {
             {
                 "type": "checkbox",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "low": "Closed",
+                "high": "Open"
             }
         ]
     },
@@ -376,10 +376,7 @@ function setState(state)
 	//----- search applicable eval behavior blocks from config files (either default config or custom config)
 	//fetch all classes of the element group into an array
 	let classes = elementGroup.attr("class").split(" ");
-	if (state["name"] === "purge_solenoid_wire")
-    {
-        printLog("info", "classes " + classes);
-    }
+	
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
@@ -390,12 +387,17 @@ function setState(state)
 		}
 
 		let re = /PnID-\S*/;
+		//search for typeClass in the default config and run the eval behavior code and update popups (if applicable)
 		if (re.test(typeClass) && (typeClass in defaultConfig))
 		{
 			eval(defaultConfig[typeClass]["eval"]);
             if (typeClass === "PnID-Tank")
             {
                 updateTankContent(elementGroup, state["value"]);
+            }
+            if (defaultConfig[typeClass]["popup"] != undefined)
+            {
+                updatePopup(typeClass, state["name"], outVars["value"], state["value"]);
             }
 		}
 	}
@@ -443,7 +445,7 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("crossUpdate" in outVars)
 	{
-	    console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
+	    //console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
 		updatePNID(outVars["crossUpdate"]);
 	}
 }
