@@ -92,7 +92,6 @@ function createPopup(parent, type, name)
             case "checkbox":
                 let newCheckbox = $("#digitalOutTemp").clone();
                 newCheckbox.removeAttr("id");
-                //newCheckbox.find(".ckbx-label").text(name).attr('for', popupName); //do we need this 'for' attribute? Gets in the way of the 'for' attribute elsewhere. Actually, maybe rename the other one to "display"?
                 newCheckbox.find(".ckbx-label").text(name).attr("for", popupName);
                 newCheckbox.find("input").attr('id', popupName);
                 if (curValue === "Open")
