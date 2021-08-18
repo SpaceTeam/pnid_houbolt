@@ -69,6 +69,11 @@ function createPopup(parent, type, name)
         let curValue = getElementValue(classes[2], false);
         let curRawValue = getElementValue(classes[2], true)
         let contentType = popupConfigContents[contentIndex]["type"];
+        let variableName = popupConfigContents[contentIndex]["variable"];
+        if (variableName === "value")
+        {
+            variableName = name;
+        }
         switch (contentType)
         {
             case "display":
@@ -113,7 +118,8 @@ function createPopup(parent, type, name)
                 newSlider.removeAttr("id");
                 newSlider.find(".range-slider-label").first().text(name);
                 //curRawValue needs checking for filtering out invalid values (non-number values)
-                newSlider.find("input").first().attr("value", Math.round(curRawValue));
+                newSlider.find("input").first().attr("value", Math.round(curRawValue)).attr("for", variableName);
+                newSlider.find(".range-slider__feedback").text(Math.round(curRawValue));
                 popup.append(newSlider);
                 break;
             default:
@@ -169,7 +175,12 @@ function updatePopup(elementType, variableName, value, rawValue)
                 }
                 break;
             case "slider":
-                
+                sliders = $(popup).find(`input.range-slider__range[for=${variableName}][type=range]`);
+                sliders.attr("value", Math.round(rawValue));
+                let feedback = sliders.siblings("span.range-slider__feedback");
+                feedback.text(Math.round(rawValue));
+                let valueOut = sliders.siblings("span.range-slider__value");
+                valueOut.text(Math.round(rawValue));
                 break;
             default:
                 printLog("warning", "Tried updating popup with unknown content type for popup encountered in config: '" + contentType + "'");
