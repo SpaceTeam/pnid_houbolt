@@ -1,172 +1,21 @@
-const thresholds = {
-    "oxPressure": {
-        "low": 32.0,
-        "high": 42.0,
-        "safe": 2.0
-    },
-    "oxTemp": {
-        "low": 2.0,
-        "high": 35.0
-    },
-    "fuelPressure": {
-        "low": 30.0,
-        "high": 34.0,
-        "safe": 2.0
-    },
-    "chamberPressure": {
-        "low": 7.0,
-        "high": 9.0
-    }
-};
-
-var config = {
-    "pressure": {
-        "states": [
-            "chamber_pressure"
-        ],
-        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    },
-    "temperature_oxidizer_tank": {
-        "states": [
-            "ox_top_temp",
-            "ox_mid_top_temp",
-            "ox_mid_temp",
-            "ox_mid_bottom_temp",
-            "ox_bottom_temp",
-            "ox_top_temp_backup",
-            "ox_bottom_temp_backup"
-        ],
-        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    },
-    "purge_solenoid_pressure": {
-        "states": [
-            "purge_solenoid"
-        ],
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
-    },
-    "purge_solenoid_wire_pressure": {
-        "states": [
-            "purge_regulator_pressure"
-        ],
-        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
-    }
-};
-
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
-const defaultConfig = {
-    "PnID-Valve_Solenoid": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            },
-            {
-                "type": "checkbox",
-                "variable": "value",
-                "low": "Closed",
-                "high": "Open"
-            }
-        ]
-    },
-    "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            },
-            {
-                "type": "checkbox",
-                "variable": "value",
-                "low": "Closed",
-                "high": "Open"
-            }
-        ]
-    },
-    "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            },
-            {
-                "type": "slider",
-                "variable": "value",
-                "low": 0.0,
-                "high": 100.0
-            }
-        ]
-    },
-	"PnID-Valve_Needle_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            },
-            {
-                "type": "slider",
-                "variable": "value",
-                "low": 0.0,
-                "high": 100.0
-            }
-        ]
-    },
-    "PnID-Sensor_Pressure": {
-        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            }
-        ]
-    },
-    "PnID-Sensor_Temperature": {
-        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            }
-        ]
-    },
-    "PnID-Sensor_MassFlow": {
-        "eval": "",
-	    "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            }
-        ]
-    },
-    "PnID-Tank": {
-        "eval": "",
-        "popup": [
-            {
-                "type": "display",
-                "variable": "value",
-                "style": "text"
-            },
-            {
-                "type": "textEntry",
-                "variable": "tank_fill_low"
-            },
-            {
-                "type": "textEntry",
-                "variable": "tank_fill_high"
-            }
-        ]
-    }
-};
+let defaultConfig = {};
+
+$.get(location.origin + '/config/default', function(data) {
+    defaultConfig = data;
+});
+
+let config = {};
+
+$.get(location.origin + '/config/custom', function(data) {
+    config = data;
+});
+
+let thresholds = {};
+
+$.get(location.origin + '/config/thresholds', function(data) {
+    thresholds = data;
+});
 
 createLogBox();
 
