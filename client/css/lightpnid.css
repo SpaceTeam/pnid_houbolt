@@ -1,0 +1,215 @@
+:root {
+    --default-stroke: black;
+
+    --open: blue;
+    --closed: orange;
+    --undefined: gray;
+    --high: red;
+    --low: blue;
+    --neutral: green;
+
+    --fuel: chocolate;
+    --ox: lightblue;
+
+    --popup-background: #EEEEEE;
+    /*--log-overview-background: #007BFF;*/
+    --log-overview-background: #77b2ff;
+
+}
+
+.darkModeButton{
+    background: white;
+    border-color: white;
+    position: absolute;
+    right: 0;   
+    z-index: 1;
+}
+
+
+.logBox, .popup, text {
+    dominant-baseline: middle;
+    /*font-family: "Times New Roman", Times, serif;*/
+	font-family: "Montserrat";
+    fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
+}
+
+text.text-C {
+    text-anchor: middle;
+}
+
+text.text-L {
+    text-anchor: start;
+}
+
+text.text-R {
+    text-anchor: end;
+}
+
+body {
+    width: auto;
+    height: 1000px;
+}
+
+.comp {
+    stroke-width: 8;
+    stroke: black;
+    fill: none;
+}
+
+.sensor-letter {
+    font-size: 100px;
+    stroke-width: 4;
+}
+
+.static-color {
+    stroke: var(--default-stroke);
+}
+
+.note-line {
+    stroke-width: 6;
+    stroke: blue;
+    stroke-dasharray: 25,50
+}
+
+.wire {
+    stroke-width: 8;
+    stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
+}
+
+.value, .reference {
+    font-size: 70px;
+    stroke-width: 4;
+}
+
+.PnID-Tank .rect {
+    stroke-width: 0;
+}
+
+[data-pnid-wire=high] {
+	stroke: var(--high);
+}
+
+[data-pnid-wire=low] {
+	stroke: var(--low);
+}
+
+[data-pnid-valve_pneumatic=open] {
+    fill: none;
+    stroke: var(--open);
+}
+
+[data-pnid-valve_pneumatic=closed] path {
+    stroke: black;
+    fill: var(--closed)
+}
+
+[data-pnid-valve_pneumatic=closed] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed)
+}
+
+[data-pnid-valve_pneumatic=undefined] {
+    stroke: var(--undefined);
+}
+
+[data-pnid-valve_servo=open],[data-pnid-valve_needle_servo=open] {
+    fill: none;
+    stroke: var(--open);
+}
+
+[data-pnid-valve_servo=closed] path,[data-pnid-valve_needle_servo=closed] path {
+    stroke: black;
+    fill: var(--closed);
+}
+
+[data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed);
+}
+
+[data-pnid-valve_servo=throttle] path:nth-of-type(3),[data-pnid-valve_needle_servo=throttle] path:nth-of-type(3) {
+    stroke: black;
+    fill: var(--closed);
+}
+
+
+[data-pnid-valve_servo=throttle] text:not(.static-color),[data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed);
+}
+
+[data-pnid-sensor_pressure=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_pressure=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_pressure=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-sensor_temperature=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_temperature=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_temperature=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-sensor_massflow=high] {
+    stroke: var(--high);
+}
+
+[data-pnid-sensor_massflow=low] {
+    stroke: var(--low);
+}
+
+[data-pnid-sensor_massflow=neutral] {
+    stroke: var(--neutral);
+}
+
+[data-pnid-valve_solenoid=open] {
+    stroke: var(--open);
+    fill: none;
+}
+
+[data-pnid-valve_solenoid=closed] path {
+    stroke: black;
+    fill: var(--closed);
+}
+
+
+[data-pnid-valve_solenoid=closed] text:not(.static-color) {
+    stroke: var(--closed);
+    fill: var(--closed);
+}
+
+[data-pnid-valve_solenoid=undefined] {
+    stroke: var(--undefined);
+}
+
+[data-pnid-valve_overpressure=open] {
+    stroke: var(--open);
+}
+
+[data-pnid-valve_overpressure=closed] {
+    stroke: var(--closed);
+}
+
+[data-pnid-valve_overpressure=undefined] {
+    stroke: var(--undefined);
+}
+
+[data-pnid-tank_content=fuel] {
+    fill: var(--fuel);
+}
+
+[data-pnid-tank_content=ox] {
+    fill: var(--ox);
+}
