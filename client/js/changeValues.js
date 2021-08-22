@@ -19,6 +19,26 @@ $.get(location.origin + '/config/thresholds', function(data) {
 
 createLogBox();
 
+function checkStringIsNumber(string)
+{
+    if (typeof string == "string")
+    {
+        let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
+                                                      //checks for float with either 1 or more digits followed by decimal point followed by 0 or more digits (3. or 3.04, but not .2), or
+                                                      //0 or more digits followed by decimal point followed by 1 or more digits (.3 or 1.345, but not 2.)
+        if (!re.test(string))
+        {
+            return false;
+        }
+    }
+    else
+    {
+        printLog("warning", "Tried checking if a string is a number, but didn't receive a string: " + string);
+        return false;
+    }
+    return true;
+}
+
 //setup tanks for filling visuals
 function tankSetup()
 {
@@ -195,9 +215,16 @@ function updatePNID(stateList)
 
 function setState(state)
 {
+    if (!checkStringIsNumber(state["value"]))
+    {
+        printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+        return;
+    }
+    
 	let elementGroup = $(document).find("g." + state["name"]);
 	if (elementGroup.length === 0)
 	{
+	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
 		return;
 	}
 

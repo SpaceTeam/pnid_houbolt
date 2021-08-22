@@ -12,7 +12,6 @@ function clickEventListenever(dispReference, dispType, dispValReference)
 		printLog("info", popupName);
 		activePopups[popupName].css({"animation-name": "none"});
 		setTimeout(function(){activePopups[popupName].css({"animation-name": "highlight", "animation-duration": "2s"});}, 100)
-		
 	}
 }
 
@@ -98,7 +97,7 @@ function createPopup(parent, type, name)
                 let newCheckbox = $("#digitalOutTemp").clone();
                 newCheckbox.removeAttr("id");
                 newCheckbox.find(".ckbx-label").text(name).attr("for", popupName);
-                newCheckbox.find("input").attr('id', popupName);
+                newCheckbox.find("input").attr('id', popupName).attr('state', variableName);
                 if (curValue === "Open")
                 {
                     newCheckbox.find("input").prop("checked", true);
@@ -116,9 +115,13 @@ function createPopup(parent, type, name)
             case "slider":
                 let newSlider = $("#sliderTemp").clone();
                 newSlider.removeAttr("id");
-                newSlider.find(".range-slider-label").first().text(name);
-                //curRawValue needs checking for filtering out invalid values (non-number values)
-                newSlider.find("input").first().attr("value", Math.round(curRawValue)).attr("for", variableName);
+                newSlider.find(".range-slider-label").text(name);
+                if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                {
+                    printLog("warning", "Encountered state value that isn't a number while creating <code>'" + popupName + "'</code> popup: " + curRawValue + ". Defaulting to '0'.");
+                    curRawValue = 0;
+                }
+                newSlider.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
                 newSlider.find(".range-slider__feedback").text(Math.round(curRawValue));
                 popup.append(newSlider);
                 break;
@@ -175,8 +178,14 @@ function updatePopup(elementType, variableName, value, rawValue)
                 }
                 break;
             case "slider":
-                sliders = $(popup).find(`input.range-slider__range[for=${variableName}][type=range]`);
-                sliders.attr("value", Math.round(rawValue));
+                sliders = $(popup).find(`input.range-slider__range[state=${variableName}][type=range]`);
+                if (checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                {
+                    console.log(rawValue);
+                    printLog("warning", "Encountered state value that isn't a number while updating <code>'" + popupName + "'</code> popup: " + rawValue + ". Ignoring update.");
+                    break;
+                }
+                sliders.val(Math.round(rawValue));
                 let feedback = sliders.siblings("span.range-slider__feedback");
                 feedback.text(Math.round(rawValue));
                 let valueOut = sliders.siblings("span.range-slider__value");
