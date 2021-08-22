@@ -2,7 +2,10 @@
 <html>
 <head>
     <title>PNID Chart</title>
-    <link rel="stylesheet" href="css/pnid.css">
+
+    <link id="theme" rel="stylesheet" type="text/css" href="css/lightpnid.css">
+
+
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="css/inputs.css">
     <link rel="stylesheet" href="css/slider.css">
@@ -14,6 +17,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+    <button onclick="darkModeToggleButton()">Toggle dark mode</button>
     <div hidden id="templates">
         <div id="closeButtonTemp" class="row control-row justify-content-end">
             <!-- <div class="col"></div> -->
@@ -95,5 +99,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="js/pnidLoader.js"></script>
+<script src="js/darkmode.js"></script>
 </body>
 </html>

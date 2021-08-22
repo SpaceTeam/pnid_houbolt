@@ -10,7 +10,7 @@ app.use(bp.urlencoded({ extended: true }))
 const path = __dirname + '/client/';
 const pnidPath = path + "PnID_Franz.pnid";
 
-var port = 80;
+var port = 3000;
 
 // Search for argument port= in node cli arguments
 process.argv.forEach(arg => {
