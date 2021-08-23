@@ -1,19 +1,19 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 
-$.get(location.origin + '/config/default', function(data) {
+$.get('/config/default', function(data) {
     defaultConfig = data;
 });
 
 let config = {};
 
-$.get(location.origin + '/config/custom', function(data) {
+$.get('/config/custom', function(data) {
     config = data;
 });
 
 let thresholds = {};
 
-$.get(location.origin + '/config/thresholds', function(data) {
+$.get('/config/thresholds', function(data) {
     thresholds = data;
 });
 

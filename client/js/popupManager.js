@@ -179,9 +179,8 @@ function updatePopup(elementType, variableName, value, rawValue)
                 break;
             case "slider":
                 sliders = $(popup).find(`input.range-slider__range[state=${variableName}][type=range]`);
-                if (checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                 {
-                    console.log(rawValue);
                     printLog("warning", "Encountered state value that isn't a number while updating <code>'" + popupName + "'</code> popup: " + rawValue + ". Ignoring update.");
                     break;
                 }

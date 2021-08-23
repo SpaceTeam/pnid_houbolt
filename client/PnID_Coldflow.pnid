@@ -2,7 +2,7 @@
 
 <!-- Components -->
 
-    <g class="TK_RE_F1 PnID-Tank Fuel comp" data-value="40" data-unit="kg" data-pnid-tank="" pointer-events="bounding-box" onclick="clickEventListenever('TK_RE_F1', 'PnID-Tank', 'Fuel')">
+    <g class="TK_RE_F1 PnID-Tank fuel_tank comp" data-value="40" data-unit="kg" data-pnid-tank="" pointer-events="bounding-box" onclick="clickEventListenever('TK_RE_F1', 'PnID-Tank', 'fuel_tank')">
         <!-- coordinates: x = 4645 y = 3630 -->
         <path d="M 4995 3230 A 651.9202405202649 651.9202405202649 0 0 0 4295 3230" />
         <path d="M 4295 4030 A 651.9202405202649 651.9202405202649 0 0 0 4995 4030" />
@@ -14,11 +14,11 @@
         <path d="M 4645 4130 L 4645 4130" />
         <path d="M 4645 3130 L 4645 3130" />
         <text class="reference static-color text-L" x="4570" y="3605" visibility="hidden">TK_RE_F1</text>
-        <text class="value text-C" x="4620" y="3605" visibility="visible">Fuel</text>
-        <text class="valueRaw text-C" x="4620" y="3605" visibility="hidden">Fuel</text>
+        <text class="value text-C" x="4620" y="3605" visibility="visible">fuel_tank</text>
+        <text class="valueRaw text-C" x="4620" y="3605" visibility="hidden">fuel_tank</text>
         <text class="Unit" x="4645" y="3630" visibility="hidden">kg</text>
     </g>
-    <g class="TK_RE_O1 PnID-Tank Oxidizer comp" data-value="40" data-unit="kg" data-pnid-tank="" pointer-events="bounding-box" onclick="clickEventListenever('TK_RE_O1', 'PnID-Tank', 'Oxidizer')">
+    <g class="TK_RE_O1 PnID-Tank ox_tank comp" data-value="40" data-unit="kg" data-pnid-tank="" pointer-events="bounding-box" onclick="clickEventListenever('TK_RE_O1', 'PnID-Tank', 'ox_tank')">
         <!-- coordinates: x = 6295 y = 3630 -->
         <path d="M 6645 3230 A 651.9202405202649 651.9202405202649 0 0 0 5945 3230" />
         <path d="M 5945 4030 A 651.9202405202649 651.9202405202649 0 0 0 6645 4030" />
@@ -30,8 +30,8 @@
         <path d="M 6295 4130 L 6295 4130" />
         <path d="M 6295 3130 L 6295 3130" />
         <text class="reference static-color text-L" x="6145" y="3580" visibility="hidden">TK_RE_O1</text>
-        <text class="value text-C" x="6270" y="3605" visibility="visible">Oxidizer</text>
-        <text class="valueRaw text-C" x="6270" y="3605" visibility="hidden">Oxidizer</text>
+        <text class="value text-C" x="6270" y="3605" visibility="visible">ox_tank</text>
+        <text class="valueRaw text-C" x="6270" y="3605" visibility="hidden">ox_tank</text>
         <text class="Unit" x="6295" y="3630" visibility="hidden">kg</text>
     </g>
     <g class="VP1 PnID-Valve_Pneumatic fuel_main_valve comp" data-value="40" data-unit="" data-pnid-valve_pneumatic="" pointer-events="bounding-box" onclick="clickEventListenever('VP1', 'PnID-Valve_Pneumatic', 'fuel_main_valve')"transform="rotate(90,4645,4980)">
@@ -159,18 +159,6 @@
         <text class="value text-R" x="8342" y="3458" visibility="hidden" transform="rotate(90,8342,3458)">Vent</text>
         <text class="valueRaw text-R" x="8342" y="3458" visibility="hidden" transform="rotate(90,8342,3458)">Vent</text>
     </g>
-    <g class="BD_OF1 PnID-BurstDisc BurstDisc comp" data-value="40" data-unit="" data-pnid-burstdisc="" pointer-events="bounding-box" onclick="clickEventListenever('BD_OF1', 'PnID-BurstDisc', 'BurstDisc')">
-        <!-- coordinates: x = 10470 y = 4405 -->
-        <path d="M 10420 4505 A 111.80339887498948 111.80339887498948 0 0 0 10420 4305" />
-        <rect class="rect" x="10370" y="4255" width="150" height="300" />
-        <path d="M 10270 4405 L 10370 4405 " />
-        <path d="M 10420 4555 L 10420 4505 " />
-        <path d="M 10420 4255 L 10420 4305 " />
-        <path d="M 10170 4405 L 10270 4405" />
-        <text class="reference static-color text-L" x="10548" y="4359" visibility="hidden">BD_OF1</text>
-        <text class="value text-L" x="10548" y="4450" visibility="hidden">BurstDisc</text>
-        <text class="valueRaw text-L" x="10548" y="4450" visibility="hidden">BurstDisc</text>
-    </g>
     <g class="P13 PnID-Sensor_Pressure chamber_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P13', 'PnID-Sensor_Pressure', 'chamber_pressure')">
         <!-- coordinates: x = 6120 y = 6780 -->
         <circle cx="6120" cy="6780" r="100" />
@@ -182,15 +170,15 @@
         <text class="valueRaw text-L" x="6265" y="6830" visibility="hidden">chamber_pressure</text>
         <text class="Unit" x="6120" y="6780" visibility="hidden">bar</text>
     </g>
-    <g class="P14 PnID-Sensor_Pressure igniter_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P14', 'PnID-Sensor_Pressure', 'igniter_pressure')">
+    <g class="P14 PnID-Sensor_Pressure igniter_chamber_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P14', 'PnID-Sensor_Pressure', 'igniter_chamber_pressure')">
         <!-- coordinates: x = 6170 y = 6205 -->
         <circle cx="6170" cy="6205" r="100" />
         <path d="M 5970 6205 L 6070 6205 " />
         <path d="M 5870 6205 L 5970 6205" />
         <text class="sensor-letter static-color text-C" x="6170" y="6205">P</text>
         <text class="reference static-color text-C" x="6170" y="6050" visibility="visible">P14</text>
-        <text class="value text-C" x="6170" y="6365" visibility="visible">igniter_pressure</text>
-        <text class="valueRaw text-C" x="6170" y="6365" visibility="hidden">igniter_pressure</text>
+        <text class="value text-C" x="6170" y="6365" visibility="visible">igniter_chamber_pressure</text>
+        <text class="valueRaw text-C" x="6170" y="6365" visibility="hidden">igniter_chamber_pressure</text>
         <text class="Unit" x="6170" y="6205" visibility="hidden">bar</text>
     </g>
     <g class="P11 PnID-Sensor_Pressure ox_main_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P11', 'PnID-Sensor_Pressure', 'ox_main_pressure')"transform="rotate(180,5445,5430)">
@@ -459,27 +447,6 @@
         <text class="value text-L" x="6182" y="702" visibility="hidden" transform="rotate(90,6182,702)">Vent</text>
         <text class="valueRaw text-L" x="6182" y="702" visibility="hidden" transform="rotate(90,6182,702)">Vent</text>
     </g>
-    <g class="V3 PnID-Valve_Manual   comp" data-value="40" data-unit="" data-pnid-valve_manual="" pointer-events="bounding-box" onclick="clickEventListenever('V3', 'PnID-Valve_Manual', ' ')"transform="rotate(-90,4070,1480)">
-        <!-- coordinates: x = 4070 y = 1480 -->
-        <path d="M 3970 1280 L 4170 1280 " />
-        <path d="M 4070 1480 L 4070 1280 " />
-        <path d="M 4070 1480 L 3870 1330 L 3870 1630 L 4070 1480 " />
-        <path d="M 4270 1330 L 4070 1480 L 4270 1630 L 4270 1330 " />
-        <path d="M 3870 1480 L 3870 1480" />
-        <path d="M 4270 1480 L 4270 1480" />
-        <text class="reference static-color text-C" x="4070" y="1555" visibility="hidden" transform="rotate(90,4070,1555)">V3</text>
-        <text class="value text-C" x="4070" y="1206" visibility="hidden" transform="rotate(90,4070,1206)"> </text>
-        <text class="valueRaw text-C" x="4070" y="1206" visibility="hidden" transform="rotate(90,4070,1206)"> </text>
-    </g>
-    <g class="VT_FP_3 PnID-Vent Vent comp" data-value="40" data-unit="" data-pnid-vent="" pointer-events="bounding-box" onclick="clickEventListenever('VT_FP_3', 'PnID-Vent', 'Vent')"transform="rotate(-90,4070,830)">
-        <!-- coordinates: x = 4070 y = 830 -->
-        <path d="M 4070 830 L 3870 830 " />
-        <path d="M 3970 730 L 4070 830 L 3970 930 " />
-        <path d="M 3770 830 L 3870 830" />
-        <text class="reference static-color text-L" x="3866" y="702" visibility="hidden" transform="rotate(90,3866,702)">VT_FP_3</text>
-        <text class="value text-L" x="3957" y="702" visibility="hidden" transform="rotate(90,3957,702)">Vent</text>
-        <text class="valueRaw text-L" x="3957" y="702" visibility="hidden" transform="rotate(90,3957,702)">Vent</text>
-    </g>
     <g class="VT_OB_1 PnID-Vent Vent comp" data-value="40" data-unit="" data-pnid-vent="" pointer-events="bounding-box" onclick="clickEventListenever('VT_OB_1', 'PnID-Vent', 'Vent')"transform="rotate(180,5095,2620)">
         <!-- coordinates: x = 5095 y = 2620 -->
         <path d="M 5095 2620 L 4895 2620 " />
@@ -679,81 +646,70 @@
         <text class="value text-R" x="6350" y="4575" visibility="visible" transform="rotate(90,6350,4575) scale(1,-1) translate(0,-9150)">ox_main_valve</text>
         <text class="valueRaw text-R" x="6350" y="4575" visibility="hidden" transform="rotate(90,6350,4575) scale(1,-1) translate(0,-9150)">ox_main_valve</text>
     </g>
-    <g class="P16 PnID-Sensor_Pressure ox_pressurant_press_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P16', 'PnID-Sensor_Pressure', 'ox_pressurant_press_pressure')"transform="rotate(-90,7070,880)">
-        <!-- coordinates: x = 7070 y = 880 -->
-        <circle cx="7070" cy="880" r="100" />
-        <path d="M 6870 880 L 6970 880 " />
-        <path d="M 6770 880 L 6870 880" />
-        <text class="sensor-letter static-color text-C" x="7070" y="880">P</text>
-        <text class="reference static-color text-R" x="7110" y="725" visibility="visible" transform="rotate(90,7110,725)">P16</text>
-        <text class="value text-R" x="7025" y="725" visibility="visible" transform="rotate(90,7025,725)">ox_pressurant_press_pressure</text>
-        <text class="valueRaw text-R" x="7025" y="725" visibility="hidden" transform="rotate(90,7025,725)">ox_pressurant_press_pressure</text>
-        <text class="Unit" x="7070" y="880" visibility="hidden" transform="rotate(90,7070,880)">bar</text>
+    <g class="P15 PnID-Sensor_Pressure ox_top_tank_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P15', 'PnID-Sensor_Pressure', 'ox_top_tank_pressure')"transform="rotate(90,5695,3245)">
+        <!-- coordinates: x = 5695 y = 3245 -->
+        <circle cx="5695" cy="3245" r="100" />
+        <path d="M 5495 3245 L 5595 3245 " />
+        <path d="M 5395 3245 L 5495 3245" />
+        <text class="sensor-letter static-color text-C" x="5695" y="3245" transform="rotate(180,5695,3245)">P</text>
+        <text class="reference static-color text-C" x="5695" y="2995" visibility="visible" transform="rotate(-90,5695,2995)">P15</text>
+        <text class="value text-C" x="5845" y="3260" visibility="visible" transform="rotate(-90,5845,3260)">ox_top_tank_pressure</text>
+        <text class="valueRaw text-C" x="5845" y="3260" visibility="hidden" transform="rotate(-90,5845,3260)">ox_top_tank_pressure</text>
+        <text class="Unit" x="5695" y="3245" visibility="hidden" transform="rotate(-90,5695,3245)">bar</text>
     </g>
-    <g class="P15 PnID-Sensor_Pressure ox_top_tank_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P15', 'PnID-Sensor_Pressure', 'ox_top_tank_pressure')">
-        <!-- coordinates: x = 6695 y = 2905 -->
-        <circle cx="6695" cy="2905" r="100" />
-        <path d="M 6495 2905 L 6595 2905 " />
-        <path d="M 6395 2905 L 6495 2905" />
-        <text class="sensor-letter static-color text-C" x="6695" y="2905">P</text>
-        <text class="reference static-color text-C" x="6695" y="2655" visibility="visible">P15</text>
-        <text class="value text-C" x="6695" y="2740" visibility="visible">ox_top_tank_pressure</text>
-        <text class="valueRaw text-C" x="6695" y="2740" visibility="hidden">ox_top_tank_pressure</text>
-        <text class="Unit" x="6695" y="2905" visibility="hidden">bar</text>
+    <g class="P12 PnID-Sensor_Pressure ox_tank_pressure_backup comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P12', 'PnID-Sensor_Pressure', 'ox_tank_pressure_backup')"transform="scale(-1,1) translate(-10630,0)">
+        <!-- coordinates: x = 5315 y = 2945 -->
+        <circle cx="5315" cy="2945" r="100" />
+        <path d="M 5115 2945 L 5215 2945 " />
+        <path d="M 5015 2945 L 5115 2945" />
+        <text class="sensor-letter static-color text-C" x="5315" y="2945" transform="scale(-1,1) translate(-10630,0)">P</text>
+        <text class="reference static-color text-R" x="5470" y="2905" visibility="visible" transform="scale(-1,1) translate(-10940,0)">P12</text>
+        <text class="value text-R" x="5470" y="2990" visibility="visible" transform="scale(-1,1) translate(-10940,0)">ox_tank_pressure_backup</text>
+        <text class="valueRaw text-R" x="5470" y="2990" visibility="hidden" transform="scale(-1,1) translate(-10940,0)">ox_tank_pressure_backup</text>
+        <text class="Unit" x="5315" y="2945" visibility="hidden" transform="scale(-1,1) translate(-10630,0)">bar</text>
     </g>
-    <g class="P12 PnID-Sensor_Pressure ox_tank_pressure_backup comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P12', 'PnID-Sensor_Pressure', 'ox_tank_pressure_backup')"transform="scale(-1,1) translate(-11290,0)">
-        <!-- coordinates: x = 5645 y = 2905 -->
-        <circle cx="5645" cy="2905" r="100" />
-        <path d="M 5445 2905 L 5545 2905 " />
-        <path d="M 5345 2905 L 5445 2905" />
-        <text class="sensor-letter static-color text-C" x="5645" y="2905" transform="scale(-1,1) translate(-11290,0)">P</text>
-        <text class="reference static-color text-R" x="5800" y="2865" visibility="visible" transform="scale(-1,1) translate(-11600,0)">P12</text>
-        <text class="value text-R" x="5800" y="2950" visibility="visible" transform="scale(-1,1) translate(-11600,0)">ox_tank_pressure_backup</text>
-        <text class="valueRaw text-R" x="5800" y="2950" visibility="hidden" transform="scale(-1,1) translate(-11600,0)">ox_tank_pressure_backup</text>
-        <text class="Unit" x="5645" y="2905" visibility="hidden" transform="scale(-1,1) translate(-11290,0)">bar</text>
-    </g>
-    <g class="T8 PnID-Sensor_Temperature ox_top_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T8', 'PnID-Sensor_Temperature', 'ox_top_temp')">
+    <g class="T8 PnID-Sensor_Temperature ox_top_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T8', 'PnID-Sensor_Temperature', 'ox_top_tank_temp')">
         <!-- coordinates: x = 6945 y = 3230 -->
         <circle cx="6945" cy="3230" r="100" />
         <path d="M 6745 3230 L 6845 3230 " />
         <path d="M 6645 3230 L 6745 3230" />
         <text class="sensor-letter static-color text-C" x="6945" y="3230">T</text>
         <text class="reference static-color text-L" x="7090" y="3190" visibility="visible">T8</text>
-        <text class="value text-L" x="7090" y="3280" visibility="visible">ox_top_temp</text>
-        <text class="valueRaw text-L" x="7090" y="3280" visibility="hidden">ox_top_temp</text>
+        <text class="value text-L" x="7090" y="3280" visibility="visible">ox_top_tank_temp</text>
+        <text class="valueRaw text-L" x="7090" y="3280" visibility="hidden">ox_top_tank_temp</text>
         <text class="Unit" x="6945" y="3230" visibility="hidden">ºC</text>
     </g>
-    <g class="T9 PnID-Sensor_Temperature ox_mid_top_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T9', 'PnID-Sensor_Temperature', 'ox_mid_top_temp')">
+    <g class="T9 PnID-Sensor_Temperature ox_mid_top_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T9', 'PnID-Sensor_Temperature', 'ox_mid_top_tank_temp')">
         <!-- coordinates: x = 6945 y = 3490 -->
         <circle cx="6945" cy="3490" r="100" />
         <path d="M 6745 3490 L 6845 3490 " />
         <path d="M 6645 3490 L 6745 3490" />
         <text class="sensor-letter static-color text-C" x="6945" y="3490">T</text>
         <text class="reference static-color text-L" x="7090" y="3450" visibility="visible">T9</text>
-        <text class="value text-L" x="7090" y="3540" visibility="visible">ox_mid_top_temp</text>
-        <text class="valueRaw text-L" x="7090" y="3540" visibility="hidden">ox_mid_top_temp</text>
+        <text class="value text-L" x="7090" y="3540" visibility="visible">ox_mid_top_tank_temp</text>
+        <text class="valueRaw text-L" x="7090" y="3540" visibility="hidden">ox_mid_top_tank_temp</text>
         <text class="Unit" x="6945" y="3490" visibility="hidden">ºC</text>
     </g>
-    <g class="T11 PnID-Sensor_Temperature ox_bottom_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T11', 'PnID-Sensor_Temperature', 'ox_bottom_temp')">
+    <g class="T11 PnID-Sensor_Temperature ox_bottom_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T11', 'PnID-Sensor_Temperature', 'ox_bottom_tank_temp')">
         <!-- coordinates: x = 6945 y = 4030 -->
         <circle cx="6945" cy="4030" r="100" />
         <path d="M 6745 4030 L 6845 4030 " />
         <path d="M 6645 4030 L 6745 4030" />
         <text class="sensor-letter static-color text-C" x="6945" y="4030">T</text>
         <text class="reference static-color text-L" x="7090" y="3990" visibility="visible">T11</text>
-        <text class="value text-L" x="7090" y="4080" visibility="visible">ox_bottom_temp</text>
-        <text class="valueRaw text-L" x="7090" y="4080" visibility="hidden">ox_bottom_temp</text>
+        <text class="value text-L" x="7090" y="4080" visibility="visible">ox_bottom_tank_temp</text>
+        <text class="valueRaw text-L" x="7090" y="4080" visibility="hidden">ox_bottom_tank_temp</text>
         <text class="Unit" x="6945" y="4030" visibility="hidden">ºC</text>
     </g>
-    <g class="T10 PnID-Sensor_Temperature ox_mid_bottom_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T10', 'PnID-Sensor_Temperature', 'ox_mid_bottom_temp')">
+    <g class="T10 PnID-Sensor_Temperature ox_mid_bottom_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T10', 'PnID-Sensor_Temperature', 'ox_mid_bottom_tank_temp')">
         <!-- coordinates: x = 6945 y = 3755 -->
         <circle cx="6945" cy="3755" r="100" />
         <path d="M 6745 3755 L 6845 3755 " />
         <path d="M 6645 3755 L 6745 3755" />
         <text class="sensor-letter static-color text-C" x="6945" y="3755">T</text>
         <text class="reference static-color text-L" x="7090" y="3715" visibility="visible">T10</text>
-        <text class="value text-L" x="7090" y="3805" visibility="visible">ox_mid_bottom_temp</text>
-        <text class="valueRaw text-L" x="7090" y="3805" visibility="hidden">ox_mid_bottom_temp</text>
+        <text class="value text-L" x="7090" y="3805" visibility="visible">ox_mid_bottom_tank_temp</text>
+        <text class="valueRaw text-L" x="7090" y="3805" visibility="hidden">ox_mid_bottom_tank_temp</text>
         <text class="Unit" x="6945" y="3755" visibility="hidden">ºC</text>
     </g>
     <g class="P2 PnID-Sensor_Pressure fuel_pressurant_bottle_pressure comp" data-value="40" data-unit="bar" data-pnid-sensor_pressure="" pointer-events="bounding-box" onclick="clickEventListenever('P2', 'PnID-Sensor_Pressure', 'fuel_pressurant_bottle_pressure')"transform="rotate(180,1495,1880)">
@@ -1055,26 +1011,26 @@
         <text class="valueRaw text-R" x="4140" y="4075" visibility="hidden" transform="scale(-1,1) translate(-8280,0)">fuel_bottom_tank_temp</text>
         <text class="Unit" x="3995" y="4030" visibility="hidden" transform="scale(-1,1) translate(-7990,0)">ºC</text>
     </g>
-    <g class="T3 PnID-Sensor_Temperature fuel_mid_bottom_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T3', 'PnID-Sensor_Temperature', 'fuel_mid_bottom_temp')"transform="rotate(180,3995,3765)">
+    <g class="T3 PnID-Sensor_Temperature fuel_mid_bottom_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T3', 'PnID-Sensor_Temperature', 'fuel_mid_bottom_tank_temp')"transform="rotate(180,3995,3765)">
         <!-- coordinates: x = 3995 y = 3765 -->
         <circle cx="3995" cy="3765" r="100" />
         <path d="M 3795 3765 L 3895 3765 " />
         <path d="M 3695 3765 L 3795 3765" />
         <text class="sensor-letter static-color text-C" x="3995" y="3765" transform="rotate(180,3995,3765)">T</text>
         <text class="reference static-color text-R" x="4140" y="3725" visibility="visible" transform="rotate(180,4140,3725)">T3</text>
-        <text class="value text-R" x="4140" y="3815" visibility="visible" transform="rotate(180,4140,3815)">fuel_mid_bottom_temp</text>
-        <text class="valueRaw text-R" x="4140" y="3815" visibility="hidden" transform="rotate(180,4140,3815)">fuel_mid_bottom_temp</text>
+        <text class="value text-R" x="4140" y="3815" visibility="visible" transform="rotate(180,4140,3815)">fuel_mid_bottom_tank_temp</text>
+        <text class="valueRaw text-R" x="4140" y="3815" visibility="hidden" transform="rotate(180,4140,3815)">fuel_mid_bottom_tank_temp</text>
         <text class="Unit" x="3995" y="3765" visibility="hidden" transform="rotate(180,3995,3765)">ºC</text>
     </g>
-    <g class="T2 PnID-Sensor_Temperature fuel_mid_top_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T2', 'PnID-Sensor_Temperature', 'fuel_mid_top_temp')"transform="rotate(180,3995,3500)">
+    <g class="T2 PnID-Sensor_Temperature fuel_mid_top_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T2', 'PnID-Sensor_Temperature', 'fuel_mid_top_tank_temp')"transform="rotate(180,3995,3500)">
         <!-- coordinates: x = 3995 y = 3500 -->
         <circle cx="3995" cy="3500" r="100" />
         <path d="M 3795 3500 L 3895 3500 " />
         <path d="M 3695 3500 L 3795 3500" />
         <text class="sensor-letter static-color text-C" x="3995" y="3500" transform="rotate(180,3995,3500)">T</text>
         <text class="reference static-color text-R" x="4140" y="3460" visibility="visible" transform="rotate(180,4140,3460)">T2</text>
-        <text class="value text-R" x="4140" y="3550" visibility="visible" transform="rotate(180,4140,3550)">fuel_mid_top_temp</text>
-        <text class="valueRaw text-R" x="4140" y="3550" visibility="hidden" transform="rotate(180,4140,3550)">fuel_mid_top_temp</text>
+        <text class="value text-R" x="4140" y="3550" visibility="visible" transform="rotate(180,4140,3550)">fuel_mid_top_tank_temp</text>
+        <text class="valueRaw text-R" x="4140" y="3550" visibility="hidden" transform="rotate(180,4140,3550)">fuel_mid_top_tank_temp</text>
         <text class="Unit" x="3995" y="3500" visibility="hidden" transform="rotate(180,3995,3500)">ºC</text>
     </g>
     <g class="V11 PnID-Valve_Servo oxfill_tank_valve comp" data-value="40" data-unit="" data-pnid-valve_servo="" pointer-events="bounding-box" onclick="clickEventListenever('V11', 'PnID-Valve_Servo', 'oxfill_tank_valve')">
@@ -1089,6 +1045,38 @@
         <text class="reference static-color text-C" x="7470" y="3905" visibility="visible">V11</text>
         <text class="value text-C" x="7470" y="3990" visibility="visible">oxfill_tank_valve</text>
         <text class="valueRaw text-C" x="7470" y="3990" visibility="hidden">oxfill_tank_valve</text>
+    </g>
+    <g class="OF_OP_2 PnID-Valve_OverPressure Valve_OverPressure comp" data-value="40" data-unit="" data-pnid-valve_overpressure="" pointer-events="bounding-box" onclick="clickEventListenever('OF_OP_2', 'PnID-Valve_OverPressure', 'Valve_OverPressure')">
+        <!-- coordinates: x = 10370 y = 4405 -->
+        <path d="M 10370 4405 L 10370 4205 " />
+        <path d="M 10320 4305 L 10420 4305 L 10320 4255 L 10420 4255 L 10320 4205 L 10420 4205 " />
+        <path d="M 10370 4405 L 10170 4255 L 10170 4555 L 10370 4405 " />
+        <path d="M 10570 4255 L 10370 4405 L 10570 4555 L 10570 4255 " />
+        <path d="M 10170 4405 L 10170 4405" />
+        <path d="M 10570 4405 L 10570 4405" />
+        <text class="reference static-color text-L" x="10324" y="4177" visibility="hidden">OF_OP_2</text>
+        <text class="value text-L" x="10415" y="4177" visibility="hidden">Valve_OverPressure</text>
+        <text class="valueRaw text-L" x="10415" y="4177" visibility="hidden">Valve_OverPressure</text>
+    </g>
+    <g class="VT_IG_F? PnID-Vent Vent comp" data-value="40" data-unit="" data-pnid-vent="" pointer-events="bounding-box" onclick="clickEventListenever('VT_IG_F?', 'PnID-Vent', 'Vent')">
+        <!-- coordinates: x = 10870 y = 4405 -->
+        <path d="M 10870 4405 L 10670 4405 " />
+        <path d="M 10770 4305 L 10870 4405 L 10770 4505 " />
+        <path d="M 10570 4405 L 10670 4405" />
+        <text class="reference static-color text-C" x="10712" y="4670" visibility="hidden">VT_IG_F?</text>
+        <text class="value text-C" x="10712" y="4579" visibility="hidden">Vent</text>
+        <text class="valueRaw text-C" x="10712" y="4579" visibility="hidden">Vent</text>
+    </g>
+    <g class="Barrier? PnID-ThermalBarrier ox_bottom_tank_pressure comp" data-value="40" data-unit="" data-pnid-thermalbarrier="" pointer-events="bounding-box" onclick="clickEventListenever('Barrier?', 'PnID-ThermalBarrier', 'ox_bottom_tank_pressure')"transform="rotate(90,5940,2895)">
+        <!-- coordinates: x = 5940 y = 2895 -->
+        <path d="M 5890 2895 A 25 25 0 0 0 5940 2895" />
+        <path d="M 5990 2845 A 25 25 0 0 0 5940 2845" />
+        <path d="M 5940 2895 L 5940 2845 " />
+        <path d="M 5890 2795 L 5890 2895" />
+        <path d="M 5990 2945 L 5990 2845" />
+        <text class="reference static-color text-C" x="5865" y="3095" visibility="hidden" transform="rotate(-90,5865,3095)">Barrier?</text>
+        <text class="value text-R" x="5910" y="2955" visibility="visible" transform="rotate(-90,5910,2955)">ox_bottom_tank_pressure</text>
+        <text class="valueRaw text-R" x="5910" y="2955" visibility="hidden" transform="rotate(-90,5910,2955)">ox_bottom_tank_pressure</text>
     </g>
 
 <!-- Wires-->
@@ -1120,20 +1108,9 @@
     <g class="ox_bottom_tank_pressure wire" data-pnid-wire="">
         <line x1="5745" y1="4630" x2="6020" y2="4630" />
     </g>
-    <g class="igniter_pressure wire" data-pnid-wire="">
+    <g class="igniter_chamber_pressure wire" data-pnid-wire="">
         <line x1="5870" y1="6205" x2="5795" y2="6205" />
         <line x1="5795" y1="6205" x2="5795" y2="6405" />
-    </g>
-    <g class="fuel_top_tank_pressure wire" data-pnid-wire="">
-        <line x1="3545" y1="1880" x2="4070" y2="1880" />
-        <line x1="4070" y1="1880" x2="4645" y2="1880" />
-        <line x1="3320" y1="1880" x2="3545" y2="1880" />
-        <line x1="3545" y1="1880" x2="3545" y2="2105" />
-        <line x1="4070" y1="1680" x2="4070" y2="1880" />
-        <line x1="4645" y1="1880" x2="4645" y2="2580" />
-        <line x1="4645" y1="1680" x2="4645" y2="1880" />
-        <line x1="4545" y1="2580" x2="4645" y2="2580" />
-        <line x1="4645" y1="2580" x2="4645" y2="3130" />
     </g>
     <g class="igniter_ox_solenoid wire" data-pnid-wire="">
         <line x1="6645" y1="6130" x2="6645" y2="6555" />
@@ -1172,23 +1149,6 @@
         <line x1="7895" y1="1880" x2="8120" y2="1880" />
         <line x1="7670" y1="1880" x2="7895" y2="1880" />
     </g>
-    <g class="ox_pressurant_press_pressure wire" data-pnid-wire="">
-        <line x1="7070" y1="1180" x2="7070" y2="1880" />
-        <line x1="6770" y1="1880" x2="7070" y2="1880" />
-        <line x1="7070" y1="1880" x2="7270" y2="1880" />
-        <line x1="7070" y1="1880" x2="7070" y2="2105" />
-    </g>
-    <g class="ox_top_tank_pressure wire" data-pnid-wire="">
-        <line x1="6395" y1="2905" x2="6295" y2="2905" />
-        <line x1="5945" y1="2905" x2="6295" y2="2905" />
-        <line x1="6295" y1="2905" x2="6295" y2="3130" />
-        <line x1="6295" y1="2620" x2="6295" y2="2905" />
-        <line x1="6295" y1="1880" x2="6295" y2="2620" />
-        <line x1="5945" y1="2620" x2="6295" y2="2620" />
-        <line x1="6045" y1="1880" x2="6295" y2="1880" />
-        <line x1="6295" y1="1680" x2="6295" y2="1880" />
-        <line x1="6295" y1="1880" x2="6570" y2="1880" />
-    </g>
     <g class="fuel_pressurant_bottle_pressure wire" data-pnid-wire="">
         <line x1="1795" y1="1880" x2="1895" y2="1880" />
         <line x1="1895" y1="1880" x2="2070" y2="1880" />
@@ -1199,6 +1159,15 @@
         <line x1="2695" y1="1880" x2="2920" y2="1880" />
         <line x1="2470" y1="1880" x2="2695" y2="1880" />
         <line x1="2695" y1="1880" x2="2695" y2="2105" />
+    </g>
+    <g class="fuel_top_tank_pressure wire" data-pnid-wire="">
+        <line x1="4545" y1="2580" x2="4645" y2="2580" />
+        <line x1="4645" y1="1880" x2="4645" y2="2580" />
+        <line x1="4645" y1="2580" x2="4645" y2="3130" />
+        <line x1="4645" y1="1680" x2="4645" y2="1880" />
+        <line x1="3545" y1="1880" x2="4645" y2="1880" />
+        <line x1="3320" y1="1880" x2="3545" y2="1880" />
+        <line x1="3545" y1="1880" x2="3545" y2="2105" />
     </g>
     <g class="purge_bottle_pressure wire" data-pnid-wire="">
         <line x1="970" y1="5830" x2="1070" y2="5830" />
@@ -1273,10 +1242,22 @@
         <line x1="4645" y1="1130" x2="4645" y2="1280" />
     </g>
     <g class="wire" data-pnid-wire="">
-        <line x1="4070" y1="1130" x2="4070" y2="1280" />
+        <line x1="5495" y1="1880" x2="5645" y2="1880" />
+    </g>
+    <g class="ox_bottom_tank_pressure wire" data-pnid-wire="">
+        <line x1="6045" y1="1880" x2="6295" y2="1880" />
+        <line x1="6295" y1="1680" x2="6295" y2="1880" />
+        <line x1="6295" y1="1880" x2="6570" y2="1880" />
+        <line x1="6295" y1="1880" x2="6295" y2="2620" />
+        <line x1="5945" y1="2620" x2="6295" y2="2620" />
+        <line x1="6295" y1="2620" x2="6295" y2="2845" />
+        <line x1="6040" y1="2845" x2="6295" y2="2845" />
+        <line x1="6295" y1="2845" x2="6295" y2="3130" />
     </g>
     <g class="wire" data-pnid-wire="">
-        <line x1="5495" y1="1880" x2="5645" y2="1880" />
+        <line x1="6770" y1="1880" x2="7070" y2="1880" />
+        <line x1="7070" y1="1880" x2="7270" y2="1880" />
+        <line x1="7070" y1="1880" x2="7070" y2="2105" />
     </g>
     <g class="wire" data-pnid-wire="">
         <line x1="7070" y1="2505" x2="7070" y2="2655" />
@@ -1319,6 +1300,10 @@
     <g class="igniter_ox_solenoid wire" data-pnid-wire="">
         <line x1="7070" y1="6130" x2="7420" y2="6130" />
     </g>
+    <g class="ox_bottom_tank_pressure wire" data-pnid-wire="">
+        <line x1="5615" y1="2945" x2="5695" y2="2945" />
+        <line x1="5695" y1="2945" x2="5890" y2="2945" />
+    </g>
     <line class="note-line" x1="7995" y1="4580" x2="11145" y2="4580" />
     <line class="note-line" x1="11145" y1="4650" x2="11145" y2="2200" />
     <line class="note-line" x1="11145" y1="2130" x2="9495" y2="2130" />
@@ -1337,8 +1322,6 @@
     <line class="note-line" x1="3070" y1="3105" x2="3070" y2="7505" />
     <line class="note-line" x1="5070" y1="2080" x2="6220" y2="2080" />
     <line class="note-line" x1="1045" y1="680" x2="9420" y2="680" />
-    <line class="note-line" x1="5070" y1="4205" x2="5845" y2="4205" />
-    <line class="note-line" x1="5845" y1="3080" x2="9420" y2="3080" />
     <line class="note-line" x1="1045" y1="3105" x2="5070" y2="3105" />
     <line class="note-line" x1="5070" y1="4205" x2="5070" y2="680" />
     <line class="note-line" x1="7945" y1="4630" x2="7945" y2="3080" />
@@ -1348,6 +1331,7 @@
     <line class="note-line" x1="5720" y1="6630" x2="6870" y2="6630" />
     <line class="note-line" x1="6470" y1="4630" x2="11095" y2="4630" />
     <line class="note-line" x1="5845" y1="4205" x2="5845" y2="3080" />
+    <line class="note-line" x1="5075" y1="3080" x2="9420" y2="3080" />
 
 <!-- Connections-->
 
@@ -1364,7 +1348,6 @@
     <circle cx="8845" cy="5455" r="2" fill="green" />
     <circle cx="8845" cy="6130" r="2" fill="green" />
     <circle cx="8695" cy="1880" r="2" fill="green" />
-    <circle cx="6295" cy="2905" r="2" fill="green" />
     <circle cx="1895" cy="1880" r="2" fill="green" />
     <circle cx="4645" cy="2580" r="2" fill="green" />
     <circle cx="1070" cy="5830" r="2" fill="green" />
@@ -1373,7 +1356,6 @@
     <circle cx="8920" cy="5455" r="2" fill="green" />
     <circle cx="8920" cy="6130" r="2" fill="green" />
     <circle cx="3595" cy="5330" r="2" fill="green" />
-    <circle cx="4070" cy="1880" r="2" fill="green" />
     <circle cx="2720" cy="5830" r="2" fill="green" />
     <circle cx="6295" cy="4405" r="2" fill="green" />
     <circle cx="9720" cy="4405" r="2" fill="green" />
@@ -1384,4 +1366,6 @@
     <circle cx="4645" cy="4330" r="2" fill="green" />
     <circle cx="6295" cy="2620" r="2" fill="green" />
     <circle cx="4645" cy="5480" r="2" fill="green" />
+    <circle cx="5695" cy="2945" r="2" fill="green" />
+    <circle cx="6295" cy="2845" r="2" fill="green" />
 </svg>
