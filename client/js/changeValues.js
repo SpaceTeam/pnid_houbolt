@@ -1,59 +1,43 @@
-var config = {
-    "pressure": {
-        "states": [
-            "chamber_pressure"
-        ],
-        "eval": "if (inVars['value'] > 9) { outVars['color']='high' } else if (inVars['value'] > 7) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    },
-    "temperature_oxidizer_tank": {
-        "states": [
-            "ox_top_temp",
-            "ox_mid_top_temp",
-            "ox_mid_temp",
-            "ox_mid_bottom_temp",
-            "ox_bottom_temp",
-            "ox_top_temp_backup",
-            "ox_bottom_temp_backup"
-        ],
-        "eval": "if (inVars['value'] > 35) { outVars['color']='high' } else if (inVars['value'] > 2) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    }
-};
-
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
-const defaultConfig = {
-    "PnID-Valve_Solenoid": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
-    },
-    "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
-    },
-    "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
-    },
-	"PnID-Valve_Needle_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
-    },
-    "PnID-Sensor_Pressure": {
-        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
-    },
-    "PnID-Sensor_Temperature": {
-        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
-    },
-    "PnID-Sensor_MassFlow": {
-        "eval": "",
-	    "popup": "value:display"
-    },
-    "PnID-Tank": {
-        "eval": "",
-        "popup": ""
+let defaultConfig = {};
+
+$.get('/config/default', function(data) {
+    defaultConfig = data;
+});
+
+let config = {};
+
+$.get('/config/custom', function(data) {
+    config = data;
+});
+
+let thresholds = {};
+
+$.get('/config/thresholds', function(data) {
+    thresholds = data;
+});
+
+createLogBox();
+
+function checkStringIsNumber(string)
+{
+    if (typeof string == "string")
+    {
+        let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
+                                                      //checks for float with either 1 or more digits followed by decimal point followed by 0 or more digits (3. or 3.04, but not .2), or
+                                                      //0 or more digits followed by decimal point followed by 1 or more digits (.3 or 1.345, but not 2.)
+        if (!re.test(string))
+        {
+            return false;
+        }
     }
-};
+    else
+    {
+        printLog("warning", "Tried checking if a string is a number, but didn't receive a string: " + string);
+        return false;
+    }
+    return true;
+}
 
 //setup tanks for filling visuals
 function tankSetup()
@@ -124,52 +108,29 @@ function extractXYFromPath(path)
     return [pathAttr[1], pathAttr[2]];
 }
 
-
-function startLoop() {
-	var i;
-	var x = 100;
-	var j = 2;
-	var increasing = true;
-	console.log(document.getElementById("PS_FP_FT1_Text"));
-	setInterval(function(){
-			if (increasing) {
-			j += 1;
-			} else {
-				j -= 1;
-			}
-			if (j > 99 || j < 2) {
-				increasing = !increasing;
-			}
-			$("#OV_FP_FT1").css("stroke-width", (j/10).toString());
-			$("#OV_FP_FT1").text(j);
-		}, 10);
-		
-	
-}
-
 async function runTests()
 {
 	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
+	var testData = [{"name": "purge_regulator_pressure", "value": 95.0}, {"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "purge_solenoid", "value": 1.0}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "purge_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
+	await sleep(1000);
+	var testData = [{"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
+	await sleep(1000);
+	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
+	await sleep(1000);
+	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
 	updatePNID(testData);
-	await sleep(500);
-	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
+	await sleep(1000);
+	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}, {"name": "ox_bottom_temp", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
+	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}, {"name": "ox_depressurize_solenoid", "value": 20.0}];
@@ -178,6 +139,11 @@ async function runTests()
 	var testData = [{"name": "fuel_pressurize_solenoid", "value": 5.0}, {"name": "fuel_depressurize_solenoid", "value": 1.0}];
 	updatePNID(testData);
 	await sleep(500);
+}
+
+function test()
+{
+    console.log(activePopups);
 }
 
 function runRandom()
@@ -204,6 +170,9 @@ function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
 	{
+		//let stateName = stateNameList[stateIndex]["name"];
+		//let stateValue = stateNameList[stateIndex]["value"];
+		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setStateName(stateNameList[stateIndex]);
 	}
 }
@@ -219,17 +188,25 @@ function setStateName(state)
 	elementGroup.find("text.reference").text(state["label"]);
 }
 
-//updatePNID(testData);
-//updatePNID([{"name": "PnID-Valve_Solenoid", "value": 12.0}, {"name": "solenoid2", "value": 8.0}]);
+function getElementValue(name, rawValue)
+{
+    let searchString = "text.value";
+    if (rawValue === true)
+    {
+        searchString = "text.valueRaw";
+    }
+    return $(document).find(`g.${name}`).find(searchString).text();
+}
+
 function updatePNID(stateList)
 {
-	// console.log("Updating PnID with:", stateList);
+	//printLog("info", "Updating PnID with: " + stateList);
 	
 	for (stateIndex in stateList)
 	{
-		let stateName = stateList[stateIndex]["name"];
-		let stateValue = stateList[stateIndex]["value"];
-		//console.log("updating pnid for state name: '", stateName, "' value:",  stateValue);
+		//let stateName = stateList[stateIndex]["name"];
+		//let stateValue = stateList[stateIndex]["value"];
+		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setState(stateList[stateIndex]);
 	}
 	
@@ -238,15 +215,25 @@ function updatePNID(stateList)
 
 function setState(state)
 {
+    if (!checkStringIsNumber(state["value"]))
+    {
+        printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+        return;
+    }
+    
 	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
+	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
 		return;
 	}
 
     let unit = elementGroup.attr("data-unit");
+    //raw value without any processing
+    elementGroup.find("text.valueRaw").text(state["value"]);
+    //human visible value that may contain units or further processing
 	elementGroup.find("text.value").text(state["value"] + unit);
-	// console.log("Found following elements to update:", $(document).find("g." + state["name"]));
+	//printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 
 	//----- prepare for eval behavior block
 	//In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
@@ -265,22 +252,28 @@ function setState(state)
 	//----- search applicable eval behavior blocks from config files (either default config or custom config)
 	//fetch all classes of the element group into an array
 	let classes = elementGroup.attr("class").split(" ");
+	
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
 		let typeClass = classes[classIndex];
-		if ("wire" in classes)
+		if (classes.includes("wire"))
 		{
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
 
 		let re = /PnID-\S*/;
+		//search for typeClass in the default config and run the eval behavior code and update popups (if applicable)
 		if (re.test(typeClass) && (typeClass in defaultConfig))
 		{
 			eval(defaultConfig[typeClass]["eval"]);
             if (typeClass === "PnID-Tank")
             {
                 updateTankContent(elementGroup, state["value"]);
+            }
+            if (defaultConfig[typeClass]["popup"] != undefined)
+            {
+                updatePopup(typeClass, state["name"], outVars["value"], state["value"]);
             }
 		}
 	}
@@ -289,7 +282,7 @@ function setState(state)
 	let configProperties = Object.keys(config);
 	for (propIndex in configProperties)
 	{
-		//console.log("searching for state", state["name"], "from available states:", config[configProperties[propIndex]]["states"]);
+		//printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
 		if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
 		{
 			eval(config[configProperties[propIndex]]["eval"]);
@@ -303,7 +296,7 @@ function applyUpdatesToPnID(elementGroup, outVars)
 {
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
-	//console.log("Found these attributes:", attributes);
+	//printLog("info", "Found these attributes:" + attributes);
 	
 	//apply all outVars to PnID
 	if ("color" in outVars)
@@ -328,7 +321,8 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("crossUpdate" in outVars)
 	{
-		updatePnID(outVars["crossUpdate"]);
+	    //console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
+		updatePNID(outVars["crossUpdate"]);
 	}
 }
 

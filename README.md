@@ -13,6 +13,8 @@ Uses TXV_Teststand_PnID (branch html_pnid) as base.
 
 Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_name.sch ../path_to_symbol_lib/pnid_lib_name.lib`
 
+*Note: The parser generates a list of svg `<g>` elements with a bunch of classes to identify and design it. These classes need to be in this exact order (Reference `S3`, Type `PnID-Valve_Solenoid`, (identifying) name `fuel_pressurize_solenoid`, `comp` or `wire`), otherwise popups won't work as expected
+
 ## config.json
 
 The config is parsed top to bottom, so any default behavior should be as high up as possible while any custom behavior for individual elements should go below the default ones. (Currently hardcoded in the .js)

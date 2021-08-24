@@ -9,6 +9,7 @@ app.use(bp.urlencoded({ extended: true }))
 
 const path = __dirname + '/client/';
 const pnidPath = path + "PnID_Franz.pnid";
+const configPath = path + 'config/';
 
 var port = 80;
 
@@ -30,8 +31,23 @@ app.use(express.static(path));
 
 
 app.get('/', (req, res) => {
-    let rawdata = fs.readFileSync(pnidPath);
+    //let rawdata = fs.readFileSync(pnidPath);
 	res.sendFile(path + 'PnID_Franz.html')
+});
+
+app.get('/config/custom', (req, res) => {
+    //let rawdata = fs.readFileSync(configPath + 'config.json');
+	res.sendFile(configPath + 'config.json')
+});
+
+app.get('/config/default', (req, res) => {
+    //let rawdata = fs.readFileSync(configPath + 'defaultConfig.json');
+	res.sendFile(configPath + 'defaultConfig.json')
+});
+
+app.get('/config/thresholds', (req, res) => {
+    //let rawdata = fs.readFileSync(configPath + 'thresholds.json');
+	res.sendFile(configPath + 'thresholds.json')
 });
 
 //Big no no security wise

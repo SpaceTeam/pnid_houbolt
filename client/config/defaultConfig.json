@@ -1,0 +1,114 @@
+{
+    "PnID-Valve_Solenoid": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Pneumatic": {
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+	"PnID-Valve_Needle_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+    "PnID-Sensor_Pressure": {
+        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_Temperature": {
+        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_MassFlow": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Tank": {
+        "eval": "",
+        "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_low"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_high"
+            }
+        ]
+    }
+}
