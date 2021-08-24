@@ -1017,21 +1017,10 @@
         <path d="M 3795 3765 L 3895 3765 " />
         <path d="M 3695 3765 L 3795 3765" />
         <text class="sensor-letter static-color text-C" x="3995" y="3765" transform="rotate(180,3995,3765)">T</text>
-        <text class="reference static-color text-R" x="4140" y="3725" visibility="visible" transform="rotate(180,4140,3725)">T3</text>
-        <text class="value text-R" x="4140" y="3815" visibility="visible" transform="rotate(180,4140,3815)">fuel_mid_bottom_tank_temp</text>
-        <text class="valueRaw text-R" x="4140" y="3815" visibility="hidden" transform="rotate(180,4140,3815)">fuel_mid_bottom_tank_temp</text>
+        <text class="reference static-color text-R" x="4140" y="3815" visibility="visible" transform="rotate(180,4140,3815)">T3</text>
+        <text class="value text-R" x="4135" y="3725" visibility="visible" transform="rotate(180,4135,3725)">fuel_mid_bottom_tank_temp</text>
+        <text class="valueRaw text-R" x="4135" y="3725" visibility="hidden" transform="rotate(180,4135,3725)">fuel_mid_bottom_tank_temp</text>
         <text class="Unit" x="3995" y="3765" visibility="hidden" transform="rotate(180,3995,3765)">ºC</text>
-    </g>
-    <g class="T2 PnID-Sensor_Temperature fuel_mid_top_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T2', 'PnID-Sensor_Temperature', 'fuel_mid_top_tank_temp')"transform="rotate(180,3995,3500)">
-        <!-- coordinates: x = 3995 y = 3500 -->
-        <circle cx="3995" cy="3500" r="100" />
-        <path d="M 3795 3500 L 3895 3500 " />
-        <path d="M 3695 3500 L 3795 3500" />
-        <text class="sensor-letter static-color text-C" x="3995" y="3500" transform="rotate(180,3995,3500)">T</text>
-        <text class="reference static-color text-R" x="4140" y="3460" visibility="visible" transform="rotate(180,4140,3460)">T2</text>
-        <text class="value text-R" x="4140" y="3550" visibility="visible" transform="rotate(180,4140,3550)">fuel_mid_top_tank_temp</text>
-        <text class="valueRaw text-R" x="4140" y="3550" visibility="hidden" transform="rotate(180,4140,3550)">fuel_mid_top_tank_temp</text>
-        <text class="Unit" x="3995" y="3500" visibility="hidden" transform="rotate(180,3995,3500)">ºC</text>
     </g>
     <g class="V11 PnID-Valve_Servo oxfill_tank_valve comp" data-value="40" data-unit="" data-pnid-valve_servo="" pointer-events="bounding-box" onclick="clickEventListenever('V11', 'PnID-Valve_Servo', 'oxfill_tank_valve')">
         <!-- coordinates: x = 7470 y = 4405 -->
@@ -1077,6 +1066,17 @@
         <text class="reference static-color text-C" x="5865" y="3095" visibility="hidden" transform="rotate(-90,5865,3095)">Barrier?</text>
         <text class="value text-R" x="5910" y="2955" visibility="visible" transform="rotate(-90,5910,2955)">ox_bottom_tank_pressure</text>
         <text class="valueRaw text-R" x="5910" y="2955" visibility="hidden" transform="rotate(-90,5910,2955)">ox_bottom_tank_pressure</text>
+    </g>
+    <g class="T2 PnID-Sensor_Temperature fuel_mid_top_tank_temp comp" data-value="40" data-unit="ºC" data-pnid-sensor_temperature="" pointer-events="bounding-box" onclick="clickEventListenever('T2', 'PnID-Sensor_Temperature', 'fuel_mid_top_tank_temp')"transform="rotate(180,3995,3500)">
+        <!-- coordinates: x = 3995 y = 3500 -->
+        <circle cx="3995" cy="3500" r="100" />
+        <path d="M 3795 3500 L 3895 3500 " />
+        <path d="M 3695 3500 L 3795 3500" />
+        <text class="sensor-letter static-color text-C" x="3995" y="3500" transform="rotate(180,3995,3500)">T</text>
+        <text class="reference static-color text-R" x="4140" y="3550" visibility="visible" transform="rotate(180,4140,3550)">T2</text>
+        <text class="value text-R" x="4140" y="3460" visibility="visible" transform="rotate(180,4140,3460)">fuel_mid_top_tank_temp</text>
+        <text class="valueRaw text-R" x="4140" y="3460" visibility="hidden" transform="rotate(180,4140,3460)">fuel_mid_top_tank_temp</text>
+        <text class="Unit" x="3995" y="3500" visibility="hidden" transform="rotate(180,3995,3500)">ºC</text>
     </g>
 
 <!-- Wires-->
