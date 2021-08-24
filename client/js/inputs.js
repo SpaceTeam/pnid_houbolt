@@ -1,17 +1,31 @@
+//TODO: implement state update event properly with event dispatcher or so
+function stateUpdate(stateName, value)
+{
+    if (onPNIDInput === undefined)
+    {
+        printLog("error", "onPNIDInput function not defined, ignoring input action of: " + stateName);
+    }
+    else
+    {
+        onPNIDInput(stateName, value, Date.now()*1000);
+    }
+    
+    printLog("info", "stateUpdate: " + stateName + " , value: " + value);
+}
+
 function onServoSliderInput(servoSlider)
 {
     let stateName = $(servoSlider).attr("state");
-    let newVal = $(servoSlider).val();
-    let stateUpdate = {"name": stateName, "value": newVal};
-    printLog("info", stateUpdate);
+    let newVal = parseFloat($(servoSlider).val());
+    stateUpdate(stateName, newVal); //convert date now from milliseconds to micros
+    
 }
 
 function onDigitalCheck(checkbox)
 {
     let stateName = $(checkbox).attr("state");
-    let newVal = $(checkbox).prop("checked");
-    let stateUpdate = {"name": stateName, "value": newVal};
     //this will create true or false as value, but this is not really what we want, the state updates *receive* a number that is then mapped - do we have to make a "reverse mapping" where
-    // eg true = 100 and false = 0, a default mapping (truthy values = 1, non-truthy = 0?) or just send true and false and let the LLServer deal with it?
-    printLog("info", stateUpdate);
+    //for now we convert to 0 for false and 1 for true
+    let newVal = checkbox.checked ? 1 : 0;
+    stateUpdate(stateName, newVal);
 }
