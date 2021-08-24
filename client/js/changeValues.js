@@ -1,17 +1,180 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
-let defaultConfig = {};
+let defaultConfig = {
+    "PnID-Valve_Solenoid": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Pneumatic": {
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+	"PnID-Valve_Needle_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+    "PnID-Sensor_Pressure": {
+        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_Temperature": {
+        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_MassFlow": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Tank": {
+        "eval": "",
+        "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_low"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_high"
+            }
+        ]
+    }
+};
 
 $.get('/config/default', function(data) {
     defaultConfig = data;
 });
 
-let config = {};
+let config = {
+    "pressure": {
+        "states": [
+            "chamber_pressure"
+        ],
+        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "temperature_oxidizer_tank": {
+        "states": [
+            "ox_top_temp",
+            "ox_mid_top_temp",
+            "ox_mid_temp",
+            "ox_mid_bottom_temp",
+            "ox_bottom_temp",
+            "ox_top_temp_backup",
+            "ox_bottom_temp_backup"
+        ],
+        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "purge_solenoid_pressure": {
+        "states": [
+            "purge_solenoid"
+        ],
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "purge_solenoid_wire_pressure": {
+        "states": [
+            "purge_regulator_pressure"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    }
+};
 
 $.get('/config/custom', function(data) {
     config = data;
 });
 
-let thresholds = {};
+let thresholds = {
+    "oxPressure": {
+        "low": 32.0,
+        "high": 42.0,
+        "safe": 2.0
+    },
+    "oxTemp": {
+        "low": 2.0,
+        "high": 35.0
+    },
+    "fuelPressure": {
+        "low": 30.0,
+        "high": 34.0,
+        "safe": 2.0
+    },
+    "chamberPressure": {
+        "low": 7.0,
+        "high": 9.0
+    }
+};
 
 $.get('/config/thresholds', function(data) {
     thresholds = data;
@@ -21,6 +184,7 @@ createLogBox();
 
 function checkStringIsNumber(string)
 {
+	// console.log(typeof string);
     if (typeof string == "string")
     {
         let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
@@ -31,9 +195,9 @@ function checkStringIsNumber(string)
             return false;
         }
     }
-    else
+    else if (typeof string != "number")
     {
-        printLog("warning", "Tried checking if a string is a number, but didn't receive a string: " + string);
+        printLog("warning", "Tried checking if a string is a number, but didn't receive a string nor number: " + string);
         return false;
     }
     return true;
@@ -221,7 +385,8 @@ function setState(state)
         return;
     }
     
-	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
+	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
+	let elementGroup = $(document).find("g." + state["name"].replace(":sensor","").replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
