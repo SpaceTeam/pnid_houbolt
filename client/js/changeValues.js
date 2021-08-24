@@ -210,7 +210,7 @@ function setStateNamesPNID(stateNameList)
 
 function setStateName(state)
 {
-	let elementGroup = $(document).find("g." + state["name"]);
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 		return;
@@ -238,7 +238,7 @@ function updatePNID(stateList)
 
 function setState(state)
 {
-	let elementGroup = $(document).find("g." + state["name"]);
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 		return;
