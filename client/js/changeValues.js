@@ -216,8 +216,8 @@ function tankSetup()
 
 function initTankContent(tanks)
 {
-    let fuelPaths = extractArcPathsFromTank(tanks.filter(".Fuel"));
-    let oxPaths = extractArcPathsFromTank(tanks.filter(".Oxidizer"));
+    let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
+    let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
     let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
@@ -225,7 +225,7 @@ function initTankContent(tanks)
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0)");
 
-    let oxContentRect = tanks.filter(".ox_Tank").find("rect.rect");
+    let oxContentRect = tanks.filter(".ox_tank").find("rect.rect");
     let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
