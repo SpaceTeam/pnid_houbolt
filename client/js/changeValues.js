@@ -43,8 +43,8 @@ function checkStringIsNumber(string)
 function tankSetup()
 {
     let tanks = $(document).find("g.PnID-Tank");
-    let fuelPaths = tanks.filter(".Fuel").find("path[d*=' A ']");
-    let oxPaths = tanks.filter(".Oxidizer").find("path[d*=' A ']");
+    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']");
+    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']");
     fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
     oxPaths.attr(`data-pnid-tank_content`, `ox`);
     initTankContent(tanks);
@@ -55,13 +55,13 @@ function initTankContent(tanks)
     let fuelPaths = extractArcPathsFromTank(tanks.filter(".Fuel"));
     let oxPaths = extractArcPathsFromTank(tanks.filter(".Oxidizer"));
 
-    let fuelContentRect = tanks.filter(".Fuel").find("rect.rect");
+    let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0)");
 
-    let oxContentRect = tanks.filter(".Oxidizer").find("rect.rect");
+    let oxContentRect = tanks.filter(".ox_Tank").find("rect.rect");
     let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
@@ -112,22 +112,22 @@ async function runTests()
 {
 	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "purge_regulator_pressure", "value": 95.0}, {"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "purge_solenoid", "value": 1.0}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
+	var testData = [{"name": "purge_regulator_pressure", "value": "95.0"}, {"name": "fuel_tank", "value": "95.0"}, {"name": "fuel_top_tank_temp", "value": "27"}, {"name": "purge_solenoid", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure", "value": "30.0"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
+	var testData = [{"name": "oxfill_vent_valve", "value": "10"}, {"name": "fuel_bottom_tank_temp", "value": "101"}];
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
+	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_tank_temp", "value": 22}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
+	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp", "value": 5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}, {"name": "ox_bottom_temp", "value": -4}];
+	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
@@ -215,10 +215,13 @@ function updatePNID(stateList)
 
 function setState(state)
 {
-    if (!checkStringIsNumber(state["value"]))
+    if (typeof state["value"] != "number")
     {
-        printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
-        return;
+        if (!checkStringIsNumber(state["value"]))
+        {
+            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+            return;
+        }
     }
     
 	let elementGroup = $(document).find("g." + state["name"]);
