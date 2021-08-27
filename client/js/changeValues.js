@@ -115,7 +115,7 @@ let defaultConfig = {
 };
 
 $.get('/config/default', function(data) {
-    defaultConfig = data;
+    //defaultConfig = data;
 });
 
 let config = {
@@ -127,13 +127,10 @@ let config = {
     },
     "temperature_oxidizer_tank": {
         "states": [
-            "ox_top_temp",
-            "ox_mid_top_temp",
-            "ox_mid_temp",
-            "ox_mid_bottom_temp",
-            "ox_bottom_temp",
-            "ox_top_temp_backup",
-            "ox_bottom_temp_backup"
+            "ox_top_tank_temp",
+            "ox_mid_top_tank_temp",
+            "ox_mid_bottom_tank_temp",
+            "ox_bottom_tank_temp"
         ],
         "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
@@ -152,7 +149,7 @@ let config = {
 };
 
 $.get('/config/custom', function(data) {
-    config = data;
+    //config = data;
 });
 
 let thresholds = {
@@ -177,7 +174,7 @@ let thresholds = {
 };
 
 $.get('/config/thresholds', function(data) {
-    thresholds = data;
+    //thresholds = data;
 });
 
 createLogBox();
