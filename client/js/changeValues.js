@@ -392,7 +392,7 @@ function setState(state)
 	let elementGroup = $(document).find("g." + state["name"].replace(":sensor","").replace(":","-"));
 	if (elementGroup.length === 0)
 	{
-	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+	    //printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
 		return;
 	}
 
