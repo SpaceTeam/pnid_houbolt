@@ -399,7 +399,7 @@ function setState(state)
     }
     
 	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
-	let elementGroup = $(document).find("g." + state["name"].replace(":sensor","").replace(":","-"));
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
