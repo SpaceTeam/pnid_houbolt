@@ -1081,7 +1081,7 @@
 
 <!-- Wires-->
 
-    <g class="fuel_main_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_main_pressure-sensor wire" data-pnid-wire="">
         <line x1="4645" y1="5330" x2="3595" y2="5330" />
         <line x1="4645" y1="5330" x2="4645" y2="5480" />
         <line x1="3595" y1="5330" x2="3595" y2="5480" />
@@ -1091,38 +1091,38 @@
         <line x1="4645" y1="5480" x2="4645" y2="6230" />
         <line x1="4645" y1="6230" x2="4795" y2="6230" />
     </g>
-    <g class="oxfill_pressure:sensor wire" data-pnid-wire="">
+    <g class="oxfill_pressure-sensor wire" data-pnid-wire="">
         <line x1="8545" y1="4405" x2="8270" y2="4405" />
         <line x1="8545" y1="4405" x2="8920" y2="4405" />
         <line x1="8545" y1="4180" x2="8545" y2="4405" />
         <line x1="8920" y1="4405" x2="9120" y2="4405" />
         <line x1="8920" y1="4280" x2="8920" y2="4405" />
     </g>
-    <g class="oxfill_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="oxfill_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="10170" y1="4405" x2="10070" y2="4405" />
         <line x1="9720" y1="4405" x2="10070" y2="4405" />
         <line x1="10070" y1="4080" x2="10070" y2="4405" />
         <line x1="9720" y1="4280" x2="9720" y2="4405" />
         <line x1="9520" y1="4405" x2="9720" y2="4405" />
     </g>
-    <g class="ox_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="5745" y1="4630" x2="6020" y2="4630" />
     </g>
     <g class="igniter_chamber_pressure wire" data-pnid-wire="">
         <line x1="5870" y1="6205" x2="5795" y2="6205" />
         <line x1="5795" y1="6205" x2="5795" y2="6405" />
     </g>
-    <g class="igniter_ox_solenoid:sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_solenoid-sensor wire" data-pnid-wire="">
         <line x1="6645" y1="6130" x2="6645" y2="6555" />
         <line x1="6645" y1="6130" x2="6870" y2="6130" />
         <line x1="5995" y1="6555" x2="6645" y2="6555" />
     </g>
-    <g class="igniter_fuel_solenoid:sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
         <line x1="6545" y1="5455" x2="6545" y2="6455" />
         <line x1="5995" y1="6455" x2="6545" y2="6455" />
         <line x1="6545" y1="5455" x2="6870" y2="5455" />
     </g>
-    <g class="igniter_fuel_regulator_pressure:sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_regulator_pressure-sensor wire" data-pnid-wire="">
         <line x1="8845" y1="5105" x2="8845" y2="5455" />
         <line x1="8920" y1="5455" x2="8845" y2="5455" />
         <line x1="7820" y1="5455" x2="8845" y2="5455" />
@@ -1130,7 +1130,7 @@
         <line x1="8920" y1="5455" x2="9070" y2="5455" />
         <line x1="8920" y1="5275" x2="8920" y2="5455" />
     </g>
-    <g class="igniter_ox_regulator_pressure:sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_regulator_pressure-sensor wire" data-pnid-wire="">
         <line x1="8845" y1="5830" x2="8845" y2="6130" />
         <line x1="8920" y1="6130" x2="8845" y2="6130" />
         <line x1="7820" y1="6130" x2="8845" y2="6130" />
@@ -1138,29 +1138,29 @@
         <line x1="8920" y1="6005" x2="8920" y2="6130" />
         <line x1="8920" y1="6130" x2="9070" y2="6130" />
     </g>
-    <g class="ox_pressurant_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_pressurant_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="8795" y1="1880" x2="8695" y2="1880" />
         <line x1="8520" y1="1880" x2="8695" y2="1880" />
         <line x1="8695" y1="1880" x2="8695" y2="2055" />
     </g>
-    <g class="ox_pressurant_regulator_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_pressurant_regulator_pressure-sensor wire" data-pnid-wire="">
         <line x1="7895" y1="1330" x2="7895" y2="1880" />
         <line x1="7895" y1="1880" x2="7895" y2="2105" />
         <line x1="7895" y1="1880" x2="8120" y2="1880" />
         <line x1="7670" y1="1880" x2="7895" y2="1880" />
     </g>
-    <g class="fuel_pressurant_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_pressurant_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="1795" y1="1880" x2="1895" y2="1880" />
         <line x1="1895" y1="1880" x2="2070" y2="1880" />
         <line x1="1895" y1="1880" x2="1895" y2="2055" />
     </g>
-    <g class="fuel_pressurant_regulator_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_pressurant_regulator_pressure-sensor wire" data-pnid-wire="">
         <line x1="2695" y1="1780" x2="2695" y2="1880" />
         <line x1="2695" y1="1880" x2="2920" y2="1880" />
         <line x1="2470" y1="1880" x2="2695" y2="1880" />
         <line x1="2695" y1="1880" x2="2695" y2="2105" />
     </g>
-    <g class="fuel_top_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_top_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="4545" y1="2580" x2="4645" y2="2580" />
         <line x1="4645" y1="1880" x2="4645" y2="2580" />
         <line x1="4645" y1="2580" x2="4645" y2="3130" />
@@ -1169,18 +1169,18 @@
         <line x1="3320" y1="1880" x2="3545" y2="1880" />
         <line x1="3545" y1="1880" x2="3545" y2="2105" />
     </g>
-    <g class="purge_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="purge_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="970" y1="5830" x2="1070" y2="5830" />
         <line x1="1070" y1="5830" x2="1245" y2="5830" />
         <line x1="1070" y1="5830" x2="1070" y2="6005" />
     </g>
-    <g class="purge_regulator_pressure:sensor wire" data-pnid-wire="">
+    <g class="purge_regulator_pressure-sensor wire" data-pnid-wire="">
         <line x1="1870" y1="5730" x2="1870" y2="5830" />
         <line x1="1870" y1="5830" x2="2095" y2="5830" />
         <line x1="1870" y1="5830" x2="1870" y2="6055" />
         <line x1="1645" y1="5830" x2="1870" y2="5830" />
     </g>
-    <g class="igniter_ox_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="9595" y1="6030" x2="9595" y2="6130" />
         <line x1="9470" y1="6130" x2="9595" y2="6130" />
         <line x1="9595" y1="6130" x2="9720" y2="6130" />
@@ -1192,43 +1192,43 @@
         <line x1="2495" y1="5830" x2="2720" y2="5830" />
         <line x1="2720" y1="7005" x2="4720" y2="7005" />
     </g>
-    <g class="ox_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="6295" y1="4405" x2="6295" y2="4530" />
         <line x1="6170" y1="4530" x2="6295" y2="4530" />
         <line x1="6295" y1="4130" x2="6295" y2="4405" />
         <line x1="6295" y1="4530" x2="6295" y2="4780" />
         <line x1="6295" y1="4405" x2="7270" y2="4405" />
     </g>
-    <g class="ox_main_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_main_pressure-sensor wire" data-pnid-wire="">
         <line x1="5595" y1="5730" x2="6295" y2="5730" />
         <line x1="5595" y1="5730" x2="5595" y2="6455" />
         <line x1="6295" y1="5330" x2="6295" y2="5730" />
         <line x1="6120" y1="5330" x2="6295" y2="5330" />
         <line x1="6295" y1="5180" x2="6295" y2="5330" />
     </g>
-    <g class="chamber_pressure:sensor wire" data-pnid-wire="">
+    <g class="chamber_pressure-sensor wire" data-pnid-wire="">
         <line x1="5795" y1="6655" x2="5795" y2="6780" />
         <line x1="5795" y1="6780" x2="5820" y2="6780" />
         <line x1="5645" y1="6655" x2="5795" y2="6655" />
     </g>
-    <g class="fuel_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="4645" y1="4330" x2="4645" y2="4580" />
         <line x1="4520" y1="4580" x2="4645" y2="4580" />
         <line x1="4645" y1="4580" x2="4645" y2="4780" />
         <line x1="4645" y1="4130" x2="4645" y2="4330" />
         <line x1="4420" y1="4330" x2="4645" y2="4330" />
     </g>
-    <g class="ox_main_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_main_pressure-sensor wire" data-pnid-wire="">
         <line x1="5745" y1="5430" x2="5970" y2="5430" />
     </g>
-    <g class="fuel_depressurize_solenoid:sensor wire" data-pnid-wire="">
+    <g class="fuel_depressurize_solenoid-sensor wire" data-pnid-wire="">
         <line x1="3545" y1="2505" x2="3545" y2="2655" />
     </g>
-    <g class="fuel_main_pressure:sensor wire" data-pnid-wire="">
+    <g class="fuel_main_pressure-sensor wire" data-pnid-wire="">
         <line x1="5395" y1="6230" x2="5395" y2="6455" />
         <line x1="5195" y1="6230" x2="5395" y2="6230" />
     </g>
-    <g class="film_cooling_valve:sensor wire" data-pnid-wire="">
+    <g class="film_cooling_valve-sensor wire" data-pnid-wire="">
         <line x1="4445" y1="6655" x2="5345" y2="6655" />
     </g>
     <g class="wire" data-pnid-wire="">
@@ -1244,7 +1244,7 @@
     <g class="wire" data-pnid-wire="">
         <line x1="5495" y1="1880" x2="5645" y2="1880" />
     </g>
-    <g class="ox_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="6045" y1="1880" x2="6295" y2="1880" />
         <line x1="6295" y1="1680" x2="6295" y2="1880" />
         <line x1="6295" y1="1880" x2="6570" y2="1880" />
@@ -1254,7 +1254,7 @@
         <line x1="6040" y1="2845" x2="6295" y2="2845" />
         <line x1="6295" y1="2845" x2="6295" y2="3130" />
     </g>
-    <g class="ox_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="6770" y1="1880" x2="7070" y2="1880" />
         <line x1="7070" y1="1880" x2="7270" y2="1880" />
         <line x1="7070" y1="1880" x2="7070" y2="2105" />
@@ -1280,7 +1280,7 @@
     <g class="wire" data-pnid-wire="">
         <line x1="8120" y1="5830" x2="8245" y2="5830" />
     </g>
-    <g class="igniter_fuel_bottle_pressure:sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_bottle_pressure-sensor wire" data-pnid-wire="">
         <line x1="9470" y1="5455" x2="9595" y2="5455" />
         <line x1="9595" y1="5455" x2="9720" y2="5455" />
         <line x1="9595" y1="5275" x2="9595" y2="5455" />
@@ -1294,13 +1294,13 @@
     <g class="wire" data-pnid-wire="">
         <line x1="10070" y1="3430" x2="10070" y2="3680" />
     </g>
-    <g class="igniter_fuel_solenoid:sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
         <line x1="7070" y1="5455" x2="7420" y2="5455" />
     </g>
-    <g class="igniter_ox_solenoid:sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_solenoid-sensor wire" data-pnid-wire="">
         <line x1="7070" y1="6130" x2="7420" y2="6130" />
     </g>
-    <g class="ox_bottom_tank_pressure:sensor wire" data-pnid-wire="">
+    <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="5615" y1="2945" x2="5695" y2="2945" />
         <line x1="5695" y1="2945" x2="5890" y2="2945" />
     </g>

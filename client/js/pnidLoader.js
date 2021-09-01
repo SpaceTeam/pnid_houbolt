@@ -1,4 +1,4 @@
-$.post( "/pnid", data={"file": "PnID_Coldflow2.pnid"}, function( data ) {
+$.post( "/pnid", data={"file": "PnID_Coldflow.pnid"}, function( data ) {
     let svg = $(data);
     $( "body" ).append( data );
     tankSetup();

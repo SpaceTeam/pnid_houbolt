@@ -327,6 +327,19 @@ function runRandom()
 	updatePNID(states);
 }
 
+var randInterval;
+function runRandomLoop(interval)
+{
+    randInterval = setInterval(() => {
+        runRandom();
+    }, interval);
+}
+
+function stopRandomLoop()
+{
+    clearInterval(randInterval);
+}
+
 function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
