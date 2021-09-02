@@ -204,8 +204,8 @@ function checkStringIsNumber(string)
 function tankSetup()
 {
     let tanks = $(document).find("g.PnID-Tank");
-    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']");
-    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']");
+    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
+    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']").last();
     fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
     oxPaths.attr(`data-pnid-tank_content`, `ox`);
     initTankContent(tanks);
@@ -213,8 +213,8 @@ function tankSetup()
 
 function initTankContent(tanks)
 {
-    let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
-    let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
+    //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
+    //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
     let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
