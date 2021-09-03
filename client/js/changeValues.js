@@ -1,4 +1,158 @@
-const thresholds = {
+//todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
+let defaultConfig = {
+    "PnID-Valve_Solenoid": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Pneumatic": {
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+	"PnID-Valve_Needle_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "slider",
+                "variable": "value",
+                "low": 0.0,
+                "high": 100.0
+            }
+        ]
+    },
+    "PnID-Sensor_Pressure": {
+        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_Temperature": {
+        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Sensor_MassFlow": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            }
+        ]
+    },
+    "PnID-Tank": {
+        "eval": "",
+        "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_low"
+            },
+            {
+                "type": "textEntry",
+                "variable": "tank_fill_high"
+            }
+        ]
+    }
+};
+
+$.get('/config/default', function(data) {
+    //defaultConfig = data;
+});
+
+let config = {
+    "pressure": {
+        "states": [
+            "chamber_pressure"
+        ],
+        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "temperature_oxidizer_tank": {
+        "states": [
+            "ox_top_tank_temp",
+            "ox_mid_top_tank_temp",
+            "ox_mid_bottom_tank_temp",
+            "ox_bottom_tank_temp"
+        ],
+        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "purge_solenoid_pressure": {
+        "states": [
+            "purge_solenoid"
+        ],
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "purge_solenoid_wire_pressure": {
+        "states": [
+            "purge_regulator_pressure"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    }
+};
+
+$.get('/config/custom', function(data) {
+    //config = data;
+});
+
+let thresholds = {
     "oxPressure": {
         "low": 32.0,
         "high": 42.0,
@@ -19,83 +173,39 @@ const thresholds = {
     }
 };
 
-var config = {
-    "pressure": {
-        "states": [
-            "chamber_pressure"
-        ],
-        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    },
-    "temperature_oxidizer_tank": {
-        "states": [
-            "ox_top_temp",
-            "ox_mid_top_temp",
-            "ox_mid_temp",
-            "ox_mid_bottom_temp",
-            "ox_bottom_temp",
-            "ox_top_temp_backup",
-            "ox_bottom_temp_backup"
-        ],
-        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-    },
-    "purge_solenoid_pressure": {
-        "states": [
-            "purge_solenoid"
-        ],
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
-    },
-    "purge_solenoid_wire_pressure": {
-        "states": [
-            "purge_regulator_pressure"
-        ],
-        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
-    }
-};
-
-//todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
-const defaultConfig = {
-    "PnID-Valve_Solenoid": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
-    },
-    "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": "value:checkbox:0:100"
-    },
-    "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
-    },
-	"PnID-Valve_Needle_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": "value:slider:0:100"
-    },
-    "PnID-Sensor_Pressure": {
-        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
-    },
-    "PnID-Sensor_Temperature": {
-        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
-	    "popup": "value:display"
-    },
-    "PnID-Sensor_MassFlow": {
-        "eval": "",
-	    "popup": "value:display"
-    },
-    "PnID-Tank": {
-        "eval": "",
-        "popup": ""
-    }
-};
+$.get('/config/thresholds', function(data) {
+    //thresholds = data;
+});
 
 createLogBox();
+
+function checkStringIsNumber(string)
+{
+	// console.log(typeof string);
+    if (typeof string == "string")
+    {
+        let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
+                                                      //checks for float with either 1 or more digits followed by decimal point followed by 0 or more digits (3. or 3.04, but not .2), or
+                                                      //0 or more digits followed by decimal point followed by 1 or more digits (.3 or 1.345, but not 2.)
+        if (!re.test(string))
+        {
+            return false;
+        }
+    }
+    else if (typeof string != "number")
+    {
+        printLog("warning", "Tried checking if a string is a number, but didn't receive a string nor number: " + string);
+        return false;
+    }
+    return true;
+}
 
 //setup tanks for filling visuals
 function tankSetup()
 {
     let tanks = $(document).find("g.PnID-Tank");
-    let fuelPaths = tanks.filter(".Fuel").find("path[d*=' A ']");
-    let oxPaths = tanks.filter(".Oxidizer").find("path[d*=' A ']");
+    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
+    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']").last();
     fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
     oxPaths.attr(`data-pnid-tank_content`, `ox`);
     initTankContent(tanks);
@@ -103,16 +213,16 @@ function tankSetup()
 
 function initTankContent(tanks)
 {
-    let fuelPaths = extractArcPathsFromTank(tanks.filter(".Fuel"));
-    let oxPaths = extractArcPathsFromTank(tanks.filter(".Oxidizer"));
+    //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
+    //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
-    let fuelContentRect = tanks.filter(".Fuel").find("rect.rect");
+    let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0)");
 
-    let oxContentRect = tanks.filter(".Oxidizer").find("rect.rect");
+    let oxContentRect = tanks.filter(".ox_tank").find("rect.rect");
     let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
@@ -159,49 +269,26 @@ function extractXYFromPath(path)
     return [pathAttr[1], pathAttr[2]];
 }
 
-
-function startLoop() {
-	var i;
-	var x = 100;
-	var j = 2;
-	var increasing = true;
-	printLog("info", document.getElementById("PS_FP_FT1_Text"));
-	setInterval(function(){
-			if (increasing) {
-			j += 1;
-			} else {
-				j -= 1;
-			}
-			if (j > 99 || j < 2) {
-				increasing = !increasing;
-			}
-			$("#OV_FP_FT1").css("stroke-width", (j/10).toString());
-			$("#OV_FP_FT1").text(j);
-		}, 10);
-		
-	
-}
-
 async function runTests()
 {
 	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "purge_regulator_pressure", "value": 95.0}, {"name": "Fuel", "value": 95.0}, {"name": "fuel_top_tank_temp", "value": 27}, {"name": "purge_solenoid", "value": 1.0}, {"name": "ox_pressurant_press_pressure", "value": 30.0}];
+	var testData = [{"name": "purge_regulator_pressure", "value": "95.0"}, {"name": "fuel_tank", "value": "95.0"}, {"name": "fuel_top_tank_temp", "value": "27"}, {"name": "purge_solenoid", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure", "value": "30.0"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "oxfill_vent_valve", "value": 10}, {"name": "fuel_bottom_tank_temp", "value": 101}];
+	var testData = [{"name": "oxfill_vent_valve", "value": "10"}, {"name": "fuel_bottom_tank_temp", "value": "101"}];
 	updatePNID(testData);
 	await sleep(1000);
 	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_temp", "value": 22}];
+	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_tank_temp", "value": 22}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "Fuel", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "Oxidizer", "value": 30.0}, {"name": "ox_mid_temp", "value": 5}, {"name": "ox_bottom_temp_backup", "value": -2}];
+	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp", "value": 5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "Fuel", "value": 5.0}, {"name": "ox_bottom_temp", "value": -4}];
+	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
 	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
@@ -213,6 +300,11 @@ async function runTests()
 	var testData = [{"name": "fuel_pressurize_solenoid", "value": 5.0}, {"name": "fuel_depressurize_solenoid", "value": 1.0}];
 	updatePNID(testData);
 	await sleep(500);
+}
+
+function test()
+{
+    console.log(activePopups);
 }
 
 function runRandom()
@@ -235,6 +327,19 @@ function runRandom()
 	updatePNID(states);
 }
 
+var randInterval;
+function runRandomLoop(interval)
+{
+    randInterval = setInterval(() => {
+        runRandom();
+    }, interval);
+}
+
+function stopRandomLoop()
+{
+    clearInterval(randInterval);
+}
+
 function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
@@ -248,13 +353,23 @@ function setStateNamesPNID(stateNameList)
 
 function setStateName(state)
 {
-	let elementGroup = $(document).find("g." + state["name"]);
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 		return;
 	}
 
 	elementGroup.find("text.reference").text(state["label"]);
+}
+
+function getElementValue(name, rawValue)
+{
+    let searchString = "text.value";
+    if (rawValue === true)
+    {
+        searchString = "text.valueRaw";
+    }
+    return $(document).find(`g.${name}`).find(searchString).text();
 }
 
 function updatePNID(stateList)
@@ -274,13 +389,27 @@ function updatePNID(stateList)
 
 function setState(state)
 {
-	let elementGroup = $(document).find("g." + state["name"]);
+    if (typeof state["value"] != "number")
+    {
+        if (!checkStringIsNumber(state["value"]))
+        {
+            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+            return;
+        }
+    }
+    
+	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
+	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
 		return;
 	}
 
     let unit = elementGroup.attr("data-unit");
+    //raw value without any processing
+    elementGroup.find("text.valueRaw").text(state["value"]);
+    //human visible value that may contain units or further processing
 	elementGroup.find("text.value").text(state["value"] + unit);
 	//printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 
@@ -301,37 +430,28 @@ function setState(state)
 	//----- search applicable eval behavior blocks from config files (either default config or custom config)
 	//fetch all classes of the element group into an array
 	let classes = elementGroup.attr("class").split(" ");
-	if (state["name"] === "purge_solenoid_wire")
-    {
-        printLog("info", "classes " + classes);
-    }
+	
 	//check if applicable eval (to current element) exists in default JSON
 	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
 	{
-	    if (state["name"] === "purge_solenoid_wire")
-        {
-            printLog("info", "class loop " + classIndex + " " + classes[classIndex]);
-            if (classes.includes("wire")) {
-                printLog("info", "found wire");
-            }
-        }
 		let typeClass = classes[classIndex];
 		if (classes.includes("wire"))
 		{
-		    if (state["name"] === "purge_solenoid_wire")
-            {
-                printLog("info", "identified as wire " + classIndex);
-            }
 			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
 		}
 
 		let re = /PnID-\S*/;
+		//search for typeClass in the default config and run the eval behavior code and update popups (if applicable)
 		if (re.test(typeClass) && (typeClass in defaultConfig))
 		{
 			eval(defaultConfig[typeClass]["eval"]);
             if (typeClass === "PnID-Tank")
             {
                 updateTankContent(elementGroup, state["value"]);
+            }
+            if (defaultConfig[typeClass]["popup"] != undefined)
+            {
+                updatePopup(typeClass, state["name"], outVars["value"], state["value"]);
             }
 		}
 	}
@@ -379,7 +499,7 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("crossUpdate" in outVars)
 	{
-	    console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
+	    //console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
 		updatePNID(outVars["crossUpdate"]);
 	}
 }

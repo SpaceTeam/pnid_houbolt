@@ -1,6 +1,9 @@
-.popup .heading {
-	font-size: 1rem;
-	margin-top: 8px;
+.popup-heading {
+	font-weight: bold;
+}
+
+.popup-value-out {
+    margin-top: .7rem;
 }
 
 /* Popup container - can be anything you want */
