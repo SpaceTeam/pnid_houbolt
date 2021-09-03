@@ -165,11 +165,10 @@ body {
     stroke: var(--neutral);
 }
 
-[data-pnid-valve_solenoid=open] {
+[data-pnid-valve_solenoid_no=open], [data-pnid-valve_solenoid_nc=open] {
     stroke: var(--open);
     fill: none;
 }
-
 [data-pnid-valve_solenoid=closed] path {
     stroke: black;
     fill: var(--closed);
@@ -181,7 +180,7 @@ body {
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid=undefined] {
+[data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {
     stroke: var(--undefined);
 }
 
