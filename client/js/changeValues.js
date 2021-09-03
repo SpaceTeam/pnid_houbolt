@@ -399,11 +399,12 @@ function setState(state)
         }
     }
     
+    state["name"] = state["name"].replace(":","-");
 	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
-	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
+	let elementGroup = $(document).find("g." + state["name"]);
 	if (elementGroup.length === 0)
 	{
-	    printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
+	    //printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
 		return;
 	}
 
