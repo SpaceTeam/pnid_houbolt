@@ -204,26 +204,26 @@ text.text-R {
     fill: var(--neutral);
 }
 
-[data-pnid-valve_solenoid=open] {
+[data-pnid-valve_solenoid_no=open], [data-pnid-valve_solenoid_nc=open] {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_solenoid=open] text:not(.static-color) {
+[data-pnid-valve_solenoid_no=open] text:not(.static-color), [data-pnid-valve_solenoid_nc=open] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
 
-[data-pnid-valve_solenoid=closed] path {
+[data-pnid-valve_solenoid_no=closed] path, [data-pnid-valve_solenoid_nc=closed] path {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid=closed] text:not(.static-color) {
+[data-pnid-valve_solenoid_no=closed] text:not(.static-color), [data-pnid-valve_solenoid_nc=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid=undefined] {
+[data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {
     stroke: var(--undefined);
 }
 

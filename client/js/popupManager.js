@@ -98,11 +98,11 @@ function createPopup(parent, type, name)
                 newCheckbox.removeAttr("id");
                 newCheckbox.find(".ckbx-label").text(name).attr("for", popupName);
                 newCheckbox.find("input").attr('id', popupName).attr('state', variableName);
-                if (curValue === "Open")
+                if (curValue === defaultConfig[type]["popup"][contentIndex]["high"])
                 {
                     newCheckbox.find("input").prop("checked", true);
                 }
-                else if (curValue === "Closed")
+                else if (curValue === defaultConfig[type]["popup"][contentIndex]["low"])
                 {
                     newCheckbox.find("input").prop("checked", false);
                 }
