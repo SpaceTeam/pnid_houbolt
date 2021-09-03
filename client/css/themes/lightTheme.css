@@ -1,0 +1,32 @@
+:root {
+    /*base UI colours*/
+    --background-primary: white;
+    --background-secondary: #eeeeee;
+    --background-tertiary: #dfdfdf;
+    
+    --content-primary: black;
+    --content-secondary: #222222;
+    --content-disabled: #999999;
+    
+    --accent-primary: #522e63;
+    --accent-secondary: #7d4696;
+    --accent-disabled: #b797c6;
+    
+    /*base PnID state colours*/
+    --pnid-outline: blue;
+
+    --open: blue;
+    --closed: orange;
+    --undefined: gray;
+    --high: red;
+    --low: blue;
+    --neutral: green;
+
+    --fuel: chocolate;
+    --ox: lightblue;
+    
+    
+    /*derived variables*/
+    --default-stroke: var(--content-primary);
+    --slider-text: var(--background-secondary);
+}

@@ -178,6 +178,7 @@ $.get('/config/thresholds', function(data) {
 });
 
 createLogBox();
+createThemeSwitcher();
 
 function checkStringIsNumber(string)
 {

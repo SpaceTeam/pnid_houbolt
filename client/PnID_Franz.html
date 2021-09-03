@@ -3,7 +3,9 @@
 <head>
     <title>PNID Chart</title>
 
-    <link id="theme" rel="stylesheet" type="text/css" href="css/lightpnid.css">
+    <link id="theme" rel="stylesheet" type="text/css" href="css/themes/darkTheme.css">
+    <link rel="stylesheet" type="text/css" href="css/pnid.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrapOverride.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="css/popup.css">
@@ -18,11 +20,6 @@
     <script src="lib/jquery-3.4.1.js"></script>
 </head>
 <body>
-    <button class="darkModeButton" onclick="darkModeToggleButton($(this))">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  >
-        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"/>
-        </svg>
-    </button>
     <div hidden id="templates">
         <div id="headerTemp" class="row control-row justify-content-end">
             <button type="button" class="btn btn-light btn-drag">
@@ -59,15 +56,15 @@
                 <label class="custom-control-label ckbx-label" for="tempDigitalOut">Temp Digital Out</label>
             </div>
         </div>
-        <div id="logBox" class="logContainer">
+        <div id="logBoxTemp" class="logContainer">
             <div class="logTextArea" onwheel="disableAutoScroll()" style="display: none;">
                 <div id="logEntryTemp" class="logEntry" style="display: none;"></div>
-                <button type="button" class="btn btn-outline-primary scrollButton" onclick="activateAutoScroll()" style="display: none;">
+                <button type="button" class="btn btn-outline-primary ecui-button-outline-primary scrollButton" onclick="activateAutoScroll()" style="display: none;">
                     <i class="bi bi-chevron-double-down"></i>
                 </button>
             </div>
             <div class="logMenu">
-                <button type="button" class="btn btn-primary" onclick="toggleLogBox()" disabled>
+                <button type="button" class="btn btn-primary ecui-button-primary" onclick="toggleLogBox()" disabled>
                     <i class="bi bi-arrow-up"></i>
                 </button>
                 <div class="logOverview">
@@ -90,10 +87,16 @@
                 </div>
             </div>
         </div>
+        <div id="themeSwitcherTemp" class="themeSwitcher">
+            <button type="button" class="btn btn-outline-secondary" onclick="switchTheme()">
+                <i class="bi bi-moon"></i>
+            </button>
+        </div>
     </div>
     <div id="pnid"></div>
 
 <script src="js/logManager.js"></script>
+<script src="js/darkMode.js"></script>
 <script src="js/changeValues.js"></script>
 <script src="js/popupManager.js"></script>
 <script src="js/Slider.js"></script>
@@ -106,6 +109,5 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="js/pnidLoader.js"></script>
-<script src="js/darkmode.js"></script>
 </body>
 </html>

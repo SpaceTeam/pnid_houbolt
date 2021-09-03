@@ -1,3 +1,10 @@
+.logBox, .popup, text {
+    dominant-baseline: middle;
+    /*font-family: "Times New Roman", Times, serif;*/
+	font-family: "Montserrat";
+    /*fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
+}
+
 .logContainer {
     max-width: 30%;
     position: fixed;
@@ -25,7 +32,7 @@
     flex-direction: column;
     margin: 0.2rem 0 0.4rem 0;
     padding: 0.2rem 0.1rem 0 0.2rem;
-    background: lightgrey;
+    background: var(--background-tertiary);
     border-radius: 0.2rem;
 }
 
@@ -40,13 +47,9 @@
     display: flex;
     margin-left: 0.25rem;
     padding: 0.4375rem;
-
-    /*border-style: solid;
-    border-color: var(--default-stroke);
-    border-width: 0.1rem;*/
     border-radius: 0.2rem;
 
-    background: var(--log-overview-background);
+    background: var(--accent-secondary);
 }
 
 .logCategory {
@@ -55,7 +58,7 @@
     margin: 0 auto;
     text-align: center;
 
-    border: black;
+    /*border: var(--content-primary);*/
     border-radius: 2px;
 
     cursor: default;
@@ -68,7 +71,7 @@
 .logEntry {
     min-width: 250px;
     border-radius: 0.2rem;
-    background: var(--popup-background);
+    background: var(--background-secondary);
     padding: 0.2rem;
     margin-bottom: 0.2rem;
     margin-top: 0;
