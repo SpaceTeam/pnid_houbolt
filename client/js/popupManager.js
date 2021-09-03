@@ -226,7 +226,7 @@ document.addEventListener('mousemove', function(event) {
     // event.preventDefault();
 	
     if (isDown) {
-		printLog("info", "here");
+		// printLog("info", "here");
         mousePosition = {
 
             x : event.clientX,

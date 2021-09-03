@@ -1,16 +1,15 @@
 //TODO: implement state update event properly with event dispatcher or so
 function stateUpdate(stateName, value)
 {
-    if (onPNIDInput === undefined)
+    if (typeof onPNIDInput === "undefined")
     {
         printLog("error", "onPNIDInput function not defined, ignoring input action of: " + stateName);
     }
     else
     {
         onPNIDInput(stateName, value, Date.now()*1000);
+        printLog("info", "stateUpdate: " + stateName + " , value: " + value);
     }
-    
-    printLog("info", "stateUpdate: " + stateName + " , value: " + value);
 }
 
 function onServoSliderInput(servoSlider)

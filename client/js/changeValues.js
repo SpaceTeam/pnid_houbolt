@@ -204,8 +204,8 @@ function checkStringIsNumber(string)
 function tankSetup()
 {
     let tanks = $(document).find("g.PnID-Tank");
-    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']");
-    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']");
+    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
+    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']").last();
     fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
     oxPaths.attr(`data-pnid-tank_content`, `ox`);
     initTankContent(tanks);
@@ -213,8 +213,8 @@ function tankSetup()
 
 function initTankContent(tanks)
 {
-    let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
-    let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
+    //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
+    //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
     let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
@@ -327,6 +327,19 @@ function runRandom()
 	updatePNID(states);
 }
 
+var randInterval;
+function runRandomLoop(interval)
+{
+    randInterval = setInterval(() => {
+        runRandom();
+    }, interval);
+}
+
+function stopRandomLoop()
+{
+    clearInterval(randInterval);
+}
+
 function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
@@ -386,7 +399,7 @@ function setState(state)
     }
     
 	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
-	let elementGroup = $(document).find("g." + state["name"].replace(":sensor","").replace(":","-"));
+	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
 	if (elementGroup.length === 0)
 	{
 	    //printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
