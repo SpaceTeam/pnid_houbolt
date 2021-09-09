@@ -5,11 +5,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "checkbox",
+                "type": "input",
+                "style": "checkbox",
                 "variable": "value",
                 "low": "Open",
                 "high": "Closed"
@@ -21,11 +22,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "checkbox",
+                "type": "input",
+                "style": "checkbox",
                 "variable": "value",
                 "low": "Closed",
                 "high": "Open"
@@ -37,14 +39,16 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "slider",
+                "type": "input",
+                "style": "slider",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "min": 35000,
+                "max": 55000,
+                "step": 1
             }
         ]
     },
@@ -53,14 +57,16 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "slider",
+                "type": "input",
+                "style": "slider",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "min": 35000,
+                "max": 55000,
+                "step": 1
             }
         ]
     },
@@ -69,14 +75,16 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "slider",
+                "type": "input",
+                "style": "slider",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "min": 0.0,
+                "max": 100.0,
+                "step": 1
             }
         ]
     },
@@ -85,8 +93,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -95,8 +103,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -105,8 +113,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -115,15 +123,17 @@ let defaultConfig = {
         "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "textEntry",
+                "type": "input",
+                "style": "textEntry",
                 "variable": "tank_fill_low"
             },
             {
-                "type": "textEntry",
+                "type": "input",
+                "style": "textEntry",
                 "variable": "tank_fill_high"
             }
         ]
@@ -131,6 +141,40 @@ let defaultConfig = {
     "PnID-LED": {
         "eval": "if (inVars['value'] > 50) { outVars['color']='on'; } else { outVars['color']='off'; }"
     },
+    "gui-fuel_press_depress": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "gui-ox_press_depress": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    }
 };
 
 $.get('/config/default', function(data) {
@@ -198,27 +242,6 @@ $.get('/config/thresholds', function(data) {
 
 createLogBox();
 createThemeSwitcher();
-
-function checkStringIsNumber(string)
-{
-	// console.log(typeof string);
-    if (typeof string == "string")
-    {
-        let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
-                                                      //checks for float with either 1 or more digits followed by decimal point followed by 0 or more digits (3. or 3.04, but not .2), or
-                                                      //0 or more digits followed by decimal point followed by 1 or more digits (.3 or 1.345, but not 2.)
-        if (!re.test(string))
-        {
-            return false;
-        }
-    }
-    else if (typeof string != "number")
-    {
-        printLog("warning", "Tried checking if a string is a number, but didn't receive a string nor number: " + string);
-        return false;
-    }
-    return true;
-}
 
 //setup tanks for filling visuals
 function tankSetup()
@@ -382,16 +405,6 @@ function setStateName(state)
 	elementGroup.find("text.reference").text(state["label"]);
 }
 
-function getElementValue(name, rawValue)
-{
-    let searchString = "text.value";
-    if (rawValue === true)
-    {
-        searchString = "text.valueRaw";
-    }
-    return $(document).find(`g.${name}`).find(searchString).text();
-}
-
 function updatePNID(stateList)
 {
 	//printLog("info", "Updating PnID with: " + stateList);
@@ -419,86 +432,120 @@ function setState(state)
     }
     
     state["name"] = state["name"].replace(":","-");
-	//TODO: .replace(":sensor","") TOTALLY TEMPORARY WE NEED TO CHANGE THE KICAD FOR :sensor POSTFIX
+    
+    let isActionReference = false;
 	let elementGroup = $(document).find("g." + state["name"]);
-	if (elementGroup.length === 0)
+	// check if any pnid element is found with the provided state name
+	let unit = "";
+	if (elementGroup.length !== 0) // if an element is found, update it. then carry on with the rest because even if it's not a pnid element the incoming state may be an action reference for a popup
 	{
-	    //printLog("error", "Received a state update but no element with this name exists in the PnID: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
-		return;
+		unit = elementGroup.attr("data-unit");
+        //raw value without any processing
+        elementGroup.find("text.valueRaw").text(state["value"]);
+        //human visible value that may contain units or further processing
+	    elementGroup.find("text.value").text(state["value"] + unit);
+	    //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 	}
+	else
+    {
+        elementGroup = $(document).find(`g[action-reference='${state["name"]}']`);
 
-    let unit = elementGroup.attr("data-unit");
-    //raw value without any processing
-    elementGroup.find("text.valueRaw").text(state["value"]);
-    //human visible value that may contain units or further processing
-	elementGroup.find("text.value").text(state["value"] + unit);
-	//printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
-
-	//----- prepare for eval behavior block
-	//In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
-
+        if (elementGroup.length !== 0)
+        {
+            isActionReference = true;
+            elementGroup.find("text.actionReferenceValue").text(state["value"]);
+            elementGroup.find("text.actionReferenceRawValue").text(state["value"]);
+        }
+    }
+	
+    //----- prepare for eval behavior block
+    //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
 	const inVars = {
-		"value" : state["value"],
-		"unit" : elementGroup.attr("data-unit")
-	};
-	
-	//State storage for the eval() code specified in config.json //TBD (let eval code create entries? pre-define generic name entries? are they even persistent between loops right now?)
-	var stateVars = { };
-	
-	//Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
-	let outVars = { };
-	
-	//----- search applicable eval behavior blocks from config files (either default config or custom config)
-	//fetch all classes of the element group into an array
-	let classes = elementGroup.attr("class").split(" ");
-	
-	//check if applicable eval (to current element) exists in default JSON
-	for (classIndex in classes) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
-	{
-		let typeClass = classes[classIndex];
-		if (classes.includes("wire"))
-		{
-			typeClass = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
-		}
+	    "value" : state["value"],
+	    "unit" : unit
+    };
+    
+    //State storage for the eval() code specified in config.json //TBD (let eval code create entries? pre-define generic name entries? are they even persistent between loops right now?)
+    var stateVars = { };
+    
+    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+    let outVars = { };
+    
+    //----- search applicable eval behavior blocks from config files (either default config or custom config)
+    //create list of possible entries in the default or custom JSON
+    //config search terms is a 2d array, one array for each element that has been found that matched the state name.
+    let configSearchTerms = []; //TODO configSearchTerms is not the best name, find another one
+    if (isActionReference) //if the state update is an action reference, use its name as search term, else get the classes of the pnid element, one of these will (hopefully) be contained in the default or custom config
+    {
+        configSearchTerms.push([state["name"]]);
+    }
+    else
+    {
+        //unpack each found element's classes individually
+        elementGroup.each(function(index) {
+            configSearchTerms.push($(this).attr("class").split(" "));
+        });
+    }
+    //iterate through all elements found (only one in case of action references)
+    for (i in configSearchTerms)
+    {
+        //iterate through search terms (classes for elements, action references for... action references) within one element
+        for (index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
+        {
+	        let searchTerm = configSearchTerms[i][index];
+	        if (configSearchTerms[i].includes("wire") || configSearchTerms[i].includes("PnID-ThermalBarrier"))
+	        {
+		        searchTerm = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
+	        }
 
-		let re = /PnID-\S*/;
-		//search for typeClass in the default config and run the eval behavior code and update popups (if applicable)
-		if (re.test(typeClass) && (typeClass in defaultConfig))
-		{
-			eval(defaultConfig[typeClass]["eval"]);
-            if (typeClass === "PnID-Tank")
-            {
-                updateTankContent(elementGroup, state["value"]);
-            }
-            if (defaultConfig[typeClass]["popup"] != undefined)
-            {
-                updatePopup(typeClass, state["name"], outVars["value"], state["value"]);
-            }
-		}
-	}
+	        //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
+	        if (searchTerm in defaultConfig)
+	        {
+		        eval(defaultConfig[searchTerm]["eval"]);
+                if (searchTerm === "PnID-Tank")
+                {
+                    updateTankContent(elementGroup, state["value"]);
+                }
+	        }
+        }
 
-	//traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-	let configProperties = Object.keys(config);
-	for (propIndex in configProperties)
-	{
-		//printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
-		if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
-		{
-			eval(config[configProperties[propIndex]]["eval"]);
-		}
-	}
+        //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
+        let configProperties = Object.keys(config);
+        for (propIndex in configProperties)
+        {
+	        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
+	        if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
+	        {
+		        eval(config[configProperties[propIndex]]["eval"]);
+	        }
+        }
 
-	applyUpdatesToPnID(elementGroup, outVars);
+        //if there is a pnid element, update it
+        if (elementGroup.length !== 0)
+        {
+            applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
+        }
+        else
+        {
+            printLog("warning", `Received state update with no corresponding pnid element or action reference! State: ${state["name"]}: ${state["value"]}`);
+        }
+    }
+    
+    //check if there may be a popup related to this pnid element to update. this could be either to an open popup for a pnid element or a popup for an action reference
+    if (state["name"] in activePopups)
+    {
+        updatePopup(state["name"], outVars["value"], state["value"]);
+    }
 }
 
-function applyUpdatesToPnID(elementGroup, outVars)
+function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 {
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
 	//printLog("info", "Found these attributes:" + attributes);
 	
 	//apply all outVars to PnID
-	if ("color" in outVars)
+	if ("color" in outVars && !isActionReference)
 	{
 		for (attrIndex in attributes)
 		{
@@ -516,7 +563,14 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("value" in outVars)
 	{
-		elementGroup.find("text.value").text(outVars["value"]);
+        if (isActionReference)
+        {
+            elementGroup.find("text.actionReferenceValue").text(outVars["value"]);
+        }
+        else
+        {
+            elementGroup.find("text.value").text(outVars["value"]);
+        }
 	}
 	if ("crossUpdate" in outVars)
 	{

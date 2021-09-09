@@ -7,7 +7,7 @@
 }
 
 .range-slider {
-  width: 25rem;
+  width: auto;
 }
 
 .range-slider__range, .range-slider-caption {
@@ -76,10 +76,10 @@
 .range-slider__value, .range-slider__feedback {
   display: inline-block;
   position: relative;
-  width: 2.5rem;
+  width: auto;
   color: var(--slider-text);
   line-height: 10px;
-  text-align: center;
+  text-align: right;
   border-radius: 3px;
   background: var(--accent-primary);
   padding: 5px 10px;

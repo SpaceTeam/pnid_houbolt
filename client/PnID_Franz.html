@@ -21,15 +21,18 @@
 </head>
 <body>
     <div hidden id="templates">
-        <div id="headerTemp" class="row control-row justify-content-end">
-            <button type="button" class="btn btn-light btn-drag">
-                <i class="bi bi-arrows-move"></i>
-            </button>
-            <div class="col popup-heading">Temp Name</div>
-            <button type="button" class="btn btn-outline-danger btn-close">
-                <i class="bi bi-x"></i>
-            </button> 
+        <div id="popupTemp" class="container-fluid popup">
+            <div class="row control-row justify-content-end">
+                <button type="button" class="btn btn-light btn-drag">
+                    <i class="bi bi-arrows-move"></i>
+                </button>
+                <div class="col popup-heading">Temp Name</div>
+                <button type="button" class="btn btn-outline-danger btn-close">
+                    <i class="bi bi-x"></i>
+                </button> 
+            </div>
         </div>
+        
         <div id="textDisplayTemp" class="row control-row">
             <label class="popup-value-out"></label>
         </div>
@@ -40,9 +43,8 @@
             <div class="range-slider col">
                 <label class="range-slider-label input-label">Temp Label</label><br>
                 <input class="range-slider__range servo-slider manual-obj servo-enable-obj"
-                    oninput="onServoSliderInput($(this));" type="range" value="0" min="35000" max="50000" step="1">
-                <span class="range-slider__value">0</span> 
-                <span class="range-slider__feedback servo-feedback">0</span>
+                    oninput="onServoSliderInput($(this));" type="range" value="0" min="0" max="100" step="1">
+                <span class="range-slider__value">0</span>
                 <div class="range-slider-caption">
                     <div class="range-slider-caption_left"> Closed </div>
                     <div class="range-slider-caption_right"> Open </div>
@@ -95,11 +97,12 @@
     </div>
     <div id="pnid"></div>
 
+<script src="js/common.js"></script>
 <script src="js/logManager.js"></script>
 <script src="js/darkMode.js"></script>
 <script src="js/changeValues.js"></script>
 <script src="js/popupManager.js"></script>
-<script src="js/Slider.js"></script>
+<script src="js/slider.js"></script>
 <script src="js/inputs.js"></script>
 <script src="lib/bootstrap-input-spinner.js"></script>
 <script src="lib/popper.min.js"

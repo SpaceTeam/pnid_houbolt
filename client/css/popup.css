@@ -7,11 +7,13 @@
 }
 
 .popup {
+	display: none;
+	position: absolute;
+	
 	color: var(--content-primary);
 	background-color: var(--background-secondary);
 	border-radius: 0.2rem;
 	padding: 0.8rem;
-	display: inline-block;
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -20,7 +22,6 @@
 	border-style: solid;
 	border-color: var(--content-secondary);
 	border-width: 0.1rem;
-	position: absolute;
 }
 
 .btn-close

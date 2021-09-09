@@ -1,7 +1,7 @@
-var rangeSlider = function(){
-  var slider = $('.range-slider'),
-      range = $('.range-slider__range'),
-      value = $('.range-slider__value');
+var rangeSlider = function(sliderRow){
+  var slider = sliderRow.find('.range-slider'),
+      range = sliderRow.find('.range-slider__range'),
+      value = sliderRow.find('.range-slider__value');
 
   slider.each(function(){
 
@@ -16,7 +16,7 @@ var rangeSlider = function(){
   });
 };
 
-rangeSlider();
+//rangeSlider();
 
 var minInput = $("#fuelServoMin");
 var maxInput = $("#fuelServoMax");
