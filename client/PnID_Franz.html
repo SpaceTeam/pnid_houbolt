@@ -21,15 +21,18 @@
 </head>
 <body>
     <div hidden id="templates">
-        <div id="headerTemp" class="row control-row justify-content-end">
-            <button type="button" class="btn btn-light btn-drag">
-                <i class="bi bi-arrows-move"></i>
-            </button>
-            <div class="col popup-heading">Temp Name</div>
-            <button type="button" class="btn btn-outline-danger btn-close">
-                <i class="bi bi-x"></i>
-            </button> 
+        <div id="popupTemp" class="container-fluid popup">
+            <div class="row control-row justify-content-end">
+                <button type="button" class="btn btn-light btn-drag">
+                    <i class="bi bi-arrows-move"></i>
+                </button>
+                <div class="col popup-heading">Temp Name</div>
+                <button type="button" class="btn btn-outline-danger btn-close">
+                    <i class="bi bi-x"></i>
+                </button> 
+            </div>
         </div>
+        
         <div id="textDisplayTemp" class="row control-row">
             <label class="popup-value-out"></label>
         </div>
@@ -95,6 +98,7 @@
     </div>
     <div id="pnid"></div>
 
+<script src="js/common.js"></script>
 <script src="js/logManager.js"></script>
 <script src="js/darkMode.js"></script>
 <script src="js/changeValues.js"></script>

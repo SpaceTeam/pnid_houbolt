@@ -1,206 +1,163 @@
 var activePopups = {};
 
-function clickEventListenever(dispReference, dispType, dispValReference)
+//popup ID is the GUI ID (action_reference in kicad)
+function clickEventListener(popupID)
 {
-	let popupName = dispType + "_" + dispValReference;
-	if (!(popupName in activePopups)) //check if popup already exists
-	{
-		showPopup(dispReference, dispType, dispValReference);
+    // check if popup already exists
+    if (popupID in activePopups) // if already exists, highlight
+	{ 
+	    printLog("info", popupID);
+		activePopups[popupID].css({"animation-name": "none"});
+		setTimeout( function() {
+		    activePopups[popupName].css({"animation-name": "highlight", "animation-duration": "2s"});
+		}, 100);
 	}
-	else
+	else // if doesn't exist, create
 	{
-		printLog("info", popupName);
-		activePopups[popupName].css({"animation-name": "none"});
-		setTimeout(function(){activePopups[popupName].css({"animation-name": "highlight", "animation-duration": "2s"});}, 100)
-	}
-}
-
-//choose popup behavior to display, hand off data to createPopup
-function showPopup(dispReference, dispType, dispValReference)
-{
-	if (dispType in defaultConfig)
-	{
-		if ("popup" in defaultConfig[dispType])
-		{
-			popupParent = $(document).find("g." + dispReference + "." + dispType + "." + dispValReference);
-			createPopup(popupParent, dispType, dispValReference);
-		}
-		
+	    popupParent = $(document).find(`g[action-reference=${popupID}]`).first();
+		createPopup(popupID, popupParent);
 	}
 }
 
-//create the actual html elements for the popup
-function createPopup(parent, type, name)
+function createPopup(popupID, parent)
 {
-	let popupName = type + "_" + name;
 	let parentPosition = parent.offset();
-	//let parentPosition = parent.getBoundingClientRect();
-	//printLog("info", parent);
-	//printLog("info", "parentpos: " + parentPosition + " top: " + parentPosition.top + " left: " + parentPosition.left);
-	//printLog("info", "parent width: " + parent[0].getBoundingClientRect().width);
-	var popup = $(`<div style='width: auto; height: auto; position: absolute; top: ` + parentPosition.top + `px; left: ` +
-	(parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px; display: none;' class="container-fluid popup"></div>`);
-	$(document.body).append(popup);
-
-	let headerClone = $("#headerTemp").clone();
-	headerClone.removeAttr('id');
-	headerClone.find(".btn-close").first().on('click', function(){destroyPopup(popupName);});
-	headerClone.find(".btn-drag").first().on('mousedown', function(e) {
+	
+	let popupClone = $("#popupTemp").clone();
+	popupClone.removeAttr('id');
+	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
+	popupClone.attr('style', `width: auto; height: auto; top: ` + parentPosition.top + `px; left: ` + (parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px;`);
+	
+	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
+	popupClone.find("div.row").find(".btn-drag").first().on('mousedown', function(e) {
 		isDown = true;
-		target = popup[0];
+		target = popupClone[0];
 		offset = [
-			popup[0].offsetLeft - e.clientX,
-			popup[0].offsetTop - e.clientY
+			popupClone[0].offsetLeft - e.clientX,
+			popupClone[0].offsetTop - e.clientY
 		];
 	});
-    headerClone.find("div.popup-heading").first().text(name);
-	popup.append(headerClone);
-
-    //get popup config data
-    let popupConfigContents = defaultConfig[type]["popup"];
-
-    //construct popup popup
-    for (contentIndex in popupConfigContents)
-    {
-        let classes = $(parent[0]).attr("class").split(" ");
-
-        //I really dislike having this hardcoded to the 2nd entry in the classes, but it's the quickest and safest way to do it right now.
-        let curValue = getElementValue(classes[2], false);
-        let curRawValue = getElementValue(classes[2], true)
-        let contentType = popupConfigContents[contentIndex]["type"];
-        let variableName = popupConfigContents[contentIndex]["variable"];
-        if (variableName === "value")
-        {
-            variableName = name;
-        }
-        switch (contentType)
-        {
-            case "display":
-                let newValueDisplay;
-                switch (popupConfigContents[contentIndex]["style"])
-                {
-                    case "text":
-                        newValueDisplay = $("#textDisplayTemp").clone();
-                        newValueDisplay.removeAttr("id");
-                        newValueDisplay.find(".popup-value-out").attr("display", popupName);
-                        newValueDisplay.find(".popup-value-out").text(curValue);
-                        break;
-                    case "graph":
-                        break;
-                    default:
-                        printLog("warning", "Unknown display type for popup encountered in config: '" + popupConfigContents["style"] + "'");
-                        break;
-                }
-                popup.append(newValueDisplay);
-                break;
-            case "checkbox":
-                let newCheckbox = $("#digitalOutTemp").clone();
-                newCheckbox.removeAttr("id");
-                newCheckbox.find(".ckbx-label").text(name).attr("for", popupName);
-                newCheckbox.find("input").attr('id', popupName).attr('state', variableName);
-                if (curValue === defaultConfig[type]["popup"][contentIndex]["high"])
-                {
-                    newCheckbox.find("input").prop("checked", true);
-                }
-                else if (curValue === defaultConfig[type]["popup"][contentIndex]["low"])
-                {
-                    newCheckbox.find("input").prop("checked", false);
-                }
-                else
-                {
-                    newCheckbox.find("input").prop("checked", false);
-                }
-                popup.append(newCheckbox);
-                break;
-            case "slider":
-                let newSlider = $("#sliderTemp").clone();
-                newSlider.removeAttr("id");
-                newSlider.find(".range-slider-label").text(name);
-                if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
-                {
-                    printLog("warning", "Encountered state value that isn't a number while creating <code>'" + popupName + "'</code> popup: " + curRawValue + ". Defaulting to '0'.");
-                    curRawValue = 0;
-                }
-                newSlider.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
-                newSlider.find(".range-slider__feedback").text(Math.round(curRawValue));
-                popup.append(newSlider);
-                break;
-            default:
-                printLog("warning", "Unknown content type for popup encountered in config: '" + contentType + "'");
-        }
-    }
-
-	popup.fadeIn(100);
-
-	rangeSlider();
 	
-	activePopups[popupName] = popup;
-}
+	let parentClasses = parent.attr("class").split(" ");
+	let title = getReferenceFromClasses(parentClasses);
+    popupClone.find("div.popup-heading").first().text(title); //this needs to change to load the human readable/nice name (pass it on to the function? kind of dislike that)
 
-//if changes are made to an element while popup is open it might need to update values in the popup
-function updatePopup(elementType, variableName, value, rawValue)
-{
-    let popupName = elementType + "_" + variableName;
-    if (!(popupName in activePopups)) //if popup doesn't exist, don't update it
+    let type = getTypeFromClasses(parentClasses);
+    if (popupID in defaultConfig) // indicates a custom action reference that wants/needs its own popup definition
     {
+        type = popupID;
+    }
+    
+    if (!("popup" in defaultConfig[type])) // check if there actually is a popup definition
+    {
+        printLog("warning", `Tried creating a popup from ID "${popupID}" with type "${type}", but no popup configuration was found.`);
         return;
     }
-    let popup = activePopups[popupName];
-    //--- updating "type": "display"
-    //"style": "text"
+    let popupConfig = defaultConfig[type]["popup"];
     
-    
-    //--- updating "type": "checkbox"
-    
-    
-    //--- updating "type": "slider"
-    //elements = $(popup).find(`input#`);
-    
-    for (contentIndex in defaultConfig[elementType]["popup"])
+
+    //construct popup popup
+    for (contentIndex in popupConfig)
     {
-        let contentType = defaultConfig[elementType]["popup"][contentIndex]["type"];
-        let elements = {};
+        let curValue = getElementValue(getValReferenceFromClasses(parentClasses), false);
+        let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), true)
+        let contentType = popupConfig[contentIndex]["type"];
+        let contentStyle = popupConfig[contentIndex]["style"];
+        let variableName = popupConfig[contentIndex]["variable"];
+        if (variableName === "value")
+        {
+            variableName = popupID;
+        }
+        let newContentRow;
         switch (contentType)
         {
             case "display":
-                elements = $(popup).find(`[display="${popupName}"]`);
-                elements.text(value);
-                break;
-            case "checkbox":
-                elements = $(popup).find(`input#${popupName}[type=checkbox]`);
-                if (value === defaultConfig[elementType]["popup"][contentIndex]["low"])
+                switch (contentStyle)
                 {
-                    elements.prop("checked", false);
-                }
-                else
-                {
-                    elements.prop("checked", true);
+                    case "text":
+                        newContentRow = $("#textDisplayTemp").clone();
+                        newContentRow.removeAttr("id");
+                        newContentRow.find(".popup-value-out").attr("display", popupID);
+                        newContentRow.find(".popup-value-out").text(curValue);
+                        break;
+                    case "external":
+                        printLog("warning", "Style 'external' not yet implemented for display styles in popups");
+                        break;
+                    default:
+                        printLog("warning", `Unknown display style for popup encountered in config: '${contentStyle}'`);
+                        break;
                 }
                 break;
-            case "slider":
-                sliders = $(popup).find(`input.range-slider__range[state=${variableName}][type=range]`);
-                if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+            case "input":
+                switch (contentStyle)
                 {
-                    printLog("warning", "Encountered state value that isn't a number while updating <code>'" + popupName + "'</code> popup: " + rawValue + ". Ignoring update.");
-                    break;
+                    case "checkbox":
+                        newContentRow = $("#digitalOutTemp").clone();
+                        newContentRow.removeAttr("id");
+                        newContentRow.find(".ckbx-label").text(variableName).attr("for", popupID);
+                        newContentRow.find("input").attr('id', popupID).attr('state', variableName);
+                        
+                        let highThreshold = defaultConfig[type]["popup"][contentIndex]["high"];
+                        let lowThreshold = defaultConfig[type]["popup"][contentIndex]["low"];
+                        if (curValue === highThreshold)
+                        {
+                            newContentRow.find("input").prop("checked", true);
+                        }
+                        else if (curValue === lowThreshold)
+                        {
+                            newContentRow.find("input").prop("checked", false);
+                        }
+                        else
+                        {
+                            printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup display: '${curValue}'! Defaulting to unchecked.`);
+                            newContentRow.find("input").prop("checked", false);
+                        }
+                        break;
+                    case "slider":
+                        printLog("info", "test");
+                        newContentRow = $("#sliderTemp").clone();
+                        newContentRow.removeAttr("id");
+                        newContentRow.find(".range-slider-label").text(name);
+                        if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                        {
+                            printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
+                            curRawValue = 0;
+                        }
+                        newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
+                        newContentRow.find(".range-slider__feedback").text(Math.round(curRawValue));
+                        break;
+                    case "textEntry":
+                        printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
+                    default:
+                        printLog("warning", `Unknown input style for popup encountered in config: '${contentStyle}'`);
+                        break;
                 }
-                sliders.val(Math.round(rawValue));
-                let feedback = sliders.siblings("span.range-slider__feedback");
-                feedback.text(Math.round(rawValue));
-                let valueOut = sliders.siblings("span.range-slider__value");
-                valueOut.text(Math.round(rawValue));
                 break;
-            default:
-                printLog("warning", "Tried updating popup with unknown content type for popup encountered in config: '" + contentType + "'");
         }
+        popupClone.append(newContentRow);
     }
+
+    $(document.body).append(popupClone);
+	popupClone.fadeIn(100);
+    
+	/*activePopups[popupID] = {
+	    "popup": popupClone,
+	    
+	};*/
+	activePopups[popupID] = popupClone;
 }
 
-function destroyPopup(popupName)
+function updatePopup(popupID, value, rawValue)
 {
-    $(activePopups[popupName]).fadeOut(100, function() {
-        activePopups[popupName].remove();
-        delete activePopups[popupName];
+
+}
+
+function destroyPopup(popupID)
+{
+    $(activePopups[popupID]).fadeOut(100, function() {
+        activePopups[popupID].remove();
+        delete activePopups[popupID];
     });
 }
 
@@ -208,14 +165,6 @@ var mousePosition;
 var offset = [0,0];
 var target;
 var isDown = false;
-
-// div.addEventListener('mousedown', function(e) {
-//     isDown = true;
-//     offset = [
-//         div.offsetLeft - e.clientX,
-//         div.offsetTop - e.clientY
-//     ];
-// }, true);
 
 document.addEventListener('mouseup', function() {
     isDown = false;

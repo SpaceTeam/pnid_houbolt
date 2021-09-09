@@ -5,11 +5,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "checkbox",
+                "type": "input",
+                "style": "checkbox",
                 "variable": "value",
                 "low": "Open",
                 "high": "Closed"
@@ -21,11 +22,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "checkbox",
+                "type": "input",
+                "style": "checkbox",
                 "variable": "value",
                 "low": "Closed",
                 "high": "Open"
@@ -37,11 +39,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "checkbox",
+                "type": "input",
+                "style": "checkbox",
                 "variable": "value",
                 "low": "Closed",
                 "high": "Open"
@@ -53,11 +56,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "slider",
+                "type": "input",
+                "style": "slider",
                 "variable": "value",
                 "low": 0.0,
                 "high": 100.0
@@ -69,11 +73,12 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "slider",
+                "type": "input",
+                "style": "slider",
                 "variable": "value",
                 "low": 0.0,
                 "high": 100.0
@@ -85,8 +90,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -95,8 +100,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -105,8 +110,8 @@ let defaultConfig = {
 	    "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             }
         ]
     },
@@ -115,15 +120,17 @@ let defaultConfig = {
         "popup": [
             {
                 "type": "display",
-                "variable": "value",
-                "style": "text"
+                "style": "text",
+                "variable": "value"
             },
             {
-                "type": "textEntry",
+                "type": "input",
+                "style": "textEntry",
                 "variable": "tank_fill_low"
             },
             {
-                "type": "textEntry",
+                "type": "input",
+                "style": "textEntry",
                 "variable": "tank_fill_high"
             }
         ]
@@ -195,27 +202,6 @@ $.get('/config/thresholds', function(data) {
 
 createLogBox();
 createThemeSwitcher();
-
-function checkStringIsNumber(string)
-{
-	// console.log(typeof string);
-    if (typeof string == "string")
-    {
-        let re = /(^\d+$)|(^\d+\.\d*$)|(^\d*\.\d+$)/; //checks for either integer with only digits which are at beginning and end (one continuous string of digits) or 
-                                                      //checks for float with either 1 or more digits followed by decimal point followed by 0 or more digits (3. or 3.04, but not .2), or
-                                                      //0 or more digits followed by decimal point followed by 1 or more digits (.3 or 1.345, but not 2.)
-        if (!re.test(string))
-        {
-            return false;
-        }
-    }
-    else if (typeof string != "number")
-    {
-        printLog("warning", "Tried checking if a string is a number, but didn't receive a string nor number: " + string);
-        return false;
-    }
-    return true;
-}
 
 //setup tanks for filling visuals
 function tankSetup()
@@ -377,16 +363,6 @@ function setStateName(state)
 	}
 
 	elementGroup.find("text.reference").text(state["label"]);
-}
-
-function getElementValue(name, rawValue)
-{
-    let searchString = "text.value";
-    if (rawValue === true)
-    {
-        searchString = "text.valueRaw";
-    }
-    return $(document).find(`g.${name}`).find(searchString).text();
 }
 
 function updatePNID(stateList)
