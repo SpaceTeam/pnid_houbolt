@@ -17,7 +17,6 @@ function onServoSliderInput(servoSlider)
     let stateName = $(servoSlider).attr("state");
     let newVal = parseFloat($(servoSlider).val());
     stateUpdate(stateName, newVal); //convert date now from milliseconds to micros
-    
 }
 
 function onDigitalCheck(checkbox)

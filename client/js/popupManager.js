@@ -145,11 +145,13 @@ function createPopup(popupID, parent, isActionReference)
                             printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
                             curRawValue = 0;
                         }
-                        newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
+                        //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
+                        newContentRow.find("input").first().val(Math.round(curRawValue)).attr("state", variableName);
                         newContentRow.find("input").attr("min", popupConfig[contentIndex]["min"]);
                         newContentRow.find("input").attr("max", popupConfig[contentIndex]["max"]);
                         newContentRow.find("input").attr("step", popupConfig[contentIndex]["step"]);
                         newContentRow.find(".range-slider__value").text(Math.round(curRawValue));
+                        rangeSlider();
                         break;
                     case "textEntry":
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
