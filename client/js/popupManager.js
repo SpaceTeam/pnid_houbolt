@@ -199,13 +199,7 @@ function createPopup(popupID, parent, isActionReference)
 
 function updatePopup(popupID, value, rawValue)
 {
-<<<<<<< HEAD
-    return;
-    let popupName = elementType + "_" + variableName;
-    if (!(popupName in activePopups)) //if popup doesn't exist, don't update it
-=======
     if (!(popupID in activePopups) || activePopups[popupID]["timeUntilActive"] > 0) //if popup doesn't exist or currently has updates disabled (eg: due to recent user input), don't update it
->>>>>>> FEATURE/dev/refactor_popups
     {
         return;
     }
