@@ -46,8 +46,8 @@ let defaultConfig = {
                 "type": "input",
                 "style": "slider",
                 "variable": "value",
-                "min": 0,
-                "max": 65535,
+                "min": 35000,
+                "max": 55000,
                 "step": 1
             }
         ]
@@ -64,8 +64,8 @@ let defaultConfig = {
                 "type": "input",
                 "style": "slider",
                 "variable": "value",
-                "min": 0.0,
-                "max": 100.0,
+                "min": 35000,
+                "max": 55000,
                 "step": 1
             }
         ]
