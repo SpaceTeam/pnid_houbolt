@@ -13,15 +13,23 @@ function clickEventListener(popupID)
 	}
 	else // if doesn't exist, create
 	{
-	    popupParent = $(document).find(`g[action-reference='${popupID}']`);
-		createPopup(popupID, popupParent);
+        let isActionReference = false;
+        let popupParent = $(document).find(`g.${popupID}`);
+        printLog("info", popupParent);
+        if (popupParent.length === 0)
+        {
+            popupParent = $(document).find(`g[action-reference='${popupID}']`);
+            isActionReference = true;
+        }
+		createPopup(popupID, popupParent, isActionReference);
 	}
 }
 
 //TODO consider breaking into several smaller functions
-function createPopup(popupID, parent)
+function createPopup(popupID, parent, isActionReference)
 {
 	let parentPosition = parent.offset();
+    printLog("info", parent);
 	
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
@@ -40,7 +48,7 @@ function createPopup(popupID, parent)
 	
 	let parentClasses = parent.attr("class").split(" ");
 	let title = getReferenceFromClasses(parentClasses);
-	if (parentClasses.length != 1) //if there isn't exactly one parent (which can occur if the popup is bound to a custom action reference instead of a pnid element), set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
+	if (isActionReference) //if popup is for action reference, set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
 	{
 	    title = popupID;
 	}
@@ -66,19 +74,19 @@ function createPopup(popupID, parent)
     //construct popup popup
     for (contentIndex in popupConfig)
     {
-        let curValue = getElementValue(getValReferenceFromClasses(parentClasses), false);
-        let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), true)
-        if (parent.length > 1) // if there is more than one parent, we don't know where to get the values from, so let's default to something sensible
+        //this variable loading doesn't support elements with other variables
+        let curValue = getElementValue(getValReferenceFromClasses(parentClasses), "value");
+        printLog("info", getValReferenceFromClasses(parentClasses));
+        let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "valueRaw");
+        if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
-            curValue = 0;
-            curRawValue = 0;
+            curValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValue");
+            curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValueRaw");
         }
+        printLog("info", curRawValue);
         let contentType = popupConfig[contentIndex]["type"];
         let contentStyle = popupConfig[contentIndex]["style"];
         let variableName = popupConfig[contentIndex]["variable"];
-        printLog("info", parent);
-        printLog("info", curValue);
-        printLog("info", curRawValue);
         if (variableName === "value")
         {
             variableName = popupID;
@@ -131,14 +139,17 @@ function createPopup(popupID, parent)
                     case "slider":
                         newContentRow = $("#sliderTemp").clone();
                         newContentRow.removeAttr("id");
-                        newContentRow.find(".range-slider-label").text(name);
+                        newContentRow.find(".range-slider-label").text(popupID);
                         if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                         {
                             printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
                             curRawValue = 0;
                         }
                         newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
-                        newContentRow.find(".range-slider__feedback").text(Math.round(curRawValue));
+                        newContentRow.find("input").attr("min", popupConfig[contentIndex]["min"]);
+                        newContentRow.find("input").attr("max", popupConfig[contentIndex]["max"]);
+                        newContentRow.find("input").attr("step", popupConfig[contentIndex]["step"]);
+                        newContentRow.find(".range-slider__value").text(Math.round(curRawValue));
                         break;
                     case "textEntry":
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
@@ -217,10 +228,10 @@ function updatePopup(popupID, value, rawValue)
                             break;
                         }
                         elements.val(Math.round(rawValue));
-                        let feedback = elements.siblings("span.range-slider__feedback");
-                        feedback.text(Math.round(rawValue));
                         let valueOut = elements.siblings("span.range-slider__value");
                         valueOut.text(Math.round(rawValue));
+                        /*let feedback = elements.siblings("span.range-slider__feedback");
+                        feedback.text(Math.round(rawValue));*/
                         break;
                     default:
                         printLog("warning", `Unknown input style while trying to update popup (${popupID}): '${contentStyle}'`);

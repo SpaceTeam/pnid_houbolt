@@ -44,10 +44,11 @@ let defaultConfig = {
             },
             {
                 "type": "input",
-                "style": "checkbox",
+                "style": "slider",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "min": 0,
+                "max": 65535,
+                "step": 1
             }
         ]
     },
@@ -63,8 +64,9 @@ let defaultConfig = {
                 "type": "input",
                 "style": "slider",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "min": 0.0,
+                "max": 100.0,
+                "step": 1
             }
         ]
     },
@@ -80,8 +82,9 @@ let defaultConfig = {
                 "type": "input",
                 "style": "slider",
                 "variable": "value",
-                "low": 0.0,
-                "high": 100.0
+                "min": 0.0,
+                "max": 100.0,
+                "step": 1
             }
         ]
     },
@@ -427,6 +430,7 @@ function setState(state)
     
     state["name"] = state["name"].replace(":","-");
     
+    let isActionReference = false;
 	let elementGroup = $(document).find("g." + state["name"]);
 	// check if any pnid element is found with the provided state name
 	let unit = "";
@@ -439,6 +443,17 @@ function setState(state)
 	    elementGroup.find("text.value").text(state["value"] + unit);
 	    //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 	}
+	else
+    {
+        elementGroup = $(document).find(`g[action-reference='${state["name"]}']`);
+
+        if (elementGroup.length !== 0)
+        {
+            isActionReference = true;
+            elementGroup.find("text.actionReferenceValue").text(state["value"]);
+            elementGroup.find("text.actionReferenceRawValue").text(state["value"]);
+        }
+    }
 	
     //----- prepare for eval behavior block
     //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
@@ -457,16 +472,16 @@ function setState(state)
     //create list of possible entries in the default or custom JSON
     //config search terms is a 2d array, one array for each element that has been found that matched the state name.
     let configSearchTerms = []; //TODO configSearchTerms is not the best name, find another one
-    if (elementGroup.length !== 0) //if there is a corresponding pnid element, get its classes, one of these will (hopefully) be contained in the default or custom config
+    if (isActionReference) //if the state update is an action reference, use its name as search term, else get the classes of the pnid element, one of these will (hopefully) be contained in the default or custom config
+    {
+        configSearchTerms.push([state["name"]]);
+    }
+    else
     {
         //unpack each found element's classes individually
         elementGroup.each(function(index) {
             configSearchTerms.push($(this).attr("class").split(" "));
         });
-    }
-    else //if the incoming state has no corresponding pnid element, it's probably an action reference with a corresponding popup and entry in the default config, add its name to the search list entry
-    {
-        configSearchTerms.push([state["name"]]);
     }
     //iterate through all elements found (only one in case of action references)
     for (i in configSearchTerms)
@@ -505,7 +520,11 @@ function setState(state)
         //if there is a pnid element, update it
         if (elementGroup.length !== 0)
         {
-            applyUpdatesToPnID(elementGroup.eq(i), outVars);
+            applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
+        }
+        else
+        {
+            printLog("warning", `Received state update with no corresponding pnid element or action reference! State: ${state["name"]}: ${state["value"]}`);
         }
     }
     
@@ -516,14 +535,14 @@ function setState(state)
     }
 }
 
-function applyUpdatesToPnID(elementGroup, outVars)
+function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 {
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
 	//printLog("info", "Found these attributes:" + attributes);
 	
 	//apply all outVars to PnID
-	if ("color" in outVars)
+	if ("color" in outVars && !isActionReference)
 	{
 		for (attrIndex in attributes)
 		{
@@ -541,7 +560,14 @@ function applyUpdatesToPnID(elementGroup, outVars)
 	}
 	if ("value" in outVars)
 	{
-		elementGroup.find("text.value").text(outVars["value"]);
+        if (isActionReference)
+        {
+            elementGroup.find("text.actionReferenceValue").text(outVars["value"]);
+        }
+        else
+        {
+            elementGroup.find("text.value").text(outVars["value"]);
+        }
 	}
 	if ("crossUpdate" in outVars)
 	{

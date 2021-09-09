@@ -19,13 +19,9 @@ function checkStringIsNumber(string)
     return true;
 }
 
-function getElementValue(name, rawValue)
+function getElementValue(name, valueID)
 {
-    let searchString = "text.value";
-    if (rawValue === true)
-    {
-        searchString = "text.valueRaw";
-    }
+    let searchString = `text.${valueID}`;
     return $(document).find(`g.${name}`).find(searchString).text();
 }
 
