@@ -164,6 +164,13 @@ text.text-R {
     fill: var(--high);
 }
 
+[data-pnid-thermalbarrier=low] {
+    stroke: var(--low);
+}
+[data-pnid-thermalbarrier=high] {
+    stroke: var(--high);
+}
+
 [data-pnid-sensor_temperature=low] {
     stroke: var(--low);
 }

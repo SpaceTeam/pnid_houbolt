@@ -136,7 +136,7 @@ let defaultConfig = {
         ]
     },
     "gui-fuel_press_depress": {
-        "eval": "console.log('It worked!');",
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
 	    "popup": [
             {
                 "type": "display",
@@ -438,55 +438,64 @@ function setState(state)
     
     //----- search applicable eval behavior blocks from config files (either default config or custom config)
     //create list of possible entries in the default or custom JSON
+    //config search terms is a 2d array, one array for each element that has been found that matched the state name.
     let configSearchTerms = []; //TODO configSearchTerms is not the best name, find another one
     if (elementGroup.length !== 0) //if there is a corresponding pnid element, get its classes, one of these will (hopefully) be contained in the default or custom config
     {
-        configSearchTerms = elementGroup.attr("class").split(" ");
+        //unpack each found element's classes individually
+        elementGroup.each(function(index) {
+            configSearchTerms.push($(this).attr("class").split(" "));
+        });
     }
     else //if the incoming state has no corresponding pnid element, it's probably an action reference with a corresponding popup and entry in the default config, add its name to the search list entry
     {
-        configSearchTerms.push(state["name"]);
+        configSearchTerms.push([state["name"]]);
     }
-    //go through the possible json entry names for the 
-    for (index in configSearchTerms) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
+    //iterate through all elements found (only one in case of action references)
+    for (i in configSearchTerms)
     {
-	    let searchTerm = configSearchTerms[index];
-	    if (configSearchTerms.includes("wire"))
-	    {
-		    searchTerm = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
-	    }
+        //iterate through search terms (classes for elements, action references for... action references) within one element
+        for (index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
+        {
+	        let searchTerm = configSearchTerms[i][index];
+	        if (configSearchTerms[i].includes("wire") || configSearchTerms[i].includes("PnID-ThermalBarrier"))
+	        {
+		        searchTerm = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
+	        }
 
-	    //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-	    if (searchTerm in defaultConfig)
-	    {
-		    eval(defaultConfig[searchTerm]["eval"]);
-            if (searchTerm === "PnID-Tank")
-            {
-                updateTankContent(elementGroup, state["value"]);
-            }
-	    }
-    }
+	        //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
+	        if (searchTerm in defaultConfig)
+	        {
+		        eval(defaultConfig[searchTerm]["eval"]);
+                if (searchTerm === "PnID-Tank")
+                {
+                    updateTankContent(elementGroup, state["value"]);
+                }
+	        }
+        }
 
-    //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-    let configProperties = Object.keys(config);
-    for (propIndex in configProperties)
-    {
-	    //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
-	    if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
-	    {
-		    eval(config[configProperties[propIndex]]["eval"]);
-	    }
-    }
+        //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
+        let configProperties = Object.keys(config);
+        for (propIndex in configProperties)
+        {
+	        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
+	        if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
+	        {
+		        eval(config[configProperties[propIndex]]["eval"]);
+	        }
+        }
 
-    //if there is a pnid element, update it
-    if (elementGroup.length !== 0)
-    {
-        applyUpdatesToPnID(elementGroup, outVars);
+        //if there is a pnid element, update it
+        if (elementGroup.length !== 0)
+        {
+            applyUpdatesToPnID(elementGroup.eq(i), outVars);
+        }
     }
     
     //check if there may be a popup related to this pnid element to update. this could be either to an open popup for a pnid element or a popup for an action reference
     if (state["name"] in activePopups)
     {
+        printLog("info", `Updating popup: ${outVars["value"]}, ${state["value"]}`);
         updatePopup(state["name"], outVars["value"], state["value"]);
     }
 }

@@ -9,12 +9,12 @@ function clickEventListener(popupID)
 	    printLog("info", popupID);
 		activePopups[popupID].css({"animation-name": "none"});
 		setTimeout( function() {
-		    activePopups[popupName].css({"animation-name": "highlight", "animation-duration": "2s"});
+		    activePopups[popupID].css({"animation-name": "highlight", "animation-duration": "2s"});
 		}, 100);
 	}
 	else // if doesn't exist, create
 	{
-	    popupParent = $(document).find(`g[action-reference=${popupID}]`).first();
+	    popupParent = $(document).find(`g[action-reference='${popupID}']`);
 		createPopup(popupID, popupParent);
 	}
 }
@@ -40,17 +40,25 @@ function createPopup(popupID, parent)
 	
 	let parentClasses = parent.attr("class").split(" ");
 	let title = getReferenceFromClasses(parentClasses);
-    popupClone.find("div.popup-heading").first().text(title); //this needs to change to load the human readable/nice name (pass it on to the function? kind of dislike that)
+	if (parentClasses.length != 1) //if there isn't exactly one parent (which can occur if the popup is bound to a custom action reference instead of a pnid element), set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
+	{
+	    title = popupID;
+	}
+    popupClone.find("div.popup-heading").first().text(title);
 
     let type = getTypeFromClasses(parentClasses);
     if (popupID in defaultConfig) // indicates a custom action reference that wants/needs its own popup definition
     {
         type = popupID;
     }
+    if (defaultConfig[type] === undefined)
+    {
+        return;
+    }
     
     if (!("popup" in defaultConfig[type])) // check if there actually is a popup definition
     {
-        printLog("warning", `Tried creating a popup from ID "${popupID}" with type "${type}", but no popup configuration was found.`);
+        printLog("warning", `Tried creating a popup from ID "${popupID}" with type "${type}", but no popup configuration was found.`); //does this make sense to print? this can be 100% wanted/intended to be the case
         return;
     }
     let popupConfig = defaultConfig[type]["popup"];
@@ -84,7 +92,7 @@ function createPopup(popupID, parent)
                         printLog("warning", "Style 'external' not yet implemented for display styles in popups");
                         break;
                     default:
-                        printLog("warning", `Unknown display style for popup encountered in config: '${contentStyle}'`);
+                        printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
                         break;
                 }
                 break;
@@ -109,12 +117,11 @@ function createPopup(popupID, parent)
                         }
                         else
                         {
-                            printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup display: '${curValue}'! Defaulting to unchecked.`);
+                            printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
                             newContentRow.find("input").prop("checked", false);
                         }
                         break;
                     case "slider":
-                        printLog("info", "test");
                         newContentRow = $("#sliderTemp").clone();
                         newContentRow.removeAttr("id");
                         newContentRow.find(".range-slider-label").text(name);
@@ -130,9 +137,12 @@ function createPopup(popupID, parent)
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:
-                        printLog("warning", `Unknown input style for popup encountered in config: '${contentStyle}'`);
+                        printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
                         break;
                 }
+                break;
+            default:
+                printLog("warning", `Unknown content type while to create popup (${popupID}): '${contentType}'`);
                 break;
         }
         popupClone.append(newContentRow);
@@ -141,22 +151,86 @@ function createPopup(popupID, parent)
     $(document.body).append(popupClone);
 	popupClone.fadeIn(100);
     
-	/*activePopups[popupID] = {
+	activePopups[popupID] = {
 	    "popup": popupClone,
-	    
-	};*/
-	activePopups[popupID] = popupClone;
+	    "config": popupConfig
+	};
 }
 
 function updatePopup(popupID, value, rawValue)
 {
-
+    if (!(popupID in activePopups)) //if popup doesn't exist, don't update it
+    {
+        return;
+    }
+    let popup = activePopups[popupID]["popup"];
+    let popupConfig = activePopups[popupID]["config"];
+    
+    for (contentIndex in popupConfig)
+    {
+        let contentType = popupConfig[contentIndex]["type"];
+        let contentStyle = popupConfig[contentIndex]["style"];
+        let elements = {};
+        switch (contentType)
+        {
+            case "display":
+                switch (contentStyle)
+                {
+                    case "text":
+                        elements = $(popup).find(`[display="${popupID}"]`);
+                        elements.text(value);
+                        break;
+                    case "external":
+                        printLog("warning", "Wanted to update style 'external' in a popup, but it is not yet implemented for display styles");
+                        break;
+                    default:
+                        printLog("warning", `Unknown display style while trying to update popup (${popupID}): '${contentStyle}'`);
+                        break;
+                }
+                break;
+            case "input":
+                switch (contentStyle)
+                {
+                    case "checkbox":
+                        elements = $(popup).find(`input#${popupID}[type=checkbox]`);
+                        if (value === popupConfig[contentIndex]["low"])
+                        {
+                            elements.prop("checked", false);
+                        }
+                        else
+                        {
+                            elements.prop("checked", true);
+                        }
+                        break;
+                    case "slider":
+                        elements = $(popup).find(`input.range-slider__range[state=${popupID}][type=range]`);
+                        if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                        {
+                            printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup: ${rawValue}. Ignoring update.`);
+                            break;
+                        }
+                        elements.val(Math.round(rawValue));
+                        let feedback = elements.siblings("span.range-slider__feedback");
+                        feedback.text(Math.round(rawValue));
+                        let valueOut = elements.siblings("span.range-slider__value");
+                        valueOut.text(Math.round(rawValue));
+                        break;
+                    default:
+                        printLog("warning", `Unknown input style while trying to update popup (${popupID}): '${contentStyle}'`);
+                        break;
+                }
+                break;
+            default:
+                printLog("warning", `Unknown content type while trying to update popup (${popupID}): '${contentType}'`);
+                break;
+        }
+    }
 }
 
 function destroyPopup(popupID)
 {
-    $(activePopups[popupID]).fadeOut(100, function() {
-        activePopups[popupID].remove();
+    $(activePopups[popupID]["popup"]).fadeOut(100, function() {
+        activePopups[popupID]["popup"].remove();
         delete activePopups[popupID];
     });
 }
