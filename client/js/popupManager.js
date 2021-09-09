@@ -19,6 +19,7 @@ function clickEventListener(popupID)
 	}
 }
 
+//TODO consider breaking into several smaller functions
 function createPopup(popupID, parent)
 {
 	let parentPosition = parent.offset();
@@ -53,7 +54,7 @@ function createPopup(popupID, parent)
     }
     if (defaultConfig[type] === undefined)
     {
-        return;
+        return; //would be nice if this would be called earlier so less code is run uselessly, but it's not really a point where optimization is *needed*
     }
     
     if (!("popup" in defaultConfig[type])) // check if there actually is a popup definition
