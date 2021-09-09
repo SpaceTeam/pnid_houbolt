@@ -10,10 +10,9 @@ function deactiveInputUpdate(popupID, duration)
     activePopups[popupID]["timeUntilActive"] = duration; // timer has a resolution of 1/10th of a second
     activePopups[popupID]["timer"] = setInterval(function () {
         activePopups[popupID]["timeUntilActive"] -= 1;
-        console.log("tick", activePopups[popupID]["timeUntilActive"]);
         if (activePopups[popupID]["timeUntilActive"] <= 0)
         {
-            clearInterval(timer);
+            clearInterval(activePopups[popupID]["timer"]);
             activePopups[popupID]["timeUntilActive"] = 0;
         }
     }, 100);
