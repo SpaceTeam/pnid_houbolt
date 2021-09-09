@@ -150,8 +150,8 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.find("input").attr("min", popupConfig[contentIndex]["min"]);
                         newContentRow.find("input").attr("max", popupConfig[contentIndex]["max"]);
                         newContentRow.find("input").attr("step", popupConfig[contentIndex]["step"]);
+                        rangeSlider(newContentRow);
                         newContentRow.find(".range-slider__value").text(Math.round(curRawValue));
-                        rangeSlider();
                         break;
                     case "textEntry":
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
