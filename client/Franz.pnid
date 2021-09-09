@@ -14,12 +14,12 @@
         <text class="Unit" x="8600" y="1250" visibility="hidden" transform="rotate(90,8600,1250)">bar</text>
         <text class="Action_Reference" x="8600" y="1250" visibility="hidden" transform="rotate(90,8600,1250)"> </text>
     </g>
-    <g class="L4 PnID-LED ox_main_valve_off-sensor1 comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L4', 'PnID-LED', 'ox_main_valve_off-sensor1')">
+    <g class="L4 PnID-LED ox_main_valve_off-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L4', 'PnID-LED', 'ox_main_valve_off-sensor')">
         <!-- coordinates: x = 5950 y = 4670 -->
         <circle cx="5950" cy="4670" r="50" />
         <text class="reference static-color text-R" x="5860" y="4670" visibility="visible">L4</text>
-        <text class="value text-R" x="5865" y="4735" visibility="visible">ox_main_valve_off:sensor1</text>
-        <text class="valueRaw text-R" x="5865" y="4735" visibility="hidden">ox_main_valve_off:sensor1</text>
+        <text class="value text-R" x="5865" y="4735" visibility="visible">ox_main_valve_off:sensor</text>
+        <text class="valueRaw text-R" x="5865" y="4735" visibility="hidden">ox_main_valve_off:sensor</text>
     </g>
     <g class="L1 PnID-LED fuel_main_valve_on-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L1', 'PnID-LED', 'fuel_main_valve_on-sensor')">
         <!-- coordinates: x = 4650 y = 4420 -->
@@ -990,12 +990,12 @@
         <text class="valueRaw text-R" x="6195" y="4075" visibility="hidden" transform="rotate(90,6195,4075) scale(1,-1) translate(0,-8150)">ox_main_valve:sensor</text>
         <text class="Action_Reference" x="6150" y="4470" visibility="hidden" transform="rotate(90,6150,4470) scale(1,-1) translate(0,-8940)"> </text>
     </g>
-    <g class="L3 PnID-LED ox_main_valve_on-sensor1 comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L3', 'PnID-LED', 'ox_main_valve_on-sensor1')">
+    <g class="L3 PnID-LED ox_main_valve_on-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L3', 'PnID-LED', 'ox_main_valve_on-sensor')">
         <!-- coordinates: x = 5950 y = 4270 -->
         <circle cx="5950" cy="4270" r="50" />
         <text class="reference static-color text-R" x="5855" y="4270" visibility="visible">L3</text>
-        <text class="value text-R" x="5855" y="4200" visibility="visible">ox_main_valve_on:sensor1</text>
-        <text class="valueRaw text-R" x="5855" y="4200" visibility="hidden">ox_main_valve_on:sensor1</text>
+        <text class="value text-R" x="5855" y="4200" visibility="visible">ox_main_valve_on:sensor</text>
+        <text class="valueRaw text-R" x="5855" y="4200" visibility="hidden">ox_main_valve_on:sensor</text>
     </g>
 
 <!-- Wires-->
