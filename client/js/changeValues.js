@@ -17,7 +17,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "eval": "if (inVars['value'] > 70) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 60) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",

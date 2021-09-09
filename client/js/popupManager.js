@@ -140,6 +140,7 @@ function createPopup(parent, type, name)
 //if changes are made to an element while popup is open it might need to update values in the popup
 function updatePopup(elementType, variableName, value, rawValue)
 {
+    return;
     let popupName = elementType + "_" + variableName;
     if (!(popupName in activePopups)) //if popup doesn't exist, don't update it
     {
