@@ -18,17 +18,17 @@
         <!-- coordinates: x = 4850 y = 4690 -->
         <path d="M 4900 4710 A 50 50 0 0 0 4800 4710" />
         <path d="M 4900 4710 L 4800 4710 " />
-        <text class="reference static-color text-R" x="4770" y="4690" visibility="visible" transform="rotate(180,4770,4690)">L1</text>
-        <text class="value text-R" x="4765" y="4615" visibility="visible" transform="rotate(180,4765,4615)">fuel_main_valve_opening:sensor</text>
-        <text class="valueRaw text-R" x="4765" y="4615" visibility="hidden" transform="rotate(180,4765,4615)">fuel_main_valve_opening:sensor</text>
+        <text class="reference static-color text-L" x="4770" y="4690" visibility="visible" transform="rotate(180,4770,4690)">L1</text>
+        <text class="value text-L" x="4765" y="4620" visibility="visible" transform="rotate(180,4765,4620)">fuel_main_valve_opening:sensor</text>
+        <text class="valueRaw text-L" x="4765" y="4620" visibility="hidden" transform="rotate(180,4765,4620)">fuel_main_valve_opening:sensor</text>
     </g>
     <g class="L2 PnID-LED fuel_main_valve_closing-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L2', 'PnID-LED', 'fuel_main_valve_closing-sensor')">
         <!-- coordinates: x = 4850 y = 4250 -->
         <path d="M 4900 4270 A 50 50 0 0 0 4800 4270" />
         <path d="M 4900 4270 L 4800 4270 " />
-        <text class="reference static-color text-R" x="4965" y="4250" visibility="visible">L2</text>
-        <text class="value text-L" x="4930" y="4175" visibility="visible">fuel_main_valve_closing:sensor</text>
-        <text class="valueRaw text-L" x="4930" y="4175" visibility="hidden">fuel_main_valve_closing:sensor</text>
+        <text class="reference static-color text-L" x="4940" y="4250" visibility="visible">L2</text>
+        <text class="value text-L" x="4940" y="4170" visibility="visible">fuel_main_valve_closing:sensor</text>
+        <text class="valueRaw text-L" x="4940" y="4170" visibility="hidden">fuel_main_valve_closing:sensor</text>
     </g>
     <g class="S3 PnID-Valve_Solenoid_NC purge_solenoid-sensor comp" data-value="40" data-unit="" data-pnid-valve_solenoid_nc="" pointer-events="bounding-box" onclick="clickEventListenever('S3', 'PnID-Valve_Solenoid_NC', 'purge_solenoid-sensor')">
         <!-- coordinates: x = 3250 y = 5550 -->
@@ -932,7 +932,7 @@
         <path d="M 4550 4470 L 4550 4470" />
         <path d="M 4950 4470 L 4950 4470" />
         <text class="sensor-letter static-color text-C" x="4750" y="4220" transform="rotate(180,4750,4220)">P</text>
-        <text class="reference static-color text-R" x="4750" y="4555" visibility="visible" transform="rotate(-90,4750,4555)">VP1</text>
+        <text class="reference static-color text-R" x="4750" y="4570" visibility="visible" transform="rotate(-90,4750,4570)">VP1</text>
         <text class="value text-L" x="4750" y="4095" visibility="visible" transform="rotate(-90,4750,4095)">fuel_main_valve:sensor</text>
         <text class="valueRaw text-L" x="4750" y="4095" visibility="hidden" transform="rotate(-90,4750,4095)">fuel_main_valve:sensor</text>
         <text class="Action_Reference" x="4750" y="4470" visibility="hidden" transform="rotate(-90,4750,4470)"> </text>
@@ -980,10 +980,18 @@
         <path d="M 5950 4470 L 5950 4470" />
         <path d="M 6350 4470 L 6350 4470" />
         <text class="sensor-letter static-color text-C" x="6150" y="4220" transform="scale(1,-1) translate(0,-8440)">P</text>
-        <text class="reference static-color text-L" x="6150" y="4620" visibility="visible" transform="rotate(90,6150,4620) scale(1,-1) translate(0,-9240)">VP2</text>
-        <text class="value text-R" x="6150" y="3790" visibility="visible" transform="rotate(90,6150,3790) scale(1,-1) translate(0,-7580)">ox_main_valve:sensor</text>
-        <text class="valueRaw text-R" x="6150" y="3790" visibility="hidden" transform="rotate(90,6150,3790) scale(1,-1) translate(0,-7580)">ox_main_valve:sensor</text>
+        <text class="reference static-color text-L" x="6150" y="4580" visibility="visible" transform="rotate(90,6150,4580) scale(1,-1) translate(0,-9160)">VP2</text>
+        <text class="value text-R" x="6150" y="4085" visibility="visible" transform="rotate(90,6150,4085) scale(1,-1) translate(0,-8170)">ox_main_valve:sensor</text>
+        <text class="valueRaw text-R" x="6150" y="4085" visibility="hidden" transform="rotate(90,6150,4085) scale(1,-1) translate(0,-8170)">ox_main_valve:sensor</text>
         <text class="Action_Reference" x="6150" y="4470" visibility="hidden" transform="rotate(90,6150,4470) scale(1,-1) translate(0,-8940)"> </text>
+    </g>
+    <g class="L4 PnID-LED ox_main_valve_opening-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L4', 'PnID-LED', 'ox_main_valve_opening-sensor')"transform="rotate(180,6050,4690)">
+        <!-- coordinates: x = 6050 y = 4690 -->
+        <path d="M 6100 4710 A 50 50 0 0 0 6000 4710" />
+        <path d="M 6100 4710 L 6000 4710 " />
+        <text class="reference static-color text-R" x="6175" y="4690" visibility="visible" transform="rotate(180,6175,4690)">L4</text>
+        <text class="value text-R" x="6175" y="4620" visibility="visible" transform="rotate(180,6175,4620)">ox_main_valve_opening:sensor</text>
+        <text class="valueRaw text-R" x="6175" y="4620" visibility="hidden" transform="rotate(180,6175,4620)">ox_main_valve_opening:sensor</text>
     </g>
     <g class="L3 PnID-LED ox_main_valve_closing-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L3', 'PnID-LED', 'ox_main_valve_closing-sensor')">
         <!-- coordinates: x = 6050 y = 4250 -->
@@ -992,14 +1000,6 @@
         <text class="reference static-color text-R" x="5955" y="4250" visibility="visible">L3</text>
         <text class="value text-R" x="5955" y="4175" visibility="visible">ox_main_valve_closing:sensor</text>
         <text class="valueRaw text-R" x="5955" y="4175" visibility="hidden">ox_main_valve_closing:sensor</text>
-    </g>
-    <g class="L4 PnID-LED ox_main_valve_opening-sensor comp" data-value="40" data-unit="" data-pnid-led="" pointer-events="bounding-box" onclick="clickEventListenever('L4', 'PnID-LED', 'ox_main_valve_opening-sensor')"transform="rotate(180,6050,4690)">
-        <!-- coordinates: x = 6050 y = 4690 -->
-        <path d="M 6100 4710 A 50 50 0 0 0 6000 4710" />
-        <path d="M 6100 4710 L 6000 4710 " />
-        <text class="reference static-color text-R" x="6165" y="4690" visibility="visible" transform="rotate(180,6165,4690)">L4</text>
-        <text class="value text-L" x="6130" y="4615" visibility="visible" transform="rotate(180,6130,4615)">ox_main_valve_opening:sensor</text>
-        <text class="valueRaw text-L" x="6130" y="4615" visibility="hidden" transform="rotate(180,6130,4615)">ox_main_valve_opening:sensor</text>
     </g>
 
 <!-- Wires-->
