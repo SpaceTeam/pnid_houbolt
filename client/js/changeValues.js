@@ -41,10 +41,10 @@ let defaultConfig = {
                 "style": "text"
             },
             {
-                "type": "checkbox",
+                "type": "slider",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": 0.0,
+                "high": 100.0
             }
         ]
     },
