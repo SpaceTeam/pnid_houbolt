@@ -1,5 +1,24 @@
 var activePopups = {};
 
+function deactiveInputUpdate(popupID, duration)
+{
+    if (activePopups[popupID]["timeUntilActive"] > 0) //there's already one timer counting, so just reset it back to full duration
+    {
+        activePopups[popupID]["timeUntilActive"] = duration; // timer has a resolution of 1/10th of a second
+        return;
+    }
+    activePopups[popupID]["timeUntilActive"] = duration; // timer has a resolution of 1/10th of a second
+    activePopups[popupID]["timer"] = setInterval(function () {
+        activePopups[popupID]["timeUntilActive"] -= 1;
+        console.log("tick", activePopups[popupID]["timeUntilActive"]);
+        if (activePopups[popupID]["timeUntilActive"] <= 0)
+        {
+            clearInterval(timer);
+            activePopups[popupID]["timeUntilActive"] = 0;
+        }
+    }, 100);
+}
+
 //popup ID is the GUI ID (action_reference in kicad)
 function clickEventListener(popupID)
 {
@@ -173,13 +192,15 @@ function createPopup(popupID, parent, isActionReference)
     
 	activePopups[popupID] = {
 	    "popup": popupClone,
-	    "config": popupConfig
+	    "config": popupConfig,
+        "timer": undefined,
+        "timeUntilActive": 0 // if 0 it should listen to updates, if higher it should count down
 	};
 }
 
 function updatePopup(popupID, value, rawValue)
 {
-    if (!(popupID in activePopups)) //if popup doesn't exist, don't update it
+    if (!(popupID in activePopups) || activePopups[popupID]["timeUntilActive"] > 0) //if popup doesn't exist or currently has updates disabled (eg: due to recent user input), don't update it
     {
         return;
     }
@@ -250,6 +271,10 @@ function updatePopup(popupID, value, rawValue)
 function destroyPopup(popupID)
 {
     $(activePopups[popupID]["popup"]).fadeOut(100, function() {
+        if (activePopups[popupID]["timer"] != undefined)
+        {
+            clearInterval(activePopups[popupID]["timer"]);
+        }
         activePopups[popupID]["popup"].remove();
         delete activePopups[popupID];
     });
