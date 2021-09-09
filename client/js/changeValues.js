@@ -151,6 +151,23 @@ let defaultConfig = {
                 "high": "Open"
             }
         ]
+    },
+    "gui-ox_press_depress": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
     }
 };
 

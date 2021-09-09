@@ -62,16 +62,23 @@ function createPopup(popupID, parent)
         return;
     }
     let popupConfig = defaultConfig[type]["popup"];
-    
 
     //construct popup popup
     for (contentIndex in popupConfig)
     {
         let curValue = getElementValue(getValReferenceFromClasses(parentClasses), false);
         let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), true)
+        if (parent.length > 1) // if there is more than one parent, we don't know where to get the values from, so let's default to something sensible
+        {
+            curValue = 0;
+            curRawValue = 0;
+        }
         let contentType = popupConfig[contentIndex]["type"];
         let contentStyle = popupConfig[contentIndex]["style"];
         let variableName = popupConfig[contentIndex]["variable"];
+        printLog("info", parent);
+        printLog("info", curValue);
+        printLog("info", curRawValue);
         if (variableName === "value")
         {
             variableName = popupID;
