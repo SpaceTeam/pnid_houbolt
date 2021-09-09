@@ -127,7 +127,10 @@ let defaultConfig = {
                 "variable": "tank_fill_high"
             }
         ]
-    }
+    },
+    "PnID-LED": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; } else { outVars['color']='off'; }"
+    },
 };
 
 $.get('/config/default', function(data) {

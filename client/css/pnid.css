@@ -246,3 +246,11 @@ text.text-R {
 [data-pnid-tank_content=ox] {
     fill: var(--ox);
 }
+
+[data-pnid-led=on] {
+    fill: var(--on);
+}
+
+[data-pnid-led=off] {
+    fill: none;
+}

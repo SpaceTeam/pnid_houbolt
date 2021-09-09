@@ -25,6 +25,7 @@
     --fuel: chocolate;
     --ox: lightblue;
     
+    --on: #f1d901;
     
     /*derived variables*/
     --default-stroke: var(--content-primary);
