@@ -5,8 +5,7 @@ function clickEventListener(popupID)
 {
     // check if popup already exists
     if (popupID in activePopups) // if already exists, highlight
-	{ 
-	    printLog("info", popupID);
+	{
 		activePopups[popupID]["popup"].css({"animation-name": "none"});
 		setTimeout( function() {
 		    activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
