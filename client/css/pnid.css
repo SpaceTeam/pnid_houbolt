@@ -1,27 +1,24 @@
-:root {
-    --default-stroke: black;
-
-    --open: blue;
-    --closed: orange;
-    --undefined: gray;
-    --high: red;
-    --low: blue;
-    --neutral: green;
-
-    --fuel: chocolate;
-    --ox: lightblue;
-
-    --popup-background: #EEEEEE;
-    /*--log-overview-background: #007BFF;*/
-    --log-overview-background: #77b2ff;
-
+html body {
+    background-color: var(--background-primary);
+    color: var(--content-primary);
+    
+    width: auto;
+    height: 1000px;
 }
 
-.logBox, .popup, text {
-    dominant-baseline: middle;
-    /*font-family: "Times New Roman", Times, serif;*/
-	font-family: "Montserrat";
-    fill: black; /*VERY MUCH A HACK - would be nice if this would fill in the same color as the actual outline - not sure how to do though. maybe not a hack since maybe we don't want to color text at all?*/
+.themeSwitcher {
+    position: fixed;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+}
+
+.darkModeButton {
+    background: white;
+    border-color: white;
+    position: absolute;
+    right: 0;   
+    z-index: 1;
 }
 
 text.text-C {
@@ -36,29 +33,26 @@ text.text-R {
     text-anchor: end;
 }
 
-body {
-    width: auto;
-    height: 1000px;
-}
-
 .comp {
     stroke-width: 8;
-    stroke: black;
+    stroke: var(--default-stroke);
     fill: none;
 }
 
 .sensor-letter {
     font-size: 100px;
     stroke-width: 4;
+    fill: var(--default-stroke);
 }
 
 .static-color {
     stroke: var(--default-stroke);
+    fill: var(--default-stroke);
 }
 
 .note-line {
     stroke-width: 6;
-    stroke: blue;
+    stroke: var(--pnid-outline);
     stroke-dasharray: 25,50
 }
 
@@ -70,6 +64,7 @@ body {
 .value, .reference {
     font-size: 70px;
     stroke-width: 4;
+    fill: var(--default-stroke);
 }
 
 .PnID-Tank .rect {
@@ -90,6 +85,7 @@ body {
 }
 [data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color) {
     stroke: var(--open);
+    fill: var(--open);
 }
 
 [data-pnid-valve_pneumatic=closed] path, [data-pnid-valve_servo=closed] path,[data-pnid-valve_needle_servo=closed] path {
@@ -116,56 +112,95 @@ body {
 [data-pnid-sensor_pressure=high] {
     stroke: var(--high);
 }
+[data-pnid-sensor_pressure=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
+}
 
 [data-pnid-sensor_pressure=low] {
     stroke: var(--low);
+}
+[data-pnid-sensor_pressure=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
 }
 
 [data-pnid-sensor_pressure=neutral] {
     stroke: var(--neutral);
 }
+[data-pnid-sensor_pressure=neutral] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
+}
 
 [data-pnid-sensor_temperature=high] {
     stroke: var(--high);
+}
+[data-pnid-sensor_temperature=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
 }
 
 [data-pnid-sensor_temperature=low] {
     stroke: var(--low);
 }
+[data-pnid-sensor_temperature=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
+}
 
 [data-pnid-sensor_temperature=neutral] {
     stroke: var(--neutral);
+}
+[data-pnid-sensor_temperature=neutral] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
 }
 
 [data-pnid-sensor_massflow=high] {
     stroke: var(--high);
 }
+[data-pnid-sensor_massflow=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
+}
 
 [data-pnid-sensor_massflow=low] {
     stroke: var(--low);
+}
+[data-pnid-sensor_massflow=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
 }
 
 [data-pnid-sensor_massflow=neutral] {
     stroke: var(--neutral);
 }
+[data-pnid-sensor_massflow=neutral] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
+}
 
-[data-pnid-valve_solenoid=open] {
+[data-pnid-valve_solenoid_no=open], [data-pnid-valve_solenoid_nc=open] {
     stroke: var(--open);
     fill: none;
 }
+[data-pnid-valve_solenoid_no=open] text:not(.static-color), [data-pnid-valve_solenoid_nc=open] text:not(.static-color) {
+    stroke: var(--open);
+    fill: var(--open);
+}
 
-[data-pnid-valve_solenoid=closed] path {
-    stroke: black;
+[data-pnid-valve_solenoid_no=closed] path, [data-pnid-valve_solenoid_nc=closed] path {
+    stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
-
-[data-pnid-valve_solenoid=closed] text:not(.static-color) {
+[data-pnid-valve_solenoid_no=closed] text:not(.static-color), [data-pnid-valve_solenoid_nc=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid=undefined] {
+[data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {
     stroke: var(--undefined);
 }
 
@@ -187,4 +222,12 @@ body {
 
 [data-pnid-tank_content=ox] {
     fill: var(--ox);
+}
+
+[data-pnid-led=on] {
+    fill: var(--on);
+}
+
+[data-pnid-led=off] {
+    fill: none;
 }

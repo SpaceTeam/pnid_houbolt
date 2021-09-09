@@ -8,7 +8,7 @@ var detectScrolling = true;
 
 function createLogBox()
 {
-    let logBoxClone = $("#logBox").clone();
+    let logBoxClone = $("#logBoxTemp").clone();
 	logBoxClone.removeAttr('id');
 	$(document.body).append(logBoxClone);
 }
@@ -36,7 +36,7 @@ function toggleLogBox()
 
 function updateOverviewCounters()
 {
-    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     let logOverview = logContainer.find(".logMenu").find(".logOverview");
     logOverview.find("#logInfo").find(".logCategoryNumber").text(nrInfo);
     logOverview.find("#logWarning").find(".logCategoryNumber").text(nrWarning);
@@ -48,7 +48,7 @@ function updateScroll()
 {
     if (autoScroll === true)
     {
-        let logContainer = $(document).find(".logContainer:not(#logBox)");
+        let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
         let logTextArea = logContainer.find(".logTextArea");
         logTextArea.scrollTop(logTextArea.prop('scrollHeight'));
     }
@@ -57,7 +57,7 @@ function updateScroll()
 function disableAutoScroll()
 {
     autoScroll = false;
-    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     let logTextArea = logContainer.find(".logTextArea");
     logTextArea.find("button.scrollButton").fadeIn(100);
 }
@@ -65,7 +65,7 @@ function disableAutoScroll()
 function activateAutoScroll()
 {
     autoScroll = true;
-    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     let logTextArea = logContainer.find(".logTextArea");
     logTextArea.animate({scrollTop: $(logTextArea).prop('scrollHeight')}, 200);
     logTextArea.find("button.scrollButton").fadeOut(200);
@@ -73,7 +73,7 @@ function activateAutoScroll()
 
 function printLog(level, message)
 {
-    let logContainer = $(document).find(".logContainer:not(#logBox)");
+    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     logContainer.find(".logMenu").find("button.btn").removeAttr('disabled');
     let logTextArea = logContainer.find(".logTextArea");
     let logEntryClone = logContainer.find("#logEntryTemp").clone();

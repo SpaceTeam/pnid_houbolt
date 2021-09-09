@@ -1,6 +1,22 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
-    "PnID-Valve_Solenoid": {
+    "PnID-Valve_Solenoid_NO": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
+	    "popup": [
+            {
+                "type": "display",
+                "variable": "value",
+                "style": "text"
+            },
+            {
+                "type": "checkbox",
+                "variable": "value",
+                "low": "Open",
+                "high": "Closed"
+            }
+        ]
+    },
+    "PnID-Valve_Solenoid_NC": {
         "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
 	    "popup": [
             {
@@ -25,10 +41,10 @@ let defaultConfig = {
                 "style": "text"
             },
             {
-                "type": "checkbox",
+                "type": "slider",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": 0.0,
+                "high": 100.0
             }
         ]
     },
@@ -111,7 +127,10 @@ let defaultConfig = {
                 "variable": "tank_fill_high"
             }
         ]
-    }
+    },
+    "PnID-LED": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; } else { outVars['color']='off'; }"
+    },
 };
 
 $.get('/config/default', function(data) {
@@ -178,6 +197,7 @@ $.get('/config/thresholds', function(data) {
 });
 
 createLogBox();
+createThemeSwitcher();
 
 function checkStringIsNumber(string)
 {

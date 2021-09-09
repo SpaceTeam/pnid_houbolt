@@ -6,10 +6,9 @@
     margin-top: .7rem;
 }
 
-/* Popup container - can be anything you want */
 .popup {
-	color: black;
-	background-color: var(--popup-background);
+	color: var(--content-primary);
+	background-color: var(--background-secondary);
 	border-radius: 0.2rem;
 	padding: 0.8rem;
 	display: inline-block;
@@ -19,44 +18,9 @@
 	-ms-user-select: none;
 	user-select: none;
 	border-style: solid;
-	border-color: var(--default-stroke);
+	border-color: var(--content-secondary);
 	border-width: 0.1rem;
 	position: absolute;
-}
-
-/* The actual popup */
-.popup .popuptext {
-	visibility: hidden;
-	width: 160px;
-	background-color: #555;
-	color: #fff;
-	text-align: center;
-	border-radius: 6px;
-	padding: 8px 0;
-	position: absolute;
-	z-index: 1;
-	bottom: 125%;
-	left: 50%;
-	margin-left: -80px;
-}
-
-/* Popup arrow */
-.popup .popuptext::after {
-	content: "";
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: #555 transparent transparent transparent;
-}
-
-/* Toggle this class - hide and show the popup */
-.popup .show {
-	visibility: visible;
-	-webkit-animation: fadeIn 0.2s;
-	animation: fadeIn 0.2s;
 }
 
 .btn-close
@@ -73,17 +37,6 @@
 	width: 1.5rem;
 	height: 1.5rem;
 	float: left;
-}
-
-/* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-	from {opacity: 0;} 
-	to {opacity: 1;}
-}
-
-@keyframes fadeIn {
-	from {opacity: 0;}
-	to {opacity: 1 ;}
 }
 
 @-webkit-keyframes highlight {

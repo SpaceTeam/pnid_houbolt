@@ -1,0 +1,14 @@
+.ecui-button-primary {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+.ecui-button-outline-primary {
+    color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
+.ecui-button-outline-primary:hover {
+    color: var(--slider-text) !important;
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
