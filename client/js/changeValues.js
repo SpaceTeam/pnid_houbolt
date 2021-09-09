@@ -495,7 +495,6 @@ function setState(state)
     //check if there may be a popup related to this pnid element to update. this could be either to an open popup for a pnid element or a popup for an action reference
     if (state["name"] in activePopups)
     {
-        printLog("info", `Updating popup: ${outVars["value"]}, ${state["value"]}`);
         updatePopup(state["name"], outVars["value"], state["value"]);
     }
 }
