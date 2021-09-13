@@ -432,6 +432,7 @@ function setState(state)
     }
     
     state["name"] = state["name"].replace(":","-");
+    state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
     
     let isActionReference = false;
 	let elementGroup = $(document).find("g." + state["name"]);
