@@ -199,7 +199,7 @@ function createPopup(popupID, parent, isActionReference)
 
 function updatePopup(popupID, value, rawValue)
 {
-    if (!(popupID in activePopups) || activePopups[popupID]["timeUntilActive"] > 0) //if popup doesn't exist or currently has updates disabled (eg: due to recent user input), don't update it
+    if (!(popupID in activePopups)) //if popup doesn't exist or currently has updates disabled (eg: due to recent user input), don't update it
     {
         return;
     }
@@ -229,6 +229,10 @@ function updatePopup(popupID, value, rawValue)
                 }
                 break;
             case "input":
+                if (activePopups[popupID]["timeUntilActive"] > 0)
+                {
+                    continue;
+                }
                 switch (contentStyle)
                 {
                     case "checkbox":
