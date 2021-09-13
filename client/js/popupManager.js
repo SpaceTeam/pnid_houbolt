@@ -33,7 +33,7 @@ function clickEventListener(popupID)
 	{
         let isActionReference = false;
         let popupParent = $(document).find(`g.${popupID}`);
-        printLog("info", popupParent);
+        //printLog("info", popupParent);
         if (popupParent.length === 0)
         {
             popupParent = $(document).find(`g[action-reference='${popupID}']`);
@@ -47,7 +47,7 @@ function clickEventListener(popupID)
 function createPopup(popupID, parent, isActionReference)
 {
 	let parentPosition = parent.offset();
-    printLog("info", parent);
+    //printLog("info", parent);
 	
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
@@ -65,10 +65,14 @@ function createPopup(popupID, parent, isActionReference)
 	});
 	
 	let parentClasses = parent.attr("class").split(" ");
-	let title = getReferenceFromClasses(parentClasses);
+	let title = "";
 	if (isActionReference) //if popup is for action reference, set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
 	{
 	    title = popupID;
+	}
+	else
+	{
+	    title = getElementValue(getValReferenceFromClasses(parentClasses), "reference");
 	}
     popupClone.find("div.popup-heading").first().text(title);
 
@@ -94,14 +98,14 @@ function createPopup(popupID, parent, isActionReference)
     {
         //this variable loading doesn't support elements with other variables
         let curValue = getElementValue(getValReferenceFromClasses(parentClasses), "value");
-        printLog("info", getValReferenceFromClasses(parentClasses));
+        //printLog("info", getValReferenceFromClasses(parentClasses));
         let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "valueRaw");
         if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValue");
             curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValueRaw");
         }
-        printLog("info", curRawValue);
+        //printLog("info", curRawValue);
         let contentType = popupConfig[contentIndex]["type"];
         let contentStyle = popupConfig[contentIndex]["style"];
         let variableName = popupConfig[contentIndex]["variable"];
@@ -217,6 +221,7 @@ function updatePopup(popupID, value, rawValue)
                 switch (contentStyle)
                 {
                     case "text":
+                        console.log(value);
                         elements = $(popup).find(`[display="${popupID}"]`);
                         elements.text(value);
                         break;
