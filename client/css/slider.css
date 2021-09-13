@@ -76,7 +76,7 @@
 .range-slider__value, .range-slider__feedback {
   display: inline-block;
   position: relative;
-  width: auto;
+  width: 3.5rem;
   color: var(--slider-text);
   line-height: 10px;
   text-align: right;

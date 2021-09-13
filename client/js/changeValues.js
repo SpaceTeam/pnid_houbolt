@@ -314,35 +314,35 @@ function extractXYFromPath(path)
 
 async function runTests()
 {
-	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
+	var testNames = [{"name": "fuel_top_tank_temp:sensor", "label": "hope so"}, {"name": "ox_pressurant_press_pressure:sensor", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "purge_regulator_pressure", "value": "95.0"}, {"name": "fuel_tank", "value": "95.0"}, {"name": "fuel_top_tank_temp", "value": "27"}, {"name": "purge_solenoid", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure", "value": "30.0"}];
+	var testData = [{"name": "purge_regulator_pressure:sensor", "value": "95.0"}, {"name": "fuel_tank", "value": 95.0}, {"name": "fuel_top_tank_temp:sensor", "value": "27"}, {"name": "purge_solenoid:sensor", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure:sensor", "value": "30.0"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "oxfill_vent_valve", "value": "10"}, {"name": "fuel_bottom_tank_temp", "value": "101"}];
+	var testData = [{"name": "oxfill_vent_valve:sensor", "value": "10"}, {"name": "fuel_bottom_tank_temp:sensor", "value": "101"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
+	var testData = [{"name": "fuel_depressurize_solenoid:sensor", "value": 5000.0}, {"name": "oxfill_vent_valve:sensor", "value": 50}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_tank_temp", "value": 22}];
+	var testData = [{"name": "purge_solenoid:sensor", "value": 6.0}, {"name": "fuel_pressurize_solenoid:sensor", "value": 10000.0}, {"name": "oxfill_vent_valve:sensor", "value": 80}, {"name": "ox_top_tank_temp:sensor", "value": 22}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp", "value": 5}];
+	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure:sensor", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp:sensor", "value": 5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp", "value": -4}];
+	var testData = [{"name": "ox_top_tank_pressure:sensor", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp:sensor", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
+	var testData = [{"name": "ox_bottom_tank_pressure:sensor", "value": 32.0}, {"name": "purge_solenoid:sensor", "value": 0.0}, {"name": "ox_top_tank_pressure:sensor", "value": 0.5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}, {"name": "ox_depressurize_solenoid", "value": 20.0}];
+	var testData = [{"name": "ox_bottom_tank_pressure:sensor", "value": 0.0}, {"name": "chamber_pressure:sensor", "value": 40}, {"name": "ox_depressurize_solenoid:sensor", "value": 20.0}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 5.0}, {"name": "fuel_depressurize_solenoid", "value": 1.0}];
-	updatePNID(testData);
-	await sleep(500);
+	//var testData = [{"name": "fuel_pressurize_solenoid:sensor", "value": 5.0}, {"name": "fuel_depressurize_solenoid:sensor", "value": 1.0}];
+	//updatePNID(testData);
+	//await sleep(500);
 }
 
 function test()
@@ -432,7 +432,10 @@ function setState(state)
     }
     
     state["name"] = state["name"].replace(":","-");
-    state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+    if (typeof state["value"] != "string")
+    {
+        state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+    }
     
     let isActionReference = false;
 	let elementGroup = $(document).find("g." + state["name"]);

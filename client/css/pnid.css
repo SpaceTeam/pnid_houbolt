@@ -215,6 +215,13 @@ text.text-R {
     fill: var(--closed);
 }
 
+[data-pnid-valve_solenoid_no=closed] rect, [data-pnid-valve_solenoid_nc=open] rect {
+    fill: var(--powered);
+}
+[data-pnid-valve_solenoid_no=open] rect, [data-pnid-valve_solenoid_nc=closed] rect {
+    fill: none;
+}
+
 [data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {
     stroke: var(--undefined);
 }
