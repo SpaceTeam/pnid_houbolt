@@ -26,6 +26,7 @@
     --ox: lightblue;
     
     --on: orange;
+    --powered: #601a00;
     
     /*derived variables*/
     --default-stroke: var(--content-primary);
