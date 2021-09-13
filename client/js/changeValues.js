@@ -1,7 +1,7 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
     "PnID-Valve_Solenoid_NO": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
             {
                 "type": "display",
@@ -18,7 +18,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Solenoid_NC": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
 	    "popup": [
             {
                 "type": "display",
@@ -139,7 +139,7 @@ let defaultConfig = {
         ]
     },
     "PnID-LED": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; } else { outVars['color']='off'; }"
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='on'; } else { outVars['color']='off'; }"
     },
     "gui-fuel_press_depress": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
