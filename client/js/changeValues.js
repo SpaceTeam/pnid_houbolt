@@ -67,6 +67,14 @@ let defaultConfig = {
                 "min": 0,
                 "max": 65535,
                 "step": 1
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": undefined,
+                "sourceID": false,
+                "width": 300,
+                "height": 200
             }
         ]
     },
@@ -184,30 +192,38 @@ $.get('/config/default', function(data) {
 let config = {
     "pressure": {
         "states": [
-            "chamber_pressure"
+            "chamber_pressure:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "temperature_oxidizer_tank": {
         "states": [
-            "ox_top_tank_temp",
-            "ox_mid_top_tank_temp",
-            "ox_mid_bottom_tank_temp",
-            "ox_bottom_tank_temp"
+            "ox_top_tank_temp:sensor",
+            "ox_mid_top_tank_temp:sensor",
+            "ox_mid_bottom_tank_temp:sensor",
+            "ox_bottom_tank_temp:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "purge_solenoid_pressure": {
         "states": [
-            "purge_solenoid"
+            "purge_solenoid:sensor"
         ],
         "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     },
     "purge_solenoid_wire_pressure": {
         "states": [
-            "purge_regulator_pressure"
+            "purge_regulator_pressure:sensor"
         ],
         "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "popup_source_oxfill_vent_valve": {
+        "states": [
+            "oxfill_vent_valve:sensor"
+        ],
+        "popup": {
+            "source": "https://xkcd.com/"
+        }
     }
 };
 
@@ -503,10 +519,11 @@ function setState(state)
 	        }
 
 	        //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-	        if (searchTerm in defaultConfig)
+	        let evalCode = getConfigData(defaultConfig, searchTerm, "eval");
+	        if (evalCode != undefined)
 	        {
-		        eval(defaultConfig[searchTerm]["eval"]);
-                if (searchTerm === "PnID-Tank")
+	            eval(evalCode);
+	            if (searchTerm === "PnID-Tank")
                 {
                     updateTankContent(elementGroup, state["value"]);
                 }
@@ -514,14 +531,10 @@ function setState(state)
         }
 
         //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-        let configProperties = Object.keys(config);
-        for (propIndex in configProperties)
+        let customEvalCode = getConfigData(config, state["name"]);
+        if (customEvalCode != undefined)
         {
-	        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
-	        if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
-	        {
-		        eval(config[configProperties[propIndex]]["eval"]);
-	        }
+            eval(customEvalCode);
         }
 
         //if there is a pnid element, update it

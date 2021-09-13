@@ -45,3 +45,28 @@ function getValReferenceFromClasses(classes)
 {
     return classes[2];
 }
+
+function getConfigData(config, elementName, key)
+{
+    // get key (eval or popup) from default config structure
+    if (elementName in config)
+    {
+        return config[elementName][key]
+    }
+    
+    // if it's not found in default config it could be in custom config structure
+    let categories = Object.keys(config);
+    for (index in categories)
+    {
+        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
+        if (config[categories[index]]["states"] != undefined)
+        {
+            if (config[categories[index]]["states"].includes(elementName)) //if the currently traversed property contains our state, check for eval
+            {
+                return config[categories[index]][key];
+            }
+        }
+    }
+    
+    return undefined;
+}
