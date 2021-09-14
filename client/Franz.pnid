@@ -272,7 +272,7 @@
         <path d="M 4800 4320 L 4600 4470 L 4800 4620 L 4800 4320 " />
         <path d="M 4400 4470 L 4400 4470" />
         <path d="M 4800 4470 L 4800 4470" />
-        <text class="sensor-letter static-color text-C" x="4600" y="4220" transform="rotate(180,4600,4220)">P</text>
+        <text class="sensor-letter static-color text-C" x="4600" y="4220" transform="rotate(270,4600,4220)">P</text>
         <text class="reference static-color text-R" x="4530" y="4620" visibility="visible" transform="rotate(-90,4530,4620)">VP1</text>
         <text class="value text-R" x="4660" y="4620" visibility="visible" transform="rotate(-90,4660,4620)">fuel_main_valve:sensor</text>
         <text class="valueRaw text-R" x="4660" y="4620" visibility="hidden" transform="rotate(-90,4660,4620)">fuel_main_valve:sensor</text>
@@ -365,7 +365,7 @@
         <circle cx="2200" cy="4450" r="100" />
         <path d="M 2000 4450 L 2100 4450 " />
         <path d="M 1900 4450 L 2000 4450" />
-        <text class="sensor-letter static-color text-C" x="2200" y="4450">P</text>
+        <text class="sensor-letter static-color text-C" x="2200" y="4450" transform="rotate(90,2200,4450)">P</text>
         <text class="reference static-color text-C" x="2445" y="4450" visibility="visible" transform="rotate(90,2445,4450)">P2</text>
         <text class="value text-C" x="2360" y="4450" visibility="visible" transform="rotate(90,2360,4450)">purge_regulator_pressure:sensor</text>
         <text class="valueRaw text-C" x="2360" y="4450" visibility="hidden" transform="rotate(90,2360,4450)">purge_regulator_pressure:sensor</text>
@@ -521,7 +521,7 @@
         <text class="actionReferenceValue text-C" x="7350" y="3876" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-C" x="7350" y="3876" visibility="hidden"> </text>
     </g>
-    <g class="V7 PnID-Valve_Servo oxfill_vent_valve-sensor comp" data-value="40" data-unit="" data-pnid-valve_servo="" action-reference="" pointer-events="bounding-box" onclick="clickEventListener('oxfill_vent_valve-sensor')">
+    <g class="V7 PnID-Valve_Servo oxfill_valve-sensor comp" data-value="40" data-unit="" data-pnid-valve_servo="" action-reference="" pointer-events="bounding-box" onclick="clickEventListener('oxfill_valve-sensor')">
         <!-- coordinates: x = 6690 y = 4050 -->
         <circle cx="6690" cy="3800" r="100" />
         <path d="M 6690 4050 L 6690 3900 " />
@@ -531,8 +531,8 @@
         <path d="M 6890 4050 L 6890 4050" />
         <text class="sensor-letter static-color text-C" x="6690" y="3800">M</text>
         <text class="reference static-color text-L" x="6835" y="3750" visibility="visible">V7</text>
-        <text class="value text-L" x="6835" y="3830" visibility="visible">oxfill_vent_valve:sensor</text>
-        <text class="valueRaw text-L" x="6835" y="3830" visibility="hidden">oxfill_vent_valve:sensor</text>
+        <text class="value text-L" x="6835" y="3830" visibility="visible">oxfill_valve:sensor</text>
+        <text class="valueRaw text-L" x="6835" y="3830" visibility="hidden">oxfill_valve:sensor</text>
         <text class="actionReferenceValue text-L" x="6835" y="3830" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-L" x="6835" y="3830" visibility="hidden"> </text>
     </g>
@@ -706,7 +706,7 @@
         <path d="M 5650 1200 L 5450 1350 L 5650 1500 L 5650 1200 " />
         <path d="M 5250 1350 L 5250 1350" />
         <path d="M 5650 1350 L 5650 1350" />
-        <text class="sensor-letter static-color text-C" x="5450" y="1100" transform="rotate(180,5450,1100)">M</text>
+        <text class="sensor-letter static-color text-C" x="5450" y="1100" transform="rotate(270,5450,1100)">M</text>
         <text class="reference static-color text-L" x="5075" y="1300" visibility="visible" transform="rotate(-90,5075,1300)">V5</text>
         <text class="value text-L" x="5170" y="1305" visibility="visible" transform="rotate(-90,5170,1305)">ox_tank_vent_valve_backup:sensor</text>
         <text class="valueRaw text-L" x="5170" y="1305" visibility="hidden" transform="rotate(-90,5170,1305)">ox_tank_vent_valve_backup:sensor</text>
@@ -811,7 +811,7 @@
         <circle cx="2300" cy="1250" r="100" />
         <path d="M 2100 1250 L 2200 1250 " />
         <path d="M 2000 1250 L 2100 1250" />
-        <text class="sensor-letter static-color text-C" x="2300" y="1250">P</text>
+        <text class="sensor-letter static-color text-C" x="2300" y="1250" transform="rotate(90,2300,1250)">P</text>
         <text class="reference static-color text-C" x="2545" y="1250" visibility="visible" transform="rotate(90,2545,1250)">P3</text>
         <text class="value text-C" x="2460" y="1250" visibility="visible" transform="rotate(90,2460,1250)">fuel_pressurant_regulator_pressure:sensor</text>
         <text class="valueRaw text-C" x="2460" y="1250" visibility="hidden" transform="rotate(90,2460,1250)">fuel_pressurant_regulator_pressure:sensor</text>
@@ -882,7 +882,7 @@
         <path d="M 6200 1200 L 6000 1350 L 6200 1500 L 6200 1200 " />
         <path d="M 5800 1350 L 5800 1350" />
         <path d="M 6200 1350 L 6200 1350" />
-        <text class="sensor-letter static-color text-C" x="6000" y="1100" transform="rotate(180,6000,1100)">M</text>
+        <text class="sensor-letter static-color text-C" x="6000" y="1100" transform="rotate(270,6000,1100)">M</text>
         <text class="reference static-color text-L" x="5625" y="1300" visibility="visible" transform="rotate(-90,5625,1300)">V6</text>
         <text class="value text-L" x="5720" y="1305" visibility="visible" transform="rotate(-90,5720,1305)">supercharge_valve:sensor</text>
         <text class="valueRaw text-L" x="5720" y="1305" visibility="hidden" transform="rotate(-90,5720,1305)">supercharge_valve:sensor</text>
@@ -963,7 +963,7 @@
         <path d="M 7700 1950 L 7500 2100 L 7700 2250 L 7700 1950 " />
         <path d="M 7300 2100 L 7300 2100" />
         <path d="M 7700 2100 L 7700 2100" />
-        <text class="sensor-letter static-color text-C" x="7500" y="1850" transform="scale(1,-1) translate(0,-3700)">S</text>
+        <text class="sensor-letter static-color text-C" x="7500" y="1850" transform="scale(1,-1) translate(0,-3700) rotate(-90, 7500,1850) ">S</text>
         <text class="reference static-color text-R" x="7455" y="1695" visibility="visible" transform="rotate(90,7455,1695) scale(1,-1) translate(0,-3390)">S5</text>
         <text class="value text-R" x="7555" y="1695" visibility="visible" transform="rotate(90,7555,1695) scale(1,-1) translate(0,-3390)">ox_depressurize_solenoid:sensor</text>
         <text class="valueRaw text-R" x="7555" y="1695" visibility="hidden" transform="rotate(90,7555,1695) scale(1,-1) translate(0,-3390)">ox_depressurize_solenoid:sensor</text>
@@ -978,7 +978,7 @@
         <path d="M 3400 1950 L 3200 2100 L 3400 2250 L 3400 1950 " />
         <path d="M 3000 2100 L 3000 2100" />
         <path d="M 3400 2100 L 3400 2100" />
-        <text class="sensor-letter static-color text-C" x="3200" y="1850" transform="rotate(180,3200,1850)">S</text>
+        <text class="sensor-letter static-color text-C" x="3200" y="1850" transform="rotate(270,3200,1850)">S</text>
         <text class="reference static-color text-L" x="3155" y="1695" visibility="visible" transform="rotate(-90,3155,1695)">S4</text>
         <text class="value text-L" x="3255" y="1695" visibility="visible" transform="rotate(-90,3255,1695)">fuel_depressurize_solenoid:sensor</text>
         <text class="valueRaw text-L" x="3255" y="1695" visibility="hidden" transform="rotate(-90,3255,1695)">fuel_depressurize_solenoid:sensor</text>
@@ -1095,7 +1095,7 @@
         <circle cx="8450" cy="1250" r="100" />
         <path d="M 8250 1250 L 8350 1250 " />
         <path d="M 8150 1250 L 8250 1250" />
-        <text class="sensor-letter static-color text-C" x="8450" y="1250">P</text>
+        <text class="sensor-letter static-color text-C" x="8450" y="1250" transform="rotate(90,8450,1250)">P</text>
         <text class="reference static-color text-C" x="8695" y="1250" visibility="visible" transform="rotate(90,8695,1250)">P11</text>
         <text class="value text-C" x="8610" y="1250" visibility="visible" transform="rotate(90,8610,1250)">ox_pressurant_press_pressure:sensor</text>
         <text class="valueRaw text-C" x="8610" y="1250" visibility="hidden" transform="rotate(90,8610,1250)">ox_pressurant_press_pressure:sensor</text>
@@ -1111,7 +1111,7 @@
         <path d="M 6200 4320 L 6000 4470 L 6200 4620 L 6200 4320 " />
         <path d="M 5800 4470 L 5800 4470" />
         <path d="M 6200 4470 L 6200 4470" />
-        <text class="sensor-letter static-color text-C" x="6000" y="4220" transform="scale(1,-1) translate(0,-8440)">P</text>
+        <text class="sensor-letter static-color text-C" x="6000" y="4220" transform="scale(1,-1) translate(0,-8440) rotate(-90, 6000,4220) ">P</text>
         <text class="reference static-color text-L" x="5930" y="4620" visibility="visible" transform="rotate(90,5930,4620) scale(1,-1) translate(0,-9240)">VP2</text>
         <text class="value text-L" x="6070" y="4620" visibility="visible" transform="rotate(90,6070,4620) scale(1,-1) translate(0,-9240)">ox_main_valve:sensor</text>
         <text class="valueRaw text-L" x="6070" y="4620" visibility="hidden" transform="rotate(90,6070,4620) scale(1,-1) translate(0,-9240)">ox_main_valve:sensor</text>
@@ -1210,8 +1210,8 @@
     </g>
     <g class="ox_bottom_tank_pressure-sensor wire" data-pnid-wire="">
         <line x1="6000" y1="4050" x2="6000" y2="4270" />
-        <line x1="6340" y1="4050" x2="6000" y2="4050" />
         <line x1="6000" y1="3600" x2="6000" y2="4050" />
+        <line x1="6000" y1="4050" x2="6490" y2="4050" />
         <line x1="6000" y1="3600" x2="6150" y2="3600" />
         <line x1="6000" y1="3350" x2="6000" y2="3600" />
     </g>
@@ -1318,14 +1318,14 @@
     <line class="note-line" x1="500" y1="6050" x2="3800" y2="6050" />
     <line class="note-line" x1="500" y1="4150" x2="500" y2="6050" />
     <line class="note-line" x1="3800" y1="4150" x2="500" y2="4150" />
-    <line class="note-line" x1="9800" y1="550" x2="5350" y2="550" />
     <line class="note-line" x1="9650" y1="3650" x2="9650" y2="550" />
-    <line class="note-line" x1="5350" y1="3650" x2="9800" y2="3650" />
+    <line class="note-line" x1="5200" y1="3650" x2="9650" y2="3650" />
     <line class="note-line" x1="5200" y1="550" x2="5200" y2="3650" />
-    <line class="note-line" x1="1300" y1="550" x2="5250" y2="550" />
     <line class="note-line" x1="1150" y1="3450" x2="1150" y2="550" />
     <line class="note-line" x1="5100" y1="3450" x2="1150" y2="3450" />
     <line class="note-line" x1="5100" y1="550" x2="5100" y2="3450" />
+    <line class="note-line" x1="1150" y1="550" x2="5100" y2="550" />
+    <line class="note-line" x1="5200" y1="550" x2="9650" y2="550" />
 
 <!-- Connections-->
 
