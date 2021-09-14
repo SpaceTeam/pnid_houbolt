@@ -1,6 +1,6 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
-    "externalSourceDefault": "http://192.168.1.7:3000/d/K20EdKS7z/streaming-example?orgId=1&from=1631556913609&to=1631643313609&viewPanel=",
+    "externalSourceDefault": "http://192.168.1.7:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-state=ox_main_valve_pos:sensor&var-state=fuel_pressurize_solenoid:sensor&theme=light&panelId=",
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > 3000) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
@@ -74,7 +74,7 @@ let defaultConfig = {
                 "style": "external",
                 "source": undefined,
                 "autoID": false,
-                "width": 300,
+                "width": 450,
                 "height": 200
             }
         ]
@@ -223,7 +223,7 @@ let config = {
             "oxfill_valve:sensor"
         ],
         "popup": {
-            "source": "10",
+            "source": "11",
             "autoID": false
         }
     }
