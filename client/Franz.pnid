@@ -48,7 +48,7 @@
         <circle cx="9900" cy="5650" r="100" />
         <path d="M 9700 5650 L 9800 5650 " />
         <path d="M 9600 5650 L 9700 5650" />
-        <text class="sensor-letter static-color text-C" x="9900" y="5650">P</text>
+        <text class="sensor-letter static-color text-C" x="9900" y="5650" transform="rotate(90,9900,5650)">P</text>
         <text class="reference static-color text-L" x="9935" y="5795" visibility="visible" transform="rotate(90,9935,5795)">P15</text>
         <text class="value text-L" x="9855" y="5795" visibility="visible" transform="rotate(90,9855,5795)">igniter_ox_bottle_pressure:sensor</text>
         <text class="valueRaw text-L" x="9855" y="5795" visibility="hidden" transform="rotate(90,9855,5795)">igniter_ox_bottle_pressure:sensor</text>
@@ -91,7 +91,7 @@
         <circle cx="7250" cy="5750" r="100" />
         <path d="M 7050 5750 L 7150 5750 " />
         <path d="M 6950 5750 L 7050 5750" />
-        <text class="sensor-letter static-color text-C" x="7250" y="5750">P</text>
+        <text class="sensor-letter static-color text-C" x="7250" y="5750" transform="rotate(90,7250,5750)">P</text>
         <text class="reference static-color text-R" x="7285" y="5605" visibility="visible" transform="rotate(90,7285,5605)">P10</text>
         <text class="value text-R" x="7200" y="5605" visibility="visible" transform="rotate(90,7200,5605)">igniter_ox_pressure:sensor</text>
         <text class="valueRaw text-R" x="7200" y="5605" visibility="hidden" transform="rotate(90,7200,5605)">igniter_ox_pressure:sensor</text>
@@ -104,7 +104,7 @@
         <circle cx="7250" cy="4950" r="100" />
         <path d="M 7050 4950 L 7150 4950 " />
         <path d="M 6950 4950 L 7050 4950" />
-        <text class="sensor-letter static-color text-C" x="7250" y="4950">P</text>
+        <text class="sensor-letter static-color text-C" x="7250" y="4950" transform="rotate(90,7250,4950)">P</text>
         <text class="reference static-color text-R" x="7285" y="4805" visibility="visible" transform="rotate(90,7285,4805)">P9</text>
         <text class="value text-R" x="7200" y="4805" visibility="visible" transform="rotate(90,7200,4805)">igniter_fuel_pressure:sensor</text>
         <text class="valueRaw text-R" x="7200" y="4805" visibility="hidden" transform="rotate(90,7200,4805)">igniter_fuel_pressure:sensor</text>
@@ -117,7 +117,7 @@
         <circle cx="9150" cy="5650" r="100" />
         <path d="M 8950 5650 L 9050 5650 " />
         <path d="M 8850 5650 L 8950 5650" />
-        <text class="sensor-letter static-color text-C" x="9150" y="5650">P</text>
+        <text class="sensor-letter static-color text-C" x="9150" y="5650" transform="rotate(90,9150,5650)">P</text>
         <text class="reference static-color text-L" x="9185" y="5795" visibility="visible" transform="rotate(90,9185,5795)">P13</text>
         <text class="value text-L" x="9105" y="5795" visibility="visible" transform="rotate(90,9105,5795)">igniter_ox_regulator_pressure:sensor</text>
         <text class="valueRaw text-L" x="9105" y="5795" visibility="hidden" transform="rotate(90,9105,5795)">igniter_ox_regulator_pressure:sensor</text>
@@ -130,7 +130,7 @@
         <circle cx="9150" cy="4850" r="100" />
         <path d="M 8950 4850 L 9050 4850 " />
         <path d="M 8850 4850 L 8950 4850" />
-        <text class="sensor-letter static-color text-C" x="9150" y="4850">P</text>
+        <text class="sensor-letter static-color text-C" x="9150" y="4850" transform="rotate(90,9150,4850)">P</text>
         <text class="reference static-color text-C" x="9395" y="4850" visibility="visible" transform="rotate(90,9395,4850)">P12</text>
         <text class="value text-C" x="9310" y="4850" visibility="visible" transform="rotate(90,9310,4850)">igniter_fuel_regulator_pressure:sensor</text>
         <text class="valueRaw text-C" x="9310" y="4850" visibility="hidden" transform="rotate(90,9310,4850)">igniter_fuel_regulator_pressure:sensor</text>
@@ -143,7 +143,7 @@
         <circle cx="9900" cy="4850" r="100" />
         <path d="M 9700 4850 L 9800 4850 " />
         <path d="M 9600 4850 L 9700 4850" />
-        <text class="sensor-letter static-color text-C" x="9900" y="4850">P</text>
+        <text class="sensor-letter static-color text-C" x="9900" y="4850" transform="rotate(90,9900,4850)">P</text>
         <text class="reference static-color text-C" x="10145" y="4850" visibility="visible" transform="rotate(90,10145,4850)">P14</text>
         <text class="value text-C" x="10060" y="4850" visibility="visible" transform="rotate(90,10060,4850)">igniter_fuel_bottle_pressure:sensor</text>
         <text class="valueRaw text-C" x="10060" y="4850" visibility="hidden" transform="rotate(90,10060,4850)">igniter_fuel_bottle_pressure:sensor</text>

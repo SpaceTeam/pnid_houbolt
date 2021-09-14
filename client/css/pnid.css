@@ -125,6 +125,11 @@ text.text-R {
     fill: var(--low);
 }
 
+[data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
 [data-pnid-sensor_pressure=neutral] {
     stroke: var(--neutral);
 }
@@ -137,21 +142,6 @@ text.text-R {
     stroke: var(--high);
 }
 [data-pnid-sensor_temperature=high] text:not(.static-color) {
-    stroke: var(--high);
-    fill: var(--high);
-}
-
-[data-pnid-thermalbarrier=low] {
-    stroke: var(--low);
-}
-[data-pnid-thermalbarrier=low] text:not(.static-color) {
-    stroke: var(--low);
-    fill: var(--low);
-}
-[data-pnid-thermalbarrier=high] {
-    stroke: var(--high);
-}
-[data-pnid-thermalbarrier=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
@@ -170,6 +160,26 @@ text.text-R {
 [data-pnid-sensor_temperature=neutral] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
+}
+
+[data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-thermalbarrier=low] {
+    stroke: var(--low);
+}
+[data-pnid-thermalbarrier=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
+}
+[data-pnid-thermalbarrier=high] {
+    stroke: var(--high);
+}
+[data-pnid-thermalbarrier=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
 }
 
 [data-pnid-sensor_massflow=high] {
@@ -213,6 +223,13 @@ text.text-R {
 [data-pnid-valve_solenoid_no=closed] text:not(.static-color), [data-pnid-valve_solenoid_nc=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
+}
+
+[data-pnid-valve_solenoid_no=closed] rect, [data-pnid-valve_solenoid_nc=open] rect {
+    fill: var(--powered);
+}
+[data-pnid-valve_solenoid_no=open] rect, [data-pnid-valve_solenoid_nc=closed] rect {
+    fill: none;
 }
 
 [data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {

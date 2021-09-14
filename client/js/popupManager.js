@@ -33,7 +33,7 @@ function clickEventListener(popupID)
 	{
         let isActionReference = false;
         let popupParent = $(document).find(`g.${popupID}`);
-        printLog("info", popupParent);
+        //printLog("info", popupParent);
         if (popupParent.length === 0)
         {
             popupParent = $(document).find(`g[action-reference='${popupID}']`);
@@ -47,7 +47,7 @@ function clickEventListener(popupID)
 function createPopup(popupID, parent, isActionReference)
 {
 	let parentPosition = parent.offset();
-    printLog("info", parent);
+    //printLog("info", parent);
 	
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
@@ -65,10 +65,14 @@ function createPopup(popupID, parent, isActionReference)
 	});
 	
 	let parentClasses = parent.attr("class").split(" ");
-	let title = getReferenceFromClasses(parentClasses);
+	let title = "";
 	if (isActionReference) //if popup is for action reference, set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
 	{
 	    title = popupID;
+	}
+	else
+	{
+	    title = getElementValue(getValReferenceFromClasses(parentClasses), "reference");
 	}
     popupClone.find("div.popup-heading").first().text(title);
 
@@ -82,29 +86,30 @@ function createPopup(popupID, parent, isActionReference)
         return; //would be nice if this would be called earlier so less code is run uselessly, but it's not really a point where optimization is *needed*
     }
     
-    if (!("popup" in defaultConfig[type])) // check if there actually is a popup definition
+    let popupConfig = getConfigData(defaultConfig, type, "popup");
+    if (popupConfig == undefined)
     {
         printLog("warning", `Tried creating a popup from ID "${popupID}" with type "${type}", but no popup configuration was found.`); //does this make sense to print? this can be 100% wanted/intended to be the case
         return;
     }
-    let popupConfig = defaultConfig[type]["popup"];
 
     //construct popup popup
     for (contentIndex in popupConfig)
     {
         //this variable loading doesn't support elements with other variables
         let curValue = getElementValue(getValReferenceFromClasses(parentClasses), "value");
-        printLog("info", getValReferenceFromClasses(parentClasses));
+        //printLog("info", getValReferenceFromClasses(parentClasses));
         let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "valueRaw");
         if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValue");
             curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValueRaw");
         }
-        printLog("info", curRawValue);
-        let contentType = popupConfig[contentIndex]["type"];
-        let contentStyle = popupConfig[contentIndex]["style"];
-        let variableName = popupConfig[contentIndex]["variable"];
+        //printLog("info", curRawValue);
+        let rowConfig = popupConfig[contentIndex];
+        let contentType = rowConfig["type"];
+        let contentStyle = rowConfig["style"];
+        let variableName = rowConfig["variable"];
         if (variableName === "value")
         {
             variableName = popupID;
@@ -122,7 +127,38 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.find(".popup-value-out").text(curValue);
                         break;
                     case "external":
-                        printLog("warning", "Style 'external' not yet implemented for display styles in popups");
+                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        let source = rowConfig["source"];
+                        if (customConfig != undefined)
+                        {
+                            if (customConfig["source"] != undefined)
+                            {
+                                source = customConfig["source"];
+                            }
+                        }
+                        if (rowConfig["sourceID"] != false && rowConfig["sourceID"] != undefined)
+                        {
+                            source += popupID;
+                        }
+                        if (source == undefined)
+                        {
+                            printLog("warning", `Tried finding a valid source for external popup display (${popupID}), but couldn't find either in default nor custom config.`); //TODO consider maybe going for a "continue;" here - does it ever make sense to not skip the rest in this case?
+                        }
+                        let width = 300;
+                        let height = 200;
+                        if (rowConfig["width"] != undefined)
+                        {
+                            width = rowConfig["width"];
+                        }
+                        if (rowConfig["height"] != undefined)
+                        {
+                            height = rowConfig["height"];
+                        }
+                        newContentRow = $("#externalDisplayTemp").clone();
+                        newContentRow.removeAttr("id");
+                        newContentRow.find("iframe").attr("width", width);
+                        newContentRow.find("iframe").attr("height", height);
+                        newContentRow.find("iframe").attr("src", source);
                         break;
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -165,9 +201,9 @@ function createPopup(popupID, parent, isActionReference)
                         }
                         //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
                         newContentRow.find("input").first().val(Math.round(curRawValue)).attr("state", variableName);
-                        newContentRow.find("input").attr("min", popupConfig[contentIndex]["min"]);
-                        newContentRow.find("input").attr("max", popupConfig[contentIndex]["max"]);
-                        newContentRow.find("input").attr("step", popupConfig[contentIndex]["step"]);
+                        newContentRow.find("input").attr("min", rowConfig["min"]);
+                        newContentRow.find("input").attr("max", rowConfig["max"]);
+                        newContentRow.find("input").attr("step", rowConfig["step"]);
                         rangeSlider(newContentRow);
                         newContentRow.find(".range-slider__value").text(Math.round(curRawValue));
                         break;
@@ -208,8 +244,9 @@ function updatePopup(popupID, value, rawValue)
     
     for (contentIndex in popupConfig)
     {
-        let contentType = popupConfig[contentIndex]["type"];
-        let contentStyle = popupConfig[contentIndex]["style"];
+        let rowConfig = popupConfig[contentIndex];
+        let contentType = rowConfig["type"];
+        let contentStyle = rowConfig["style"];
         let elements = {};
         switch (contentType)
         {
@@ -217,6 +254,7 @@ function updatePopup(popupID, value, rawValue)
                 switch (contentStyle)
                 {
                     case "text":
+                        
                         elements = $(popup).find(`[display="${popupID}"]`);
                         elements.text(value);
                         break;
@@ -237,7 +275,7 @@ function updatePopup(popupID, value, rawValue)
                 {
                     case "checkbox":
                         elements = $(popup).find(`input#${popupID}[type=checkbox]`);
-                        if (value === popupConfig[contentIndex]["low"])
+                        if (value === rowConfig["low"])
                         {
                             elements.prop("checked", false);
                         }

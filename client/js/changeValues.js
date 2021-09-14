@@ -1,7 +1,7 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
     "PnID-Valve_Solenoid_NO": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
             {
                 "type": "display",
@@ -18,7 +18,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Solenoid_NC": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
 	    "popup": [
             {
                 "type": "display",
@@ -35,7 +35,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 70) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 60) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] > 55000) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 10000) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",
@@ -53,7 +53,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] > 55000) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 10000) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",
@@ -64,9 +64,17 @@ let defaultConfig = {
                 "type": "input",
                 "style": "slider",
                 "variable": "value",
-                "min": 35000,
-                "max": 55000,
+                "min": 0,
+                "max": 65535,
                 "step": 1
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": undefined,
+                "sourceID": false,
+                "width": 300,
+                "height": 200
             }
         ]
     },
@@ -89,7 +97,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Sensor_Pressure": {
-        "eval": "inVars['value'] > 2 ? outVars['color']='high' : outVars['color']='low'",
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
 	    "popup": [
             {
                 "type": "display",
@@ -99,7 +107,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Sensor_Temperature": {
-        "eval": "inVars['value'] > 30 ? outVars['color']='high' : outVars['color']='low'",
+        "eval": "if (inVars['value'] > 30) { outVars['color']='high' } else if (inVars['value'] > -200) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
 	    "popup": [
             {
                 "type": "display",
@@ -139,7 +147,7 @@ let defaultConfig = {
         ]
     },
     "PnID-LED": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; } else { outVars['color']='off'; }"
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='on'; } else { outVars['color']='off'; }"
     },
     "gui-fuel_press_depress": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
@@ -184,30 +192,38 @@ $.get('/config/default', function(data) {
 let config = {
     "pressure": {
         "states": [
-            "chamber_pressure"
+            "chamber_pressure:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "temperature_oxidizer_tank": {
         "states": [
-            "ox_top_tank_temp",
-            "ox_mid_top_tank_temp",
-            "ox_mid_bottom_tank_temp",
-            "ox_bottom_tank_temp"
+            "ox_top_tank_temp:sensor",
+            "ox_mid_top_tank_temp:sensor",
+            "ox_mid_bottom_tank_temp:sensor",
+            "ox_bottom_tank_temp:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
     },
     "purge_solenoid_pressure": {
         "states": [
-            "purge_solenoid"
+            "purge_solenoid:sensor"
         ],
         "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     },
     "purge_solenoid_wire_pressure": {
         "states": [
-            "purge_regulator_pressure"
+            "purge_regulator_pressure:sensor"
         ],
         "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "popup_source_oxfill_vent_valve": {
+        "states": [
+            "oxfill_vent_valve:sensor"
+        ],
+        "popup": {
+            "source": "https://xkcd.com/"
+        }
     }
 };
 
@@ -314,35 +330,35 @@ function extractXYFromPath(path)
 
 async function runTests()
 {
-	var testNames = [{"name": "fuel_top_tank_temp", "label": "hope so"}, {"name": "ox_pressurant_press_pressure", "label": "adf"}];
+	var testNames = [{"name": "fuel_top_tank_temp:sensor", "label": "hope so"}, {"name": "ox_pressurant_press_pressure:sensor", "label": "adf"}];
 	setStateNamesPNID(testNames);
-	var testData = [{"name": "purge_regulator_pressure", "value": "95.0"}, {"name": "fuel_tank", "value": "95.0"}, {"name": "fuel_top_tank_temp", "value": "27"}, {"name": "purge_solenoid", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure", "value": "30.0"}];
+	var testData = [{"name": "purge_regulator_pressure:sensor", "value": "95.0"}, {"name": "fuel_tank", "value": 95.0}, {"name": "fuel_top_tank_temp:sensor", "value": "27"}, {"name": "purge_solenoid:sensor", "value": "1.0"}, {"name": "ox_pressurant_regulator_pressure:sensor", "value": "30.0"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "oxfill_vent_valve", "value": "10"}, {"name": "fuel_bottom_tank_temp", "value": "101"}];
+	var testData = [{"name": "oxfill_vent_valve:sensor", "value": "10"}, {"name": "fuel_bottom_tank_temp:sensor", "value": "101"}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "fuel_depressurize_solenoid", "value": 12.0}, {"name": "oxfill_vent_valve", "value": 50}];
+	var testData = [{"name": "fuel_depressurize_solenoid:sensor", "value": 5000.0}, {"name": "oxfill_vent_valve:sensor", "value": 50}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "purge_solenoid", "value": 6.0}, {"name": "fuel_pressurize_solenoid", "value": 20.0}, {"name": "oxfill_vent_valve", "value": 80}, {"name": "ox_top_tank_temp", "value": 22}];
+	var testData = [{"name": "purge_solenoid:sensor", "value": 6.0}, {"name": "fuel_pressurize_solenoid:sensor", "value": 10000.0}, {"name": "oxfill_vent_valve:sensor", "value": 80}, {"name": "ox_top_tank_temp:sensor", "value": 22}];
 	updatePNID(testData);
 	await sleep(1000);
-	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp", "value": 5}];
+	var testData = [{"name": "fuel_tank", "value": 50.0}, {"name": "purge_regulator_pressure:sensor", "value": 1.5}, {"name": "ox_tank", "value": 30.0}, {"name": "ox_mid_bottom_tank_temp:sensor", "value": 5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_top_tank_pressure", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp", "value": -4}];
+	var testData = [{"name": "ox_top_tank_pressure:sensor", "value": 32.0}, {"name": "fuel_tank", "value": 5.0}, {"name": "ox_bottom_tank_temp:sensor", "value": -4}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 32.0}, {"name": "purge_solenoid", "value": 0.0}, {"name": "ox_top_tank_pressure", "value": 0.5}];
+	var testData = [{"name": "ox_bottom_tank_pressure:sensor", "value": 32.0}, {"name": "purge_solenoid:sensor", "value": 0.0}, {"name": "ox_top_tank_pressure:sensor", "value": 0.5}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "ox_bottom_tank_pressure", "value": 0.0}, {"name": "chamber_pressure", "value": 40}, {"name": "ox_depressurize_solenoid", "value": 20.0}];
+	var testData = [{"name": "ox_bottom_tank_pressure:sensor", "value": 0.0}, {"name": "chamber_pressure:sensor", "value": 40}, {"name": "ox_depressurize_solenoid:sensor", "value": 20.0}];
 	updatePNID(testData);
 	await sleep(500);
-	var testData = [{"name": "fuel_pressurize_solenoid", "value": 5.0}, {"name": "fuel_depressurize_solenoid", "value": 1.0}];
-	updatePNID(testData);
-	await sleep(500);
+	//var testData = [{"name": "fuel_pressurize_solenoid:sensor", "value": 5.0}, {"name": "fuel_depressurize_solenoid:sensor", "value": 1.0}];
+	//updatePNID(testData);
+	//await sleep(500);
 }
 
 function test()
@@ -432,6 +448,10 @@ function setState(state)
     }
     
     state["name"] = state["name"].replace(":","-");
+    if (typeof state["value"] != "string")
+    {
+        state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+    }
     
     let isActionReference = false;
 	let elementGroup = $(document).find("g." + state["name"]);
@@ -499,10 +519,11 @@ function setState(state)
 	        }
 
 	        //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-	        if (searchTerm in defaultConfig)
+	        let evalCode = getConfigData(defaultConfig, searchTerm, "eval");
+	        if (evalCode != undefined)
 	        {
-		        eval(defaultConfig[searchTerm]["eval"]);
-                if (searchTerm === "PnID-Tank")
+	            eval(evalCode);
+	            if (searchTerm === "PnID-Tank")
                 {
                     updateTankContent(elementGroup, state["value"]);
                 }
@@ -510,14 +531,10 @@ function setState(state)
         }
 
         //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-        let configProperties = Object.keys(config);
-        for (propIndex in configProperties)
+        let customEvalCode = getConfigData(config, state["name"]);
+        if (customEvalCode != undefined)
         {
-	        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
-	        if (config[configProperties[propIndex]]["states"].includes(state["name"])) //if the currently traversed property contains our state, check for eval
-	        {
-		        eval(config[configProperties[propIndex]]["eval"]);
-	        }
+            eval(customEvalCode);
         }
 
         //if there is a pnid element, update it
@@ -534,6 +551,10 @@ function setState(state)
     //check if there may be a popup related to this pnid element to update. this could be either to an open popup for a pnid element or a popup for an action reference
     if (state["name"] in activePopups)
     {
+        if (outVars["value"] == undefined)
+        {
+            outVars["value"] = state["value"] + unit;
+        }
         updatePopup(state["name"], outVars["value"], state["value"]);
     }
 }
