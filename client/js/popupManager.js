@@ -128,21 +128,58 @@ function createPopup(popupID, parent, isActionReference)
                         break;
                     case "external":
                         let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        let finalSource = "";
+                        let sourceDefault = defaultConfig["externalSourceDefault"];
+                        if (sourceDefault == undefined)
+                        {
+                            sourceDefault = "";
+                        }
                         let source = rowConfig["source"];
+                        let customSource = "";
                         if (customConfig != undefined)
                         {
-                            if (customConfig["source"] != undefined)
+                            customSource = customConfig["source"];
+                        }
+
+                        //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
+                        try
+                        {
+                            let url = new URL(source);
+                            finalSource = source;
+                        }
+                        catch (_)
+                        {
+                            if (source == undefined)
                             {
-                                source = customConfig["source"];
+                                source = "";
+                            }
+                            finalSource = sourceDefault + source;
+                        }
+                        if (rowConfig["autoID"] != false && rowConfig["autoID"] != undefined)
+                        {
+                            finalSource += popupID;
+                        }
+
+                        try
+                        {
+                            let url = new URL(customSource);
+                            finalSource = customSource;
+                        }
+                        catch (_)
+                        {
+                            if (customSource != undefined)
+                            {
+                                finalSource += customSource;
                             }
                         }
-                        if (rowConfig["sourceID"] != false && rowConfig["sourceID"] != undefined)
+                        if (rowConfig["autoID"] != false && rowConfig["autoID"] != undefined)
                         {
-                            source += popupID;
+                            finalSource += popupID;
                         }
-                        if (source == undefined)
+
+                        if (finalSource == undefined || finalSource == "")
                         {
-                            printLog("warning", `Tried finding a valid source for external popup display (${popupID}), but couldn't find either in default nor custom config.`); //TODO consider maybe going for a "continue;" here - does it ever make sense to not skip the rest in this case?
+                            printLog("warning", `Tried constructing a valid source for external popup display (${popupID}), but couldn't find either in default nor custom config.`); //TODO consider maybe going for a "continue;" here - does it ever make sense to not skip the rest in this case?
                         }
                         let width = 300;
                         let height = 200;
@@ -158,7 +195,7 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.removeAttr("id");
                         newContentRow.find("iframe").attr("width", width);
                         newContentRow.find("iframe").attr("height", height);
-                        newContentRow.find("iframe").attr("src", source);
+                        newContentRow.find("iframe").attr("src", finalSource);
                         break;
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
