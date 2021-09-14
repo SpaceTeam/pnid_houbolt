@@ -1,8 +1,8 @@
 function createThemeSwitcher()
 {
-    let logBoxClone = $("#themeSwitcherTemp").clone();
-	logBoxClone.removeAttr('id');
-	$(document.body).append(logBoxClone);
+    let themeSwitcherClone = $("#themeSwitcherTemp").clone();
+	themeSwitcherClone.removeAttr('id');
+	$(document.body).append(themeSwitcherClone);
 }
 
 function switchTheme()
