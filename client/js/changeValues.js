@@ -68,14 +68,6 @@ let defaultConfig = {
                 "min": 0,
                 "max": 65535,
                 "step": 1
-            },
-            {
-                "type": "display",
-                "style": "external",
-                "source": undefined,
-                "autoID": false,
-                "width": 450,
-                "height": 200
             }
         ]
     },
