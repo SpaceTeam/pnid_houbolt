@@ -2,7 +2,7 @@
 let defaultConfig = {
     "externalSourceDefault": "http://localhost:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-statesQuery=&var-state=&var-temp=All&var-pressure=All&var-thrust_load_cells=(%22key%22%3D'engine_thrust_1:sensor'%20or%0A%22key%22%3D'engine_thrust_2:sensor'%20or%0A%22key%22%3D'engine_thrust_3:sensor'%20or%0A%22key%22%3D'engine_thrust_4:sensor'%20or%0A%22key%22%3D'engine_thrust_5:sensor'%20or%0A%22key%22%3D'engine_thrust_6:sensor')&theme=light&panelId=",
     "PnID-Valve_Solenoid_NO": {
-        "eval": "if (inVars['value'] > 3000) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
             {
                 "type": "display",
@@ -19,7 +19,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Solenoid_NC": {
-        "eval": "if (inVars['value'] > 3000) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
 	    "popup": [
             {
                 "type": "display",
@@ -36,7 +36,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Pneumatic": {
-        "eval": "if (inVars['value'] > 55000) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 10000) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",
@@ -54,7 +54,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > 55000) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 10000) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",
@@ -239,6 +239,18 @@ let config = {
         ],
         "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     },
+    "igniter_ox_pressure_wire_update": {
+        "states": [
+            "igniter_ox_solenoid:sensor"
+        ],
+        "eval": "console.log('run eval');if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':1}]; }"
+    },
+    "igniter_fuel_pressure_wire_update": {
+        "states": [
+            "igniter_fuel_solenoid:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_fuel_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_fuel_pressure:sensor','value':1}]; }"
+    },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
             "fuel_bottom_tank_pressure:sensor"
@@ -417,6 +429,13 @@ $.get('/config/custom', function(data) {
 });
 
 let thresholds = {
+    "solenoid": {
+        "high": 3000
+    },
+    "servo_valve": {
+        "low": 10000,
+        "high": 55000
+    },
     "oxPressure": {
         "low": 32.0,
         "high": 42.0,
@@ -541,9 +560,9 @@ async function runTests()
 	var testData = [{"name": "ox_bottom_tank_pressure:sensor", "value": 0.0}, {"name": "chamber_pressure:sensor", "value": 40}, {"name": "ox_depressurize_solenoid:sensor", "value": 20.0}];
 	updatePNID(testData);
 	await sleep(500);
-	//var testData = [{"name": "fuel_pressurize_solenoid:sensor", "value": 5.0}, {"name": "fuel_depressurize_solenoid:sensor", "value": 1.0}];
-	//updatePNID(testData);
-	//await sleep(500);
+	var testData = [{"name": "fuel_pressurize_solenoid:sensor", "value": 5.0}, {"name": "fuel_depressurize_solenoid:sensor", "value": 1.0}];
+	updatePNID(testData);
+	await sleep(500);
 }
 
 function test()
@@ -612,9 +631,9 @@ function updatePNID(stateList)
 	
 	for (stateIndex in stateList)
 	{
-		//let stateName = stateList[stateIndex]["name"];
-		//let stateValue = stateList[stateIndex]["value"];
-		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
+		let stateName = stateList[stateIndex]["name"];
+		let stateValue = stateList[stateIndex]["value"];
+		printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setState(stateList[stateIndex]);
 	}
 	
@@ -716,7 +735,7 @@ function setState(state)
         }
 
         //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-        let customEvalCode = getConfigData(config, state["name"]);
+        let customEvalCode = getConfigData(config, state["name"].replace("-",":"), "eval");
         if (customEvalCode != undefined)
         {
             eval(customEvalCode);
@@ -780,7 +799,7 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 	}
 	if ("crossUpdate" in outVars)
 	{
-	    //console.log(outVars["crossUpdate"], $(document).find('g.purge_solenoid').find('text.value').text());
+	    console.log(outVars["crossUpdate"]);
 		updatePNID(outVars["crossUpdate"]);
 	}
 }

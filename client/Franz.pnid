@@ -1158,10 +1158,10 @@
     <g class="wire" data-pnid-wire="">
         <line x1="8355" y1="5850" x2="8255" y2="5850" />
     </g>
-    <g class="igniter_ox_solenoid-sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_pressure-sensor wire" data-pnid-wire="">
         <line x1="5955" y1="6150" x2="6855" y2="6150" />
     </g>
-    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_pressure-sensor wire" data-pnid-wire="">
         <line x1="6855" y1="5350" x2="6705" y2="5350" />
         <line x1="6705" y1="5350" x2="6705" y2="6050" />
         <line x1="6705" y1="6050" x2="5955" y2="6050" />
@@ -1227,10 +1227,10 @@
     <g class="wire" data-pnid-wire="">
         <line x1="9705" y1="6150" x2="10055" y2="6150" />
     </g>
-    <g class="igniter_ox_solenoid-sensor wire" data-pnid-wire="">
+    <g class="igniter_ox_pressure-sensor wire" data-pnid-wire="">
         <line x1="7055" y1="6150" x2="7455" y2="6150" />
     </g>
-    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
+    <g class="igniter_fuel_pressure-sensor wire" data-pnid-wire="">
         <line x1="7055" y1="5350" x2="7455" y2="5350" />
     </g>
     <g class="wire" data-pnid-wire="">
