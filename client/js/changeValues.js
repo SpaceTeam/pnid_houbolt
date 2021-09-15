@@ -644,7 +644,7 @@ function setState(state)
 	let unit = "";
 	if (elementGroup.length !== 0) // if an element is found, update it. then carry on with the rest because even if it's not a pnid element the incoming state may be an action reference for a popup
 	{
-		unit = elementGroup.attr("data-unit");
+		unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
         //raw value without any processing
         elementGroup.find("text.valueRaw").text(state["value"]);
         //human visible value that may contain units or further processing

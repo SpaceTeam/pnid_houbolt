@@ -233,7 +233,9 @@ function createPopup(popupID, parent, isActionReference)
                     case "slider":
                         newContentRow = $("#sliderTemp").clone();
                         newContentRow.removeAttr("id");
-                        newContentRow.find(".range-slider-label").text(popupID);
+                        //newContentRow.find(".range-slider").attr("title", popupID);
+                        //newContentRow.find(".range-slider-label").text(popupID);
+                        newContentRow.find(".range-slider-label").remove();
                         if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                         {
                             printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
@@ -245,7 +247,7 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.find("input").attr("max", rowConfig["max"]);
                         newContentRow.find("input").attr("step", rowConfig["step"]);
                         rangeSlider(newContentRow);
-                        newContentRow.find(".range-slider__value").text(Math.round(curRawValue));
+                        newContentRow.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
                         break;
                     case "textEntry":
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
