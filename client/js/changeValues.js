@@ -243,7 +243,7 @@ let config = {
         "states": [
             "igniter_ox_solenoid:sensor"
         ],
-        "eval": "console.log('run eval');if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':1}]; }"
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':1}]; }"
     },
     "igniter_fuel_pressure_wire_update": {
         "states": [
@@ -799,7 +799,6 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 	}
 	if ("crossUpdate" in outVars)
 	{
-	    console.log(outVars["crossUpdate"]);
 		updatePNID(outVars["crossUpdate"]);
 	}
 }
