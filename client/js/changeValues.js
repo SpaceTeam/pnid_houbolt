@@ -1,6 +1,6 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
-    "externalSourceDefault": "http://192.168.1.7:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-state=ox_main_valve_pos:sensor&var-state=fuel_pressurize_solenoid:sensor&theme=light&panelId=",
+    "externalSourceDefault": "http://localhost:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-statesQuery=&var-state=&var-temp=All&var-pressure=All&var-thrust_load_cells=(%22key%22%3D'engine_thrust_1:sensor'%20or%0A%22key%22%3D'engine_thrust_2:sensor'%20or%0A%22key%22%3D'engine_thrust_3:sensor'%20or%0A%22key%22%3D'engine_thrust_4:sensor'%20or%0A%22key%22%3D'engine_thrust_5:sensor'%20or%0A%22key%22%3D'engine_thrust_6:sensor')&theme=light&panelId=",
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > 3000) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
@@ -104,6 +104,14 @@ let defaultConfig = {
                 "type": "display",
                 "style": "text",
                 "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": undefined,
+                "autoID": false,
+                "width": 450,
+                "height": 200
             }
         ]
     },
@@ -114,6 +122,14 @@ let defaultConfig = {
                 "type": "display",
                 "style": "text",
                 "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": undefined,
+                "autoID": false,
+                "width": 450,
+                "height": 200
             }
         ]
     },
@@ -149,6 +165,19 @@ let defaultConfig = {
     },
     "PnID-LED": {
         "eval": "if (inVars['value'] > 3000) { outVars['color']='on'; } else { outVars['color']='off'; }"
+    },
+    "PnID-Engine_TorchIgniter": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "external",
+                "source": undefined,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
     },
     "gui-fuel_press_depress": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
@@ -218,12 +247,174 @@ let config = {
         ],
         "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
     },
-    "popup_source_oxfill_vent_valve": {
+    "fuel_bottom_tank_pressure:sensor": {
         "states": [
-            "oxfill_valve:sensor"
+            "fuel_bottom_tank_pressure:sensor"
         ],
         "popup": {
             "source": "11",
+            "autoID": false
+        }
+    },
+    "fuel_main_pressure:sensor": {
+        "states": [
+            "fuel_main_pressure:sensor"
+        ],
+        "popup": {
+            "source": "14",
+            "autoID": false
+        }
+    },
+    "fuel_pressurant_regulator_pressure:sensor": {
+        "states": [
+            "fuel_pressurant_regulator_pressure:sensor"
+        ],
+        "popup": {
+            "source": "15",
+            "autoID": false
+        }
+    },
+    "fuel_top_tank_pressure:sensor": {
+        "states": [
+            "fuel_top_tank_pressure:sensor"
+        ],
+        "popup": {
+            "source": "16",
+            "autoID": false
+        }
+    },
+    "igniter_fuel_bottle_pressure:sensor": {
+        "states": [
+            "igniter_fuel_bottle_pressure:sensor"
+        ],
+        "popup": {
+            "source": "17",
+            "autoID": false
+        }
+    },
+    "igniter_ox_bottle_pressure:sensor": {
+        "states": [
+            "igniter_ox_bottle_pressure:sensor"
+        ],
+        "popup": {
+            "source": "18",
+            "autoID": false
+        }
+    },
+    "ox_bottom_tank_pressure:sensor": {
+        "states": [
+            "ox_bottom_tank_pressure:sensor"
+        ],
+        "popup": {
+            "source": "19",
+            "autoID": false
+        }
+    },
+    "ox_pressurant_regulator_pressure:sensor": {
+        "states": [
+            "ox_pressurant_regulator_pressure:sensor"
+        ],
+        "popup": {
+            "source": "20",
+            "autoID": false
+        }
+    },
+    "ox_top_tank_pressure:sensor": {
+        "states": [
+            "ox_top_tank_pressure:sensor"
+        ],
+        "popup": {
+            "source": "21",
+            "autoID": false
+        }
+    },
+    "purge_bottle_pressure:sensor": {
+        "states": [
+            "purge_bottle_pressure:sensor"
+        ],
+        "popup": {
+            "source": "22",
+            "autoID": false
+        }
+    },
+    "fuel_bottom_tank_temp:sensor": {
+        "states": [
+            "fuel_bottom_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "12",
+            "autoID": false
+        }
+    },
+    "fuel_mid_bottom_tank_temp:sensor": {
+        "states": [
+            "fuel_mid_bottom_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "23",
+            "autoID": false
+        }
+    },
+    "fuel_mid_top_tank_temp:sensor": {
+        "states": [
+            "fuel_mid_top_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "24",
+            "autoID": false
+        }
+    },
+    "fuel_top_tank_temp:sensor": {
+        "states": [
+            "fuel_top_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "25",
+            "autoID": false
+        }
+    },
+    "ox_bottom_tank_temp:sensor": {
+        "states": [
+            "ox_bottom_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "26",
+            "autoID": false
+        }
+    },
+    "ox_mid_bottom_tank_temp:sensor": {
+        "states": [
+            "ox_mid_bottom_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "27",
+            "autoID": false
+        }
+    },
+    "ox_mid_top_tank_temp:sensor": {
+        "states": [
+            "ox_mid_top_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "28",
+            "autoID": false
+        }
+    },
+    "ox_top_tank_temp:sensor": {
+        "states": [
+            "ox_top_tank_temp:sensor"
+        ],
+        "popup": {
+            "source": "29",
+            "autoID": false
+        }
+    },
+    "Engine_TorchIgniter": {
+        "states": [
+            
+        ],
+        "popup": {
+            "source": "13",
             "autoID": false
         }
     }
