@@ -59,11 +59,12 @@ text.text-R {
 .wire {
     stroke-width: 8;
     stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
+    fill: none;
 }
 
 .value, .reference {
-    font-size: 70px;
-    stroke-width: 4;
+    font-size: 6.5rem;
+    stroke-width: 1;
     fill: var(--default-stroke);
 }
 
