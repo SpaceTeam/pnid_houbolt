@@ -22,7 +22,7 @@ function checkStringIsNumber(string)
 function getElementValue(name, valueID)
 {
     let searchString = `text.${valueID}`;
-    return $(document).find(`g.${name}`).find(searchString).text();
+    return $(document).find(`g.${name}`).first().find(searchString).text();
 }
 
 function getElementAttrValue(name, attrName)

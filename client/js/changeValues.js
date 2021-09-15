@@ -287,7 +287,7 @@ let config = {
             "autoID": false
         }
     },
-    "igniter_fuel_bottle_pressure:sensor": {
+    "igniter_fuel_regulator_pressure:sensor": {
         "states": [
             "igniter_fuel_bottle_pressure:sensor"
         ],
@@ -296,7 +296,7 @@ let config = {
             "autoID": false
         }
     },
-    "igniter_ox_bottle_pressure:sensor": {
+    "igniter_ox_regulator_pressure:sensor": {
         "states": [
             "igniter_ox_bottle_pressure:sensor"
         ],
@@ -631,9 +631,9 @@ function updatePNID(stateList)
 	
 	for (stateIndex in stateList)
 	{
-		let stateName = stateList[stateIndex]["name"];
-		let stateValue = stateList[stateIndex]["value"];
-		printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
+		//let stateName = stateList[stateIndex]["name"];
+		//let stateValue = stateList[stateIndex]["value"];
+		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
 		setState(stateList[stateIndex]);
 	}
 	
