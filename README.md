@@ -83,7 +83,7 @@ Example:
     },
     {
       "type": "input",
-      "style": "checkbox"
+      "style": "checkbox",
       "variable": "value",
       "low": "Closed",
       "high": "Open"
