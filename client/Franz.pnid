@@ -1230,10 +1230,10 @@
     <g class="wire" data-pnid-wire="">
         <line x1="9700" y1="6150" x2="10050" y2="6150" />
     </g>
-    <g class="wire" data-pnid-wire="">
+    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
         <line x1="7050" y1="6150" x2="7450" y2="6150" />
     </g>
-    <g class="wire" data-pnid-wire="">
+    <g class="igniter_fuel_solenoid-sensor wire" data-pnid-wire="">
         <line x1="7050" y1="5350" x2="7450" y2="5350" />
     </g>
     <line class="note-line" x1="5250" y1="550" x2="5250" y2="3450" />
