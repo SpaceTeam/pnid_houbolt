@@ -1,0 +1,20 @@
+{
+    "oxPressure": {
+        "low": 32.0,
+        "high": 42.0,
+        "safe": 2.0
+    },
+    "oxTemp": {
+        "low": 2.0,
+        "high": 35.0
+    },
+    "fuelPressure": {
+        "low": 30.0,
+        "high": 34.0,
+        "safe": 2.0
+    },
+    "chamberPressure": {
+        "low": 7.0,
+        "high": 9.0
+    }
+}

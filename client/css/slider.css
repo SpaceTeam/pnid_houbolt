@@ -7,7 +7,7 @@
 }
 
 .range-slider {
-  width: 25rem;
+  width: auto;
 }
 
 .range-slider__range, .range-slider-caption {
@@ -24,7 +24,7 @@
   -webkit-appearance: none;
   height: 8px;
   border-radius: 5px;
-  background: #D7DCDF;
+  background: var(--background-tertiary);
   outline: none;
   padding: 0;
   margin: 0;
@@ -35,53 +35,53 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #522e63;
+  background: var(--accent-primary);
   cursor: pointer;
   transition: background .15s ease-in-out;
 }
 
 .range-slider__range:disabled::-webkit-slider-thumb {
-  background: #9C9C9C;
+  background: var(--content-disabled);
 }
 
 .range-slider__range:disabled::-moz-range-thumb {
-  background: #9C9C9C;
+  background: var(--content-disabled);
 }
 
 .range-slider__range::-webkit-slider-thumb:hover {
-  background: #522e63;
+  background: var(--accent-primary);
 }
 .range-slider__range:active::-webkit-slider-thumb {
-  background: #522e63;
+  background: var(--accent-primary);
 }
 .range-slider__range::-moz-range-thumb {
   width: 10px;
   height: 10px;
   border: 0;
   border-radius: 50%;
-  background: #522e63;
+  background: var(--accent-primary);
   cursor: pointer;
   transition: background .15s ease-in-out;
 }
 .range-slider__range::-moz-range-thumb:hover {
-  background: #522e63;
+  background: var(--accent-primary);
 }
 .range-slider__range:active::-moz-range-thumb {
-  background: #522e63;
+  background: var(--accent-primary);
 }
 .range-slider__range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 2px #fff, 0 0 0 5px #522e63;
+  box-shadow: 0 0 0 2px var(--content-primary), 0 0 0 5px var(--accent-primary);
 }
 
 .range-slider__value, .range-slider__feedback {
   display: inline-block;
   position: relative;
-  width: 2.5rem;
-  color: #fff;
+  width: 3.5rem;
+  color: var(--slider-text);
   line-height: 10px;
-  text-align: center;
+  text-align: right;
   border-radius: 3px;
-  background: #522e63;
+  background: var(--accent-primary);
   padding: 5px 10px;
   margin-left: 2px;
   margin-right: 2px;
@@ -96,17 +96,17 @@
   height: 0;
   border-top: 5px solid transparent;
   /*border-right: 7px solid #2c3e50; pretty color*/
-    border-right: 5px solid #522e63;
+    border-right: 5px solid var(--accent-primary);
   border-bottom: 5px solid transparent;
   content: '';
 }
 
 .range-slider__value[disabled], .range-slider__feedback[disabled] {
-    background: #9C9C9C;
+    background: var(--content-disabled);
 }
 
 .range-slider__value[disabled]::after {
-  border-right: 3px solid #522e63;
+  border-right: 3px solid var(--accent-primary);
 }
 
 input::-moz-focus-inner,

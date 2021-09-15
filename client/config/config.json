@@ -1,0 +1,32 @@
+{
+    "pressure": {
+        "states": [
+            "chamber_pressure"
+        ],
+        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "temperature_oxidizer_tank": {
+        "states": [
+            "ox_top_temp",
+            "ox_mid_top_temp",
+            "ox_mid_temp",
+            "ox_mid_bottom_temp",
+            "ox_bottom_temp",
+            "ox_top_temp_backup",
+            "ox_bottom_temp_backup"
+        ],
+        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "purge_solenoid_pressure": {
+        "states": [
+            "purge_solenoid"
+        ],
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "purge_solenoid_wire_pressure": {
+        "states": [
+            "purge_regulator_pressure"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    }
+}

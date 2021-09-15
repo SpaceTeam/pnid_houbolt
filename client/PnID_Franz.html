@@ -2,55 +2,107 @@
 <html>
 <head>
     <title>PNID Chart</title>
-    <link rel="stylesheet" href="css/pnid.css">
+
+    <link id="theme" rel="stylesheet" type="text/css" href="css/themes/lightTheme.css">
+    <link rel="stylesheet" type="text/css" href="css/pnid.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrapOverride.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="css/popup.css">
     <link rel="stylesheet" href="css/inputs.css">
     <link rel="stylesheet" href="css/slider.css">
+    <link rel="stylesheet" href="css/logBox.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="lib/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <script src="lib/jquery-3.4.1.js"></script>
 </head>
 <body>
     <div hidden id="templates">
-        <div id="closeButtonTemp" class="row control-row justify-content-end">
-            <!-- <div class="col"></div> -->
-            <button type="button" class="btn btn-light btn-drag">
-                <i class="bi bi-arrows-move"></i>
-            </button>
-            <div class="col"></div>
-            <button type="button" class="btn btn-outline-danger btn-close">
-                <i class="bi bi-x"></i>
-            </button> 
-            
+        <div id="popupTemp" class="container-fluid popup">
+            <div class="row control-row justify-content-end">
+                <button type="button" class="btn btn-light btn-drag">
+                    <i class="bi bi-arrows-move"></i>
+                </button>
+                <div class="col popup-heading">Temp Name</div>
+                <button type="button" class="btn btn-outline-danger btn-close">
+                    <i class="bi bi-x"></i>
+                </button> 
+            </div>
         </div>
-          <div id="sliderTemp" class="row control-row">
-            <div class="range-slider col">
-                <label class="range-slider-label input-label">Oxidizer Main Valve</label><br>
+        
+        <div id="textDisplayTemp" class="row control-row">
+            <label class="popup-value-out"></label>
+        </div>
+        <div id="externalDisplayTemp" class="row control-row">
+            <iframe src="" frameborder="0"></iframe>
+        </div>
+        <div id="sliderTemp" class="row control-row">
+            <div title="" class="range-slider col">
+                <!--<label class="range-slider-label input-label">Temp Label</label><br>-->
                 <input class="range-slider__range servo-slider manual-obj servo-enable-obj"
                     oninput="onServoSliderInput($(this));" type="range" value="0" min="0" max="100" step="1">
-                <span class="range-slider__value">0</span> 
-                <span class="range-slider__feedback servo-feedback">0</span>
+                <span class="range-slider__value">0</span>
                 <div class="range-slider-caption">
                     <div class="range-slider-caption_left"> Closed </div>
                     <div class="range-slider-caption_right"> Open </div>
                 </div>
             </div>
+        </div>
+        <div id="digitalOutTemp" class="row control-row">
+            <div class="form-control custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input ckbx manual-obj servo-enable-obj digitalOut" id="tempDigitalOut"
+                    onclick="onDigitalCheck(this);">
+                <label class="custom-control-label ckbx-label" for="tempDigitalOut">Temp Digital Out</label>
             </div>
-            <div id="digitalOutTemp" class="row control-row">
-                <div class="form-control custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input ckbx manual-obj servo-enable-obj digitalOut" id="tempDigitalOut"
-                        onclick="onDigitalCheck(this);">
-                    <label class="custom-control-label ckbx-label" for="tempDigitalOut">Temp Digital Out</label>
+        </div>
+        <div id="logBoxTemp" class="logContainer">
+            <div class="logTextArea" onwheel="disableAutoScroll()" style="display: none;">
+                <div id="logEntryTemp" class="logEntry" style="display: none;"></div>
+                <button type="button" class="btn btn-outline-primary ecui-button-outline-primary scrollButton" onclick="activateAutoScroll()" style="display: none;">
+                    <i class="bi bi-chevron-double-down"></i>
+                </button>
+            </div>
+            <div class="logMenu">
+                <button type="button" class="btn btn-primary ecui-button-primary" onclick="toggleLogBox()" disabled>
+                    <i class="bi bi-arrow-up"></i>
+                </button>
+                <div class="logOverview">
+                    <div id="logInfo" class="logCategory">
+                        <span class="logCategoryNumber iconInfo">0</span>
+                        <i class="bi bi-info-circle iconInfo"></i>
+                    </div>
+                    <div id="logWarning" class="logCategory">
+                        <span class="logCategoryNumber iconWarning">0</span>
+                        <i class="bi bi-exclamation-triangle iconWarning"></i>
+                    </div>
+                    <div id="logError" class="logCategory">
+                        <span class="logCategoryNumber iconError">0</span>
+                        <i class="bi bi-x-square iconError"></i>
+                    </div>
+                    <div id="logHardwareError" class="logCategory">
+                        <span class="logCategoryNumber iconError">0</span>
+                        <i class="bi bi-bug iconError"></i>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div id="themeSwitcherTemp" class="themeSwitcher">
+            <button type="button" class="btn btn-outline-secondary" onclick="switchTheme()">
+                <i class="bi bi-moon"></i>
+            </button>
+        </div>
     </div>
     <div id="pnid"></div>
 
+<script src="js/common.js"></script>
+<script src="js/logManager.js"></script>
+<script src="js/darkMode.js"></script>
 <script src="js/changeValues.js"></script>
 <script src="js/popupManager.js"></script>
-<script src="js/Slider.js"></script>
+<script src="js/slider.js"></script>
 <script src="js/inputs.js"></script>
 <script src="lib/bootstrap-input-spinner.js"></script>
 <script src="lib/popper.min.js"
