@@ -127,6 +127,7 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.find(".popup-value-out").text(curValue);
                         break;
                     case "external":
+                        console.log(popupID);
                         let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let finalSource = "";
                         let sourceDefault = defaultConfig["externalSourceDefault"];
@@ -135,11 +136,13 @@ function createPopup(popupID, parent, isActionReference)
                             sourceDefault = "";
                         }
                         let source = rowConfig["source"];
+                        
                         let customSource = "";
                         if (customConfig != undefined)
                         {
                             customSource = customConfig["source"];
                         }
+                        console.log(customConfig, customSource);
 
                         //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
                         try

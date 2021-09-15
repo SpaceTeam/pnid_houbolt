@@ -33,3 +33,8 @@
     --default-stroke: var(--content-primary);
     --slider-text: var(--background-secondary);
 }
+
+.panel-container
+{
+    background-color: var(--background-secondary) !important;
+}

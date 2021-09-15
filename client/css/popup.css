@@ -50,3 +50,8 @@
 	from {box-shadow: 0 0 10px 5px cornflowerblue;} 
 	to {box-shadow: 0 0 0 0;}
   }
+
+.popup iframe
+{
+	border: none;
+}
