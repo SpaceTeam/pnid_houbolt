@@ -22,24 +22,32 @@ function deactiveInputUpdate(popupID, duration)
 function clickEventListener(popupID)
 {
     // check if popup already exists
-    if (popupID in activePopups) // if already exists, highlight
+    if (popupID in activePopups && activePopups[popupID]["visibility"] == true) // if already exists and visible, highlight
 	{
 		activePopups[popupID]["popup"].css({"animation-name": "none"});
 		setTimeout( function() {
 		    activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
 		}, 100);
 	}
-	else // if doesn't exist, create
+	else // if doesn't exist, create, if just hidden, show
 	{
-        let isActionReference = false;
-        let popupParent = $(document).find(`g.${popupID}`);
-        //printLog("info", popupParent);
-        if (popupParent.length === 0)
+        if (popupID in activePopups) //just hidden, no need to create again
         {
-            popupParent = $(document).find(`g[action-reference='${popupID}']`);
-            isActionReference = true;
+            activePopups[popupID]["popup"].fadeIn(100);
+            activePopups[popupID]["visibility"] = true;
         }
-		createPopup(popupID, popupParent.not(".wire").not(".PnID-ThermalBarrier"), isActionReference); //not a huge fan that the thermalbarrier is hardcoded here, but got no better solution right now. if not sometimes popups wouldn't work
+        else
+        {
+            let isActionReference = false;
+            let popupParent = $(document).find(`g.${popupID}`);
+            //printLog("info", popupParent);
+            if (popupParent.length === 0)
+            {
+                popupParent = $(document).find(`g[action-reference='${popupID}']`);
+                isActionReference = true;
+            }
+            createPopup(popupID, popupParent.not(".wire").not(".PnID-ThermalBarrier"), isActionReference); //not a huge fan that the thermalbarrier is hardcoded here, but got no better solution right now. if not sometimes popups wouldn't work
+        }
 	}
 }
 
@@ -52,7 +60,7 @@ function createPopup(popupID, parent, isActionReference)
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
 	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
-	popupClone.attr('style', `width: auto; height: auto; top: ` + parentPosition.top + `px; left: ` + (parentPosition.left + parent[0].getBoundingClientRect().width / 2.0) + `px;`);
+	popupClone.attr('style', `width: auto; height: auto;`);
 	
 	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
 	popupClone.find("div.row").find(".btn-drag").first().on('mousedown', function(e) {
@@ -263,13 +271,33 @@ function createPopup(popupID, parent, isActionReference)
     }
 
     $(document.body).append(popupClone);
+    let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
+    console.log("pop size:", popupSize);
+    let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
+    console.log("view size:", viewportSize);
+    let minPopupPad = 0.02; //in %
+    let popupDistance = 10;
+    let popupPosition = [parentPosition.left, parentPosition.top + parent[0].getBoundingClientRect().height + popupDistance]; //TODO with better pnid element bounding boxes the positioning of the popup should be done better
+    console.log("pop pos:", popupPosition);
+    if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
+    {
+        //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
+        popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
+    }
+    if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
+    {
+        popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
+    }
+    console.log("pop pos2:", popupPosition);
+    popupClone.attr('style', `width: auto; height: auto; top: ${popupPosition[1]}px; left: ${popupPosition[0]}px;`);
 	popupClone.fadeIn(100);
     
 	activePopups[popupID] = {
 	    "popup": popupClone,
 	    "config": popupConfig,
         "timer": undefined,
-        "timeUntilActive": 0 // if 0 it should listen to updates, if higher it should count down
+        "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
+        "visibility": true
 	};
 }
 
@@ -356,8 +384,9 @@ function destroyPopup(popupID)
         {
             clearInterval(activePopups[popupID]["timer"]);
         }
-        activePopups[popupID]["popup"].remove();
-        delete activePopups[popupID];
+        activePopups[popupID]["visibility"] = false;
+        //activePopups[popupID]["popup"].remove();
+        //delete activePopups[popupID];
     });
 }
 
