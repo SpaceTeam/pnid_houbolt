@@ -326,8 +326,7 @@ function updatePopup(popupID, value, rawValue)
                         elements = $(popup).find(`[display="${popupID}"]`);
                         elements.text(value);
                         break;
-                    case "external":
-                        printLog("warning", "Wanted to update style 'external' in a popup, but it is not yet implemented for display styles");
+                    case "external": //no update needed
                         break;
                     default:
                         printLog("warning", `Unknown display style while trying to update popup (${popupID}): '${contentStyle}'`);
