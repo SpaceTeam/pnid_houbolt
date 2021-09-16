@@ -126,9 +126,12 @@ text.text-R {
     fill: var(--low);
 }
 
+[data-pnid-sensor_pressure=notconnected] {
+    stroke: var(--default-stroke);
+}
 [data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
-    fill: none;
+    fill: var(--default-stroke);
 }
 
 [data-pnid-sensor_pressure=neutral] {
@@ -163,9 +166,13 @@ text.text-R {
     fill: var(--neutral);
 }
 
-[data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
+
+[data-pnid-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
-    fill: none;
+}
+[data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
 }
 
 [data-pnid-thermalbarrier=low] {
