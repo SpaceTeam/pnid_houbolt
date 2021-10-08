@@ -464,7 +464,7 @@ createLogBox();
 
 function themeSetup()
 {
-    initThemes("theming/", [{theme: "lightTheme", icon: "brightness-high"},{theme: "darkTheme", icon: "moon"}]);
+    initThemes("theming/", [{theme: "lightTheme", icon: "brightness-high", type: "light"},{theme: "darkTheme", icon: "moon", type: "dark"}]);
     let themeSwitcherButton = createThemeSwitcher();
     //console.log("button", themeSwitcherButton);
     let themeSwitcherDiv = `<div class="themeSwitcher">${themeSwitcherButton}</div>`;
@@ -472,6 +472,11 @@ function themeSetup()
     //console.log("full div", themeSwitcherDiv);
     $(document.body).append(themeSwitcherDiv);
 }
+
+//test code for theming subscription
+/*subscribe(document.querySelector("#pnid"), function(e) { console.log("a", e.detail); });
+subscribe(document.querySelector("#pnid"), function(e) { console.log("b", e.detail); });
+subscribe(document.querySelector("#logInfo"), function(e) { console.log("c", e.detail); });*/
 
 themeSetup();
 
