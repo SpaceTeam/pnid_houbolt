@@ -461,7 +461,19 @@ $.get('/config/thresholds', function(data) {
 });
 
 createLogBox();
-createThemeSwitcher();
+
+function themeSetup()
+{
+    initThemes("theming/", [{theme: "lightTheme", icon: "brightness-high"},{theme: "darkTheme", icon: "moon"}]);
+    let themeSwitcherButton = createThemeSwitcher();
+    //console.log("button", themeSwitcherButton);
+    let themeSwitcherDiv = `<div class="themeSwitcher">${themeSwitcherButton}</div>`;
+    //console.log("empty div", themeSwitcherDiv);
+    //console.log("full div", themeSwitcherDiv);
+    $(document.body).append(themeSwitcherDiv);
+}
+
+themeSetup();
 
 //setup tanks for filling visuals
 function tankSetup()
