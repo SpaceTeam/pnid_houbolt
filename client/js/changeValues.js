@@ -460,28 +460,9 @@ $.get('/config/thresholds', function(data) {
     //thresholds = data;
 });
 
-createLogBox();
-
-function themeSetup()
-{
-    initThemes("theming/", [{theme: "lightTheme", icon: "brightness-high", type: "light"},{theme: "darkTheme", icon: "moon", type: "dark"}]);
-    let themeSwitcherButton = createThemeSwitcher();
-    //console.log("button", themeSwitcherButton);
-    let themeSwitcherDiv = `<div class="themeSwitcher">${themeSwitcherButton}</div>`;
-    //console.log("empty div", themeSwitcherDiv);
-    //console.log("full div", themeSwitcherDiv);
-    $(document.body).append(themeSwitcherDiv);
-}
-
-//test code for theming subscription
-/*subscribe(document.querySelector("#pnid"), function(e) { console.log("a", e.detail); });
-subscribe(document.querySelector("#pnid"), function(e) { console.log("b", e.detail); });
-subscribe(document.querySelector("#logInfo"), function(e) { console.log("c", e.detail); });*/
-
-themeSetup();
 
 //setup tanks for filling visuals
-function tankSetup()
+function initTanks()
 {
     let tanks = $(document).find("g.PnID-Tank");
     let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
