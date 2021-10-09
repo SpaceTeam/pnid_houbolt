@@ -12,6 +12,6 @@ function initPNID(standalone, pathOffset, themes)
 }
 
 //test code for theming subscription
-/*subscribe(document.querySelector("#pnid"), function(e) { console.log("a", e.detail); });
-subscribe(document.querySelector("#pnid"), function(e) { console.log("b", e.detail); });
-subscribe(document.querySelector("#logInfo"), function(e) { console.log("c", e.detail); });*/
+/*themeSubscribe(document.querySelector("#pnid"), function(e) { console.log("a", e.detail); });
+themeSubscribe(document.querySelector("#pnid"), function(e) { console.log("b", e.detail); });
+themeSubscribe(document.querySelector("#logInfo"), function(e) { console.log("c", e.detail); });*/
