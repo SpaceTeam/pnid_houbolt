@@ -4,6 +4,7 @@ function initPNID(standalone, pathOffset, themes)
     {
         let themeSwitcherContainer = $(`<div class="themeSwitcher"></div>`).appendTo($(document.body));
         initThemes(themeSwitcherContainer, pathOffset, themes);
+        authenticateGrafana();
     }
     initTanks();
 
@@ -11,6 +12,10 @@ function initPNID(standalone, pathOffset, themes)
     createLogBox();
 }
 
+function authenticateGrafana()
+{
+
+}
 //test code for theming subscription
 /*themeSubscribe(document.querySelector("#pnid"), function(e) { console.log("a", e.detail); });
 themeSubscribe(document.querySelector("#pnid"), function(e) { console.log("b", e.detail); });
