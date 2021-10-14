@@ -51,22 +51,34 @@ function clickEventListener(popupID)
 	}
 }
 
+//same as with initPNIDHitboxes - should this be here?
+function toggleHitboxDisplay()
+{
+    let hitboxes = $("g.comp").find('rect[pointer-events="all"]');
+    hitboxes.each(function (index) {
+        let visibility = hitboxes.eq(index).attr("visibility");
+        if (visibility === "hidden")
+        {
+            hitboxes.eq(index).attr("visibility", "visible");
+        }
+        else if (visibility == "visible")
+        {
+            hitboxes.eq(index).attr("visibility", "hidden");
+        }
+    });
+}
+
+//should this really be in the popup manager? right now the hitboxes are only used for this, but maybe in the future not?
 function initPNIDHitboxes()
 {
     let pnidComps = $("g.comp");
     pnidComps.each(function (index) {
-        //console.log(pnidComps.eq(index)[0]);
         let boundingBox = pnidComps.find("g").eq(index)[0].getBBox();
         let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
-        console.log("bounding box:", boundingBox);
-        console.log("x:", boundingBox["x"]);
-        console.log("old:", oldBound);
         oldBound.attr("x", boundingBox["x"]);
         oldBound.attr("y", boundingBox["y"]);
         oldBound.attr("width", boundingBox["width"]);
         oldBound.attr("height", boundingBox["height"]);
-
-        //pnidComps.eq(index).append(boundingBox);
     });
 }
 
