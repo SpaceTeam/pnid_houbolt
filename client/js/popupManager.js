@@ -51,6 +51,25 @@ function clickEventListener(popupID)
 	}
 }
 
+function initPNIDHitboxes()
+{
+    let pnidComps = $("g.comp");
+    pnidComps.each(function (index) {
+        //console.log(pnidComps.eq(index)[0]);
+        let boundingBox = pnidComps.find("g").eq(index)[0].getBBox();
+        let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
+        console.log("bounding box:", boundingBox);
+        console.log("x:", boundingBox["x"]);
+        console.log("old:", oldBound);
+        oldBound.attr("x", boundingBox["x"]);
+        oldBound.attr("y", boundingBox["y"]);
+        oldBound.attr("width", boundingBox["width"]);
+        oldBound.attr("height", boundingBox["height"]);
+
+        //pnidComps.eq(index).append(boundingBox);
+    });
+}
+
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, isActionReference)
 {
