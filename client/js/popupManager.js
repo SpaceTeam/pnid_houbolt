@@ -236,6 +236,7 @@ function createPopup(popupID, parent, isActionReference)
                         newContentRow.find("iframe").attr("width", width);
                         newContentRow.find("iframe").attr("height", height);
                         newContentRow.find("iframe").attr("src", finalSource);
+                        themeSubscribe(newContentRow, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
                         break;
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -303,13 +304,13 @@ function createPopup(popupID, parent, isActionReference)
 
     $(document.body).append(popupClone);
     let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
-    console.log("pop size:", popupSize);
+    //console.log("pop size:", popupSize);
     let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
-    console.log("view size:", viewportSize);
+    //console.log("view size:", viewportSize);
     let minPopupPad = 0.02; //in %
     let popupDistance = 10;
     let popupPosition = [parentPosition.left, parentPosition.top + parent[0].getBoundingClientRect().height + popupDistance]; //TODO with better pnid element bounding boxes the positioning of the popup should be done better
-    console.log("pop pos:", popupPosition);
+    //console.log("pop pos:", popupPosition);
     if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
     {
         //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
@@ -319,7 +320,7 @@ function createPopup(popupID, parent, isActionReference)
     {
         popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
     }
-    console.log("pop pos2:", popupPosition);
+    //console.log("pop pos2:", popupPosition);
     popupClone.attr('style', `width: auto; height: auto; top: ${popupPosition[1]}px; left: ${popupPosition[0]}px;`);
 	popupClone.fadeIn(100);
     
@@ -405,6 +406,21 @@ function updatePopup(popupID, value, rawValue)
                 break;
         }
     }
+}
+
+function iframeThemeToggle(event)
+{
+    //console.log("event", event.detail);
+    let iframeRow = event.currentTarget;
+    let iframe = $(iframeRow).find("iframe");
+    let url = new URL(iframe.attr("src"));
+    let params = new URLSearchParams(url.search);
+    params.set("theme", event.detail["type"]);
+    url.search = params.toString();
+    //console.log(url);
+    iframe.attr("src", url.toString());
+    //console.log(iframe);
+
 }
 
 function destroyPopup(popupID)

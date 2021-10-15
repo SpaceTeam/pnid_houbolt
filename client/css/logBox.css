@@ -55,7 +55,7 @@
 .logCategory {
     min-width: 60px;
     flex: 25%;
-    margin: 0 auto;
+    margin: auto;
     text-align: center;
 
     /*border: var(--content-primary);*/
