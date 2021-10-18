@@ -19,6 +19,11 @@ function checkStringIsNumber(string)
     return true;
 }
 
+function getElement(identifier)
+{
+    return $(document).find(`g.${identifier}`).first();
+}
+
 function getElementValue(name, valueID)
 {
     let searchString = `text.${valueID}`;

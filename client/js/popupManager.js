@@ -221,11 +221,11 @@ function createSlider(config, variable, popupID, curRawValue)
 function appendPopupContent(popup, config, popupID, isActionReference)
 {
     //construct popup content
-    console.log("config", config);
     for (contentIndex in config)
     {
-        console.log("adding row");
         //this variable loading doesn't support elements with other variables
+        let curValue = 0;
+        let curRawValue = 0;
         if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
@@ -233,9 +233,9 @@ function appendPopupContent(popup, config, popupID, isActionReference)
         }
         else
         {
-            let curValue = getElementValue(popupID, "value");
-            //printLog("info", popupID);
-            let curRawValue = getElementValue(popupID, "valueRaw");
+            curValue = getElementValue(popupID, "value");
+            //printLog("info", curValue);
+            curRawValue = getElementValue(popupID, "valueRaw");
             //printLog("info", curRawValue);
         }
         let rowConfig = config[contentIndex];
@@ -344,8 +344,9 @@ function createPopup(popupID, parent, isActionReference)
     appendPopupContent(popupClone, popupConfig, popupID, isActionReference);
 
     if (isActionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
+    //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
-        popupClone.append(createTextDisplay("none", "Bundled PnID element inputs:"));
+        popupClone.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
         parent.each(function(index) {
             let parentReference = getValReferenceFromClasses(parent.eq(index).attr("class").split(" "));
             let parentType = getTypeFromClasses(parent.eq(index).attr("class").split(" "));
@@ -385,14 +386,41 @@ function createPopup(popupID, parent, isActionReference)
 	};
 }
 
-function updatePopup(popupID, value, rawValue)
+function updatePopup(stateName, value, rawValue)
 {
-    if (!(popupID in activePopups)) //if popup doesn't exist or currently has updates disabled (eg: due to recent user input), don't update it
+    let popupID = "";
+    if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
     {
-        return;
+        //console.log("found state name in active popups", stateName);
+        popupID = stateName;
+    }
+    else //if popup for a certain state name doesn't exist, check if the state name may be bundled in an action reference popup.
+    {
+        //console.log("didn't find state name in active popups", stateName);
+        let actionReference = getElementAttrValue(stateName, "action-reference");
+        //console.log("actionref", actionReference);
+        if (actionReference in activePopups) //if there is an active popup of an action reference that bundles this state display
+        {
+            popupID = actionReference;
+        }
+        else //if there is no popup for it AND no action reference that may have bundled it, there is nothing to udpate - so don't update anything.
+        {
+            return;
+        }
     }
     let popup = activePopups[popupID]["popup"];
-    let popupConfig = activePopups[popupID]["config"];
+    let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
+    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup, but is bundled in an action reference popup. this menas we have to search for its popup config
+    {
+        /*console.log("elem", getElement(stateName));
+        console.log("elem classes", getElement(stateName).attr("class").split(" "));
+        console.log("type", getElement(stateName).attr("class").split(" "));*/
+        popupConfig = getConfigData(defaultConfig, getTypeFromClasses(getElement(stateName).attr("class").split(" ")), "popup");
+        if (popupConfig == undefined) //if this bundled state has no popup config it also can't have a bundled element in the action reference popup, so there is nothing to update
+        {
+            return;
+        }
+    }
     
     for (contentIndex in popupConfig)
     {
@@ -407,13 +435,13 @@ function updatePopup(popupID, value, rawValue)
                 {
                     case "text":
                         
-                        elements = $(popup).find(`[display="${popupID}"]`);
+                        elements = $(popup).find(`[display="${stateName}"]`);
                         elements.text(value);
                         break;
                     case "external": //no update needed
                         break;
                     default:
-                        printLog("warning", `Unknown display style while trying to update popup (${popupID}): '${contentStyle}'`);
+                        printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
                         break;
                 }
                 break;
@@ -425,7 +453,7 @@ function updatePopup(popupID, value, rawValue)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        elements = $(popup).find(`input#${popupID}[type=checkbox]`);
+                        elements = $(popup).find(`input#${stateName}[type=checkbox]`);
                         if (value === rowConfig["low"])
                         {
                             elements.prop("checked", false);
@@ -436,10 +464,10 @@ function updatePopup(popupID, value, rawValue)
                         }
                         break;
                     case "slider":
-                        elements = $(popup).find(`input.range-slider__range[state=${popupID}][type=range]`);
+                        elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
                         if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                         {
-                            printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup: ${rawValue}. Ignoring update.`);
+                            printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
                             break;
                         }
                         elements.val(Math.round(rawValue));
@@ -449,12 +477,12 @@ function updatePopup(popupID, value, rawValue)
                         feedback.text(Math.round(rawValue));*/
                         break;
                     default:
-                        printLog("warning", `Unknown input style while trying to update popup (${popupID}): '${contentStyle}'`);
+                        printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
                         break;
                 }
                 break;
             default:
-                printLog("warning", `Unknown content type while trying to update popup (${popupID}): '${contentType}'`);
+                printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
                 break;
         }
     }
