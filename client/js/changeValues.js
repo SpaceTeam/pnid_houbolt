@@ -477,13 +477,13 @@ function initTankContent(tanks)
     //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
     //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
-    let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
+    let fuelContentRect = tanks.filter(".fuel_tank").find("g").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0)");
 
-    let oxContentRect = tanks.filter(".ox_tank").find("rect.rect");
+    let oxContentRect = tanks.filter(".ox_tank").find("g").find("rect.rect");
     let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
@@ -493,7 +493,7 @@ function initTankContent(tanks)
 //update the percent of the content that is filled
 function updateTankContent(tank, fillPercent)
 {
-    let contentRect = tank.find("rect.rect");
+    let contentRect = tank.find("g").find("rect.rect");
     let scale = fillPercent / 100.0;
     contentRect.attr("transform", `scale(1,${scale})`);
 }

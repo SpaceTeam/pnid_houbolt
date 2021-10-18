@@ -33,6 +33,11 @@ text.text-R {
     text-anchor: end;
 }
 
+.hitbox {
+    stroke-width:  4;
+    stroke: var(--debug);
+}
+
 .comp {
     stroke-width: 8;
     stroke: var(--default-stroke);
