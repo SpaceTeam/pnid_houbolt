@@ -82,6 +82,142 @@ function initPNIDHitboxes()
     });
 }
 
+function createTextDisplay(variable, curValue)
+{
+    let element = $("#textDisplayTemp").clone();
+    element.removeAttr("id");
+    element.find(".popup-value-out").attr("display", variable);
+    element.find(".popup-value-out").text(curValue);
+    return element;
+}
+
+function constructIframeSource(sourceDefault, config, customConfig)
+{
+    let finalSource = "";
+    if (sourceDefault == undefined)
+    {
+        sourceDefault = "";
+    }
+    let source = config["source"];
+
+    let customSource = "";
+    if (customConfig != undefined)
+    {
+        customSource = customConfig["source"];
+    }
+
+    //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
+    try
+    {
+        let url = new URL(source);
+        finalSource = source;
+    }
+    catch (_)
+    {
+        if (source == undefined)
+        {
+            source = "";
+        }
+        finalSource = sourceDefault + source;
+    }
+    if (config["autoID"] != false && config["autoID"] != undefined)
+    {
+        finalSource += popupID;
+    }
+
+    try
+    {
+        let url = new URL(customSource);
+        finalSource = customSource;
+    }
+    catch (_)
+    {
+        if (customSource != undefined)
+        {
+            finalSource += customSource;
+        }
+    }
+    if (config["autoID"] != false && config["autoID"] != undefined)
+    {
+        finalSource += popupID;
+    }
+
+    if (finalSource == undefined || finalSource == "")
+    {
+        printLog("warning", `Tried constructing a valid source for external popup display (${popupID}), but couldn't find either in default nor custom config.`); //TODO consider maybe going for a "continue;" here - does it ever make sense to not skip the rest in this case?
+    }
+    return finalSource;
+}
+
+function createExternalDisplay(config, source)
+{
+    let width = 300;
+    let height = 200;
+    if (config["width"] != undefined)
+    {
+        width = config["width"];
+    }
+    if (config["height"] != undefined)
+    {
+        height = config["height"];
+    }
+    let element = $("#externalDisplayTemp").clone();
+    element.removeAttr("id");
+    element.find("iframe").attr("width", width);
+    element.find("iframe").attr("height", height);
+    element.find("iframe").attr("src", source);
+    themeSubscribe(element, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
+    return element;
+}
+
+
+function createCheckbox(config, variable, popupID, curValue)
+{
+    let element = $("#digitalOutTemp").clone();
+    element.removeAttr("id");
+    element.find(".ckbx-label").text(variable).attr("for", popupID);
+    element.find("input").attr('id', popupID).attr('state', variable);
+
+    let highThreshold = config["high"];
+    let lowThreshold = config["low"];
+    if (curValue === highThreshold)
+    {
+        element.find("input").prop("checked", true);
+    }
+    else if (curValue === lowThreshold)
+    {
+        element.find("input").prop("checked", false);
+    }
+    else
+    {
+        printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
+        element.find("input").prop("checked", false);
+    }
+    return element;
+}
+
+function createSlider(config, variable, popupID, curRawValue)
+{
+    let element = $("#sliderTemp").clone();
+    element.removeAttr("id");
+    //newContentRow.find(".range-slider").attr("title", popupID);
+    //newContentRow.find(".range-slider-label").text(popupID);
+    element.find(".range-slider-label").remove();
+    if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+    {
+        printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
+        curRawValue = 0;
+    }
+    //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variable);
+    element.find("input").first().val(Math.round(curRawValue)).attr("state", variable);
+    element.find("input").attr("min", config["min"]);
+    element.find("input").attr("max", config["max"]);
+    element.find("input").attr("step", config["step"]);
+    rangeSlider(element);
+    element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
+    return element;
+}
+
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, isActionReference)
 {
@@ -160,83 +296,13 @@ function createPopup(popupID, parent, isActionReference)
                 switch (contentStyle)
                 {
                     case "text":
-                        newContentRow = $("#textDisplayTemp").clone();
-                        newContentRow.removeAttr("id");
-                        newContentRow.find(".popup-value-out").attr("display", popupID);
-                        newContentRow.find(".popup-value-out").text(curValue);
+                        newContentRow = createTextDisplay(popupID, curValue);
                         break;
                     case "external":
                         let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
-                        let finalSource = "";
                         let sourceDefault = defaultConfig["externalSourceDefault"];
-                        if (sourceDefault == undefined)
-                        {
-                            sourceDefault = "";
-                        }
-                        let source = rowConfig["source"];
-                        
-                        let customSource = "";
-                        if (customConfig != undefined)
-                        {
-                            customSource = customConfig["source"];
-                        }
-
-                        //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
-                        try
-                        {
-                            let url = new URL(source);
-                            finalSource = source;
-                        }
-                        catch (_)
-                        {
-                            if (source == undefined)
-                            {
-                                source = "";
-                            }
-                            finalSource = sourceDefault + source;
-                        }
-                        if (rowConfig["autoID"] != false && rowConfig["autoID"] != undefined)
-                        {
-                            finalSource += popupID;
-                        }
-
-                        try
-                        {
-                            let url = new URL(customSource);
-                            finalSource = customSource;
-                        }
-                        catch (_)
-                        {
-                            if (customSource != undefined)
-                            {
-                                finalSource += customSource;
-                            }
-                        }
-                        if (rowConfig["autoID"] != false && rowConfig["autoID"] != undefined)
-                        {
-                            finalSource += popupID;
-                        }
-
-                        if (finalSource == undefined || finalSource == "")
-                        {
-                            printLog("warning", `Tried constructing a valid source for external popup display (${popupID}), but couldn't find either in default nor custom config.`); //TODO consider maybe going for a "continue;" here - does it ever make sense to not skip the rest in this case?
-                        }
-                        let width = 300;
-                        let height = 200;
-                        if (rowConfig["width"] != undefined)
-                        {
-                            width = rowConfig["width"];
-                        }
-                        if (rowConfig["height"] != undefined)
-                        {
-                            height = rowConfig["height"];
-                        }
-                        newContentRow = $("#externalDisplayTemp").clone();
-                        newContentRow.removeAttr("id");
-                        newContentRow.find("iframe").attr("width", width);
-                        newContentRow.find("iframe").attr("height", height);
-                        newContentRow.find("iframe").attr("src", finalSource);
-                        themeSubscribe(newContentRow, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig);
+                        newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -247,45 +313,10 @@ function createPopup(popupID, parent, isActionReference)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = $("#digitalOutTemp").clone();
-                        newContentRow.removeAttr("id");
-                        newContentRow.find(".ckbx-label").text(variableName).attr("for", popupID);
-                        newContentRow.find("input").attr('id', popupID).attr('state', variableName);
-                        
-                        let highThreshold = defaultConfig[type]["popup"][contentIndex]["high"];
-                        let lowThreshold = defaultConfig[type]["popup"][contentIndex]["low"];
-                        if (curValue === highThreshold)
-                        {
-                            newContentRow.find("input").prop("checked", true);
-                        }
-                        else if (curValue === lowThreshold)
-                        {
-                            newContentRow.find("input").prop("checked", false);
-                        }
-                        else
-                        {
-                            printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
-                            newContentRow.find("input").prop("checked", false);
-                        }
+                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curValue);
                         break;
                     case "slider":
-                        newContentRow = $("#sliderTemp").clone();
-                        newContentRow.removeAttr("id");
-                        //newContentRow.find(".range-slider").attr("title", popupID);
-                        //newContentRow.find(".range-slider-label").text(popupID);
-                        newContentRow.find(".range-slider-label").remove();
-                        if (!checkStringIsNumber(curRawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
-                        {
-                            printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
-                            curRawValue = 0;
-                        }
-                        //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variableName);
-                        newContentRow.find("input").first().val(Math.round(curRawValue)).attr("state", variableName);
-                        newContentRow.find("input").attr("min", rowConfig["min"]);
-                        newContentRow.find("input").attr("max", rowConfig["max"]);
-                        newContentRow.find("input").attr("step", rowConfig["step"]);
-                        rangeSlider(newContentRow);
-                        newContentRow.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
+                        newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
                         break;
                     case "textEntry":
                         printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
