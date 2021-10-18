@@ -218,6 +218,79 @@ function createSlider(config, variable, popupID, curRawValue)
     return element;
 }
 
+function appendPopupContent(popup, config, popupID, isActionReference)
+{
+    //construct popup content
+    console.log("config", config);
+    for (contentIndex in config)
+    {
+        console.log("adding row");
+        //this variable loading doesn't support elements with other variables
+        if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
+        {
+            curValue = getElementValue(popupID, "actionReferenceValue");
+            curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
+        }
+        else
+        {
+            let curValue = getElementValue(popupID, "value");
+            //printLog("info", popupID);
+            let curRawValue = getElementValue(popupID, "valueRaw");
+            //printLog("info", curRawValue);
+        }
+        let rowConfig = config[contentIndex];
+        let contentType = rowConfig["type"];
+        let contentStyle = rowConfig["style"];
+        let variableName = rowConfig["variable"];
+        if (variableName === "value")
+        {
+            variableName = popupID;
+        }
+        let newContentRow;
+        switch (contentType)
+        {
+            case "display":
+                switch (contentStyle)
+                {
+                    case "text":
+                        newContentRow = createTextDisplay(popupID, curValue);
+                        break;
+                    case "external":
+                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        let sourceDefault = defaultConfig["externalSourceDefault"];
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig);
+                        newContentRow = createExternalDisplay(rowConfig, iframeSource);
+                        break;
+                    default:
+                        printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
+                        break;
+                }
+                break;
+            case "input":
+                switch (contentStyle)
+                {
+                    case "checkbox":
+                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curValue);
+                        break;
+                    case "slider":
+                        newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
+                        break;
+                    case "textEntry":
+                        printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
+                    default:
+                        printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
+                        break;
+                }
+                break;
+            default:
+                printLog("warning", `Unknown content type while to create popup (${popupID}): '${contentType}'`);
+                break;
+        }
+        popup.append(newContentRow);
+    }
+}
+
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, isActionReference)
 {
@@ -268,69 +341,17 @@ function createPopup(popupID, parent, isActionReference)
         return;
     }
 
-    //construct popup popup
-    for (contentIndex in popupConfig)
+    appendPopupContent(popupClone, popupConfig, popupID, isActionReference);
+
+    if (isActionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     {
-        //this variable loading doesn't support elements with other variables
-        let curValue = getElementValue(getValReferenceFromClasses(parentClasses), "value");
-        //printLog("info", getValReferenceFromClasses(parentClasses));
-        let curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "valueRaw");
-        if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
-        {
-            curValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValue");
-            curRawValue = getElementValue(getValReferenceFromClasses(parentClasses), "actionReferenceValueRaw");
-        }
-        //printLog("info", curRawValue);
-        let rowConfig = popupConfig[contentIndex];
-        let contentType = rowConfig["type"];
-        let contentStyle = rowConfig["style"];
-        let variableName = rowConfig["variable"];
-        if (variableName === "value")
-        {
-            variableName = popupID;
-        }
-        let newContentRow;
-        switch (contentType)
-        {
-            case "display":
-                switch (contentStyle)
-                {
-                    case "text":
-                        newContentRow = createTextDisplay(popupID, curValue);
-                        break;
-                    case "external":
-                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
-                        let sourceDefault = defaultConfig["externalSourceDefault"];
-                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig);
-                        newContentRow = createExternalDisplay(rowConfig, iframeSource);
-                        break;
-                    default:
-                        printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
-                        break;
-                }
-                break;
-            case "input":
-                switch (contentStyle)
-                {
-                    case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curValue);
-                        break;
-                    case "slider":
-                        newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
-                        break;
-                    case "textEntry":
-                        printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
-                        break;
-                    default:
-                        printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
-                        break;
-                }
-                break;
-            default:
-                printLog("warning", `Unknown content type while to create popup (${popupID}): '${contentType}'`);
-                break;
-        }
-        popupClone.append(newContentRow);
+        popupClone.append(createTextDisplay("none", "Bundled PnID element inputs:"));
+        parent.each(function(index) {
+            let parentReference = getValReferenceFromClasses(parent.eq(index).attr("class").split(" "));
+            let parentType = getTypeFromClasses(parent.eq(index).attr("class").split(" "));
+            appendPopupContent(popupClone, getConfigData(defaultConfig, parentType, "popup"), parentReference, false);
+        });
+        //appendPopupContent(popupClone);
     }
 
     $(document.body).append(popupClone);
