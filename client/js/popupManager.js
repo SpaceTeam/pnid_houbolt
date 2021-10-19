@@ -209,10 +209,10 @@ function createSlider(config, variable, popupID, curRawValue)
         curRawValue = 0;
     }
     //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variable);
-    element.find("input").first().val(Math.round(curRawValue)).attr("state", variable);
     element.find("input").attr("min", config["min"]);
     element.find("input").attr("max", config["max"]);
     element.find("input").attr("step", config["step"]);
+    element.find("input").first().val(Math.round(curRawValue/config["max"])).attr("state", variable);
     rangeSlider(element);
     element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
     return element;
@@ -448,7 +448,8 @@ function updatePopup(stateName, value, rawValue)
             case "input":
                 if (activePopups[popupID]["timeUntilActive"] > 0)
                 {
-                    continue;
+                    //disable the update pause after user input for now. since sliders now have their value and feedback separated, it isn't really needed anymore. evaluate if it should be removed altogether or not
+                    //continue;
                 }
                 switch (contentStyle)
                 {
@@ -470,9 +471,10 @@ function updatePopup(stateName, value, rawValue)
                             printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
                             break;
                         }
-                        elements.val(Math.round(rawValue));
+                        setSliderFeedback(elements, Math.round(rawValue))
+                        /*elements.val(Math.round(rawValue));
                         let valueOut = elements.siblings("span.range-slider__value");
-                        valueOut.text(Math.round(rawValue));
+                        valueOut.text(Math.round(rawValue));*/
                         /*let feedback = elements.siblings("span.range-slider__feedback");
                         feedback.text(Math.round(rawValue));*/
                         break;
