@@ -460,6 +460,7 @@ $.get('/config/thresholds', function(data) {
     //thresholds = data;
 });
 
+var __elementGroupBuffer = {};
 
 //setup tanks for filling visuals
 function initTanks()
@@ -656,7 +657,12 @@ function setState(state)
     }
     
     let isActionReference = false;
-	let elementGroup = $(document).find("g." + state["name"]);
+    let elementGroup = __elementGroupBuffer[state["name"]];
+    if (elementGroup == undefined)
+    {
+        elementGroup = $(document).find("g." + state["name"])
+        __elementGroupBuffer[state["name"]] = elementGroup;
+    }
 	// check if any pnid element is found with the provided state name
 	let unit = "";
 	if (elementGroup.length !== 0) // if an element is found, update it. then carry on with the rest because even if it's not a pnid element the incoming state may be an action reference for a popup
