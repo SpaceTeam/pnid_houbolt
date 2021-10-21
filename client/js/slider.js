@@ -1,22 +1,29 @@
-var rangeSlider = function(sliderRow){
-  var slider = sliderRow.find('.range-slider'),
-      range = sliderRow.find('.range-slider__range'),
-      value = sliderRow.find('.range-slider__value');
+var rangeSlider = function(sliderRow)
+{
+    var slider = sliderRow.find('.range-slider'),
+        range = sliderRow.find('.range-slider__range'),
+        value = sliderRow.find('.range-slider__value');
 
-  slider.each(function(){
+    slider.each(function()
+    {
+        value.each(function()
+        {
+            var value = $(this).parent().find('.range-slider__range').attr('value');
+            $(this).html(value);
+        });
 
-    value.each(function(){
-      var value = $(this).parent().find('.range-slider__range').attr('value');
-      $(this).html(value);
+        range.on('input', function()
+        {
+            $(this).parent().find('.range-slider__value').html(this.value);
+        });
     });
-
-    range.on('input', function(){
-      $(this).parent().find('.range-slider__value').html(this.value);
-    });
-  });
 };
 
-//rangeSlider();
+function setSliderFeedback(slider, feedbackValue)
+{
+    let percent = feedbackValue / slider.attr("max") * 100;
+    slider.css("background", `-webkit-gradient(linear, left top, right top, color-stop(${percent}%, var(--accent-disabled)), color-stop(${percent}%, var(--background-tertiary)))`);
+}
 
 var minInput = $("#fuelServoMin");
 var maxInput = $("#fuelServoMax");

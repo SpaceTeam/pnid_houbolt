@@ -460,11 +460,9 @@ $.get('/config/thresholds', function(data) {
     //thresholds = data;
 });
 
-createLogBox();
-createThemeSwitcher();
 
 //setup tanks for filling visuals
-function tankSetup()
+function initTanks()
 {
     let tanks = $(document).find("g.PnID-Tank");
     let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
@@ -479,13 +477,13 @@ function initTankContent(tanks)
     //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
     //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
 
-    let fuelContentRect = tanks.filter(".fuel_tank").find("rect.rect");
+    let fuelContentRect = tanks.filter(".fuel_tank").find("g").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
     fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
     fuelContentRect.attr("transform", "scale(1,0)");
 
-    let oxContentRect = tanks.filter(".ox_tank").find("rect.rect");
+    let oxContentRect = tanks.filter(".ox_tank").find("g").find("rect.rect");
     let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
     oxContentRect.attr("data-pnid-tank_content", "ox");
     oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
@@ -495,7 +493,7 @@ function initTankContent(tanks)
 //update the percent of the content that is filled
 function updateTankContent(tank, fillPercent)
 {
-    let contentRect = tank.find("rect.rect");
+    let contentRect = tank.find("g").find("rect.rect");
     let scale = fillPercent / 100.0;
     contentRect.attr("transform", `scale(1,${scale})`);
 }
@@ -752,15 +750,12 @@ function setState(state)
         }
     }
     
-    //check if there may be a popup related to this pnid element to update. this could be either to an open popup for a pnid element or a popup for an action reference
-    if (state["name"] in activePopups)
+    //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+    if (outVars["value"] == undefined)
     {
-        if (outVars["value"] == undefined)
-        {
-            outVars["value"] = state["value"] + unit;
-        }
-        updatePopup(state["name"], outVars["value"], state["value"]);
+        outVars["value"] = state["value"] + unit;
     }
+    updatePopup(state["name"], outVars["value"], state["value"]);
 }
 
 function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
