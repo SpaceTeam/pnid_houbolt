@@ -21,18 +21,36 @@ function checkStringIsNumber(string)
 
 function getElement(identifier)
 {
-    return $(document).find(`g.${identifier}`).first();
+    let element = __elementGroupBuffer[identifier];
+    if (element == undefined)
+    {
+        element = $(document).find(`g.${identifier}`).first();
+        __elementGroupBuffer[identifier] = element;
+    }
+    return element;
 }
 
 function getElementValue(name, valueID)
 {
     let searchString = `text.${valueID}`;
-    return $(document).find(`g.${name}`).first().find(searchString).text();
+    let element = __elementGroupBuffer[name];
+    if (element == undefined)
+    {
+        element = $(document).find(`g.${name}`).first();
+        __elementGroupBuffer[name] = element;
+    }
+    return element.find(searchString).text();
 }
 
 function getElementAttrValue(name, attrName)
 {
-    return $(document).find(`g.${name}`).attr(attrName);
+    let element = __elementGroupBuffer[name];
+    if (element == undefined)
+    {
+        element = $(document).find(`g.${name}`);
+        __elementGroupBuffer[name] = element;
+    }
+    return element.attr(attrName);
 }
 
 //I really dislike having this hardcoded to the n-th entry in the classes, but it's the quickest and safest way to do it right now.

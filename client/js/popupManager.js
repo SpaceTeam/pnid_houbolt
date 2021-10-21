@@ -218,10 +218,10 @@ function createSlider(config, variable, popupID, curRawValue)
     return element;
 }
 
-function appendPopupContent(popup, config, popupID, isActionReference)
+function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
     //construct popup content
-    for (contentIndex in config)
+    for (contentIndex in popupConfig)
     {
         //this variable loading doesn't support elements with other variables
         let curValue = 0;
@@ -238,7 +238,7 @@ function appendPopupContent(popup, config, popupID, isActionReference)
             curRawValue = getElementValue(popupID, "valueRaw");
             //printLog("info", curRawValue);
         }
-        let rowConfig = config[contentIndex];
+        let rowConfig = popupConfig[contentIndex];
         let contentType = rowConfig["type"];
         let contentStyle = rowConfig["style"];
         let variableName = rowConfig["variable"];
