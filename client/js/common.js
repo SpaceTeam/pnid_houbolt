@@ -21,11 +21,12 @@ function checkStringIsNumber(string)
 
 function getElement(identifier)
 {
-    let element = __elementGroupBuffer[identifier];
-    if (element == undefined)
-    {
+    let element = undefined;
+    try {
+        element = __elementGroupBuffer[identifier]["parent"];
+    } catch (error) {
         element = $(document).find(`g.${identifier}`).first();
-        __elementGroupBuffer[identifier] = element;
+        __elementGroupBuffer[state["name"]] = {"parent": element};
     }
     return element;
 }
@@ -33,22 +34,24 @@ function getElement(identifier)
 function getElementValue(name, valueID)
 {
     let searchString = `text.${valueID}`;
-    let element = __elementGroupBuffer[name];
-    if (element == undefined)
-    {
+    let element = undefined;
+    try {
+        element = __elementGroupBuffer[name]["parent"];
+    } catch (error) {
         element = $(document).find(`g.${name}`).first();
-        __elementGroupBuffer[name] = element;
+        __elementGroupBuffer[state["name"]] = {"parent": element};
     }
     return element.find(searchString).text();
 }
 
 function getElementAttrValue(name, attrName)
 {
-    let element = __elementGroupBuffer[name];
-    if (element == undefined)
-    {
+    let element = undefined;
+    try {
+        element = __elementGroupBuffer[name]["parent"];
+    } catch (error) {
         element = $(document).find(`g.${name}`);
-        __elementGroupBuffer[name] = element;
+        __elementGroupBuffer[state["name"]] = {"parent": element};
     }
     return element.attr(attrName);
 }

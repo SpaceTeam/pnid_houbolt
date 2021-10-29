@@ -461,6 +461,7 @@ $.get('/config/thresholds', function(data) {
 });
 
 var __elementGroupBuffer = {};
+var __actionReferenceBuffer = {};
 
 //setup tanks for filling visuals
 function initTanks()
@@ -657,32 +658,64 @@ function setState(state)
     }
     
     let isActionReference = false;
-    let elementGroup = __elementGroupBuffer[state["name"]];
-    if (elementGroup == undefined)
-    {
-        elementGroup = $(document).find("g." + state["name"])
-        __elementGroupBuffer[state["name"]] = elementGroup;
+    let elementGroup = undefined;
+    try {
+        elementGroup = __elementGroupBuffer[state["name"]]["parent"];
+    } catch (error) {
+        elementGroup = $(document).find("g." + state["name"]);
+        __elementGroupBuffer[state["name"]] = {"parent": elementGroup};
     }
+
 	// check if any pnid element is found with the provided state name
 	let unit = "";
 	if (elementGroup.length !== 0) // if an element is found, update it. then carry on with the rest because even if it's not a pnid element the incoming state may be an action reference for a popup
 	{
 		unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
         //raw value without any processing
-        elementGroup.find("text.valueRaw").text(state["value"]);
+        let valueRawElement = __elementGroupBuffer[state["name"]]["valueRaw"];
+        if (valueRawElement == undefined)
+        {
+            valueRawElement = elementGroup.find("text.valueRaw");
+            __elementGroupBuffer[state["name"]]["valueRaw"] = valueRawElement;
+        }
+        valueRawElement.text(state["value"]);
         //human visible value that may contain units or further processing
-	    elementGroup.find("text.value").text(state["value"] + unit);
+        let valueElement = __elementGroupBuffer[state["name"]]["value"];
+        if (valueElement == undefined)
+        {
+            valueElement = elementGroup.find("text.value");
+            __elementGroupBuffer[state["name"]]["value"] = valueElement;
+        }
+	    valueElement.text(state["value"] + unit);
 	    //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 	}
 	else
     {
-        elementGroup = $(document).find(`g[action-reference='${state["name"]}']`);
+        try {
+            elementGroup = __actionReferenceBuffer[state["name"]]["parent"];
+        } catch (error) {
+            elementGroup = $(document).find(`g[action-reference='${state["name"]}']`);
+            __actionReferenceBuffer[state["name"]] = {"parent": elementGroup};
+        }
 
         if (elementGroup.length !== 0)
         {
             isActionReference = true;
-            elementGroup.find("text.actionReferenceValue").text(state["value"]);
-            elementGroup.find("text.actionReferenceRawValue").text(state["value"]);
+            
+            let actionRefValueRawElement = __actionReferenceBuffer[state["name"]]["valueRaw"];
+            if (actionRefValueRawElement == undefined)
+            {
+                actionRefValueRawElement = elementGroup.find("text.actionReferenceRawValue");
+                __actionReferenceBuffer[state["name"]]["valueRaw"] = actionRefValueRawElement;
+            }
+            let actionRefValueElement = __actionReferenceBuffer[state["name"]]["value"];
+            if (actionRefValueElement == undefined)
+            {
+                actionRefValueElement = elementGroup.find("text.actionReferenceValue");
+                __elementGroupBuffer[state["name"]]["value"] = actionRefValueElement;
+            }
+            actionRefValueRawElement.text(state["value"]);
+            actionRefValueElement.text(state["value"]);
         }
     }
 	
