@@ -640,6 +640,37 @@ function updatePNID(stateList)
 	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
 }
 
+/**
+ * @summary A dictionary of state links.
+ * @description When two states get linked the information about this link is kept in here. The link consists of a dictionary entry of the origin state (with the state name being the identifier) which contains an array of states it is linked to.
+ * @property {Object} origin The origin of a link. Key is the name of the origin state, value is an array of linked states. On a state update (via {@link updatePNID}) all states that are linked in this entry will be invoked.
+ */
+var __stateLinks = {};
+
+/**
+ * @summary Links one state to another.
+ * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state.
+ * @param {string} origin The name of the state that invokes the linked state.
+ * @param {string} stateToLink The name of the state that should be invoked on state update.
+ * @see unlink
+ */
+function link(origin, stateToLink)
+{
+
+}
+
+/**
+ * @summary Unlinks a previously made state link.
+ * @description Removes a link from {@link __stateLinks} to stop a state to be invoked on the update of another.
+ * @param {string} origin The name of the state that invokes the linked state.
+ * @param {string} stateToUnlink The name of the state that should be invoked on change.
+ * @see link
+ */
+function unlink(origin, stateToUnlink)
+{
+
+}
+
 function setState(state)
 {
     if (typeof state["value"] != "number")
