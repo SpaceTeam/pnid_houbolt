@@ -243,13 +243,13 @@ let config = {
         "states": [
             "igniter_ox_solenoid:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_ox_pressure:sensor','value':1}]; }"
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_ox_regulator_pressure:sensor', 'igniter_ox_pressure:sensor'); } else { unlink('igniter_ox_regulator_pressure:sensor', 'igniter_ox_pressure:sensor', 0); }"
     },
     "igniter_fuel_pressure_wire_update": {
         "states": [
             "igniter_fuel_solenoid:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['crossUpdate']=[{'name':'igniter_fuel_pressure:sensor','value':10}]; } else { outVars['crossUpdate']=[{'name':'igniter_fuel_pressure:sensor','value':1}]; }"
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
     },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
@@ -460,9 +460,6 @@ $.get('/config/thresholds', function(data) {
     //thresholds = data;
 });
 
-var __elementGroupBuffer = {};
-var __actionReferenceBuffer = {};
-
 //setup tanks for filling visuals
 function initTanks()
 {
@@ -644,31 +641,72 @@ function updatePNID(stateList)
  * @summary A dictionary of state links.
  * @description When two states get linked the information about this link is kept in here. The link consists of a dictionary entry of the origin state (with the state name being the identifier) which contains an array of states it is linked to.
  * @property {Object} origin The origin of a link. Key is the name of the origin state, value is an array of linked states. On a state update (via {@link updatePNID}) all states that are linked in this entry will be invoked.
+ * @property {Array} origin.statename An array of state names that is linked to another state name (the key of the object)
  */
 var __stateLinks = {};
 
 /**
  * @summary Links one state to another.
- * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state.
+ * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string} stateToLink The name of the state that should be invoked on state update.
+ * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @see unlink
  */
 function link(origin, stateToLink)
 {
-
+    origin = origin.replace(":","-");
+    stateToLink = stateToLink.replace(":","-");
+    let existingLinks = __stateLinks[origin];
+    if (existingLinks == undefined || existingLinks.length == 0)
+    {
+        existingLinks = [stateToLink];
+    }
+    else
+    {
+        if (!existingLinks.includes(stateToLink))
+        {
+            existingLinks.push(stateToLink);
+        }
+    }
+    __stateLinks[origin] = existingLinks;
 }
 
 /**
  * @summary Unlinks a previously made state link.
- * @description Removes a link from {@link __stateLinks} to stop a state to be invoked on the update of another.
+ * @description Removes a link from {@link __stateLinks} to stop a state to be invoked on the update of another. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string} stateToUnlink The name of the state that should be invoked on change.
+ * @param {number=} updateValue If specified sends a state update (using {@link updatePNID}) to the element that should be unlinked (even if it wasn't linked to begin with).
  * @see link
  */
-function unlink(origin, stateToUnlink)
+function unlink(origin, stateToUnlink, updateValue = undefined)
 {
-
+    origin = origin.replace(":","-");
+    stateToUnlink = stateToUnlink.replace(":","-");
+    let existingLinks = __stateLinks[origin];
+    let unlinkUpdate = undefined;
+    if (existingLinks != undefined && existingLinks.length > 0)
+    {
+        let index = existingLinks.indexOf(stateToUnlink);
+        if (index != -1)
+        {
+            existingLinks.splice(index, 1); //remove item from array
+        }
+        if (existingLinks.length == 0)
+        {
+            delete __stateLinks[origin];
+        }
+        else
+        {
+            __stateLinks[origin] = existingLinks;
+        }
+    }
+    if (updateValue != undefined)
+    {
+        unlinkUpdate = [{"name": stateToUnlink, "value": updateValue}];
+        updatePNID(unlinkUpdate);
+    }
 }
 
 function setState(state)
@@ -689,13 +727,7 @@ function setState(state)
     }
     
     let isActionReference = false;
-    let elementGroup = undefined;
-    try {
-        elementGroup = __elementGroupBuffer[state["name"]]["parent"];
-    } catch (error) {
-        elementGroup = $(document).find("g." + state["name"]);
-        __elementGroupBuffer[state["name"]] = {"parent": elementGroup};
-    }
+    let elementGroup = getElement(state["name"]);
 
 	// check if any pnid element is found with the provided state name
 	let unit = "";
@@ -703,48 +735,23 @@ function setState(state)
 	{
 		unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
         //raw value without any processing
-        let valueRawElement = __elementGroupBuffer[state["name"]]["valueRaw"];
-        if (valueRawElement == undefined)
-        {
-            valueRawElement = elementGroup.find("text.valueRaw");
-            __elementGroupBuffer[state["name"]]["valueRaw"] = valueRawElement;
-        }
+        let valueRawElement = getElement(state["name"], "valueRaw");
         valueRawElement.text(state["value"]);
         //human visible value that may contain units or further processing
-        let valueElement = __elementGroupBuffer[state["name"]]["value"];
-        if (valueElement == undefined)
-        {
-            valueElement = elementGroup.find("text.value");
-            __elementGroupBuffer[state["name"]]["value"] = valueElement;
-        }
+        let valueElement = getElement(state["name"], "value");
 	    valueElement.text(state["value"] + unit);
 	    //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
 	}
 	else
     {
-        try {
-            elementGroup = __actionReferenceBuffer[state["name"]]["parent"];
-        } catch (error) {
-            elementGroup = $(document).find(`g[action-reference='${state["name"]}']`);
-            __actionReferenceBuffer[state["name"]] = {"parent": elementGroup};
-        }
+        elementGroup = getElement(state["name"], "parent", true);
 
         if (elementGroup.length !== 0)
         {
             isActionReference = true;
             
-            let actionRefValueRawElement = __actionReferenceBuffer[state["name"]]["valueRaw"];
-            if (actionRefValueRawElement == undefined)
-            {
-                actionRefValueRawElement = elementGroup.find("text.actionReferenceRawValue");
-                __actionReferenceBuffer[state["name"]]["valueRaw"] = actionRefValueRawElement;
-            }
-            let actionRefValueElement = __actionReferenceBuffer[state["name"]]["value"];
-            if (actionRefValueElement == undefined)
-            {
-                actionRefValueElement = elementGroup.find("text.actionReferenceValue");
-                __elementGroupBuffer[state["name"]]["value"] = actionRefValueElement;
-            }
+            let actionRefValueRawElement = getElement(state["name"], "actionReferenceRawValue", true);
+            let actionRefValueElement = getElement(state["name"], "actionReferenceValue", true);
             actionRefValueRawElement.text(state["value"]);
             actionRefValueElement.text(state["value"]);
         }
@@ -779,10 +786,10 @@ function setState(state)
         });
     }
     //iterate through all elements found (only one in case of action references)
-    for (i in configSearchTerms)
+    for (let i in configSearchTerms)
     {
         //iterate through search terms (classes for elements, action references for... action references) within one element
-        for (index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
+        for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
         {
 	        let searchTerm = configSearchTerms[i][index];
 	        if (configSearchTerms[i].includes("wire") || configSearchTerms[i].includes("PnID-ThermalBarrier"))
@@ -826,6 +833,17 @@ function setState(state)
         outVars["value"] = state["value"] + unit;
     }
     updatePopup(state["name"], outVars["value"], state["value"]);
+
+    //iterate through all elements linked to this one
+    let linkedStateUpdates = [];
+    for (let linkIndex in __stateLinks[state["name"]])
+    {
+        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex], "value": state["value"]});
+    }
+    if (linkedStateUpdates.length > 0)
+    {
+        updatePNID(linkedStateUpdates);
+    }
 }
 
 function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
@@ -839,6 +857,7 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 	{
 		for (attrIndex in attributes)
 		{
+            //console.log("attr", attributes[attrIndex]);
 			if (attrIndex == "length") //otherwise JS also iterates over control elements in the array for whatever stupid reason
 			{
 				break;

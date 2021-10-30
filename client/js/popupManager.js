@@ -415,7 +415,7 @@ function updatePopup(stateName, value, rawValue)
         /*console.log("elem", getElement(stateName));
         console.log("elem classes", getElement(stateName).attr("class").split(" "));
         console.log("type", getElement(stateName).attr("class").split(" "));*/
-        popupConfig = getConfigData(defaultConfig, getTypeFromClasses(getElement(stateName).attr("class").split(" ")), "popup");
+        popupConfig = getConfigData(defaultConfig, getTypeFromClasses(getElement(stateName).first().attr("class").split(" ")), "popup");
         if (popupConfig == undefined) //if this bundled state has no popup config it also can't have a bundled element in the action reference popup, so there is nothing to update
         {
             return;

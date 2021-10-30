@@ -19,14 +19,60 @@ function checkStringIsNumber(string)
     return true;
 }
 
-function getElement(identifier)
+var __elementGroupBuffer = {};
+var __actionReferenceBuffer = {};
+
+/**
+ * @summary Finds an (svg g) element in DOM.
+ * @description Utilizes jQuery.find() for finding initial elements, but buffers them for later use to not need as much CPU time traversing the DOM.
+ * @param {string} identifier The main identifier of the svg group.
+ * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Value "parent" is for selecting the main svg group.
+ * @param {bool} [isActionReference=false] Optionally define whether the element that is searched for belongs to an action reference or not. Default is false which searches "normally".
+ * @todo Evalute whether split buffers for action references and normal elements is actually needed.
+ * @return {jQuery} The matched element (or elements) as jQuery elements.
+ */
+function getElement(identifier, subidentifier = "parent", isActionReference = false)
 {
+    let buffer = undefined;
+    if (isActionReference) //TODO evaluate the split buffer stuff here
+    {
+        buffer = __actionReferenceBuffer;
+    }
+    else
+    {
+        buffer = __elementGroupBuffer;
+    }
     let element = undefined;
+    let findInDOM = false;
     try {
-        element = __elementGroupBuffer[identifier]["parent"];
+
+        element = buffer[identifier][subidentifier];
+        if (element == undefined)
+        {
+            findInDOM = true;
+        }
     } catch (error) {
-        element = $(document).find(`g.${identifier}`).first();
-        __elementGroupBuffer[state["name"]] = {"parent": element};
+        findInDOM = true;
+    }
+    if (findInDOM)
+    {
+        if (subidentifier == "parent")
+        {
+            if (isActionReference)
+            {
+                element = $(document).find(`g[action-reference='${identifier}']`);
+            }
+            else
+            {
+                element = $(document).find(`g.${identifier}`);
+            }
+            buffer[identifier] = {"parent": element};
+        }
+        else
+        {
+            element = getElement(identifier, "parent").find(`text.${subidentifier}`);
+            buffer[identifier][subidentifier] = element;
+        }
     }
     return element;
 }
@@ -39,7 +85,7 @@ function getElementValue(name, valueID)
         element = __elementGroupBuffer[name]["parent"];
     } catch (error) {
         element = $(document).find(`g.${name}`).first();
-        __elementGroupBuffer[state["name"]] = {"parent": element};
+        __elementGroupBuffer[name] = {"parent": element};
     }
     return element.find(searchString).text();
 }
@@ -51,7 +97,7 @@ function getElementAttrValue(name, attrName)
         element = __elementGroupBuffer[name]["parent"];
     } catch (error) {
         element = $(document).find(`g.${name}`);
-        __elementGroupBuffer[state["name"]] = {"parent": element};
+        __elementGroupBuffer[name] = {"parent": element};
     }
     return element.attr(attrName);
 }
