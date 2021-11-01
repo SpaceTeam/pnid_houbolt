@@ -622,6 +622,25 @@ function setStateName(state)
 	elementGroup.find("text.reference").text(state["label"]);
 }
 
+/**
+ * @typedef {Object} State
+ * @property {string} name The name of the state.
+ * @property {number} value The value of the state.
+ * @example {"name": "statename", "value": 123.4}
+ */
+
+/**
+ * @typedef {Object[]} StateList
+ * @property {State} state An individual state in the state list.
+ * @example [{"name": "statename", "value": 123.4}, {"name": "another_statename", "value": 1.2}]
+ */
+
+/**
+ * @summary Updates the PnID based on the list of given state updates.
+ * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setState}.
+ * @param {StateList} stateList The list of states that should be updated.
+ * @example updatePNID([{"name": "a_cool_state_name", "value": 123.4}]);
+ */
 function updatePNID(stateList)
 {
 	//printLog("info", "Updating PnID with: " + stateList);
@@ -641,7 +660,7 @@ function updatePNID(stateList)
  * @summary A dictionary of state links.
  * @description When two states get linked the information about this link is kept in here. The link consists of a dictionary entry of the origin state (with the state name being the identifier) which contains an array of states it is linked to.
  * @property {Object} origin The origin of a link. Key is the name of the origin state, value is an array of linked states. On a state update (via {@link updatePNID}) all states that are linked in this entry will be invoked.
- * @property {Array} origin.statename An array of state names that is linked to another state name (the key of the object)
+ * @property {string[]} origin.statename An array of state names that is linked to another state name (the key of the object)
  */
 var __stateLinks = {};
 
@@ -649,64 +668,98 @@ var __stateLinks = {};
  * @summary Links one state to another.
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
- * @param {string} stateToLink The name of the state that should be invoked on state update.
+ * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
+ * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, stateToLink)
+function link(origin, statesToLink)
 {
+    let statesArray = [];
+    if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
+    {
+        statesArray.push(statesToLink);
+    }
+
     origin = origin.replace(":","-");
-    stateToLink = stateToLink.replace(":","-");
-    let existingLinks = __stateLinks[origin];
-    if (existingLinks == undefined || existingLinks.length == 0)
+    for (let i in statesArray)
     {
-        existingLinks = [stateToLink];
-    }
-    else
-    {
-        if (!existingLinks.includes(stateToLink))
+        let state = statesArray[i].replace(":","-");
+        let existingLinks = __stateLinks[origin];
+        if (existingLinks == undefined || existingLinks.length == 0)
         {
-            existingLinks.push(stateToLink);
+            existingLinks = [state];
         }
+        else
+        {
+            if (!existingLinks.includes(state))
+            {
+                existingLinks.push(state);
+            }
+        }
+        __stateLinks[origin] = existingLinks;
     }
-    __stateLinks[origin] = existingLinks;
 }
 
 /**
  * @summary Unlinks a previously made state link.
  * @description Removes a link from {@link __stateLinks} to stop a state to be invoked on the update of another. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
- * @param {string} stateToUnlink The name of the state that should be invoked on change.
+ * @param {string[]} [statesToUnlink=all] The name of the state that should be unlinked from being invoked on change of origin state. Can be an array of several state names or just a single name. Default value if not specified is "all", which unlinks all active links from the specified origin state.
  * @param {number=} updateValue If specified sends a state update (using {@link updatePNID}) to the element that should be unlinked (even if it wasn't linked to begin with).
  * @see link
  */
-function unlink(origin, stateToUnlink, updateValue = undefined)
+function unlink(origin, statesToUnlink = "all", updateValue = undefined)
 {
-    origin = origin.replace(":","-");
-    stateToUnlink = stateToUnlink.replace(":","-");
-    let existingLinks = __stateLinks[origin];
-    let unlinkUpdate = undefined;
-    if (existingLinks != undefined && existingLinks.length > 0)
+    let statesArray = [];
+    let unlinkUpdate = [];
+    if (!Array.isArray(statesToUnlink))
     {
-        let index = existingLinks.indexOf(stateToUnlink);
-        if (index != -1)
+        statesArray.push(statesToUnlink);
+    }
+    origin = origin.replace(":","-");
+    if (statesToUnlink == "")
+    {
+
+    }
+    for (let i in statesArray)
+    {
+        let state = statesArray[i].replace(":","-");
+        let existingLinks = __stateLinks[origin];
+        if (existingLinks != undefined && existingLinks.length > 0)
         {
-            existingLinks.splice(index, 1); //remove item from array
+            let resultIndex = existingLinks.indexOf(state); //search for the location of the state in the existing links, -1 if not in the list.
+            if (resultIndex != -1)
+            {
+                existingLinks.splice(resultIndex, 1); //remove item from array
+            }
+            if (existingLinks.length == 0)
+            {
+                delete __stateLinks[origin];
+            }
+            else
+            {
+                __stateLinks[origin] = existingLinks;
+            }
         }
-        if (existingLinks.length == 0)
+        if (updateValue != undefined)
         {
-            delete __stateLinks[origin];
-        }
-        else
-        {
-            __stateLinks[origin] = existingLinks;
+            unlinkUpdate.push({"name": state, "value": updateValue})
         }
     }
     if (updateValue != undefined)
     {
-        unlinkUpdate = [{"name": stateToUnlink, "value": updateValue}];
         updatePNID(unlinkUpdate);
     }
+}
+
+/**
+ * @summary Links wires and sensors with the same name.
+ * @description Creates all implicit links between sensors and wires. Wires are implicitly linked to a sensor when they have the same state name. Uses {@link link} to link the states together.
+ */
+function createWireLink()
+{
+
 }
 
 function setState(state)
@@ -760,6 +813,7 @@ function setState(state)
     //----- prepare for eval behavior block
     //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
 	const inVars = {
+        "this": state["name"],
 	    "value" : state["value"],
 	    "unit" : unit
     };

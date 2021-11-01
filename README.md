@@ -119,16 +119,26 @@ Example:
 
 The eval blocks contain behaviours for elements. Which ones they apply to depends on where they are used (in [default config](#default-config) or [custom config](#custom-config) and which identifiers it is used alongside). Eval blocks are as the name suggests blocks of JS code that will be run using the `eval()` function. Yes, this can be a huge security risk, no it's not an issue as this is only run locally and the content of the eval blocks cannot be changed by a user (nevermind an outside user) during runtime.
 
-For ease of use there is a list of variables intended as inputs and outputs to the eval blocks which cover the most important use cases for them. Technically if a necessary input or output does not exist (or a certain function is not provided) it can be added in the eval as it is fully featured JS, but it is preferable to extend the features of the inputs and outputs instead to use simpler behaviour code in the configs.
+For ease of use there is a list of variables intended as inputs and outputs to the eval blocks, as well as some functions which cover the most important use cases for them. Technically if a necessary input or output does not exist (or a certain function is not provided) it can be added in the eval as it is fully featured JS, but it is preferable to extend the features of the inputs and outputs instead to use simpler behaviour code in the configs.
 
-Input variables (addressible via `inVars[<variable name>]`):
+Input variables (addressible via `inVars["<variable name>"]`):
+* `this` - contains the name (string) of the state that was invoked.
 * `value` - contains the (new) value of the element that is being updated
 * `unit` - contains the unit (usually appended to the value) of the element that is being updated
 
 Output variables (addressible via `outVars[<variable name>]`), only have an effect if set by the eval block:
 * `color` - tries to set the color of the *parent* element to the value of this variable. Which colors are valid depends on the type of element (see [pnid.css](client/css/pnid.css) `data-pnid-` declarations for valid values)
 * `value` - overrides the value field with custom content
-* `crossUpdate` - If set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message **(EXPERIMENTAL!)**
+* `crossUpdate` - if set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message **(EXPERIMENTAL!)**
+
+Functions (call by function name):
+* `link` - links one (or more) state to another (origin). Whenever the origin state receives a state update, the linked state does as well. Does *not* override state updates for the linked state, so those can potentially interfere.
+  * Parameter `origin` - the name of the origin ("parent") state of the link.
+  * Parameter `statesToLink` - A singular name or a list of names of the state that should be linked to the given origin.
+* `unlink` - unlinks previously linked states.
+  * Parameter `origin` - the name of the origin ("parent") state of the link that should be unlinked from.
+  * Parameter `statesToUnlink` - A singular name or a list of names of the state that should be unlinked from the given origin. (Optional, if not specified it will default to "all" to unlink all linked states from given origin. "all" can also be explicitly specified).
+  * Parameter `updateValue` - A value (state update) that should be passed to all previously linked states just after unlinking. (Optional, if not specified no state update on unlinking will happen).
 
 Additionally, for a more straightforward and adaptable use there is a `thresholds` array containing key values of interest, like pressure thresholds for the tanks, accessible via names, so the behaviour code is more easily readable (instead of a random number it's `thresholds['oxPressure']['low']`) and more centralized (changes to the thresholds only need to be changed in one place, not in every single behaviour block that uses these values).
 For contents of the thresholds array, check the file [thresholds.json](client/config/thresholds.json) **(ATTENTION: RIGHT NOW THIS FILE IS IGNORED AND INSTEAD USED HARDCODED IN [changeValues.js](client/js/changeValues.js) FOR EASE OF DEVELOPMENT)**
