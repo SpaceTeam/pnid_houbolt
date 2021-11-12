@@ -29,7 +29,19 @@ In a web browser of your choice, open `localhost:8080` (or whatever other port y
 
 For easy debugging of the code, test data can be generated and displayed, this can be done by running either `runTests()` or `runRandom()` in your browser's console. The former is a set of manually entered test data that is displayed sequentially, the latter generates random data *for every element in the PnID with a value reference*. This means that `runRandom()` may generate data for elements that would in normal use not get any values (like the nitrogen bottles).
 
-# Documentation
+## Developer Documentation
+
+Code documentation is done with JSDoc 3.6.7, the docs can be compiled by either running
+
+`jsdoc -c docs/jsdoc_conf.json`
+
+or simply running
+
+`bash create_docs.sh`
+
+They should be saved to `docs/html/`, the `html/` folder will be created automatically by JSDoc.
+
+# User Documentation
 
 ## Nomenclature
 
@@ -54,8 +66,8 @@ Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_nam
 
 ### Notes
 
-* The parser generates a list of svg `<g>` elements with a bunch of classes to identify and style it. These classes need to be in this exact order (Reference `S3`, Type `PnID-Valve_Solenoid`, (identifying) name `fuel_pressurize_solenoid`, `comp` or `wire`), otherwise popups won't work as expected
-* When flipping elements in KiCad around the vertical axis some weird stuff happens with the text alignment - aligning text to the left and then flipping it *also flips this alignment making it justified to the right in the actual PnID*. This means, that in KiCad some references and value references may look "the wrong way around" but are actually correct once exported with the parser. Keep this in mind while designing the PnID.
+* The parser generates a list of svg `<g>` elements with a bunch of classes to identify and style it. These classes need to be in this exact order (Reference `S3`, Type `PnID-Valve_Solenoid`, value reference `fuel_pressurize_solenoid`, `comp` or `wire`), otherwise various parts of the pnid won't work as expected (especially popups).
+* When flipping elements in KiCad around the vertical axis some weird stuff happens with the text alignment - aligning text to the left and then flipping it *also flips this alignment* making it justified to the right in the actual PnID. This means that in KiCad some references and value references may look "the wrong way around", but are actually correct once exported with the parser. Keep this in mind while designing the PnID.
 
 ## Config
 
@@ -63,7 +75,7 @@ Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_nam
 
 ### Overview
 
-Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last element will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
+Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last one will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
 
 For example if there is a behaviour in the default config setting the colour of an element based on the received value and another behaviour in the custom config changing the formatting of the value output, both outputs will be visible. If however the custom behaviour changes the formatting of the value output AND sets another colour, it will overwrite the colour set by the default config.
 
@@ -112,7 +124,7 @@ Example:
     "ox_bottom_tank_temp"
   ],
   "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-},
+}
 ```
 
 ### Eval behaviour blocks
