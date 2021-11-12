@@ -1,3 +1,7 @@
+/**
+ * @module
+ */
+
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
     "externalSourceDefault": "http://192.168.3.7:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-statesQuery=&var-state=&var-temp=All&var-pressure=All&var-thrust_load_cells=(%22key%22%3D'engine_thrust_1:sensor'%20or%0A%22key%22%3D'engine_thrust_2:sensor'%20or%0A%22key%22%3D'engine_thrust_3:sensor'%20or%0A%22key%22%3D'engine_thrust_4:sensor'%20or%0A%22key%22%3D'engine_thrust_5:sensor'%20or%0A%22key%22%3D'engine_thrust_6:sensor')&theme=light&panelId=",
@@ -460,7 +464,11 @@ $.get('/config/thresholds', function(data) {
     //thresholds = data;
 });
 
-//setup tanks for filling visuals
+/**
+ * @summary Initializes tanks for fill level visuals.
+ * @description Finds the correct rect element to scale, enters the right content type and passes the tanks to {@link initTankContent}.
+ * @todo The entire system of tank contents is super hardcoded and not nice as it's one of the only things that isn't properly generalized and configurable. definitely needs a refactor, but I have no idea how I'd do that short of constructing my own hitboxes which is a pain
+ */
 function initTanks()
 {
     let tanks = $(document).find("g.PnID-Tank");
@@ -471,11 +479,13 @@ function initTanks()
     initTankContent(tanks);
 }
 
+/**
+ * @summary Initializes tank fill level rectangles for use.
+ * @description Filters out the fuel and ox tank from the provided tanks and finds the rect element that is used to scale with fill level. The transform origin of the rectangle is set to the bottom edge of the tank so in future one can simply use scale along Y.
+ * @param {jQuery} tanks jQuery DOM elements of the ox and fuel tank.
+ */
 function initTankContent(tanks)
 {
-    //let fuelPaths = extractArcPathsFromTank(tanks.filter(".fuel_tank"));
-    //let oxPaths = extractArcPathsFromTank(tanks.filter(".ox_tank"));
-
     let fuelContentRect = tanks.filter(".fuel_tank").find("g").find("rect.rect");
     let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
     fuelContentRect.attr("data-pnid-tank_content", "fuel");
@@ -490,6 +500,12 @@ function initTankContent(tanks)
 }
 
 //update the percent of the content that is filled
+/**
+ * @summary Updates tank fill level to a specified percentage.
+ * @description Sets the fill level of the specified tank to the specified percentage using transform: scale(). Needs the tanks to be initialized prior with {@link initTanks}
+ * @param {jQuery} tank The jQuery DOM element of the tank that should be updated.
+ * @param {number} fillPercent The (floating point) percentage (0-100, not 0-1)
+ */
 function updateTankContent(tank, fillPercent)
 {
     let contentRect = tank.find("g").find("rect.rect");
@@ -499,6 +515,13 @@ function updateTankContent(tank, fillPercent)
 
 //extract the curved paths from a tank to fill them in tank color
 //this code relies on tanks being upright, very likely that it breaks if a tank is turned on its side
+/**
+ * @summary Extracts arc paths from certain path elements in a tank.
+ * @deprecated Not needed in the current tank implementation, may be needed for a possible future refactor.
+ * @param {jQuery} tank The jQuery DOM element of the tank that should be looked at.
+ * @return {Array} The svg element of the lowest left and highest right path
+ * @todo Evaluate if this may be needed for tank refactor, remove if not. If it is needed, update docs, I think I misdescribed the return value but idc because I think I'll delete this function soon anyways.
+ */
 function extractArcPathsFromTank(tank)
 {
     let contentPaths = tank.find("path[d*=' L ']");
@@ -522,6 +545,13 @@ function extractArcPathsFromTank(tank)
     return [tank.find(`path[d*='${minPathX} ${pathY} L']`), tank.find(`path[d*='${maxPathX} ${pathY} L']`)];
 }
 
+/**
+ * @summary Extracts coordinates from certain path elements in a tank.
+ * @deprecated Not needed in the current tank implementation, may be needed for a possible future refactor.
+ * @param {jQuery} path The jQuery DOM element of the path that should be looked at.
+ * @return {Array} The x and y coordinates of the path
+ * @todo Evaluate if this may be needed for tank refactor, remove if not. If it is needed, update docs, I think I misdescribed the return value but idc because I think I'll delete this function soon anyways.
+ */
 //extract XY position from start point of path
 function extractXYFromPath(path)
 {
@@ -529,6 +559,12 @@ function extractXYFromPath(path)
     return [pathAttr[1], pathAttr[2]];
 }
 
+
+/**
+ * @summary Test function for running through some of the more important functions of the PnID to validate them.
+ * @description Sets some state's names using {@link setStateNamesPNID}, then proceeds to send some manually entered, static test data spread out over time using {@link updatePNID}.
+ * @see runRandom
+ */
 async function runTests()
 {
 	var testNames = [{"name": "fuel_top_tank_temp:sensor", "label": "hope so"}, {"name": "ox_pressurant_press_pressure:sensor", "label": "adf"}];
@@ -567,6 +603,13 @@ function test()
     console.log(activePopups);
 }
 
+/**
+ * @summary Test function for running through some of the more important functions of the PnID to validate them.
+ * @description Generates a random value between 0 and 100 for every named pnid element (where "named" means an element with a value reference). This can set more elements than may actually receive state updates. Can be run in a loop by executing {@link runRandomLoop}.
+ * @see runTests
+ * @see runRandomLoop
+ * @see stopRandomLoop
+ */
 function runRandom()
 {
 	var states = [];
@@ -587,6 +630,12 @@ function runRandom()
 	updatePNID(states);
 }
 
+/**
+ * @summary Sets {@link runRandom} up to run periodically with a specified interval. Repeating can be stopped with {@link stopRandomLoop}.
+ * @param {number} interval The interval with which to execute {@link runRandom}.
+ * @see runRandom
+ * @see stopRandomLoop
+ */
 var randInterval;
 function runRandomLoop(interval)
 {
@@ -595,11 +644,22 @@ function runRandomLoop(interval)
     }, interval);
 }
 
+/**
+ * @summary Stops {@link runRandom} from being executed periodically (after it was started with {@link runRandomLoop}).
+ * @see runRandom
+ * @see runRandomLoop
+ */
 function stopRandomLoop()
 {
     clearInterval(randInterval);
 }
 
+/**
+ * @summary Updates the display name of pnid elements based on the list provided.
+ * @description Uses the provided state list and updates the reference to what is provided in the value field of the state list. This function only iterates through the list of states, {@link setStateName} does the actual setting.
+ * @param {StateList} stateNameList The state list with the new names. Only states provided in the list will be updated.
+ * @see setStateName
+ */
 function setStateNamesPNID(stateNameList)
 {
 	for (stateIndex in stateNameList)
@@ -611,6 +671,12 @@ function setStateNamesPNID(stateNameList)
 	}
 }
 
+/**
+ * @summary Updates the display name of a pnid element based on the state provided.
+ * @description Uses the provided state and updates the reference field of the state "state['name']" to what is provided in state['value']. The reference field is used for displaying the name in the header of popups as well as on the pnid itself unless the labels are hidden.
+ * @param {StateList} stateNameList The state list with the new names. Only states provided in the list will be updated.
+ * @see setStateNamesPNID
+ */
 function setStateName(state)
 {
 	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
@@ -637,8 +703,9 @@ function setStateName(state)
 
 /**
  * @summary Updates the PnID based on the list of given state updates.
- * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setState}.
+ * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setStateValue}.
  * @param {StateList} stateList The list of states that should be updated.
+ * @see setStateValue
  * @example updatePNID([{"name": "a_cool_state_name", "value": 123.4}]);
  */
 function updatePNID(stateList)
@@ -650,7 +717,7 @@ function updatePNID(stateList)
 		//let stateName = stateList[stateIndex]["name"];
 		//let stateValue = stateList[stateIndex]["value"];
 		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
-		setState(stateList[stateIndex]);
+		setStateValue(stateList[stateIndex]);
 	}
 	
 	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
@@ -660,7 +727,8 @@ function updatePNID(stateList)
  * @summary A dictionary of state links.
  * @description When two states get linked the information about this link is kept in here. The link consists of a dictionary entry of the origin state (with the state name being the identifier) which contains an array of states it is linked to.
  * @property {Object} origin The origin of a link. Key is the name of the origin state, value is an array of linked states. On a state update (via {@link updatePNID}) all states that are linked in this entry will be invoked.
- * @property {string[]} origin.statename An array of state names that is linked to another state name (the key of the object)
+ * @property {string[]} origin.statename An array of state names that is linked to another state name (the key of the object).
+ * @global
  */
 var __stateLinks = {};
 
@@ -762,7 +830,7 @@ function createWireLink()
 
 }
 
-function setState(state)
+function setStateValue(state)
 {
     if (typeof state["value"] != "number")
     {
@@ -814,8 +882,8 @@ function setState(state)
     //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
 	const inVars = {
         "this": state["name"],
-	    "value" : state["value"],
-	    "unit" : unit
+        "value" : state["value"],
+        "unit" : unit
     };
     
     //State storage for the eval() code specified in config.json //TBD (let eval code create entries? pre-define generic name entries? are they even persistent between loops right now?)

@@ -1,3 +1,9 @@
+/**
+ * @summary Checks if a string can be cast properly to a number.
+ * @description Checks whether the input was actually a string, if it was tests against a regex testing if that string contains only numbers. Fancy formats like 13e6 and the like are not supported.
+ * @param {(string|number)} string The string that should be checked. Value can also be a number, in which case it will simply return true as obviously a number is a number. This behavior relies on implicit casting of JS.
+ * @return {boolean} True if the string correctly validates to a number (or if the variable is already a number), false if it's a string containing something other than a number in the allowed formats, or if the variable wasn't a string to begin with.
+ */
 function checkStringIsNumber(string)
 {
 	// console.log(typeof string);
