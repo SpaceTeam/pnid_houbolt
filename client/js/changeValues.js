@@ -1,6 +1,9 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {
     "externalSourceDefault": "http://192.168.3.7:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-statesQuery=&var-state=&var-temp=All&var-pressure=All&var-thrust_load_cells=(%22key%22%3D'engine_thrust_1:sensor'%20or%0A%22key%22%3D'engine_thrust_2:sensor'%20or%0A%22key%22%3D'engine_thrust_3:sensor'%20or%0A%22key%22%3D'engine_thrust_4:sensor'%20or%0A%22key%22%3D'engine_thrust_5:sensor'%20or%0A%22key%22%3D'engine_thrust_6:sensor')&theme=light&panelId=",
+    "wire": {
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected' }"
+    },
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
 	    "popup": [
@@ -701,11 +704,18 @@ function setStateName(state)
  * @summary Updates the PnID based on the list of given state updates.
  * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setStateValue}.
  * @param {StateList} stateList The list of states that should be updated.
+ * @param {number} [recursionDepth=0] Internal parameter indicating recursion depth. Only as a safety precaution against infinite recursion that can happen with badly configured links in the config.
  * @see setStateValue
+ * @todo I could add a parent name list and append each step for deeper recursions. this way I can check through each step of the recursion and see if the current name has already been executed once and skip it (and give a better trace if the recursion gets too long)
  * @example updatePNID([{"name": "a_cool_state_name", "value": 123.4}]);
  */
-function updatePNID(stateList)
+function updatePNID(stateList, recursionDepth = 0)
 {
+    if (recursionDepth >= 5)
+    {
+        printLog("warning", `Reached a recursion depth of 5 while updating the PnID. This is likely due to misconfigured links in the configuration files. Aborting. Last state list was <code>${JSON.stringify(stateList)}</code>.`);
+        return;
+    }
 	//printLog("info", "Updating PnID with: " + stateList);
 	
 	for (stateIndex in stateList)
@@ -713,7 +723,10 @@ function updatePNID(stateList)
 		//let stateName = stateList[stateIndex]["name"];
 		//let stateValue = stateList[stateIndex]["value"];
 		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
-		setStateValue(stateList[stateIndex]);
+        //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
+        //{
+            setStateValue(stateList[stateIndex], recursionDepth);
+        //}
 	}
 	
 	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
@@ -819,14 +832,30 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
 
 /**
  * @summary Links wires and sensors with the same name.
- * @description Creates all implicit links between sensors and wires. Wires are implicitly linked to a sensor when they have the same state name. Uses {@link link} to link the states together.
+ * @description Creates all implicit links between sensors and wires. Wires are implicitly linked to a sensor when they have the same state name. Uses {@link link} to link the states together. Adds the entry "__child_wire" into the links as a keyword for these wires to not confuse them with the parent element.
  */
-function createWireLink()
+function createWireLinks()
 {
-
+    let wires = $(document).find(`g.wire`); //this will probably be incredibly slow
+    wires.each(function (index) {
+        let wireName = wires.eq(index).attr("class").split(" ")[0];
+        let parents = $(document).find(`g.${wireName}.comp`);
+        if (parents.length !== 0) //it technically should only be length == 1, but having more here won't hurt I think. this just means that there's 2 elements with the same as wires (which is allowed) so on updating both of these a wire update is triggered. this leads to slightly worse performance, but it should be with few enough elements that it won't hurt that much. (Only instance I can think of with this right now is the thermalbarrier next to pressure sensors which is only once in the pnid)
+        {
+            link(wireName, "__child_wire");
+        }
+    });
 }
 
-function setStateValue(state)
+/**
+ * @summary Sets the value of one pnid element based on a state update.
+ * @description Takes the provided state update, searches all pnid elements directly affected by it and updates them. Updating means setting the internal values, as well as loading the behavior blocks from the configs and executing them to allow for proper element formatting. Also traverses through elements linked via {@link link} and updates them accordingly.
+ * @param {State} state The state update that should be processed.
+ * @param {number} [recursionDepth=0] Internal parameter indicating recursion depth. Only as a safety precaution against infinite recursion that can happen with badly configured links in the config. Check to break at a too high recursion depth happens in {@link updatePNID}.
+ * @see updatePNID
+ * @example setStateValue({"name": "a_cool_state_name", "value": 123.0});
+ */
+function setStateValue(state, recursionDepth = 0)
 {
     if (typeof state["value"] != "number")
     {
@@ -844,123 +873,137 @@ function setStateValue(state)
     }
     
     let isActionReference = false;
-    let elementGroup = getElement(state["name"]);
+    let isWire = undefined;
+    let elementGroup = []; //I'd rather have "undefined" here, but the check later with .length would fail if I did that.
+    if (state["wires_only"] != true) //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
+    {
+        elementGroup = getElement(state["name"]);
+        isActionReference = getIsActionReference(state["name"]);
+    }
 
 	// check if any pnid element is found with the provided state name
 	let unit = "";
-	if (elementGroup.length !== 0) // if an element is found, update it. then carry on with the rest because even if it's not a pnid element the incoming state may be an action reference for a popup
+	if (elementGroup.length !== 0 && !state["wires_only"]) // if an element is found, update it.
 	{
-		unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
-        //raw value without any processing
-        let valueRawElement = getElement(state["name"], "valueRaw");
-        valueRawElement.text(state["value"]);
-        //human visible value that may contain units or further processing
-        let valueElement = getElement(state["name"], "value");
-	    valueElement.text(state["value"] + unit);
-	    //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
-	}
-	else
-    {
-        elementGroup = getElement(state["name"], "parent", true);
-
-        if (elementGroup.length !== 0)
+        if (isActionReference)
         {
-            isActionReference = true;
-            
-            let actionRefValueRawElement = getElement(state["name"], "actionReferenceRawValue", true);
-            let actionRefValueElement = getElement(state["name"], "actionReferenceValue", true);
+            let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
+            let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
             actionRefValueRawElement.text(state["value"]);
             actionRefValueElement.text(state["value"]);
         }
+        else
+        {
+            unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
+            //raw value without any processing
+            let valueRawElement = getElement(state["name"], "valueRaw");
+            valueRawElement.text(state["value"]);
+            //human visible value that may contain units or further processing
+            let valueElement = getElement(state["name"], "value");
+            valueElement.text(state["value"] + unit);
+            //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
+        }
+	}
+	else // if no element was found check if the element in question may be a wire instead
+    {
+        isWire = true;
+        elementGroup = getElement(state["name"].replace("__child_wire", ""), "wire");
     }
 	
-    //----- prepare for eval behavior block
-    //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
-	const inVars = {
-        "this": state["name"],
-        "value" : state["value"],
-        "unit" : unit
-    };
-    
-    //State storage for the eval() code specified in config.json //TBD (let eval code create entries? pre-define generic name entries? are they even persistent between loops right now?)
-    var stateVars = { };
-    
-    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
-    let outVars = { };
-    
-    //----- search applicable eval behavior blocks from config files (either default config or custom config)
-    //create list of possible entries in the default or custom JSON
-    //config search terms is a 2d array, one array for each element that has been found that matched the state name.
-    let configSearchTerms = []; //TODO configSearchTerms is not the best name, find another one
-    if (isActionReference) //if the state update is an action reference, use its name as search term, else get the classes of the pnid element, one of these will (hopefully) be contained in the default or custom config
+	if (elementGroup.length !== 0)
     {
-        configSearchTerms.push([state["name"]]);
-    }
-    else
-    {
-        //unpack each found element's classes individually
-        elementGroup.each(function(index) {
-            configSearchTerms.push($(this).attr("class").split(" "));
-        });
-    }
-    //iterate through all elements found (only one in case of action references)
-    for (let i in configSearchTerms)
-    {
-        //iterate through search terms (classes for elements, action references for... action references) within one element
-        for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
-        {
-	        let searchTerm = configSearchTerms[i][index];
-	        if (configSearchTerms[i].includes("wire") || configSearchTerms[i].includes("PnID-ThermalBarrier"))
-	        {
-		        searchTerm = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
-	        }
+        //----- prepare for eval behavior block
+        //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
+        const inVars = {
+            "this": state["name"],
+            "value" : state["value"],
+            "unit" : unit
+        };
 
-	        //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-	        let evalCode = getConfigData(defaultConfig, searchTerm, "eval");
-	        if (evalCode != undefined)
-	        {
-	            eval(evalCode);
-	            if (searchTerm === "PnID-Tank")
-                {
-                    updateTankContent(elementGroup, state["value"]);
-                }
-	        }
-        }
+        //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+        let outVars = { };
 
-        //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-        let customEvalCode = getConfigData(config, state["name"].replace("-",":"), "eval");
-        if (customEvalCode != undefined)
+        //----- search applicable eval behavior blocks from config files (either default config or custom config)
+        //create list of possible entries in the default or custom JSON
+        //config search terms is a 2d array, one array for each element that has been found that matched the state name.
+        let configSearchTerms = []; //TODO configSearchTerms is not the best name, find another one
+        if (isActionReference) //if the state update is an action reference, use its name as search term, else get the classes of the pnid element, one of these will (hopefully) be contained in the default or custom config
         {
-            eval(customEvalCode);
-        }
-
-        //if there is a pnid element, update it
-        if (elementGroup.length !== 0)
-        {
-            applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
+            configSearchTerms.push([state["name"]]);
         }
         else
         {
-            printLog("warning", `Received state update with no corresponding pnid element or action reference! State: ${state["name"]}: ${state["value"]}`);
+            //unpack each found element's classes individually
+            elementGroup.each(function(index) {
+                configSearchTerms.push($(this).attr("class").split(" "));
+            });
         }
+        //iterate through all elements found (only one in case of action references)
+        for (let i in configSearchTerms)
+        {
+            //iterate through search terms (classes for elements, action references for... action references) within one element
+            for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
+            {
+                let searchTerm = configSearchTerms[i][index];
+                if (isWire)
+                {
+                    searchTerm = "wire";
+                }
+                else if (configSearchTerms[i].includes("PnID-ThermalBarrier"))
+                {
+                    searchTerm = "PnID-Sensor_Pressure"; //should this really be hardcoded? is there a reason for it to have to be dynamic? evaluate
+                }
+
+                //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
+                let evalCode = getConfigData(defaultConfig, searchTerm, "eval");
+                if (evalCode != undefined)
+                {
+                    eval(evalCode);
+                    if (searchTerm === "PnID-Tank")
+                    {
+                        updateTankContent(elementGroup, state["value"]);
+                    }
+                    break; //don't need to iterate further, we already found the config
+                }
+            }
+
+            //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
+            let customEvalCode = getConfigData(config, state["name"].replace("-",":"), "eval");
+            if (customEvalCode != undefined)
+            {
+                eval(customEvalCode);
+            }
+
+            applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
+        }
+        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+        if (outVars["value"] == undefined)
+        {
+            outVars["value"] = state["value"] + unit;
+        }
+        updatePopup(state["name"], outVars["value"], state["value"]);
     }
-    
-    //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-    if (outVars["value"] == undefined)
+    else
     {
-        outVars["value"] = state["value"] + unit;
+        printLog("warning", `Received state update with no corresponding pnid element, wire or action reference! State: <code>${state["name"]}</code>: <code>${state["value"]}</code>`);
     }
-    updatePopup(state["name"], outVars["value"], state["value"]);
 
     //iterate through all elements linked to this one
     let linkedStateUpdates = [];
     for (let linkIndex in __stateLinks[state["name"]])
     {
-        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex], "value": state["value"]});
+        if (__stateLinks[state["name"]][linkIndex] == "__child_wire")
+        {
+            linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true}); //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this. I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+        }
+        else
+        {
+            linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex], "value": state["value"]});
+        }
     }
     if (linkedStateUpdates.length > 0)
     {
-        updatePNID(linkedStateUpdates);
+        updatePNID(linkedStateUpdates, recursionDepth + 1);
     }
 }
 

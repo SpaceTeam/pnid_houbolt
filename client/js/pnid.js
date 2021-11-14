@@ -8,6 +8,7 @@ function initPNID(standalone, pathOffset, themes)
     }
     initTanks();
     initPNIDHitboxes();
+    createWireLinks();
 
     //add a check if we want that added (url param?)
     createLogBox();

@@ -25,34 +25,104 @@ function checkStringIsNumber(string)
     return true;
 }
 
-var __elementGroupBuffer = {};
-var __actionReferenceBuffer = {};
+/**
+ * @typedef {Object} ElementBuffer
+ * @property {string} valueReference The key / ID of the buffer.
+ * @property {Object} elements Content of the buffer for element with ID "valueReference".
+ * @property {jQuery} elements.parent jQuery object of the entire pnid element that got buffered.
+ * @property {jQuery} elements.wire jQuery object of all wires of the same name.
+ * @property {jQuery} elements.value jQuery object of the value element (child of the "parent" pnid element) that got buffered. Not in use for {@link __actionReferenceBuffer}.
+ * @property {jQuery} elements.valueRaw jQuery object of the valueRaw element (child of the "parent" pnid element) that got buffered. Not in use for {@link __actionReferenceBuffer}.
+ * @property {jQuery} elements.actionReferenceValue jQuery object of the actionReferenceValue element (child of the "parent" pnid element) that got buffered. Not in use for {@link __elementGroupBuffer}.
+ * @property {jQuery} elements.actionReferenceValueRaw jQuery object of the actionReferenceValueRaw element (child of the "parent" pnid element) that got buffered. Not in use for {@link __elementGroupBuffer}.
+ * @see __elementGroupBuffer
+ * @see __actionReferenceBuffer
+ * @example "state_name": { "parent": Object.<jQuery>, "wire": Object.<jQuery>, "value": Object.<jQuery>}
+ */
 
 /**
- * @summary Finds an (svg g) element in DOM.
- * @description Utilizes jQuery.find() for finding initial elements, but buffers them for later use to not need as much CPU time traversing the DOM.
+ * @summary The buffer of all "normal" pnid elements.
+ * @type ElementBuffer
+ * @example "state_name": { "parent": Object.<jQuery>, "wire": Object.<jQuery>, "value": Object.<jQuery>, "valueRaw": Object.<jQuery>}
+ */
+var __elementGroupBuffer = {};
+
+/**
+ * @summary Loads an (svg g) element from DOM into a buffer.
+ * @description Utilizes jQuery.find() for finding elements, stores them in a buffer for later use to not need as much CPU time traversing the DOM.
+ * @param {ElementBuffer} A dictionary of buffered elements.
  * @param {string} identifier The main identifier of the svg group.
- * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Value "parent" is for selecting the main svg group.
- * @param {bool} [isActionReference=false] Optionally define whether the element that is searched for belongs to an action reference or not. Default is false which searches "normally".
- * @todo Evalute whether split buffers for action references and normal elements is actually needed.
+ * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Commonly used identifiers are "value", "valueRaw", "actionReferenceValue" and "actionReferenceValueRaw". "Special" identifiers are "parent" (default behavior if not specified) which returns the entire element including all sub elements which could be accessed by the sub identifiers and "wire" which returns all wires that fit the query instead of components.
  * @return {jQuery} The matched element (or elements) as jQuery elements.
  */
-function getElement(identifier, subidentifier = "parent", isActionReference = false)
+function storeElementInBuffer(buffer, identifier, subidentifier = "parent")
 {
-    let buffer = undefined;
-    if (isActionReference) //TODO evaluate the split buffer stuff here
+    let isActionReference = false;
+    let element = undefined;
+    if (subidentifier == "parent" || subidentifier == "wire")
     {
-        buffer = __actionReferenceBuffer;
+        let filterString = "comp";
+        if (subidentifier == "wire")
+        {
+            filterString = "wire";
+        }
+        element = $(document).find(`g.${identifier}.${filterString}`);
+        if (element.length == 0) // if no result, try if it may be an action reference
+        {
+            element = $(document).find(`g[action-reference='${identifier}']`);
+            if (element.length == 0) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
+            {
+                return element; //TODO not sure whether to return element (which is empty) or undefined at this point.
+            }
+            isActionReference = true;
+        }
+        let newElement = {};
+        newElement[subidentifier] = element;
+        buffer[identifier] = newElement;
+        buffer[identifier]["isActionReference"] = isActionReference;
     }
     else
     {
-        buffer = __elementGroupBuffer;
+        //console.log("sub id", subidentifier);
+        element = getElement(identifier, "parent").find(`text.${subidentifier}`);
+        buffer[identifier][subidentifier] = element;
     }
+    return element;
+}
+
+/**
+ * @summary Returns whether an element with a certain identifier is an action reference or not.
+ * @description Executes {@link getElement} to make sure the element in question is actually in the buffer, otherwise it might return wrong values if the element in question exists but was never loaded yet. Then checks the field "isActionReference" that gets written to on first load into buffer and returns its value.
+ * @param {string} identifier The main identifier of the svg group.
+ * @return {boolean} Whether or not the specified element identifier (value reference) is an action reference or not. Returns undefined if the element can't be found.
+ */
+function getIsActionReference(identifier)
+{
+    let result = undefined;
+    getElement(identifier); //this is shitty, but "needed" so I can make sure that I actually return the right thing and don't return "this element doesn't exist" even though it maybe does but just wasn't buffered yet.
+    try {
+        result = __elementGroupBuffer[identifier]["isActionReference"];
+    } catch (error) {
+        result = undefined;
+    }
+    return result;
+}
+
+/**
+ * @summary Finds an (svg g) element in DOM.
+ * @description Reads from the appropriate buffer based on isActionReference. If query is not stored in a buffer yet, utilizes {@link storeElementInBuffer} for finding and storing them. Using buffers drastically reduces CPU time traversing the DOM.
+ * @param {string} identifier The main identifier of the svg group.
+ * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Value "parent" is for selecting the main svg group. Commonly used identifiers are "value" and "valueRaw". If isActionReference is set to true, "value" and "valueRaw" are "actionReferenceValue" and "actionReferenceValueRaw". "Special" identifiers are "parent" which returns the entire element including all sub elements which could be accessed by the sub identifiers and "wire" which returns all wires that fit the query instead of components.
+ * @todo Evalute whether split buffers for action references and normal elements is actually needed. This also ties in with the documentation of this function - technically isActionReference doesn't do anything about value vs actionReferenceValue, so the docs are kind of misleading here.
+ * @return {jQuery} The matched element (or elements) as jQuery elements.
+ */
+function getElement(identifier, subidentifier = "parent")
+{
     let element = undefined;
     let findInDOM = false;
     try {
-
-        element = buffer[identifier][subidentifier];
+        //console.log("element buffer", __elementGroupBuffer[identifier]);
+        element = __elementGroupBuffer[identifier][subidentifier];
         if (element == undefined)
         {
             findInDOM = true;
@@ -62,48 +132,43 @@ function getElement(identifier, subidentifier = "parent", isActionReference = fa
     }
     if (findInDOM)
     {
-        if (subidentifier == "parent")
-        {
-            if (isActionReference)
-            {
-                element = $(document).find(`g[action-reference='${identifier}']`);
-            }
-            else
-            {
-                element = $(document).find(`g.${identifier}`);
-            }
-            buffer[identifier] = {"parent": element};
-        }
-        else
-        {
-            element = getElement(identifier, "parent").find(`text.${subidentifier}`);
-            buffer[identifier][subidentifier] = element;
-        }
+        element = storeElementInBuffer(__elementGroupBuffer, identifier, subidentifier);
     }
+    //console.log("return el", element);
     return element;
 }
 
-function getElementValue(name, valueID)
+/**
+ * @summary Get content of a text field from element with certain name.
+ * @description Uses {@link getElement} to find the appropriate element, then extracts the needed information with jQuery.
+ * @param {string} valueReference The main identifier of the svg group.
+ * @param {string} valueID Which text field to extract information from. For example "value" or "actionReferenceValueRaw"
+ * @return {string} The value of the text field.
+ */
+function getElementValue(valueReference, valueID)
 {
-    let searchString = `text.${valueID}`;
-    let element = undefined;
-    try {
-        element = __elementGroupBuffer[name]["parent"];
-    } catch (error) {
-        element = $(document).find(`g.${name}`).first();
-        __elementGroupBuffer[name] = {"parent": element};
+    let element = getElement(valueReference, valueID);
+    if (element == undefined)
+    {
+        printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${identifier}!`);
     }
-    return element.find(searchString).text();
+    return element.text();
 }
 
-function getElementAttrValue(name, attrName)
+/**
+ * @summary Get value of a certain attribute of a pnid element.
+ * @description Uses {@link getElement} to find the appropriate element, then extracts the needed information with jQuery.
+ * @param {string} valueReference The main identifier of the svg group.
+ * @param {string} attrName Which attribute value to return.
+ * @return {string} The value of the attribute.
+ * @todo This doesn't find wires where the previous implementation of it did. I think this is fine, but I'm not entirely sure.
+ */
+function getElementAttrValue(valueReference, attrName)
 {
-    let element = undefined;
-    try {
-        element = __elementGroupBuffer[name]["parent"];
-    } catch (error) {
-        element = $(document).find(`g.${name}`);
-        __elementGroupBuffer[name] = {"parent": element};
+    let element = getElement(valueReference);
+    if (element == undefined)
+    {
+        printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${identifier}!`);
     }
     return element.attr(attrName);
 }
