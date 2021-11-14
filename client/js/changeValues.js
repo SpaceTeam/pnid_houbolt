@@ -2,7 +2,7 @@
 let defaultConfig = {
     "externalSourceDefault": "http://192.168.3.7:3000/d-solo/K20EdKS7z/streaming-example?orgId=1&var-statesQuery=&var-state=&var-temp=All&var-pressure=All&var-thrust_load_cells=(%22key%22%3D'engine_thrust_1:sensor'%20or%0A%22key%22%3D'engine_thrust_2:sensor'%20or%0A%22key%22%3D'engine_thrust_3:sensor'%20or%0A%22key%22%3D'engine_thrust_4:sensor'%20or%0A%22key%22%3D'engine_thrust_5:sensor'%20or%0A%22key%22%3D'engine_thrust_6:sensor')&theme=light&panelId=",
     "wire": {
-        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected' }"
+        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected' }"
     },
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
@@ -93,7 +93,7 @@ let defaultConfig = {
         ]
     },
     "PnID-Sensor_Pressure": {
-        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
+        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
 	    "popup": [
             {
                 "type": "display",
@@ -253,12 +253,6 @@ let config = {
             "igniter_fuel_solenoid:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
-    },
-    "igniter_fuel_pressure_wire_content": {
-        "states": [
-            "igniter_fuel_pressure:sensor:wire"
-        ],
-        "eval": "if (inVars['value'] > 2) { outVars['color'] = 'content' } else { outVars['color'] = 'low' }"
     },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
@@ -836,11 +830,12 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
  * @summary Finds all parents/origins from a certain link name.
  * @description Iterates through all entries in the {@link __stateList} dict. All entries that contain the specified child will be returned in an array.
  * @param {string} linkedChild The name of the child state is linked to one or more parents.
+ * @param {boolean} isWire Indicates whether the child that the parent is searched for is a wire or not. This is needed to find possible implicitly linked wires from {@link createWireLinks} as those are stored with name "__child_wire" instead of their actual name.
  * @return {Array} List of parents found for the linked child. If the specified child is not actually linked to anything (as a child), returns an empty array.
  * @see link
  * @see unlink
  */
-function findLinkParents(linkedChild)
+function findLinkParents(linkedChild, isWire = false)
 {
     let parents = [];
     for (let key in __stateLinks)
@@ -848,6 +843,13 @@ function findLinkParents(linkedChild)
         if (__stateLinks[key].includes(linkedChild))
         {
             parents.push(key);
+        }
+    }
+    if (isWire) // add parent of implicitly linked wires
+    {
+        if (__stateLinks[linkedChild].includes("__child_wire"))
+        {
+            parents.push(linkedChild);
         }
     }
     return parents;
@@ -982,7 +984,7 @@ function setStateValue(state, recursionDepth = 0)
                 if (evalCode != undefined)
                 {
                     eval(evalCode);
-                    if (searchTerm === "PnID-Tank")
+                    if (searchTerm === "PnID-Tank") //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
                     {
                         updateTankContent(elementGroup, state["value"]);
                     }
@@ -1044,13 +1046,15 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 {
     let elementName = undefined;
     let classes = elementGroup.attr("class").split(" ");
+    let isWire = false;
     if (classes.includes("wire"))
     {
+        isWire = true;
         elementName = classes[0];
     }
     else
     {
-        getValReferenceFromClasses(classes);
+        elementName = getValReferenceFromClasses(classes);
     }
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
@@ -1073,18 +1077,32 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
                 let color = outVars["color"];
                 if (color == "content") //if the color is "content" figure out what content is actually there and enter this.
                 {
-                    let ownContent = getElementAttrValue(elementName, "data-content");
-                    if (ownContent == undefined) //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
+                    //console.log("trying to enter content", elementGroup, elementName);
+                    let ownContent = undefined;
+                    if (!isWire)
                     {
-                        let parents = findLinkParents(elementName);
+                        //console.log("not a wire so trying to find own content");
+                        ownContent = getElementAttrValue(elementName, "data-content");
+                    }
+                    if (ownContent == undefined || ownContent == "") //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
+                    {
+                        //console.log("did not find own content", elementGroup);
+                        let parents = findLinkParents(elementName, isWire);
+                        //console.log("parents", parents);
                         for (let i in parents)
                         {
                             let parentContent = getElementAttrValue(parents[i], "data-content");
                             if (parentContent != undefined) //use first parent content that is found
                             {
+                                //console.log("found parent with content", elementGroup, parents[i]);
                                 color = parentContent;
                             }
                         }
+                    }
+                    else
+                    {
+                        //console.log("found own content", elementGroup);
+                        color = ownContent;
                     }
                 }
 				elementGroup.attr(attribute.name, color);
