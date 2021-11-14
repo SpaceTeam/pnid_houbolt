@@ -191,24 +191,27 @@ function getValReferenceFromClasses(classes)
 
 function getConfigData(config, elementName, key)
 {
-    // get key (eval or popup) from default config structure
-    if (elementName in config)
-    {
-        return config[elementName][key]
-    }
-    
-    // if it's not found in default config it could be in custom config structure
+    // get key (eval or popup) from config structure like the custom config has
     let categories = Object.keys(config);
     for (index in categories)
     {
-        //printLog("info", "searching for state " + state["name"] + " from available states: " + config[configProperties[propIndex]]["states"]);
+        //printLog("info", "searching for state " + elementName + " from available states: " + config[categories[index]]["states"]);
         if (config[categories[index]]["states"] != undefined)
         {
             if (config[categories[index]]["states"].includes(elementName)) //if the currently traversed property contains our state, check for eval
             {
-                return config[categories[index]][key];
+                if (config[categories[index]][key] != undefined) //only return if the config entry that's found actually has this key set. usually this should be the case, but in some cases having the eval and popup custom configs in different entries is helpful, so we have to continue searching if we didn't find the key in question in the first entry for this element name. This can lead to searching for longer than needed if the config isn't set up properly, but I can live with that.
+                {
+                    return config[categories[index]][key];
+                }
             }
         }
+    }
+
+    // if it's not in the custom config, get key (eval or popup) from default config structure
+    if (elementName in config) //TODO this is kind of buggy, if the custom config contains an object with name identical to the state name (which is not needed, the first order names in custom config are completely irrelevant and just for human readable commenting) this will incorrectly identify it as the default config. this is why the searching through custom config is now before default config, however even then it can still lead to issues (if something is not found in the custom config format, aka it doesn't exist, it then may incorrectly be detected as being in the default config format. however this shouldn't be a problem in the vast majority of cases. not sure how to fix it without passing a bool/config name or hardcoding custom and default config variables. investigate
+    {
+        return config[elementName][key];
     }
     
     return undefined;

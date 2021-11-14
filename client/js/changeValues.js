@@ -240,7 +240,7 @@ let config = {
         "states": [
             "purge_regulator_pressure:sensor"
         ],
-        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { /*outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}]*/ }"
     },
     "igniter_ox_pressure_wire_update": {
         "states": [
@@ -253,6 +253,12 @@ let config = {
             "igniter_fuel_solenoid:sensor"
         ],
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
+    },
+    "igniter_fuel_pressure_wire_content": {
+        "states": [
+            "igniter_fuel_pressure:sensor:wire"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color'] = 'content' } else { outVars['color'] = 'low' }"
     },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
@@ -795,10 +801,6 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
         statesArray.push(statesToUnlink);
     }
     origin = origin.replace(":","-");
-    if (statesToUnlink == "")
-    {
-
-    }
     for (let i in statesArray)
     {
         let state = statesArray[i].replace(":","-");
@@ -828,6 +830,27 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
     {
         updatePNID(unlinkUpdate);
     }
+}
+
+/**
+ * @summary Finds all parents/origins from a certain link name.
+ * @description Iterates through all entries in the {@link __stateList} dict. All entries that contain the specified child will be returned in an array.
+ * @param {string} linkedChild The name of the child state is linked to one or more parents.
+ * @return {Array} List of parents found for the linked child. If the specified child is not actually linked to anything (as a child), returns an empty array.
+ * @see link
+ * @see unlink
+ */
+function findLinkParents(linkedChild)
+{
+    let parents = [];
+    for (let key in __stateLinks)
+    {
+        if (__stateLinks[key].includes(linkedChild))
+        {
+            parents.push(key);
+        }
+    }
+    return parents;
 }
 
 /**
@@ -968,9 +991,19 @@ function setStateValue(state, recursionDepth = 0)
             }
 
             //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
-            let customEvalCode = getConfigData(config, state["name"].replace("-",":"), "eval");
+            let stateConfigName = state["name"];
+            if (isWire)
+            {
+                stateConfigName = stateConfigName.replace("__child_wire", "").replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
+                //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
+            }
+            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":"), "eval");
             if (customEvalCode != undefined)
             {
+                if (isWire)
+                {
+                    console.log("found custom config for wire", customEvalCode);
+                }
                 eval(customEvalCode);
             }
 
@@ -1009,6 +1042,16 @@ function setStateValue(state, recursionDepth = 0)
 
 function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 {
+    let elementName = undefined;
+    let classes = elementGroup.attr("class").split(" ");
+    if (classes.includes("wire"))
+    {
+        elementName = classes[0];
+    }
+    else
+    {
+        getValReferenceFromClasses(classes);
+    }
 	//fetch all attributes of the element group
 	let attributes = elementGroup.prop("attributes");
 	//printLog("info", "Found these attributes:" + attributes);
@@ -1027,7 +1070,24 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 			let re = /data-pnid-\S*/;
 			if (re.test(attribute.name))
 			{
-				elementGroup.attr(attribute.name, outVars["color"]);
+                let color = outVars["color"];
+                if (color == "content") //if the color is "content" figure out what content is actually there and enter this.
+                {
+                    let ownContent = getElementAttrValue(elementName, "data-content");
+                    if (ownContent == undefined) //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
+                    {
+                        let parents = findLinkParents(elementName);
+                        for (let i in parents)
+                        {
+                            let parentContent = getElementAttrValue(parents[i], "data-content");
+                            if (parentContent != undefined) //use first parent content that is found
+                            {
+                                color = parentContent;
+                            }
+                        }
+                    }
+                }
+				elementGroup.attr(attribute.name, color);
 			}
 		}
 	}
