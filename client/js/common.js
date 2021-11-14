@@ -1,7 +1,7 @@
 /**
  * @summary Checks if a string can be cast properly to a number.
- * @description Checks whether the input was actually a string, if it was tests against a regex testing if that string contains only numbers. Fancy formats like 13e6 and the like are not supported.
- * @param {(string|number)} string The string that should be checked. Value can also be a number, in which case it will simply return true as obviously a number is a number. This behavior relies on implicit casting of JS.
+ * @description Checks whether the input was actually a string. If it was, tests against a regex to see if that string contains only numbers. Fancy formats like 13e6 and the like are not supported.
+ * @param {(string|number)} string The string that should be checked. Can also be a number, in which case it will simply return true as obviously a number is a number. This behavior relies on implicit casting of JS.
  * @return {boolean} True if the string correctly validates to a number (or if the variable is already a number), false if it's a string containing something other than a number in the allowed formats, or if the variable wasn't a string to begin with.
  */
 function checkStringIsNumber(string)
@@ -43,7 +43,9 @@ function checkStringIsNumber(string)
 /**
  * @summary The buffer of all "normal" pnid elements.
  * @type ElementBuffer
- * @example "state_name": { "parent": Object.<jQuery>, "wire": Object.<jQuery>, "value": Object.<jQuery>, "valueRaw": Object.<jQuery>}
+ * @example //Usually either value[Raw] or actionReferenceValue[Raw] are set, not both at the same time.
+ * "state_name": { "parent": Object.<jQuery>, "wire": Object.<jQuery>, "value": Object.<jQuery>, "valueRaw": Object.<jQuery>}
+ * "other_name": { "parent": Object.<jQuery>, "actionReferenceValue": Object.<jQuery>, "actionReferenceValueRaw": Object.<jQuery>}
  */
 var __elementGroupBuffer = {};
 

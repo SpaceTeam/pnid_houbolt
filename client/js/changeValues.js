@@ -635,13 +635,13 @@ function runRandom()
 	updatePNID(states);
 }
 
+var randInterval;
 /**
  * @summary Sets {@link runRandom} up to run periodically with a specified interval. Repeating can be stopped with {@link stopRandomLoop}.
  * @param {number} interval The interval with which to execute {@link runRandom}.
  * @see runRandom
  * @see stopRandomLoop
  */
-var randInterval;
 function runRandomLoop(interval)
 {
     randInterval = setInterval(() => {
