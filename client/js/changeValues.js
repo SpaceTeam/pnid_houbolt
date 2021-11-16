@@ -783,13 +783,15 @@ function link(origin, statesToLink)
  * @description Removes a link from {@link __stateLinks} to stop a state to be invoked on the update of another. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} [statesToUnlink=all] The name of the state that should be unlinked from being invoked on change of origin state. Can be an array of several state names or just a single name. Default value if not specified is "all", which unlinks all active links from the specified origin state.
- * @param {number=} updateValue If specified sends a state update (using {@link updatePNID}) to the element that should be unlinked (even if it wasn't linked to begin with).
+ * @param {number} [updateValue] If specified sends a state update (using {@link updatePNID}) to the element that should be unlinked (even if it wasn't linked to begin with).
+ * @param {boolean} [alwaysUpdate=false] Whether or not to always send the update or only when the state was actually linked before and unlinked in this run. Only has an effect if updateValue is set.
  * @see link
  */
-function unlink(origin, statesToUnlink = "all", updateValue = undefined)
+function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysUpdate = false)
 {
     let statesArray = [];
     let unlinkUpdate = [];
+    let unlinked = false;
     if (!Array.isArray(statesToUnlink))
     {
         statesArray.push(statesToUnlink);
@@ -805,6 +807,7 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
             if (resultIndex != -1)
             {
                 existingLinks.splice(resultIndex, 1); //remove item from array
+                unlinked = true;
             }
             if (existingLinks.length == 0)
             {
@@ -815,12 +818,12 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined)
                 __stateLinks[origin] = existingLinks;
             }
         }
-        if (updateValue != undefined)
+        if (updateValue != undefined && (alwaysUpdate || unlinked))
         {
             unlinkUpdate.push({"name": state, "value": updateValue})
         }
     }
-    if (updateValue != undefined)
+    if (updateValue != undefined && (alwaysUpdate || unlinked))
     {
         updatePNID(unlinkUpdate);
     }
@@ -882,6 +885,7 @@ function createWireLinks()
  */
 function setStateValue(state, recursionDepth = 0)
 {
+    //console.log("state:", state);
     if (typeof state["value"] != "number")
     {
         if (!checkStringIsNumber(state["value"]))
@@ -900,7 +904,13 @@ function setStateValue(state, recursionDepth = 0)
     let isActionReference = false;
     let isWire = undefined;
     let elementGroup = []; //I'd rather have "undefined" here, but the check later with .length would fail if I did that.
-    if (state["wires_only"] != true) //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
+    if (state["wires_only"] == true) //remove the "__child_wire" prefix if it's a wires only update. TODO I dislike that "wires_only" is synonymous with "child wires", but for now it's only used that way so I'll live with it.
+    {
+        //console.log("state name", state["name"]);
+        state["name"] = state["name"].replace("__child_wire", ""); //technically doesn't need to be inside this if as I'm already assuming in other places in the code that in normal use there's never "__child_wire" contained in the state name.
+        //console.log("state name 2", state["name"]);
+    }
+    else //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
     {
         elementGroup = getElement(state["name"]);
         isActionReference = getIsActionReference(state["name"]);
@@ -919,20 +929,19 @@ function setStateValue(state, recursionDepth = 0)
         }
         else
         {
-            unit = elementGroup.not("g.wire").not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
+            unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
             //raw value without any processing
             let valueRawElement = getElement(state["name"], "valueRaw");
-            valueRawElement.text(state["value"]);
             //human visible value that may contain units or further processing
             let valueElement = getElement(state["name"], "value");
+            valueRawElement.text(state["value"]);
             valueElement.text(state["value"] + unit);
-            //printLog("info", "Found following elements to update: " + $(document).find("g." + state["name"]));
         }
 	}
 	else // if no element was found check if the element in question may be a wire instead
     {
         isWire = true;
-        elementGroup = getElement(state["name"].replace("__child_wire", ""), "wire");
+        elementGroup = getElement(state["name"], "wire");
     }
 	
 	if (elementGroup.length !== 0)
@@ -996,26 +1005,23 @@ function setStateValue(state, recursionDepth = 0)
             let stateConfigName = state["name"];
             if (isWire)
             {
-                stateConfigName = stateConfigName.replace("__child_wire", "").replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
+                stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
             let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":"), "eval");
             if (customEvalCode != undefined)
             {
-                if (isWire)
-                {
-                    console.log("found custom config for wire", customEvalCode);
-                }
                 eval(customEvalCode);
             }
 
             applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
         }
-        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         if (outVars["value"] == undefined)
         {
             outVars["value"] = state["value"] + unit;
         }
+        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
         updatePopup(state["name"], outVars["value"], state["value"]);
     }
     else
@@ -1027,11 +1033,15 @@ function setStateValue(state, recursionDepth = 0)
     let linkedStateUpdates = [];
     for (let linkIndex in __stateLinks[state["name"]])
     {
-        if (__stateLinks[state["name"]][linkIndex] == "__child_wire")
+        if (__stateLinks[state["name"]][linkIndex] == "__child_wire") //find if the current state name has an associated child wire group
         {
-            linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true}); //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this. I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+            if (state["wires_only"] == false || state["wires_only"] == undefined) //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion)
+            {
+                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true}); //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this. I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+
+            }
         }
-        else
+        else //if we can't find a child wire entry at this index in the link list, push the linked update normally
         {
             linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex], "value": state["value"]});
         }
@@ -1042,6 +1052,7 @@ function setStateValue(state, recursionDepth = 0)
     }
 }
 
+//TODO update to use element name instead of element group now that getElement properly caches stuff (haha) it's more efficient and better readable
 function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 {
     let elementName = undefined;

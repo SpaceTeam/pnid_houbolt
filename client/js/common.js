@@ -57,7 +57,7 @@ var __elementGroupBuffer = {};
  * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Commonly used identifiers are "value", "valueRaw", "actionReferenceValue" and "actionReferenceValueRaw". "Special" identifiers are "parent" (default behavior if not specified) which returns the entire element including all sub elements which could be accessed by the sub identifiers and "wire" which returns all wires that fit the query instead of components.
  * @return {jQuery} The matched element (or elements) as jQuery elements.
  */
-function storeElementInBuffer(buffer, identifier, subidentifier = "parent")
+function storeElementInBuffer(identifier, subidentifier = "parent")
 {
     let isActionReference = false;
     let element = undefined;
@@ -78,16 +78,19 @@ function storeElementInBuffer(buffer, identifier, subidentifier = "parent")
             }
             isActionReference = true;
         }
-        let newElement = {};
-        newElement[subidentifier] = element;
-        buffer[identifier] = newElement;
-        buffer[identifier]["isActionReference"] = isActionReference;
+        try { //try to directly set it. will fail if [subidentifier] key does not exist yet, but it might if parent/wire has already been called once
+            __elementGroupBuffer[identifier][subidentifier] = element;
+        } catch (error) {
+            let newElement = {};
+            newElement[subidentifier] = element;
+            __elementGroupBuffer[identifier] = newElement;
+        }
+        __elementGroupBuffer[identifier]["isActionReference"] = isActionReference; //could move that in the "catch" part as well as it should only be needed once when the subidentifier is added, but it doesn't hurt if it's out here and if code structure changes maybe the behavior changes as well to make this needed here. just more robust at the cost of a single assignment more.
     }
     else
     {
-        //console.log("sub id", subidentifier);
         element = getElement(identifier, "parent").find(`text.${subidentifier}`);
-        buffer[identifier][subidentifier] = element;
+        __elementGroupBuffer[identifier][subidentifier] = element;
     }
     return element;
 }
@@ -112,7 +115,7 @@ function getIsActionReference(identifier)
 
 /**
  * @summary Finds an (svg g) element in DOM.
- * @description Reads from the appropriate buffer based on isActionReference. If query is not stored in a buffer yet, utilizes {@link storeElementInBuffer} for finding and storing them. Using buffers drastically reduces CPU time traversing the DOM.
+ * @description Reads from the appropriate buffer based on isActionReference. Will only return "comp" elements unless subidentifier is set to "wire" in which case it searches for wire groups. If query is not stored in a buffer yet, utilizes {@link storeElementInBuffer} for finding and storing them. Using buffers drastically reduces CPU time traversing the DOM.
  * @param {string} identifier The main identifier of the svg group.
  * @param {string} [subidentifier=parent] Optionally possible to define a sub identifier that can select elements inside of an svg group. Value "parent" is for selecting the main svg group. Commonly used identifiers are "value" and "valueRaw". If isActionReference is set to true, "value" and "valueRaw" are "actionReferenceValue" and "actionReferenceValueRaw". "Special" identifiers are "parent" which returns the entire element including all sub elements which could be accessed by the sub identifiers and "wire" which returns all wires that fit the query instead of components.
  * @todo Evalute whether split buffers for action references and normal elements is actually needed. This also ties in with the documentation of this function - technically isActionReference doesn't do anything about value vs actionReferenceValue, so the docs are kind of misleading here.
@@ -123,7 +126,6 @@ function getElement(identifier, subidentifier = "parent")
     let element = undefined;
     let findInDOM = false;
     try {
-        //console.log("element buffer", __elementGroupBuffer[identifier]);
         element = __elementGroupBuffer[identifier][subidentifier];
         if (element == undefined)
         {
@@ -134,9 +136,13 @@ function getElement(identifier, subidentifier = "parent")
     }
     if (findInDOM)
     {
-        element = storeElementInBuffer(__elementGroupBuffer, identifier, subidentifier);
+        //console.log("cache miss, searching for '" + identifier + "' '" + subidentifier + "'");
+        element = storeElementInBuffer(identifier, subidentifier);
     }
-    //console.log("return el", element);
+    else
+    {
+        //console.log("cache hit for", identifier, subidentifier);
+    }
     return element;
 }
 
