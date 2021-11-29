@@ -904,7 +904,7 @@ function setStateValue(state, recursionDepth = 0)
     let isActionReference = false;
     let isWire = undefined;
     let elementGroup = []; //I'd rather have "undefined" here, but the check later with .length would fail if I did that.
-    if (state["wires_only"] == true) //remove the "__child_wire" prefix if it's a wires only update. TODO I dislike that "wires_only" is synonymous with "child wires", but for now it's only used that way so I'll live with it.
+    if (state["wires_only"] == true) //remove the "__child_wire" postfix if it's a wires only update. TODO I dislike that "wires_only" is synonymous with "child wires", but for now it's only used that way so I'll live with it.
     {
         //console.log("state name", state["name"]);
         state["name"] = state["name"].replace("__child_wire", ""); //technically doesn't need to be inside this if as I'm already assuming in other places in the code that in normal use there's never "__child_wire" contained in the state name.
