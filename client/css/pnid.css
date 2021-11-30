@@ -97,7 +97,7 @@ html body {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color) {
+[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color), [data-pnid-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-valve_servo_3way=position_b] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
@@ -107,7 +107,7 @@ html body {
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=closed] text:not(.static-color), [data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color) {
+[data-pnid-valve_pneumatic=closed] text:not(.static-color), [data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color), [data-pnid-valve_servo_3way=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
@@ -120,6 +120,19 @@ html body {
 
 [data-pnid-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-valve_servo=throttle] text:not(.static-color),[data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
     stroke: var(--closed);
+    fill: var(--closed);
+}
+
+[data-pnid-valve_servo_3way=closed] path {
+    stroke: var(--default-stroke);
+    fill: var(--closed);
+}
+[data-pnid-valve_servo_3way=position_a] path:nth-of-type(2), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_a] path:nth-of-type(3), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(3) {
+    stroke: var(--open);
+    fill: none;
+}
+[data-pnid-valve_servo_3way=position_a] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(2) {
+    stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
@@ -313,4 +326,35 @@ html body {
 
 [data-pnid-led=off] {
     fill: none;
+}
+
+/*TODO the pump stuff is still WIP, right now they don't properly support fluid content colors and the styling isn't quite done yet*/
+[data-pnid-pump=on] path:nth-of-type(1), [data-pnid-pump=on] path:nth-of-type(2) {
+    stroke: var(--on);
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+@-moz-keyframes spin {
+    100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+[data-pnid-pump=on] circle:nth-of-type(1) {
+    fill: var(--high);
+}
+[data-pnid-pump=on] circle:nth-of-type(2) {
+    fill: var(--background-primary); /*this sucks but I don't see any easier way to do this in a general way. I can't use fill-rule as those only work on paths that can intersect themselves (circles can't do that) and converting these circles into a compound path isn't an easy and straightforward thing to do (generalized that is). Still, I hate it.*/
+}
+
+[data-pnid-pump=off] {
+
 }

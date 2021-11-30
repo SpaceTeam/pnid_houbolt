@@ -57,7 +57,25 @@ let defaultConfig = {
         ]
     },
     "PnID-Valve_Servo": {
-        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "slider",
+                "variable": "value",
+                "min": 0,
+                "max": 65535,
+                "step": 1
+            }
+        ]
+    },
+    "PnID-Valve_Servo_3Way": {
+        "eval": "if (inVars['value'] > 60) { outVars['color']='position_a'; outVars['value']='Pos A ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 40) { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' } else { outVars['color']='position_b'; outVars['value']='Pos B ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
             {
                 "type": "display",
@@ -171,6 +189,23 @@ let defaultConfig = {
                 "autoID": false,
                 "width": 450,
                 "height": 200
+            }
+        ]
+    },
+    "PnID-Pump": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Off",
+                "high": "On"
             }
         ]
     },
@@ -498,6 +533,53 @@ function initTankContent(tanks)
     oxContentRect.attr("transform", "scale(1,0)");
 }
 
+/**
+ * @summary Initializes pumps for rotation animation.
+ * @description Essentially just sets the appropriate transform origin for the elements that should rotate.
+ */
+function initPumps()
+{
+    let pumps = $(document).find("g.PnID-Pump");
+    let pumpGroups = pumps.find("g");
+    pumpGroups.each(function (index) {
+        console.log("init pump group", pumpGroups.eq(index));
+        //init the "X" part for rotation
+        let paths = pumpGroups.eq(index).find("path[d*=' L ']").slice(0,2); //we only want the first two elements as only those are the ones we want to rotate. technically doing more isn't "wrong", just unneccesary work.
+        paths.each(function (pathIndex) {
+            let pathCoords = extractXYFromPath(paths.eq(pathIndex));
+            let pathCenter = [(+pathCoords[0] + +pathCoords[2])/2, (+pathCoords[1] + +pathCoords[3])/2];
+            paths.eq(pathIndex).attr("transform-origin", `${pathCenter[0]} ${pathCenter[1]}`);
+        });
+
+        //get the inner circle to be drawn after the outer circle for proper draw order. I hate that this is in here, but I can't think of a better way to put it into the parser without having to give the parser tons of logic. could be fixed by maybe editing the pnid lib to get the parser to generate in the right order? that sucks though.
+        let minR = 10000; //some high number
+        let maxR = 0; //some low number
+        let smallestCircle = undefined;
+        let biggestCircle = undefined;
+        let circles = pumpGroups.eq(index).find("circle");
+        circles.each(function(circleIndex) {
+            let curR = parseFloat(circles.eq(circleIndex).attr("r"));
+            if (curR < minR)
+            {
+                minR = curR;
+                smallestCircle = circles.eq(circleIndex);
+                console.log("found new smallest circle:", minR, smallestCircle);
+            }
+            if (curR > maxR)
+            {
+                maxR = curR;
+                biggestCircle = circles.eq(circleIndex);
+                console.log("found new biggest circle:", maxR, biggestCircle);
+            }
+        });
+        smallestCircle.insertAfter(biggestCircle);
+        smallestCircle = undefined;
+        biggestCircle = undefined;
+    });
+
+
+}
+
 //update the percent of the content that is filled
 /**
  * @summary Updates tank fill level to a specified percentage.
@@ -548,14 +630,14 @@ function extractArcPathsFromTank(tank)
  * @summary Extracts coordinates from certain path elements in a tank.
  * @deprecated Not needed in the current tank implementation, may be needed for a possible future refactor.
  * @param {jQuery} path The jQuery DOM element of the path that should be looked at.
- * @return {Array} The x and y coordinates of the path
+ * @return {Array} The start and end x and y coordinates of the path. Ordered by startX, startY, endX, endY.
  * @todo Evaluate if this may be needed for tank refactor, remove if not. If it is needed, update docs, I think I misdescribed the return value but idc because I think I'll delete this function soon anyways.
  */
 //extract XY position from start point of path
 function extractXYFromPath(path)
 {
     pathAttr = $(path).attr("d").split(" ");
-    return [pathAttr[1], pathAttr[2]];
+    return [pathAttr[1], pathAttr[2], pathAttr[4], pathAttr[5]]; //returns startX, startY, endX, endY
 }
 
 
