@@ -628,10 +628,8 @@ function extractArcPathsFromTank(tank)
 
 /**
  * @summary Extracts coordinates from certain path elements in a tank.
- * @deprecated Not needed in the current tank implementation, may be needed for a possible future refactor.
  * @param {jQuery} path The jQuery DOM element of the path that should be looked at.
  * @return {Array} The start and end x and y coordinates of the path. Ordered by startX, startY, endX, endY.
- * @todo Evaluate if this may be needed for tank refactor, remove if not. If it is needed, update docs, I think I misdescribed the return value but idc because I think I'll delete this function soon anyways.
  */
 //extract XY position from start point of path
 function extractXYFromPath(path)

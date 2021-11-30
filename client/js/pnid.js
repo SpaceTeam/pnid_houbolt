@@ -7,6 +7,7 @@ function initPNID(standalone, pathOffset, themes)
         authenticateGrafana();
     }
     initTanks();
+    initPumps();
     initPNIDHitboxes();
     createWireLinks();
 
