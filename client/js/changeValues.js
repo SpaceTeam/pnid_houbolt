@@ -542,7 +542,7 @@ function initPumps()
     let pumps = $(document).find("g.PnID-Pump");
     let pumpGroups = pumps.find("g");
     pumpGroups.each(function (index) {
-        console.log("init pump group", pumpGroups.eq(index));
+        //console.log("init pump group", pumpGroups.eq(index));
         //init the "X" part for rotation
         let paths = pumpGroups.eq(index).find("path[d*=' L ']").slice(0,2); //we only want the first two elements as only those are the ones we want to rotate. technically doing more isn't "wrong", just unneccesary work.
         paths.each(function (pathIndex) {
@@ -563,21 +563,19 @@ function initPumps()
             {
                 minR = curR;
                 smallestCircle = circles.eq(circleIndex);
-                console.log("found new smallest circle:", minR, smallestCircle);
+                //console.log("found new smallest circle:", minR, smallestCircle);
             }
             if (curR > maxR)
             {
                 maxR = curR;
                 biggestCircle = circles.eq(circleIndex);
-                console.log("found new biggest circle:", maxR, biggestCircle);
+                //console.log("found new biggest circle:", maxR, biggestCircle);
             }
         });
         smallestCircle.insertAfter(biggestCircle);
         smallestCircle = undefined;
         biggestCircle = undefined;
     });
-
-
 }
 
 //update the percent of the content that is filled
