@@ -50,6 +50,15 @@ function checkStringIsNumber(string)
 var __elementGroupBuffer = {};
 
 /**
+ * @summary Clears the element buffer.
+ * @description On switching PNID it might be needed to clear the buffer to not keep possible "ghost elements" (buffered from the previous PNID) that may cause buffer collisions.
+ */
+function clearElementBuffer()
+{
+    __elementGroupBuffer = {};
+}
+
+/**
  * @summary Loads an (svg g) element from DOM into a buffer.
  * @description Utilizes jQuery.find() for finding elements, stores them in a buffer for later use to not need as much CPU time traversing the DOM.
  * @param {ElementBuffer} A dictionary of buffered elements.
