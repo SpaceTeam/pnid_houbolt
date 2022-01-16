@@ -505,32 +505,32 @@ $.get('/config/thresholds', function(data) {
  */
 function initTanks()
 {
-    let tanks = $(document).find("g.PnID-Tank");
-    let fuelPaths = tanks.filter(".fuel_tank").find("path[d*=' A ']").last();
-    let oxPaths = tanks.filter(".ox_tank").find("path[d*=' A ']").last();
-    fuelPaths.attr(`data-pnid-tank_content`, `fuel`);
-    oxPaths.attr(`data-pnid-tank_content`, `ox`);
+    let tanks = $(document).find("g.PnID-Tank, g.PnID-Tank_Slim");
+    console.log("tanks", tanks);
     initTankContent(tanks);
 }
 
 /**
  * @summary Initializes tank fill level rectangles for use.
- * @description Filters out the fuel and ox tank from the provided tanks and finds the rect element that is used to scale with fill level. The transform origin of the rectangle is set to the bottom edge of the tank so in future one can simply use scale along Y.
+ * @description Iterates through all provided tanks and finds the rect element that is used to scale with fill level. The transform origin of the rectangle is set to the bottom edge of the tank so in future one can simply use scale along Y.
  * @param {jQuery} tanks jQuery DOM elements of the ox and fuel tank.
  */
 function initTankContent(tanks)
 {
-    let fuelContentRect = tanks.filter(".fuel_tank").find("g").find("rect.rect");
-    let fuelTransformOriginY = +fuelContentRect.attr("y") + +fuelContentRect.attr("height");
-    fuelContentRect.attr("data-pnid-tank_content", "fuel");
-    fuelContentRect.attr("transform-origin", `center ${fuelTransformOriginY}`);
-    fuelContentRect.attr("transform", "scale(1,0)");
+    for (let tank of tanks) {
+        let content = $(tank).attr("data-content");
 
-    let oxContentRect = tanks.filter(".ox_tank").find("g").find("rect.rect");
-    let oxTransformOriginY = +oxContentRect.attr("y") + +oxContentRect.attr("height");
-    oxContentRect.attr("data-pnid-tank_content", "ox");
-    oxContentRect.attr("transform-origin", `center ${oxTransformOriginY}`);
-    oxContentRect.attr("transform", "scale(1,0)");
+        //init the bottom curve on the tank
+        let paths = $(tank).find("path[d*=' A ']").last();
+        paths.attr(`data-pnid-tank_content`, content);
+
+        //init the content rectangle
+        let contentRect = $(tank).find("g").find("rect.rect");
+        let transformOriginY = +contentRect.attr("y") + +contentRect.attr("height");
+        contentRect.attr("data-pnid-tank_content", content);
+        contentRect.attr("transform-origin", `center ${transformOriginY}`);
+        contentRect.attr("transform", "scale(1,0)");
+    }
 }
 
 /**
@@ -588,6 +588,7 @@ function initPumps()
 function updateTankContent(tank, fillPercent)
 {
     let contentRect = tank.find("g").find("rect.rect");
+    console.log("content rect", contentRect);
     let scale = fillPercent / 100.0;
     contentRect.attr("transform", `scale(1,${scale})`);
 }
@@ -1067,11 +1068,12 @@ function setStateValue(state, recursionDepth = 0)
                 }
 
                 //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-                let evalCode = getConfigData(defaultConfig, searchTerm, "eval");
+                let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", ""), "eval");
                 if (evalCode != undefined)
                 {
                     eval(evalCode);
-                    if (searchTerm === "PnID-Tank") //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
+                    //console.log("search term", searchTerm);
+                    if (searchTerm.replace("_Slim", "") === "PnID-Tank") //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
                     {
                         updateTankContent(elementGroup, state["value"]);
                     }
@@ -1086,7 +1088,7 @@ function setStateValue(state, recursionDepth = 0)
                 stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
-            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":"), "eval");
+            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", ""), "eval");
             if (customEvalCode != undefined)
             {
                 eval(customEvalCode);

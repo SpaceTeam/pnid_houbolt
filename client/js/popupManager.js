@@ -74,8 +74,9 @@ function initPNIDHitboxes()
     let pnidComps = $("g.comp");
     pnidComps.each(function (index) {
         //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
-        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")), "popup") != undefined ||
-            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")), "popup") != undefined
+        //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
+        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined ||
+            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined
         ) {
             let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
             let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
