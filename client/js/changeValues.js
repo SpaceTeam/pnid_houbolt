@@ -588,7 +588,7 @@ function initPumps()
 function updateTankContent(tank, fillPercent)
 {
     let contentRect = tank.find("g").find("rect.rect");
-    console.log("content rect", contentRect);
+    //console.log("content rect", contentRect);
     let scale = fillPercent / 100.0;
     contentRect.attr("transform", `scale(1,${scale})`);
 }
@@ -796,6 +796,8 @@ function updatePNID(stateList, recursionDepth = 0)
         return;
     }
 	//printLog("info", "Updating PnID with: " + stateList);
+
+    logStates(stateList);
 	
 	for (stateIndex in stateList)
 	{
