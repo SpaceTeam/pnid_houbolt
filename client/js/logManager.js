@@ -120,7 +120,7 @@ function printLog(level, message)
     // THIS IS A TEMPORARY FIX FOR PERFORMANCE PROBLEMS
     // LOGGING TOO MANY MESSAGES RESULTS IN GRADUAL SLOWDOWN, BUT SIMPLY
     // NOT RENDERING THE LOGGED MESSAGE (ONLY COUNTING IT) IS NOT THE WAY TO GO
-    if (level != "info" && level != "warning") {
+    if (level != "info" && level != "warning" && !(level == "error" && nrError > 1000) && !(level == "hardwareerror" && nrHardwareError > 1000)) {
         let logEntryClone = logContainer.find("#logEntryTemp").clone();
         logEntryClone.html(severityIcon + " " + message);
         logEntryClone.removeAttr('id');
