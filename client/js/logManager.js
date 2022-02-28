@@ -24,7 +24,6 @@ function createLogBox()
     logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     logOverview = logContainer.find(".logMenu").find(".logOverview");
     logTextArea = logContainer.find(".logTextArea");
-    console.log("stored log container vars", logContainer, logOverview);
 }
 
 function toggleLogBox()
