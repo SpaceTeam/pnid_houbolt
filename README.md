@@ -71,8 +71,6 @@ Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_nam
 
 ## Config
 
-*ATTENTION: THIS IS CURRENTLY HARDCODED IN [changeValues.js](client/js/changeValues.js) FOR EASIER DEVELOPMENT!*
-
 ### Overview
 
 Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last one will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
@@ -153,7 +151,7 @@ Functions (call by function name):
   * Parameter `updateValue` - A value (state update) that should be passed to all previously linked states just after unlinking. (Optional, if not specified no state update on unlinking will happen).
 
 Additionally, for a more straightforward and adaptable use there is a `thresholds` array containing key values of interest, like pressure thresholds for the tanks, accessible via names, so the behaviour code is more easily readable (instead of a random number it's `thresholds['oxPressure']['low']`) and more centralized (changes to the thresholds only need to be changed in one place, not in every single behaviour block that uses these values).
-For contents of the thresholds array, check the file [thresholds.json](client/config/thresholds.json) **(ATTENTION: RIGHT NOW THIS FILE IS IGNORED AND INSTEAD USED HARDCODED IN [changeValues.js](client/js/changeValues.js) FOR EASE OF DEVELOPMENT)**
+For contents of the thresholds array, check the file [thresholds.json](client/config/thresholds.json)
 
 ### Popup definitions
 
@@ -162,11 +160,8 @@ The individual building blocks are positioned one after another vertically with 
 
 The building blocks are defined as a list of JSON key value pairs, where the `type` value defines which other keys to expect (Important to note: This "type" is not the same "type" as described in the [nomenclature](#nomenclature)!)
 Possible types:
-* `display` - Used to simply display a value without any option for interaction.
+* `display` - Used to simply display data without any option for interaction.
 * `input` - Used to create an input for a variable.
-* `checkbox` - Display a checkbox.
-* `slider` - Display a slider.
-* `textEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 All types use `variable` as a "sub-key" which defines which variable to display/affect. The "default" value should be `value` which is translated to the *value reference* of the element that the popup is opened at (or the action reference if one is set). Should allow for customizing to show several different values in one popup such as computed values. *WIP: Different variables don't actually work yet, has to be implemented properly first (maybe after the popup refactor. Or consider if it's even needed because right now there's only fringe usecases at best).*
 
@@ -176,7 +171,7 @@ Sub-keys for type `display`:
 * `style=`
   * `=text` - Simply displays the value as a text output (basically a copy of the value output in the PnID itself)
   * `=external` - Inserts an iframe into the popup. Needs additional keys to be set. *Worth noting: the external display type for popups is the only popup element type that can also contain information in the custom config, see further below for more information on that.*
-    * `source=` - Either set a fully qualified URL or a path. If it's a valid URL (with scheme identifier, FQDN, etc) it will *replace* the value of the global `externalSourceDefault` key in the [default config](#default-config), if it's a path it will be *appended* to it. *Can be either omitted or set to "undefined" if no specification is needed or if it will be specified in the [custom config](#custom-config)*.
+    * `source=` - Either set a fully qualified URL or a path. If it's a valid URL (with scheme identifier, FQDN, etc) it will *replace* the value of the global `externalSourceDefault` key in the [default config](#default-config), if it's a path it will be *appended* to it. *Can be either omitted or set to "null" if no specification is needed or if it will be specified in the [custom config](#custom-config)*.
     * `autoID=` - If set to `true`, appends the popupID (which is either the value reference or action reference of the parent element) to the source path. Allows individually 'unique' URLs without needing to manually set the URL for each element in the config. Can be omitted which will cause it to default to `false`.
     * `width=` - Width of the iframe. Can be omitted and defaults to 300px.
     * `height=` - Height of the iframe. Can be omitted and defaults to 200px.
@@ -190,7 +185,7 @@ Sub-keys for type `input`:
     * `min=` - Which value the minimal value of the slider is. Eg for a servo valve the "low" value could be `30000`. This is the raw (number) value sent to the PnID, not the formatted/interpreted value visible in the UI.
     * `max=` - Similar to min, but for the max value
     * `step=` - The step size of the slider.
-
+  * `=textEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 As mentioned before in the `style=external` description, this is a popup element type that can be further specified in the custom config. It is specified similar to the popup config in the default config file, but only allows the "source" and "autoID" keys to be set:
 
