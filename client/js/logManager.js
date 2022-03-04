@@ -99,25 +99,31 @@ function printLog(level, message)
     {
         case "info":
             severityIcon = `<i class="bi bi-info-circle iconInfo"></i>`;
-            if (nrInfo < 10000)
+            if (nrInfo < 9999)
             {
             	nrInfo += 1;
             }
             break;
         case "warning":
             severityIcon = `<i class="bi bi-exclamation-triangle iconWarning"></i>`;
-            if (nrWarning < 10000)
+            if (nrWarning < 9999)
             {
             	nrWarning += 1;
             }
             break;
         case "error":
             severityIcon = `<i class="bi bi-x-square iconError"></i>`;
-            nrError += 1;
+            if (nrError < 9999)
+            {
+            	nrError += 1;
+            }
             break;
         case "hardwareerror":
             severityIcon = `<i class="bi bi-bug iconError"></i>`;
-            nrHardwareError += 1;
+            if (nrHardwareError < 9999)
+            {
+            	nrHardwareError += 1;
+            }
             break;
         default:
             printLog("info", `Encountered unknown log severity level: "${level}"\nDefaulting to "warning"`);
