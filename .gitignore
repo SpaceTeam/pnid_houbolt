@@ -1,3 +1,6 @@
+out/
+docs/html
+
 # Logs
 logs
 *.log

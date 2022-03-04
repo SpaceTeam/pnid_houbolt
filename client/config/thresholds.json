@@ -1,4 +1,11 @@
 {
+    "solenoid": {
+        "high": 3000
+    },
+    "servo_valve": {
+        "low": 10000,
+        "high": 55000
+    },
     "oxPressure": {
         "low": 32.0,
         "high": 42.0,

@@ -21,16 +21,21 @@ html body {
     z-index: 1;
 }
 
-text.text-C {
+.text-C {
     text-anchor: middle;
 }
 
-text.text-L {
+.text-L {
     text-anchor: start;
 }
 
-text.text-R {
+.text-R {
     text-anchor: end;
+}
+
+.hitbox {
+    stroke-width:  4;
+    stroke: var(--debug);
 }
 
 .comp {
@@ -72,19 +77,27 @@ text.text-R {
     stroke-width: 0;
 }
 
-[data-pnid-wire=high] {
+.wire[data-pnid-wire=high] {
 	stroke: var(--high);
 }
 
-[data-pnid-wire=low] {
+.wire[data-pnid-wire=low] {
 	stroke: var(--low);
+}
+
+.wire[data-pnid-wire=fuel] {
+	stroke: var(--fuel);
+}
+
+.wire[data-pnid-wire=ox] {
+	stroke: var(--ox);
 }
 
 [data-pnid-valve_pneumatic=open], [data-pnid-valve_servo=open],[data-pnid-valve_needle_servo=open] {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color) {
+[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color), [data-pnid-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-valve_servo_3way=position_b] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
@@ -94,7 +107,7 @@ text.text-R {
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=closed] text:not(.static-color), [data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color) {
+[data-pnid-valve_pneumatic=closed] text:not(.static-color), [data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color), [data-pnid-valve_servo_3way=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
@@ -108,6 +121,35 @@ text.text-R {
 [data-pnid-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-valve_servo=throttle] text:not(.static-color),[data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
+}
+
+[data-pnid-valve_servo_3way=closed] path {
+    stroke: var(--default-stroke);
+    fill: var(--closed);
+}
+[data-pnid-valve_servo_3way=position_a] path:nth-of-type(2), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_a] path:nth-of-type(3), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(3) {
+    stroke: var(--open);
+    fill: none;
+}
+[data-pnid-valve_servo_3way=position_a] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(2) {
+    stroke: var(--default-stroke);
+    fill: var(--closed);
+}
+
+[data-pnid-sensor_pressure=fuel] {
+    stroke: var(--fuel);
+}
+[data-pnid-sensor_pressure=fuel] text:not(.static-color) {
+    stroke: var(--fuel);
+    fill: var(--fuel);
+}
+
+[data-pnid-sensor_pressure=ox] {
+    stroke: var(--ox);
+}
+[data-pnid-sensor_pressure=ox] text:not(.static-color) {
+    stroke: var(--ox);
+    fill: var(--ox);
 }
 
 [data-pnid-sensor_pressure=high] {
@@ -126,9 +168,12 @@ text.text-R {
     fill: var(--low);
 }
 
+[data-pnid-sensor_pressure=notconnected] {
+    stroke: var(--default-stroke);
+}
 [data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
-    fill: none;
+    fill: var(--default-stroke);
 }
 
 [data-pnid-sensor_pressure=neutral] {
@@ -163,9 +208,13 @@ text.text-R {
     fill: var(--neutral);
 }
 
-[data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
+
+[data-pnid-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
-    fill: none;
+}
+[data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
 }
 
 [data-pnid-thermalbarrier=low] {
@@ -181,6 +230,20 @@ text.text-R {
 [data-pnid-thermalbarrier=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
+}
+[data-pnid-thermalbarrier=ox] {
+    stroke: var(--ox);
+}
+[data-pnid-thermalbarrier=ox] text:not(.static-color) {
+    stroke: var(--ox);
+    fill: var(--ox);
+}
+[data-pnid-thermalbarrier=fuel] {
+    stroke: var(--fuel);
+}
+[data-pnid-thermalbarrier=fuel] text:not(.static-color) {
+    stroke: var(--fuel);
+    fill: var(--fuel);
 }
 
 [data-pnid-sensor_massflow=high] {
@@ -263,4 +326,35 @@ text.text-R {
 
 [data-pnid-led=off] {
     fill: none;
+}
+
+/*TODO the pump stuff is still WIP, right now they don't properly support fluid content colors and the styling isn't quite done yet*/
+[data-pnid-pump=on] path:nth-of-type(1), [data-pnid-pump=on] path:nth-of-type(2) {
+    stroke: var(--on);
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+@-moz-keyframes spin {
+    100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+[data-pnid-pump=on] circle:nth-of-type(1) {
+    fill: var(--high);
+}
+[data-pnid-pump=on] circle:nth-of-type(2) {
+    fill: var(--background-primary); /*this sucks but I don't see any easier way to do this in a general way. I can't use fill-rule as those only work on paths that can intersect themselves (circles can't do that) and converting these circles into a compound path isn't an easy and straightforward thing to do (generalized that is). Still, I hate it.*/
+}
+
+[data-pnid-pump=off] {
+
 }

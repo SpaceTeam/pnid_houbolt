@@ -6,11 +6,24 @@ var nrHardwareError = 0;
 var autoScroll = true;
 var detectScrolling = true;
 
+var logContainer = undefined;
+var logOverview = undefined;
+var logTextArea = undefined;
+
 function createLogBox()
 {
-    let logBoxClone = $("#logBoxTemp").clone();
-	logBoxClone.removeAttr('id');
-	$(document.body).append(logBoxClone);
+    //only create new log box if it hasn't been done yet.
+    if (logContainer == undefined)
+    {
+        let logBoxClone = $("#logBoxTemp").clone();
+        logBoxClone.removeAttr('id');
+        $(document.body).append(logBoxClone);
+    }
+    
+    //store log dom elements in variable as cache to not have to use .find so much
+    logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+    logOverview = logContainer.find(".logMenu").find(".logOverview");
+    logTextArea = logContainer.find(".logTextArea");
 }
 
 function toggleLogBox()
@@ -36,8 +49,9 @@ function toggleLogBox()
 
 function updateOverviewCounters()
 {
-    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
-    let logOverview = logContainer.find(".logMenu").find(".logOverview");
+    //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+    //let logOverview = logContainer.find(".logMenu").find(".logOverview");
+    //consider also caching these. probably not super needed as there aren't many nodes in this dom branch, but still
     logOverview.find("#logInfo").find(".logCategoryNumber").text(nrInfo);
     logOverview.find("#logWarning").find(".logCategoryNumber").text(nrWarning);
     logOverview.find("#logError").find(".logCategoryNumber").text(nrError);
@@ -48,8 +62,8 @@ function updateScroll()
 {
     if (autoScroll === true)
     {
-        let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
-        let logTextArea = logContainer.find(".logTextArea");
+        //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+        //let logTextArea = logContainer.find(".logTextArea");
         logTextArea.scrollTop(logTextArea.prop('scrollHeight'));
     }
 }
@@ -57,26 +71,25 @@ function updateScroll()
 function disableAutoScroll()
 {
     autoScroll = false;
-    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
-    let logTextArea = logContainer.find(".logTextArea");
+    //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+    //let logTextArea = logContainer.find(".logTextArea");
     logTextArea.find("button.scrollButton").fadeIn(100);
 }
 
 function activateAutoScroll()
 {
     autoScroll = true;
-    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
-    let logTextArea = logContainer.find(".logTextArea");
+    //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+    //let logTextArea = logContainer.find(".logTextArea");
     logTextArea.animate({scrollTop: $(logTextArea).prop('scrollHeight')}, 200);
     logTextArea.find("button.scrollButton").fadeOut(200);
 }
 
 function printLog(level, message)
 {
-    let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
-    logContainer.find(".logMenu").find("button.btn").removeAttr('disabled');
-    let logTextArea = logContainer.find(".logTextArea");
-    let logEntryClone = logContainer.find("#logEntryTemp").clone();
+    //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
+    logContainer.find(".logMenu").find("button.btn").removeAttr('disabled'); //this doesn't have to be run every time something is logged.
+    //let logTextArea = logContainer.find(".logTextArea");
     let severityIcon = "";
     switch (level)
     {
@@ -102,11 +115,18 @@ function printLog(level, message)
             nrWarning += 1;
             break;
     }
-    logEntryClone.html(severityIcon + " " + message);
-    logEntryClone.removeAttr('id');
-    logEntryClone.removeAttr('style');
-    logTextArea.append(logEntryClone);
+
+    // THIS IS A TEMPORARY FIX FOR PERFORMANCE PROBLEMS
+    // LOGGING TOO MANY MESSAGES RESULTS IN GRADUAL SLOWDOWN, BUT SIMPLY
+    // NOT RENDERING THE LOGGED MESSAGE (ONLY COUNTING IT) IS NOT THE WAY TO GO
+    if (level != "info" && level != "warning" && !(level == "error" && nrError > 1000) && !(level == "hardwareerror" && nrHardwareError > 1000)) {
+        let logEntryClone = logContainer.find("#logEntryTemp").clone();
+        logEntryClone.html(severityIcon + " " + message);
+        logEntryClone.removeAttr('id');
+        logEntryClone.removeAttr('style');
+        logTextArea.append(logEntryClone);
+        updateScroll();
+    }
     updateOverviewCounters();
-    updateScroll();
     console.log(level + ":", message);
 }

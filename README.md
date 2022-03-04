@@ -29,7 +29,19 @@ In a web browser of your choice, open `localhost:8080` (or whatever other port y
 
 For easy debugging of the code, test data can be generated and displayed, this can be done by running either `runTests()` or `runRandom()` in your browser's console. The former is a set of manually entered test data that is displayed sequentially, the latter generates random data *for every element in the PnID with a value reference*. This means that `runRandom()` may generate data for elements that would in normal use not get any values (like the nitrogen bottles).
 
-# Documentation
+## Developer Documentation
+
+Code documentation is done with JSDoc 3.6.7, the docs can be compiled by either running
+
+`jsdoc -c docs/jsdoc_conf.json`
+
+or simply running
+
+`bash create_docs.sh`
+
+They should be saved to `docs/html/`, the `html/` folder will be created automatically by JSDoc.
+
+# User Documentation
 
 ## Nomenclature
 
@@ -54,16 +66,14 @@ Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_nam
 
 ### Notes
 
-* The parser generates a list of svg `<g>` elements with a bunch of classes to identify and style it. These classes need to be in this exact order (Reference `S3`, Type `PnID-Valve_Solenoid`, (identifying) name `fuel_pressurize_solenoid`, `comp` or `wire`), otherwise popups won't work as expected
-* When flipping elements in KiCad around the vertical axis some weird stuff happens with the text alignment - aligning text to the left and then flipping it *also flips this alignment making it justified to the right in the actual PnID*. This means, that in KiCad some references and value references may look "the wrong way around" but are actually correct once exported with the parser. Keep this in mind while designing the PnID.
+* The parser generates a list of svg `<g>` elements with a bunch of classes to identify and style it. These classes need to be in this exact order (Reference `S3`, Type `PnID-Valve_Solenoid`, value reference `fuel_pressurize_solenoid`, `comp` or `wire`), otherwise various parts of the pnid won't work as expected (especially popups).
+* When flipping elements in KiCad around the vertical axis some weird stuff happens with the text alignment - aligning text to the left and then flipping it *also flips this alignment* making it justified to the right in the actual PnID. This means that in KiCad some references and value references may look "the wrong way around", but are actually correct once exported with the parser. Keep this in mind while designing the PnID.
 
 ## Config
 
-*ATTENTION: THIS IS CURRENTLY HARDCODED IN [changeValues.js](client/js/changeValues.js) FOR EASIER DEVELOPMENT!*
-
 ### Overview
 
-Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last element will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
+Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last one will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
 
 For example if there is a behaviour in the default config setting the colour of an element based on the received value and another behaviour in the custom config changing the formatting of the value output, both outputs will be visible. If however the custom behaviour changes the formatting of the value output AND sets another colour, it will overwrite the colour set by the default config.
 
@@ -83,7 +93,7 @@ Example:
     },
     {
       "type": "input",
-      "style": "checkbox"
+      "style": "checkbox",
       "variable": "value",
       "low": "Closed",
       "high": "Open"
@@ -112,26 +122,36 @@ Example:
     "ox_bottom_tank_temp"
   ],
   "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
-},
+}
 ```
 
 ### Eval behaviour blocks
 
 The eval blocks contain behaviours for elements. Which ones they apply to depends on where they are used (in [default config](#default-config) or [custom config](#custom-config) and which identifiers it is used alongside). Eval blocks are as the name suggests blocks of JS code that will be run using the `eval()` function. Yes, this can be a huge security risk, no it's not an issue as this is only run locally and the content of the eval blocks cannot be changed by a user (nevermind an outside user) during runtime.
 
-For ease of use there is a list of variables intended as inputs and outputs to the eval blocks which cover the most important use cases for them. Technically if a necessary input or output does not exist (or a certain function is not provided) it can be added in the eval as it is fully featured JS, but it is preferable to extend the features of the inputs and outputs instead to use simpler behaviour code in the configs.
+For ease of use there is a list of variables intended as inputs and outputs to the eval blocks, as well as some functions which cover the most important use cases for them. Technically if a necessary input or output does not exist (or a certain function is not provided) it can be added in the eval as it is fully featured JS, but it is preferable to extend the features of the inputs and outputs instead to use simpler behaviour code in the configs.
 
-Input variables (addressible via `inVars[<variable name>]`):
+Input variables (addressible via `inVars["<variable name>"]`):
+* `this` - contains the name (string) of the state that was invoked.
 * `value` - contains the (new) value of the element that is being updated
 * `unit` - contains the unit (usually appended to the value) of the element that is being updated
 
 Output variables (addressible via `outVars[<variable name>]`), only have an effect if set by the eval block:
-* `color` - tries to set the color of the *parent* element to the value of this variable. Which colors are valid depends on the type of element (see [pnid.css](client/css/pnid.css) `data-pnid-` declarations for valid values)
-* `value` - overrides the value field with custom content
-* `crossUpdate` - If set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message **(EXPERIMENTAL!)**
+* `color` - tries to set the color of the *parent* element to the value of this variable. Which colors are valid depends on the type of element (see [pnid.css](client/css/pnid.css) `data-pnid-` declarations for valid values). Value "content" is allowed as a "variable" which evaluates to the color based on the content of the element. This needs the `data-content` attribute to be set in KiCad. For example a pressure sensor could have the content "fuel", in which case the `data-content` value in color evaluates to "fuel". Additionally, elements that don't have their own `data-content` attribute set can still use this if they are linked to another element that has. A wire for example doesn't have its own content attribute, but if it's linked to a pressure sensor that has, it will backtrack this link and use the content from the linked pressure sensor. This also allows one wire to have different contents based on the state of the rest of the PnID (eg: based on the state of a 3 way valve). The element's own `data-content` attribute will always be preferred over a potential linked `data-content`, so if it has its own content and another element linked with content specified, it will not use the content from the linked element.
+* `value` - overrides the value field with custom content.
+* `crossUpdate` - if set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message. **(EXPERIMENTAL!)**
+
+Functions (call by function name):
+* `link` - links one (or more) state to another (origin). Whenever the origin state receives a state update, the linked state does as well. Does *not* override state updates for the linked state, so those can potentially interfere.
+  * Parameter `origin` - the name of the origin ("parent") state of the link.
+  * Parameter `statesToLink` - A singular name or a list of names of the state that should be linked to the given origin.
+* `unlink` - unlinks previously linked states.
+  * Parameter `origin` - the name of the origin ("parent") state of the link that should be unlinked from.
+  * Parameter `statesToUnlink` - A singular name or a list of names of the state that should be unlinked from the given origin. (Optional, if not specified it will default to "all" to unlink all linked states from given origin. "all" can also be explicitly specified).
+  * Parameter `updateValue` - A value (state update) that should be passed to all previously linked states just after unlinking. (Optional, if not specified no state update on unlinking will happen).
 
 Additionally, for a more straightforward and adaptable use there is a `thresholds` array containing key values of interest, like pressure thresholds for the tanks, accessible via names, so the behaviour code is more easily readable (instead of a random number it's `thresholds['oxPressure']['low']`) and more centralized (changes to the thresholds only need to be changed in one place, not in every single behaviour block that uses these values).
-For contents of the thresholds array, check the file [thresholds.json](client/config/thresholds.json) **(ATTENTION: RIGHT NOW THIS FILE IS IGNORED AND INSTEAD USED HARDCODED IN [changeValues.js](client/js/changeValues.js) FOR EASE OF DEVELOPMENT)**
+For contents of the thresholds array, check the file [thresholds.json](client/config/thresholds.json)
 
 ### Popup definitions
 
@@ -140,11 +160,8 @@ The individual building blocks are positioned one after another vertically with 
 
 The building blocks are defined as a list of JSON key value pairs, where the `type` value defines which other keys to expect (Important to note: This "type" is not the same "type" as described in the [nomenclature](#nomenclature)!)
 Possible types:
-* `display` - Used to simply display a value without any option for interaction.
+* `display` - Used to simply display data without any option for interaction.
 * `input` - Used to create an input for a variable.
-* `checkbox` - Display a checkbox.
-* `slider` - Display a slider.
-* `textEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 All types use `variable` as a "sub-key" which defines which variable to display/affect. The "default" value should be `value` which is translated to the *value reference* of the element that the popup is opened at (or the action reference if one is set). Should allow for customizing to show several different values in one popup such as computed values. *WIP: Different variables don't actually work yet, has to be implemented properly first (maybe after the popup refactor. Or consider if it's even needed because right now there's only fringe usecases at best).*
 
@@ -154,7 +171,7 @@ Sub-keys for type `display`:
 * `style=`
   * `=text` - Simply displays the value as a text output (basically a copy of the value output in the PnID itself)
   * `=external` - Inserts an iframe into the popup. Needs additional keys to be set. *Worth noting: the external display type for popups is the only popup element type that can also contain information in the custom config, see further below for more information on that.*
-    * `source=` - Either set a fully qualified URL or a path. If it's a valid URL (with scheme identifier, FQDN, etc) it will *replace* the value of the global `externalSourceDefault` key in the [default config](#default-config), if it's a path it will be *appended* to it. *Can be either omitted or set to "undefined" if no specification is needed or if it will be specified in the [custom config](#custom-config)*.
+    * `source=` - Either set a fully qualified URL or a path. If it's a valid URL (with scheme identifier, FQDN, etc) it will *replace* the value of the global `externalSourceDefault` key in the [default config](#default-config), if it's a path it will be *appended* to it. *Can be either omitted or set to "null" if no specification is needed or if it will be specified in the [custom config](#custom-config)*.
     * `autoID=` - If set to `true`, appends the popupID (which is either the value reference or action reference of the parent element) to the source path. Allows individually 'unique' URLs without needing to manually set the URL for each element in the config. Can be omitted which will cause it to default to `false`.
     * `width=` - Width of the iframe. Can be omitted and defaults to 300px.
     * `height=` - Height of the iframe. Can be omitted and defaults to 200px.
@@ -168,7 +185,7 @@ Sub-keys for type `input`:
     * `min=` - Which value the minimal value of the slider is. Eg for a servo valve the "low" value could be `30000`. This is the raw (number) value sent to the PnID, not the formatted/interpreted value visible in the UI.
     * `max=` - Similar to min, but for the max value
     * `step=` - The step size of the slider.
-
+  * `=textEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 As mentioned before in the `style=external` description, this is a popup element type that can be further specified in the custom config. It is specified similar to the popup config in the default config file, but only allows the "source" and "autoID" keys to be set:
 
