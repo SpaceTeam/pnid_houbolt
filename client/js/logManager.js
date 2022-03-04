@@ -52,10 +52,10 @@ function updateOverviewCounters()
     //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     //let logOverview = logContainer.find(".logMenu").find(".logOverview");
     //consider also caching these. probably not super needed as there aren't many nodes in this dom branch, but still
-    logOverview.find("#logInfo").find(".logCategoryNumber").text(nrInfo);
-    logOverview.find("#logWarning").find(".logCategoryNumber").text(nrWarning);
-    logOverview.find("#logError").find(".logCategoryNumber").text(nrError);
-    logOverview.find("#logHardwareError").find(".logCategoryNumber").text(nrHardwareError);
+    logOverview.find("#logInfo").find(".logCategoryNumber").text(nrInfo >= 9999 ? '>' + nrInfo : nrInfo);
+    logOverview.find("#logWarning").find(".logCategoryNumber").text(nrWarning >= 9999 ? '>' + nrWarning : nrWarning);
+    logOverview.find("#logError").find(".logCategoryNumber").text(nrError >= 9999 ? '>' + nrError : nrError);
+    logOverview.find("#logHardwareError").find(".logCategoryNumber").text(nrHardwareError >= 9999 ? '>' + nrHardwareError : nrHardwareError);
 }
 
 function updateScroll()
@@ -87,6 +87,10 @@ function activateAutoScroll()
 
 function printLog(level, message)
 {
+	if (logContainer == undefined) {
+		console.log("Tried logging but the log box hasn't been initialized yet!");
+		return;
+	}
     //let logContainer = $(document).find(".logContainer:not(#logBoxTemp)");
     logContainer.find(".logMenu").find("button.btn").removeAttr('disabled'); //this doesn't have to be run every time something is logged.
     //let logTextArea = logContainer.find(".logTextArea");
@@ -95,11 +99,17 @@ function printLog(level, message)
     {
         case "info":
             severityIcon = `<i class="bi bi-info-circle iconInfo"></i>`;
-            nrInfo += 1;
+            if (nrInfo < 10000)
+            {
+            	nrInfo += 1;
+            }
             break;
         case "warning":
             severityIcon = `<i class="bi bi-exclamation-triangle iconWarning"></i>`;
-            nrWarning += 1;
+            if (nrWarning < 10000)
+            {
+            	nrWarning += 1;
+            }
             break;
         case "error":
             severityIcon = `<i class="bi bi-x-square iconError"></i>`;

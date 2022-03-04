@@ -48,6 +48,7 @@ function checkStringIsNumber(string)
  * "other_name": { "parent": Object.<jQuery>, "actionReferenceValue": Object.<jQuery>, "actionReferenceValueRaw": Object.<jQuery>}
  */
 var __elementGroupBuffer = {};
+var __emptyObject = $.find("#non-existant-id-that-will-definitely-return-an-empty-object"); //I hate everything about this
 
 /**
  * @summary Clears the element buffer.
@@ -70,6 +71,7 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
 {
     let isActionReference = false;
     let element = undefined;
+    let elementExists = true;
     if (subidentifier == "parent" || subidentifier == "wire")
     {
         let filterString = "comp";
@@ -77,21 +79,42 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
         {
             filterString = "wire";
         }
+        //console.error("cache miss", identifier);
         element = $(document).find(`g.${identifier}.${filterString}`);
         if (element.length == 0) // if no result, try if it may be an action reference
         {
+        	//console.error("action reference cache miss", identifier);
             element = $(document).find(`g[action-reference='${identifier}']`);
             if (element.length == 0) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
             {
-                return element; //TODO not sure whether to return element (which is empty) or undefined at this point.
+            	elementExists = false;
+                //TODO not sure whether to return element (which is empty) or undefined at this point.
             }
-            isActionReference = true;
+            else
+            {
+            	isActionReference = true;
+            }
         }
         try { //try to directly set it. will fail if [subidentifier] key does not exist yet, but it might if parent/wire has already been called once
-            __elementGroupBuffer[identifier][subidentifier] = element;
+        	if (elementExists)
+        	{
+        		__elementGroupBuffer[identifier][subidentifier] = element;
+        	}
+        	else
+        	{
+        	//console.error("setting cache to null");
+        		__elementGroupBuffer[identifier][subidentifier] = null;
+        	}
         } catch (error) {
             let newElement = {};
-            newElement[subidentifier] = element;
+            if (elementExists)
+            {
+            	newElement[subidentifier] = element;
+            }
+            else
+            {
+            	newElement[subidentifier] = null;
+            }
             __elementGroupBuffer[identifier] = newElement;
         }
         __elementGroupBuffer[identifier]["isActionReference"] = isActionReference; //could move that in the "catch" part as well as it should only be needed once when the subidentifier is added, but it doesn't hurt if it's out here and if code structure changes maybe the behavior changes as well to make this needed here. just more robust at the cost of a single assignment more.
@@ -136,7 +159,7 @@ function getElement(identifier, subidentifier = "parent")
     let findInDOM = false;
     try {
         element = __elementGroupBuffer[identifier][subidentifier];
-        if (element == undefined)
+        if (element === undefined)
         {
             findInDOM = true;
         }
@@ -151,6 +174,10 @@ function getElement(identifier, subidentifier = "parent")
     else
     {
         //console.log("cache hit for", identifier, subidentifier);
+    }
+    if (element === null)
+    {
+    	return __emptyObject;
     }
     return element;
 }
