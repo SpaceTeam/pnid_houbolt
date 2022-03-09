@@ -495,10 +495,20 @@ function setStateValue(state, recursionDepth = 0)
         }
     }
     
-    state["name"] = state["name"].replace(":","-");
+    state["name"] = state["name"].replaceAll(":","-");
     if (typeof state["value"] != "string")
     {
         state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+    }
+
+    //if a state starts with "gui:" it's a Get/SetState state, in the sense of a set point as opposed to a feedback/sensor value
+    //these states should only be used to update input elements in popups, nothing else, as the rest of the pnid should be feedback value based.
+    let isGuiState = false;
+    if (state["name"].startsWith("gui-"))
+    {
+        console.log("found gui state", state["name"], "with value", state["value"]);
+        isGuiState = true;
+        state["name"] = state["name"].replace("gui-", "");
     }
     
     let isActionReference = false;
@@ -513,30 +523,39 @@ function setStateValue(state, recursionDepth = 0)
     else //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
     {
         elementGroup = getElement(state["name"]);
-        isActionReference = getIsActionReference(state["name"]);
+        isActionReference = getIsActionReference("gui-" + state["name"]);
+        if (isActionReference)
+        {
+            state["name"] = "gui-" + state["name"]; //I hate that I have to prepend "gui-" here again after removing it before. TODO clean this up
+            isGuiState = false; //is it though? action reference are set as gui states and I probably should unify them
+        }
     }
 
 	// check if any pnid element is found with the provided state name
 	let unit = "";
-	if (elementGroup.length !== 0 && !state["wires_only"]) // if an element is found, update it.
+	if (elementGroup.length !== 0 && !state["wires_only"]) // if an element is found and...
 	{
-        if (isActionReference)
+        if (!isGuiState) // ...and incoming state is not a GUI state, update it.
         {
-            let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
-            let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
-            actionRefValueRawElement.text(state["value"]);
-            actionRefValueElement.text(state["value"]);
+            if (isActionReference)
+            {
+                let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
+                let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
+                actionRefValueRawElement.text(state["value"]);
+                actionRefValueElement.text(state["value"]);
+            }
+            else
+            {
+                unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
+                //raw value without any processing
+                let valueRawElement = getElement(state["name"], "valueRaw");
+                //human visible value that may contain units or further processing
+                let valueElement = getElement(state["name"], "value");
+                valueRawElement.text(state["value"]);
+                valueElement.text(state["value"] + unit);
+            }
         }
-        else
-        {
-            unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
-            //raw value without any processing
-            let valueRawElement = getElement(state["name"], "valueRaw");
-            //human visible value that may contain units or further processing
-            let valueElement = getElement(state["name"], "value");
-            valueRawElement.text(state["value"]);
-            valueElement.text(state["value"] + unit);
-        }
+        
 	}
 	else // if no element was found check if the element in question may be a wire instead
     {
@@ -594,7 +613,7 @@ function setStateValue(state, recursionDepth = 0)
                 {
                     eval(evalCode);
                     //console.log("search term", searchTerm);
-                    if (searchTerm.replace("_Slim", "") === "PnID-Tank") //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
+                    if (searchTerm.replace("_Slim", "") === "PnID-Tank" && !isGuiState) //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
                     {
                         updateTankContent(elementGroup, state["value"]);
                     }
@@ -615,7 +634,13 @@ function setStateValue(state, recursionDepth = 0)
                 eval(customEvalCode);
             }
 
-            applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references it actually updates all elements. but it does. so whatever I guess?
+            //only update the pnid if it's not a GUI state (we only want sensor feedback to update the pnid, not setpoint)
+            if (!isGuiState)
+            {
+                applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references
+                //it actually updates all elements. but it does. so whatever I guess?
+            }
+            
         }
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         if (outVars["value"] == undefined)
@@ -623,7 +648,7 @@ function setStateValue(state, recursionDepth = 0)
             outVars["value"] = state["value"] + unit;
         }
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(state["name"], outVars["value"], state["value"]);
+        updatePopup(state["name"], outVars["value"], state["value"], isGuiState);
     }
     else
     {

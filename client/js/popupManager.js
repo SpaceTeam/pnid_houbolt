@@ -392,7 +392,7 @@ function createPopup(popupID, parent, isActionReference)
 	};
 }
 
-function updatePopup(stateName, value, rawValue)
+function updatePopup(stateName, value, rawValue, isGuiState = false)
 {
     let popupID = "";
     if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
@@ -416,7 +416,8 @@ function updatePopup(stateName, value, rawValue)
     }
     let popup = activePopups[popupID]["popup"];
     let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
-    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup, but is bundled in an action reference popup. this menas we have to search for its popup config
+    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
+    //but is bundled in an action reference popup. this means we have to search for its popup config
     {
         /*console.log("elem", getElement(stateName));
         console.log("elem classes", getElement(stateName).attr("class").split(" "));
@@ -440,9 +441,12 @@ function updatePopup(stateName, value, rawValue)
                 switch (contentStyle)
                 {
                     case "text":
-                        
-                        elements = $(popup).find(`[display="${stateName}"]`);
-                        elements.text(value);
+                        //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
+                        if (!isGuiState)
+                        {
+                            elements = $(popup).find(`[display="${stateName}"]`);
+                            elements.text(value);
+                        }
                         break;
                     case "external": //no update needed
                         break;
@@ -454,35 +458,48 @@ function updatePopup(stateName, value, rawValue)
             case "input":
                 if (activePopups[popupID]["timeUntilActive"] > 0)
                 {
-                    //disable the update pause after user input for now. since sliders now have their value and feedback separated, it isn't really needed anymore. evaluate if it should be removed altogether or not
+                    //disable the update pause after user input for now. since sliders now have their value and feedback separated,
+                    //it isn't really needed anymore. evaluate if it should be removed altogether or not
                     //continue;
                 }
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                        if (value === rowConfig["low"])
+                        if (isGuiState)
                         {
-                            elements.prop("checked", false);
-                        }
-                        else
-                        {
-                            elements.prop("checked", true);
+                            console.log("updating gui state checkbox", value);
+                            //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                            elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                            if (value === rowConfig["low"])
+                            {
+                                elements.prop("checked", false);
+                            }
+                            else
+                            {
+                                elements.prop("checked", true);
+                            }
                         }
                         break;
                     case "slider":
                         elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
-                        if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                        if (!isGuiState)
                         {
-                            printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
-                            break;
+                            //if the value is sensor feedback, update the feedback slider background
+                            if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                            {
+                                printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
+                                break;
+                            }
+                            setSliderFeedback(elements, Math.round(rawValue))
                         }
-                        setSliderFeedback(elements, Math.round(rawValue))
-                        /*elements.val(Math.round(rawValue));
-                        let valueOut = elements.siblings("span.range-slider__value");
-                        valueOut.text(Math.round(rawValue));*/
-                        /*let feedback = elements.siblings("span.range-slider__feedback");
-                        feedback.text(Math.round(rawValue));*/
+                        else
+                        {
+                            //if the value is not sensor feedback, but a set point instead, move the slider
+                            setSliderValue(elements, Math.round(rawValue));
+                            /*elements.val(Math.round(rawValue));
+                            let valueOut = elements.siblings("span.range-slider__value");
+                            valueOut.text(Math.round(rawValue));*/
+                        }
                         break;
                     default:
                         printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);

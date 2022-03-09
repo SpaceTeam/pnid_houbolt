@@ -25,6 +25,14 @@ function setSliderFeedback(slider, feedbackValue)
     slider.css("background", `-webkit-gradient(linear, left top, right top, color-stop(${percent}%, var(--accent-disabled)), color-stop(${percent}%, var(--background-tertiary)))`);
 }
 
+function setSliderValue(slider, value)
+{
+    console.log("slider", slider.first());
+    slider[0].value = value; //I dislike having this hardcoded
+    let valueOut = slider.siblings("span.range-slider__value");
+    valueOut.text(Math.round(value));
+}
+
 var minInput = $("#fuelServoMin");
 var maxInput = $("#fuelServoMax");
 var minMaxTester = $("#fuelServo");
