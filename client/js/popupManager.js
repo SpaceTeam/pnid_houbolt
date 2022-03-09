@@ -392,7 +392,7 @@ function createPopup(popupID, parent, isActionReference)
 	};
 }
 
-function updatePopup(stateName, value, rawValue, isGuiState = false)
+function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false)
 {
     let popupID = "";
     if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
@@ -442,7 +442,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false)
                 {
                     case "text":
                         //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
-                        if (!isGuiState)
+                        if (!isGuiState || isActionReference)
                         {
                             elements = $(popup).find(`[display="${stateName}"]`);
                             elements.text(value);
@@ -465,7 +465,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        if (isGuiState)
+                        if (isGuiState || isActionReference)
                         {
                             console.log("updating gui state checkbox", value);
                             //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't

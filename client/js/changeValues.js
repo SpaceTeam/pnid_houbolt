@@ -520,15 +520,17 @@ function setStateValue(state, recursionDepth = 0)
         state["name"] = state["name"].replace("__child_wire", ""); //technically doesn't need to be inside this if as I'm already assuming in other places in the code that in normal use there's never "__child_wire" contained in the state name.
         //console.log("state name 2", state["name"]);
     }
-    else //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
+    else
     {
-        elementGroup = getElement(state["name"]);
+        //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at
+        //this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
         isActionReference = getIsActionReference("gui-" + state["name"]);
         if (isActionReference)
         {
             state["name"] = "gui-" + state["name"]; //I hate that I have to prepend "gui-" here again after removing it before. TODO clean this up
             isGuiState = false; //is it though? action reference are set as gui states and I probably should unify them
         }
+        elementGroup = getElement(state["name"]);
     }
 
 	// check if any pnid element is found with the provided state name
@@ -546,7 +548,9 @@ function setStateValue(state, recursionDepth = 0)
             }
             else
             {
-                unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set) //TODO I dislike that this is hardcoded, but don't know how else to do that
+                unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
+                //TODO I dislike that this is hardcoded, but don't know how else to do that
+
                 //raw value without any processing
                 let valueRawElement = getElement(state["name"], "valueRaw");
                 //human visible value that may contain units or further processing
@@ -648,7 +652,7 @@ function setStateValue(state, recursionDepth = 0)
             outVars["value"] = state["value"] + unit;
         }
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(state["name"], outVars["value"], state["value"], isGuiState);
+        updatePopup(state["name"], outVars["value"], state["value"], isGuiState, isActionReference);
     }
     else
     {

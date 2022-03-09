@@ -27,7 +27,6 @@ function setSliderFeedback(slider, feedbackValue)
 
 function setSliderValue(slider, value)
 {
-    console.log("slider", slider.first());
     slider[0].value = value; //I dislike having this hardcoded
     let valueOut = slider.siblings("span.range-slider__value");
     valueOut.text(Math.round(value));
