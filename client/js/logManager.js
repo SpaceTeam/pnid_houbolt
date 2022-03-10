@@ -144,5 +144,5 @@ function printLog(level, message)
         updateScroll();
     }
     updateOverviewCounters();
-    console.log(level + ":", message);
+    //console.log(level + ":", message);
 }
