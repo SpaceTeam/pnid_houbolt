@@ -23,5 +23,17 @@
     "chamberPressure": {
         "low": 7.0,
         "high": 9.0
+    },
+    "waterHotTemps": {
+        "low": 24.0,
+        "high": 34.0
+    },
+    "waterColdTemps": {
+        "low": 1.0,
+        "high": 5.0
+    },
+    "waterExchangerTemps": {
+        "low": 10.0,
+        "high": 30.0
     }
 }
