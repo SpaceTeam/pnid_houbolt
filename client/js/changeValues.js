@@ -1,14 +1,14 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 $.get('/config/default', function(data) {
-    console.log("default");
-    console.log("default:", data);
+    //console.log("default");
+    //console.log("default:", data);
     defaultConfig = data;
 });
 
 let config = {};
 $.get('/config/custom', function(data) {
-    console.log("custom:", data);
+    //console.log("custom:", data);
     config = data;
 });
 
@@ -687,7 +687,18 @@ function setStateValue(state, recursionDepth = 0)
         {
             if (__stateLinks[state["name"]][linkIndex]["linkContent"] == false) //but only if the link is not set up to only link contents
             {
-                linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
+                {
+                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in")
+                    {
+                        console.log("heat_exchanger_in", state["value"]);
+                    }
+                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
+                }
+                else
+                {
+                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                }
             }
         }
     }
