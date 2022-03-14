@@ -1,3 +1,5 @@
+var sliderIsMoving = false;
+
 var rangeSlider = function(sliderRow)
 {
     var slider = sliderRow.find('.range-slider'),
@@ -15,6 +17,16 @@ var rangeSlider = function(sliderRow)
         range.on('input', function()
         {
             $(this).parent().find('.range-slider__value').html(this.value);
+        });
+
+        range.on('mousedown', function()
+        {
+            sliderIsMoving = true;
+        });
+
+        range.on('mouseup', function()
+        {
+            sliderIsMoving = false;
         });
     });
 };
@@ -34,8 +46,9 @@ function setSliderValue(slider, value)
 
 function sliderIsMoving(slider)
 {
-    console.log("slider is moving?", slider.filter(':active').length == 0 ? false : true);
-    return slider.filter(':active').length == 0 ? false : true;
+    //console.log("slider is moving?", slider.filter(':active').length == 0 ? false : true);
+    //return slider.filter(':active').length == 0 ? false : true;
+    return sliderIsMoving;
 }
 
 var minInput = $("#fuelServoMin");
