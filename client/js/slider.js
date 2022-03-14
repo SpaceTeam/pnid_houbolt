@@ -1,4 +1,4 @@
-var sliderIsMoving = false;
+var sliderMoveState = false;
 
 var rangeSlider = function(sliderRow)
 {
@@ -21,12 +21,12 @@ var rangeSlider = function(sliderRow)
 
         range.on('mousedown', function()
         {
-            sliderIsMoving = true;
+            sliderMoveState = true;
         });
 
         range.on('mouseup', function()
         {
-            sliderIsMoving = false;
+            sliderMoveState = false;
         });
     });
 };
@@ -44,11 +44,11 @@ function setSliderValue(slider, value)
     valueOut.text(Math.round(value));
 }
 
-function sliderIsMoving(slider)
+function sliderIsMoving()
 {
     //console.log("slider is moving?", slider.filter(':active').length == 0 ? false : true);
     //return slider.filter(':active').length == 0 ? false : true;
-    return sliderIsMoving;
+    return sliderMoveState;
 }
 
 var minInput = $("#fuelServoMin");

@@ -495,7 +495,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                         else
                         {
                             //if the value is not sensor feedback, but a set point instead, move the slider
-                            if (!sliderIsMoving(elements))
+                            if (!sliderIsMoving())
                             {
                                 //but only if the slider isn't being moved right now
                                 setSliderValue(elements, Math.round(rawValue));
