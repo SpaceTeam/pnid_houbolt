@@ -32,6 +32,12 @@ function setSliderValue(slider, value)
     valueOut.text(Math.round(value));
 }
 
+function sliderIsMoving(slider)
+{
+    console.log("slider is moving?", slider.filter(':active').length == 0 ? false : true);
+    return slider.filter(':active').length == 0 ? false : true;
+}
+
 var minInput = $("#fuelServoMin");
 var maxInput = $("#fuelServoMax");
 var minMaxTester = $("#fuelServo");
