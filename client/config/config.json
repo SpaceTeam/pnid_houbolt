@@ -60,7 +60,7 @@
         "states": [
             "water_valves_out:sensor"
         ],
-        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in'); link('pump_cold_water:sensor', 'heat_exchanger_in'); console.log('cold'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in'); link('pump_hot_water:sensor', 'heat_exchanger_in'); console.log('hot'); } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in', -10); console.log('closed');  }"
+        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire'); link('pump_cold_water:sensor', 'heat_exchanger_in:wire'); console.log('cold'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire'); link('pump_hot_water:sensor', 'heat_exchanger_in:wire'); console.log('hot'); } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire', -10); console.log('closed');  }"
     },
     "pump_hot_water": {
         "states": [

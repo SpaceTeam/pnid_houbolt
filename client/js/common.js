@@ -215,6 +215,12 @@ function getElementAttrValue(valueReference, attrName)
     let element = getElement(valueReference);
     if (element == undefined || element.length == 0)
     {
+        element = getElement(valueReference, "wire");
+        if (element == undefined || element.length == 0)
+        {
+            console.log("tried getting attr value for wire, ignoring");
+            return undefined;
+        }
         printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${valueReference}!`);
         return undefined;
     }

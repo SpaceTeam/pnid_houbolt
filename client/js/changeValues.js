@@ -689,7 +689,7 @@ function setStateValue(state, recursionDepth = 0)
             {
                 if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
                 {
-                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in")
+                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in:wire")
                     {
                         console.log("heat_exchanger_in", state["value"]);
                     }
