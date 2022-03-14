@@ -110,7 +110,7 @@ The subsections [eval behaviour blocks](#eval-behaviour-blocks) and [popup defin
 
 The custom config is able to override the *behaviour* parts of the default config, but *cannot implement individual popup definitions*. In here a top level entry can be named to anything arbitrary as its only used for human readability and structuring. In this top level entry a list of `states` which should adopt this custom behaviour is specified. The states are identified by using the *value reference*.
 
-*TODO: Allow custom config to override popup definitions (not extend, completely replace from default ones). This is needed for the ability to include other variables into a popup (eg for computed states) because otherwise all elements of this type will have the same computed states which makes no sense*
+*TODO: Allow custom config to override popup definitions (not extend, completely replace from default ones). This is needed for the ability to include other variables into a popup (eg: for computed states) because otherwise all elements of this type will have the same computed states which makes no sense*
 
 Example:
 ```json
@@ -125,20 +125,23 @@ Example:
 }
 ```
 
+*Note: All [eval behaviour blocks](#eval-behaviour-blocks) in the custom config can use the resulting outVars from the eval block in the default config because the default config is (if present) guaranteed to be executed before. This means the custom config eval can use the computed `outVars['value']` or `outVars['color']` as an "input" value. This is helpful to keep things in sync even with changes to the default config thresholds. Not needed that much if the thresholds dictionary is properly in use as changes there are already centralized, but can reduce length of custom config eval.*
+
 ### Eval behaviour blocks
 
 The eval blocks contain behaviours for elements. Which ones they apply to depends on where they are used (in [default config](#default-config) or [custom config](#custom-config) and which identifiers it is used alongside). Eval blocks are as the name suggests blocks of JS code that will be run using the `eval()` function. Yes, this can be a huge security risk, no it's not an issue as this is only run locally and the content of the eval blocks cannot be changed by a user (nevermind an outside user) during runtime.
 
 For ease of use there is a list of variables intended as inputs and outputs to the eval blocks, as well as some functions which cover the most important use cases for them. Technically if a necessary input or output does not exist (or a certain function is not provided) it can be added in the eval as it is fully featured JS, but it is preferable to extend the features of the inputs and outputs instead to use simpler behaviour code in the configs.
 
-Input variables (addressible via `inVars["<variable name>"]`):
+Input variables (addressable via `inVars["<variable name>"]`):
 * `this` - contains the name (string) of the state that was invoked.
 * `value` - contains the (new) value of the element that is being updated
 * `unit` - contains the unit (usually appended to the value) of the element that is being updated
 
-Output variables (addressible via `outVars[<variable name>]`), only have an effect if set by the eval block:
+Output variables (addressable via `outVars[<variable name>]`), only have an effect if set by the eval block:
 * `color` - tries to set the color of the *parent* element to the value of this variable. Which colors are valid depends on the type of element (see [pnid.css](client/css/pnid.css) `data-pnid-` declarations for valid values). Value "content" is allowed as a "variable" which evaluates to the color based on the content of the element. This needs the `data-content` attribute to be set in KiCad. For example a pressure sensor could have the content "fuel", in which case the `data-content` value in color evaluates to "fuel". Additionally, elements that don't have their own `data-content` attribute set can still use this if they are linked to another element that has. A wire for example doesn't have its own content attribute, but if it's linked to a pressure sensor that has, it will backtrack this link and use the content from the linked pressure sensor. This also allows one wire to have different contents based on the state of the rest of the PnID (eg: based on the state of a 3 way valve). The element's own `data-content` attribute will always be preferred over a potential linked `data-content`, so if it has its own content and another element linked with content specified, it will not use the content from the linked element.
 * `value` - overrides the value field with custom content.
+* `content` - sets new `data-content` value. Can be used for sensors that see different content based on measurement, eg: Temperature sensor seeing warm water or cold water depending on measured temperature.
 * `crossUpdate` - if set, passes content to updatePNID(stateList) to update another component (eg: a wire group) in the PnID. This allows updating components that would otherwise be unaffected by the current update message. **(EXPERIMENTAL!)**
 
 Functions (call by function name):

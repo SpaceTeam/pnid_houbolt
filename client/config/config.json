@@ -38,6 +38,42 @@
         ],
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
     },
+    "temp_sens_hot": {
+        "states": [
+            "water_hot_temp:sensor"
+        ],
+        "eval": "link(inVars['this'], 'WaterTankHot'); if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "temp_sens_cold": {
+        "states": [
+            "water_cold_temp:sensor"
+        ],
+        "eval": "link(inVars['this'], 'WaterTankHot'); if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "temp_sens_heat_exchanger": {
+        "states": [
+            "water_mantle_temp:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "3_way_water_valve_out": {
+        "states": [
+            "water_valves_out:sensor"
+        ],
+        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in'); link('pump_cold_water:sensor', 'heat_exchanger_in'); console.log('cold'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in'); link('pump_hot_water:sensor', 'heat_exchanger_in'); console.log('hot'); } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in', -10); console.log('closed');  }"
+    },
+    "pump_hot_water": {
+        "states": [
+            "pump_hot_water:sensor"
+        ],
+        "eval": "link('water_hot_temp:sensor', inVars['this'], true)"
+    },
+    "pump_cold_water": {
+        "states": [
+            "pump_cold_water:sensor"
+        ],
+        "eval": "link('water_cold_temp:sensor', inVars['this'], true)"
+    },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
             "fuel_bottom_tank_pressure:sensor"

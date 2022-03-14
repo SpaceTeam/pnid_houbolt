@@ -1,14 +1,14 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 $.get('/config/default', function(data) {
-    console.log("default");
-    console.log("default:", data);
+    //console.log("default");
+    //console.log("default:", data);
     defaultConfig = data;
 });
 
 let config = {};
 $.get('/config/custom', function(data) {
-    console.log("custom:", data);
+    //console.log("custom:", data);
     config = data;
 });
 
@@ -25,7 +25,7 @@ $.get('/config/thresholds', function(data) {
 function initTanks()
 {
     let tanks = $(document).find("g.PnID-Tank, g.PnID-Tank_Slim");
-    console.log("tanks", tanks);
+    //console.log("tanks", tanks);
     initTankContent(tanks);
 }
 
@@ -346,11 +346,12 @@ var __stateLinks = {};
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
+ * @param {boolean} linkContents Whether or not to only link the contents and not the state value updates. Setting to true does not pass state updates on from origin to child states, false (default) links fully.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, statesToLink)
+function link(origin, statesToLink, linkContents = false)
 {
     let statesArray = [];
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
@@ -365,13 +366,13 @@ function link(origin, statesToLink)
         let existingLinks = __stateLinks[origin];
         if (existingLinks == undefined || existingLinks.length == 0)
         {
-            existingLinks = [state];
+            existingLinks = [{child: state, linkContent: linkContents}];
         }
         else
         {
             if (!existingLinks.includes(state))
             {
-                existingLinks.push(state);
+                existingLinks.push({child: state, linkContent: linkContents});
             }
         }
         __stateLinks[origin] = existingLinks;
@@ -384,7 +385,7 @@ function link(origin, statesToLink)
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} [statesToUnlink=all] The name of the state that should be unlinked from being invoked on change of origin state. Can be an array of several state names or just a single name. Default value if not specified is "all", which unlinks all active links from the specified origin state.
  * @param {number} [updateValue] If specified sends a state update (using {@link updatePNID}) to the element that should be unlinked (even if it wasn't linked to begin with).
- * @param {boolean} [alwaysUpdate=false] Whether or not to always send the update or only when the state was actually linked before and unlinked in this run. Only has an effect if updateValue is set.
+ * @param {boolean} [alwaysUpdate=false] Whether or not to always send the update or only when the state was actually linked before and unlinked in this run. Only has an effect if updateValue is set. Has no effect when unlinking "all" as only already linked states will be accessed anyways.
  * @see link
  */
 function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysUpdate = false)
@@ -431,7 +432,7 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
 
 /**
  * @summary Finds all parents/origins from a certain link name.
- * @description Iterates through all entries in the {@link __stateList} dict. All entries that contain the specified child will be returned in an array.
+ * @description Iterates through all entries in the {@link __stateLinks} dict. All entries that contain the specified child will be returned in an array.
  * @param {string} linkedChild The name of the child state is linked to one or more parents.
  * @param {boolean} isWire Indicates whether the child that the parent is searched for is a wire or not. This is needed to find possible implicitly linked wires from {@link createWireLinks} as those are stored with name "__child_wire" instead of their actual name.
  * @return {Array} List of parents found for the linked child. If the specified child is not actually linked to anything (as a child), returns an empty array.
@@ -440,19 +441,25 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
  */
 function findLinkParents(linkedChild, isWire = false)
 {
+    console.log("linked child", linkedChild, isWire);
     let parents = [];
     for (let key in __stateLinks)
     {
-        if (__stateLinks[key].includes(linkedChild))
+        //if (__stateLinks[key]["children"].includes(linkedChild))
+        if (__stateLinks[key].some(e => e.child === linkedChild))
         {
             parents.push(key);
         }
     }
     if (isWire) // add parent of implicitly linked wires
     {
-        if (__stateLinks[linkedChild].includes("__child_wire"))
+        //if (__stateLinks[linkedChild]["children"].includes("__child_wire"))
+        if (__stateLinks[linkedChild] != undefined)
         {
-            parents.push(linkedChild);
+            if (__stateLinks[linkedChild].some(e => e.child === "__child_wire"))
+            {
+                parents.push(linkedChild);
+            }
         }
     }
     return parents;
@@ -612,7 +619,10 @@ function setStateValue(state, recursionDepth = 0)
                 }
 
                 //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-                let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", ""), "eval");
+                //console.log("search term", searchTerm);
+                //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
+                let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "eval");
+                //console.log("eval", evalCode);
                 if (evalCode != undefined)
                 {
                     eval(evalCode);
@@ -663,17 +673,33 @@ function setStateValue(state, recursionDepth = 0)
     let linkedStateUpdates = [];
     for (let linkIndex in __stateLinks[state["name"]])
     {
-        if (__stateLinks[state["name"]][linkIndex] == "__child_wire") //find if the current state name has an associated child wire group
+        if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
         {
             if (state["wires_only"] == false || state["wires_only"] == undefined) //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion)
             {
-                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true}); //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this. I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
+                //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
+                //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
 
             }
         }
         else //if we can't find a child wire entry at this index in the link list, push the linked update normally
         {
-            linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex], "value": state["value"]});
+            if (__stateLinks[state["name"]][linkIndex]["linkContent"] == false) //but only if the link is not set up to only link contents
+            {
+                if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
+                {
+                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in")
+                    {
+                        console.log("heat_exchanger_in", state["value"]);
+                    }
+                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
+                }
+                else
+                {
+                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                }
+            }
         }
     }
     if (linkedStateUpdates.length > 0)
@@ -761,6 +787,10 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
             elementGroup.find("text.value").text(outVars["value"]);
         }
 	}
+    if ("content" in outVars)
+    {
+        elementGroup.attr("data-content", outVars["content"]);
+    }
 	if ("crossUpdate" in outVars)
 	{
 		updatePNID(outVars["crossUpdate"]);

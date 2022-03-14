@@ -81,6 +81,10 @@ html body {
 	stroke: var(--high);
 }
 
+.wire[data-pnid-wire=mid] {
+	stroke: var(--mid);
+}
+
 .wire[data-pnid-wire=low] {
 	stroke: var(--low);
 }
@@ -190,6 +194,14 @@ html body {
 [data-pnid-sensor_temperature=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
+}
+
+[data-pnid-sensor_temperature=mid] {
+    stroke: var(--mid);
+}
+[data-pnid-sensor_temperature=mid] text:not(.static-color) {
+    stroke: var(--mid);
+    fill: var(--mid);
 }
 
 [data-pnid-sensor_temperature=low] {
