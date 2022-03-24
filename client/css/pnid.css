@@ -61,7 +61,7 @@ html body {
     stroke-dasharray: 25,50
 }
 
-.wire {
+.wire, .wire[data-pnid-wire=empty] {
     stroke-width: 8;
     stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
     fill: none;

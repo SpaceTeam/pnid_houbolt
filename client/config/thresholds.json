@@ -35,5 +35,8 @@
     "waterExchangerTemps": {
         "low": 10.0,
         "high": 30.0
+    },
+    "pump": {
+        "high": 10
     }
 }

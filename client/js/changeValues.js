@@ -162,7 +162,7 @@ function extractXYFromPath(path)
  * @description Sets some state's names using {@link setStateNamesPNID}, then proceeds to send some manually entered, static test data spread out over time using {@link updatePNID}.
  * @see runRandom
  */
-async function runTests()
+async function runTestsFranz()
 {
 	var testNames = [{"name": "fuel_top_tank_temp:sensor", "label": "hope so"}, {"name": "ox_pressurant_press_pressure:sensor", "label": "adf"}];
 	setStateNamesPNID(testNames);
@@ -193,6 +193,48 @@ async function runTests()
 	var testData = [{"name": "fuel_pressurize_solenoid:sensor", "value": 5.0}, {"name": "fuel_depressurize_solenoid:sensor", "value": 1.0}];
 	updatePNID(testData);
 	await sleep(500);
+}
+
+/**
+ * @summary Test function for running through some of the more important functions of the PnID to validate them.
+ * @description Sets some state's names using {@link setStateNamesPNID}, then proceeds to send some manually entered, static test data spread out over time using {@link updatePNID}.
+ * @see runRandom
+ */
+async function runTestsHoubolt()
+{
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 93.0}, {"name": "water_hot_temp:sensor", "value": 30.0}, {"name": "water_cold_temp:sensor", "value": 1.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_valves_out:sensor", "value": 10.0}, {"name": "water_valves_in:sensor", "value": 90.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "water_hot_temp:sensor", "value": 35.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_mantle_temp:sensor", "value": 25.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 2}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "water_valves_out:sensor", "value": 90.0}, {"name": "pump_cold_water:sensor", "value": 90}, {"name": "water_valves_in:sensor", "value": 10.0}];
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_cold_water:sensor", "value": 90}];
+    updatePNID(testData);
+    await sleep(1000);
 }
 
 function test()
@@ -346,12 +388,12 @@ var __stateLinks = {};
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
- * @param {boolean} linkContents Whether or not to only link the contents and not the state value updates. Setting to true does not pass state updates on from origin to child states, false (default) links fully.
+ * @param {boolean} onlyLinkContents Whether or not to only link the contents and not the state value updates. Setting to true does not pass state updates on from origin to child states, false (default) links fully.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, statesToLink, linkContents = false)
+function link(origin, statesToLink, onlyLinkContents = false)
 {
     let statesArray = [];
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
@@ -366,13 +408,13 @@ function link(origin, statesToLink, linkContents = false)
         let existingLinks = __stateLinks[origin];
         if (existingLinks == undefined || existingLinks.length == 0)
         {
-            existingLinks = [{child: state, linkContent: linkContents}];
+            existingLinks = [{child: state, onlyLinkContent: onlyLinkContents}];
         }
         else
         {
             if (!existingLinks.includes(state))
             {
-                existingLinks.push({child: state, linkContent: linkContents});
+                existingLinks.push({child: state, onlyLinkContent: onlyLinkContents});
             }
         }
         __stateLinks[origin] = existingLinks;
@@ -666,7 +708,9 @@ function setStateValue(state, recursionDepth = 0)
     }
     else
     {
-        printLog("warning", `Received state update with no corresponding pnid element, wire or action reference! State: <code>${state["name"]}</code>: <code>${state["value"]}</code>`);
+        //printLog("warning", `Received state update with no corresponding pnid element, wire or action reference! State: <code>${state["name"]}</code>: <code>${state["value"]}</code>`);
+        //this warning is super spammy and kind of doesn't make sense - this is "intended" behavior as soon as we start splitting one system into several PnIDs.
+        //probably worth removing altogether, but evaluate first.
     }
 
     //iterate through all elements linked to this one
@@ -685,7 +729,7 @@ function setStateValue(state, recursionDepth = 0)
         }
         else //if we can't find a child wire entry at this index in the link list, push the linked update normally
         {
-            if (__stateLinks[state["name"]][linkIndex]["linkContent"] == false) //but only if the link is not set up to only link contents
+            if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
             {
                 if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
                 {
@@ -756,7 +800,8 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
                         //console.log("did not find own content", elementGroup);
                         let parents = findLinkParents(elementName, isWire);
                         //console.log("parents", parents);
-                        for (let i in parents)
+                        let parentContent = traverseParentsToContent(elementName, isWire);
+                        /*for (let i in parents)
                         {
                             let parentContent = getElementAttrValue(parents[i], "data-content");
                             if (parentContent != undefined) //use first parent content that is found
@@ -764,6 +809,10 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
                                 //console.log("found parent with content", elementGroup, parents[i]);
                                 color = parentContent;
                             }
+                        }*/
+                        if (parentContent != undefined)
+                        {
+                            color = parentContent;
                         }
                     }
                     else
@@ -795,6 +844,32 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 	{
 		updatePNID(outVars["crossUpdate"]);
 	}
+}
+
+/**
+ * @summary Follows the chain of parents to find either the highest one or the one that has its own content set and not another content link set up.
+ * @description Takes the first parent of the element in question and moves up the chain of parents. In case of multiple parents, the first one is used for simplicity's sake
+ * (Could break behavior in case no content is found in one path but would be found in another - this would need a proper tree traversal but considering multiple parents isn't
+ * actually *properly* supported or useful in the current version I'll just leave it be for now).
+ * May break when a child_wire is linked to a child_wire. Not sure if it really does and I don't care to test because it's stupid. If you wanna link one child_wire to another, just link it directly to the common parent. 
+ * @param {Object} elementName The first order parent of the element in question.
+ */
+function traverseParentsToContent(elementName, isWire = false, recursionDepth = 0)
+{
+    if (recursionDepth >= 5)
+    {
+        return undefined;
+    }
+
+    let parents = findLinkParents(elementName, isWire);
+    let parentContent = getElementAttrValue(parents[0], "data-content");
+    let recContent = traverseParentsToContent(parents[0], false, recursionDepth + 1);
+
+    if (recContent != undefined)
+    {
+        return recContent;
+    }
+    return parentContent;
 }
 
 function setConfig()

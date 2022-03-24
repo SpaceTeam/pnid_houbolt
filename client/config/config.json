@@ -244,5 +244,12 @@
             "source": "13",
             "autoID": false
         }
+    },
+    "water_wires": {
+        "states": [
+            "heat_exchanger_in:wire",
+            "pump_hot_water:sensor:wire"
+        ],
+        "eval": "if (inVars['value'] > thresholds['pump']['high']) { outVars['color'] = 'content' } else { outVars['color'] = 'empty' }"
     }
 }
