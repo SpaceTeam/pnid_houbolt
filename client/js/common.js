@@ -121,8 +121,17 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
     }
     else
     {
-        element = getElement(identifier, "parent").find(`text.${subidentifier}`);
-        __elementGroupBuffer[identifier][subidentifier] = element;
+        let rootEl = getElement(identifier, "parent");
+        if (rootEl.length != 0) //should only happen when searching for subidentifier "setState"
+        {
+            element = getElement(identifier, "parent").find(`text.${subidentifier}`);
+            __elementGroupBuffer[identifier][subidentifier] = element;
+        }
+        else
+        {
+            __elementGroupBuffer[identifier][subidentifier] = null;
+        }
+        
     }
     return element;
 }
@@ -196,6 +205,7 @@ function getElementValue(valueReference, valueID)
     let element = getElement(valueReference, valueID);
     if (element == undefined || element.length == 0)
     {
+        //consider removing this warning or changing it up, this is now legitimate behavior thanks to getElementValue(id, "setState")
         printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
         return undefined;
     }
