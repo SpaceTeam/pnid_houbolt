@@ -483,7 +483,7 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
  */
 function findLinkParents(linkedChild, isWire = false)
 {
-    console.log("linked child", linkedChild, isWire);
+    //console.log("linked child", linkedChild, isWire);
     let parents = [];
     for (let key in __stateLinks)
     {
@@ -555,7 +555,7 @@ function setStateValue(state, recursionDepth = 0)
     let isGuiState = false;
     if (state["name"].startsWith("gui-"))
     {
-        console.log("found gui state", state["name"], "with value", state["value"]);
+        //console.log("found gui state", state["name"], "with value", state["value"]);
         isGuiState = true;
         state["name"] = state["name"].replace("gui-", "");
     }
@@ -608,6 +608,11 @@ function setStateValue(state, recursionDepth = 0)
                 valueElement.text(state["value"] + unit);
             }
         }
+        else //if it *is* a gui state, store the gui state value
+        {
+            let setStateElement = getElement(state["name"], "setState");
+            setStateElement.text(state["value"]);
+        }
         
 	}
 	else // if no element was found check if the element in question may be a wire instead
@@ -623,6 +628,7 @@ function setStateValue(state, recursionDepth = 0)
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
+            "setState": getElementValue(state["name"], "setState"),
             "unit" : unit
         };
 
@@ -693,7 +699,8 @@ function setStateValue(state, recursionDepth = 0)
             //only update the pnid if it's not a GUI state (we only want sensor feedback to update the pnid, not setpoint)
             if (!isGuiState)
             {
-                applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference); //TODO this part is kinda weird - I don't understand why in case of action references
+                applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference);
+                //TODO this part is kinda weird - I don't understand why in case of action references
                 //it actually updates all elements. but it does. so whatever I guess?
             }
             
