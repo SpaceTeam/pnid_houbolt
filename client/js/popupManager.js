@@ -467,10 +467,10 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                     case "checkbox":
                         if (isGuiState || isActionReference)
                         {
-                            console.log("updating gui state checkbox", value);
+                            //console.log("updating gui state checkbox", rawValue);
                             //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                             elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                            if (value === rowConfig["low"])
+                            if (rawValue.toString() === rowConfig["low"])
                             {
                                 elements.prop("checked", false);
                             }

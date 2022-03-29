@@ -15,8 +15,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Open",
-                "high": "Closed"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
@@ -32,8 +32,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
@@ -203,8 +203,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Off",
-                "high": "On"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
@@ -220,8 +220,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
@@ -237,8 +237,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     }
