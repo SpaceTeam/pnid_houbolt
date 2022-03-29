@@ -625,10 +625,11 @@ function setStateValue(state, recursionDepth = 0)
     {
         //----- prepare for eval behavior block
         //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
+        let setStateValue = getElementValue(state["name"], "setState");
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
-            "setState": getElementValue(state["name"], "setState"),
+            "setState": setStateValue == "" ? undefined : setStateValue,
             "unit" : unit
         };
 
@@ -654,7 +655,7 @@ function setStateValue(state, recursionDepth = 0)
         for (let i in configSearchTerms)
         {
             //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
-            let sensorDeviation = 0;
+            let sensorDeviationCheck = "return !(feedback == setState);";
             //iterate through search terms (classes for elements, action references for... action references) within one element
             for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
             {
@@ -672,9 +673,9 @@ function setStateValue(state, recursionDepth = 0)
                 //console.log("search term", searchTerm);
                 //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
                 let defaultSensorDeviation = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "sens_deviation");
-                if (defaultSensorDeviation != undefined)
+                if (defaultSensorDeviation !== undefined)
                 {
-                    sensorDeviation = defaultSensorDeviation;
+                    sensorDeviationCheck = defaultSensorDeviation;
                 }
 
                 let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "eval");
@@ -699,7 +700,7 @@ function setStateValue(state, recursionDepth = 0)
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
             let customSensorDeviation = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
-            if (customSensorDeviation != undefined)
+            if (customSensorDeviation !== undefined)
             {
                 sensorDeviation = customSensorDeviation;
             }
@@ -714,13 +715,21 @@ function setStateValue(state, recursionDepth = 0)
             if (!isGuiState)
             {
                 //if the set state is defined (it is an element that even has a set state) and it's not an action reference try checking for set vs feedback value deviation
-                if ((inVars["setState"] != undefined || inVars["setState"] != null) && !isActionReference)
+                if ((inVars["setState"] != undefined || inVars["setState"] != null) && !isActionReference && sensorDeviationCheck != null && !isWire)
                 {
+                    console.log("checking for set state deviation");
                     //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
-                    if (inVars["setState"] < state["value"] - state["value"] * sensorDeviation || inVars["setState"] > state["value"] + state["value"] * sensorDeviation)
+                    eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+                    if (sensDevChecker(state["value"], inVars["setState"]))
                     {
+                        //console.log("feedback deviation error");
                         outVars["color"] = "feedback_deviation_error";
                     }
+                    /*if (inVars["setState"] < state["value"] - state["value"] * sensorDeviation || inVars["setState"] > state["value"] + state["value"] * sensorDeviation)
+                    {
+                        console.log("feedback deviation error");
+                        outVars["color"] = "feedback_deviation_error";
+                    }*/
                 }
                 
                 applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference);
