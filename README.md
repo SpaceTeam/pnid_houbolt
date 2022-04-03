@@ -77,6 +77,20 @@ Config files are parsed top to bottom, so if several behaviour blocks apply to o
 
 For example if there is a behaviour in the default config setting the colour of an element based on the received value and another behaviour in the custom config changing the formatting of the value output, both outputs will be visible. If however the custom behaviour changes the formatting of the value output AND sets another colour, it will overwrite the colour set by the default config.
 
+
+### Grafana Panel Config
+
+To enable embedding iframes, every element with an iframe may need a specific url to be loaded. This is defined
+in the grafana panel config (renaming required, it's currently 4 o'clock, I want to go home :P). If grafana is 
+used with a fresh setup, following command may be used inside the browser console. It is required that the grafana dashboard in question including the panels needed are opened up inside this tab.
+
+`var panelData = {}; $("[data-panelid]").each(function(){panelData[$(this).find(".panel-title h2").html()] = $(this).attr("data-panelid");})`
+and 
+`console.log(panelData)`
+
+There's no guarantee this works with newer grafana versions (i.e. newer than v8.3.4). Copy the generated json object into the config file
+That's it.
+
 ### Default Config
 
 The default config implements behaviour (specified in "eval" blocks as JS) and popup definitions (specified in the "popup" blocks as an array of JSON blocks). A top level entry in the default config should be named after a *type* and it will apply to all elements of this type.

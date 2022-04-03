@@ -1,5 +1,11 @@
 var activePopups = {};
 
+let grafanaPanelConfig = {};
+$.get('/config/grafana', function(data) {
+    grafanaPanelConfig = data;
+});
+
+
 function deactiveInputUpdate(popupID, duration)
 {
     if (activePopups[popupID]["timeUntilActive"] > 0) //there's already one timer counting, so just reset it back to full duration
@@ -97,7 +103,7 @@ function createTextDisplay(variable, curValue)
     return element;
 }
 
-function constructIframeSource(sourceDefault, config, customConfig)
+function constructIframeSource(sourceDefault, config, customConfig, popupID)
 {
     let finalSource = "";
     if (sourceDefault == undefined)
@@ -107,9 +113,9 @@ function constructIframeSource(sourceDefault, config, customConfig)
     let source = config["source"];
 
     let customSource = "";
-    if (customConfig != undefined)
+    if (grafanaPanelConfig[popupID] != undefined)
     {
-        customSource = customConfig["source"];
+        customSource = grafanaPanelConfig[popupID];
     }
 
     //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
@@ -264,7 +270,7 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                     case "external":
                         let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let sourceDefault = defaultConfig["externalSourceDefault"];
-                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig);
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replace("-",":"));
                         newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
                     default:

@@ -1,6 +1,6 @@
 {
     "solenoid": {
-        "high": 3000
+        "high": 1
     },
     "servo_valve": {
         "low": 10000,
