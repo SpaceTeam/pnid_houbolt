@@ -211,7 +211,7 @@ async function runTestsHoubolt()
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_valves_out:sensor", "value": 10.0}, {"name": "water_valves_in:sensor", "value": 90.0}];
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}];
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
@@ -229,7 +229,7 @@ async function runTestsHoubolt()
     var testData = [{"name": "pump_hot_water:sensor", "value": 2}];
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "water_valves_out:sensor", "value": 90.0}, {"name": "pump_cold_water:sensor", "value": 90}, {"name": "water_valves_in:sensor", "value": 10.0}];
+    var testData = [{"name": "gui:water_valves", "value": 0}, {"name": "pump_cold_water:sensor", "value": 90}];
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_cold_water:sensor", "value": 90}];
@@ -399,6 +399,9 @@ function link(origin, statesToLink, onlyLinkContents = false)
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
     {
         statesArray.push(statesToLink);
+    }
+    else {
+        statesArray = statesToLink;
     }
 
     origin = origin.replace(":","-");

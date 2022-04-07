@@ -90,7 +90,7 @@
         <text class="actionReferenceValueRaw text-C" x="9875" y="9730" visibility="hidden"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('WaterTankCold')"></rect>    </g>
-    <g class="U6 PnID-Valve_Servo_3Way water_valves_in-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="">
+    <g class="U6 PnID-Valve_Servo_3Way water_valves_in-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves">
         <!-- coordinates: x = 9120 y = 9350 -->
         <g>        <circle cx="9120" cy="8820" r="100" />
         <path d="M 9120 9070 L 9120 8920 " />
@@ -105,11 +105,11 @@
         <text class="setState text-C" x="9120" y="8646" visibility="hidden"></text>
         <text class="value text-C" x="9120" y="8646" visibility="visible">water_valves_in:sensor</text>
         <text class="valueRaw text-C" x="9120" y="8646" visibility="hidden">water_valves_in:sensor</text>
-        <text class="actionReferenceValue text-C" x="9120" y="8646" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="9120" y="8646" visibility="hidden"> </text>
+        <text class="actionReferenceValue text-C" x="9120" y="8646" visibility="hidden">gui-water_valves</text>
+        <text class="actionReferenceValueRaw text-C" x="9120" y="8646" visibility="hidden">gui-water_valves</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_valves_in-sensor')"></rect>    </g>
-    <g class="U5 PnID-Valve_Servo_3Way water_valves_out-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference=""transform="rotate(180,9120,7550)">
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
+    <g class="U5 PnID-Valve_Servo_3Way water_valves_out-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves"transform="rotate(180,9120,7550)">
         <!-- coordinates: x = 9120 y = 7550 -->
         <g>        <circle cx="9120" cy="7020" r="100" />
         <path d="M 9120 7270 L 9120 7120 " />
@@ -124,10 +124,10 @@
         <text class="setState text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)"></text>
         <text class="value text-C" x="9120" y="6756" visibility="visible" transform="rotate(180,9120,6756)">water_valves_out:sensor</text>
         <text class="valueRaw text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">water_valves_out:sensor</text>
-        <text class="actionReferenceValue text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)"> </text>
+        <text class="actionReferenceValue text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">gui-water_valves</text>
+        <text class="actionReferenceValueRaw text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">gui-water_valves</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_valves_out-sensor')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
     <g class="U7 PnID-Pump pump_cold_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference=""transform="scale(-1,1) translate(-19600,0)">
         <!-- coordinates: x = 9800 y = 7980 -->
         <g>        <circle cx="9800" cy="7980" r="94" />
