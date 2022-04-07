@@ -625,10 +625,11 @@ function setStateValue(state, recursionDepth = 0)
     {
         //----- prepare for eval behavior block
         //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
+        let setStateValue = getElementValue(state["name"], "setState");
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
-            "setState": getElementValue(state["name"], "setState"),
+            "setState": setStateValue == "" ? undefined : setStateValue,
             "unit" : unit
         };
 
@@ -653,6 +654,8 @@ function setStateValue(state, recursionDepth = 0)
         //iterate through all elements found (only one in case of action references)
         for (let i in configSearchTerms)
         {
+            //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
+            let sensorDeviationCheck = "return !(feedback == setState);";
             //iterate through search terms (classes for elements, action references for... action references) within one element
             for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
             {
@@ -669,6 +672,12 @@ function setStateValue(state, recursionDepth = 0)
                 //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
                 //console.log("search term", searchTerm);
                 //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
+                let defaultSensorDeviation = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+                if (defaultSensorDeviation !== undefined)
+                {
+                    sensorDeviationCheck = defaultSensorDeviation;
+                }
+
                 let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "eval");
                 //console.log("eval", evalCode);
                 if (evalCode != undefined)
@@ -690,7 +699,13 @@ function setStateValue(state, recursionDepth = 0)
                 stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
-            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", ""), "eval");
+            let customSensorDeviation = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+            if (customSensorDeviation !== undefined)
+            {
+                sensorDeviation = customSensorDeviation;
+            }
+
+            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
             if (customEvalCode != undefined)
             {
                 eval(customEvalCode);
@@ -699,9 +714,33 @@ function setStateValue(state, recursionDepth = 0)
             //only update the pnid if it's not a GUI state (we only want sensor feedback to update the pnid, not setpoint)
             if (!isGuiState)
             {
+                //if the set state is defined (it is an element that even has a set state) and it's not an action reference try checking for set vs feedback value deviation
+                if ((inVars["setState"] != undefined || inVars["setState"] != null) && !isActionReference && sensorDeviationCheck != null && !isWire)
+                {
+                    console.log("checking for set state deviation");
+                    //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
+                    eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+                    if (sensDevChecker(state["value"], inVars["setState"]))
+                    {
+                        //console.log("feedback deviation error");
+                        outVars["color"] = "feedback_deviation_error";
+                    }
+                    /*if (inVars["setState"] < state["value"] - state["value"] * sensorDeviation || inVars["setState"] > state["value"] + state["value"] * sensorDeviation)
+                    {
+                        console.log("feedback deviation error");
+                        outVars["color"] = "feedback_deviation_error";
+                    }*/
+                }
+                
                 applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference);
                 //TODO this part is kinda weird - I don't understand why in case of action references
                 //it actually updates all elements. but it does. so whatever I guess?
+            }
+            else
+            {
+                //todo add handling for set vs feedback value deviation check here as well (if the set state update it should also be able to detect error)
+                //but: is this even wanted? this means that no matter what happens there will always be a short flash of the error state as the feedback value
+                //is always a bit delayed
             }
             
         }
