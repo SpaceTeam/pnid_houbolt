@@ -236,7 +236,7 @@
         ]
     },
     "gui-water_valves": {
-        "eval": "link(inVars['this'], ['water_valves_in:sensor', 'water_valves_out:sensor']); console.log(inVars['this']); if (inVars['value'] > 0) { outVars['value']='Hot' } else { outVars['value']='Cold' }",
+        "eval": "link(inVars['this'], ['water_valves_in:sensor', 'water_valves_out:sensor']); if (inVars['value'] > 0) { outVars['value']='Hot' } else { outVars['value']='Cold' }",
 	    "popup": [
             {
                 "type": "display",
