@@ -211,7 +211,7 @@ async function runTestsHoubolt()
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_valves_out:sensor", "value": 10.0}, {"name": "water_valves_in:sensor", "value": 90.0}];
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}];
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
@@ -229,7 +229,7 @@ async function runTestsHoubolt()
     var testData = [{"name": "pump_hot_water:sensor", "value": 2}];
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "water_valves_out:sensor", "value": 90.0}, {"name": "pump_cold_water:sensor", "value": 90}, {"name": "water_valves_in:sensor", "value": 10.0}];
+    var testData = [{"name": "gui:water_valves", "value": 0}, {"name": "pump_cold_water:sensor", "value": 90}];
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_cold_water:sensor", "value": 90}];
@@ -400,6 +400,9 @@ function link(origin, statesToLink, onlyLinkContents = false)
     {
         statesArray.push(statesToLink);
     }
+    else {
+        statesArray = statesToLink;
+    }
 
     origin = origin.replace(":","-");
     for (let i in statesArray)
@@ -412,7 +415,16 @@ function link(origin, statesToLink, onlyLinkContents = false)
         }
         else
         {
-            if (!existingLinks.includes(state))
+            let isAlreadyLinked = false;
+            for (let n in existingLinks)
+            {
+                if (existingLinks[n]["child"] == state)
+                {
+                    isAlreadyLinked = true;
+                    break;
+                }
+            }
+            if (!isAlreadyLinked)
             {
                 existingLinks.push({child: state, onlyLinkContent: onlyLinkContents});
             }
@@ -625,10 +637,11 @@ function setStateValue(state, recursionDepth = 0)
     {
         //----- prepare for eval behavior block
         //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
+        let setStateValue = getElementValue(state["name"], "setState");
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
-            "setState": getElementValue(state["name"], "setState"),
+            "setState": setStateValue == "" ? undefined : setStateValue,
             "unit" : unit
         };
 
@@ -653,6 +666,8 @@ function setStateValue(state, recursionDepth = 0)
         //iterate through all elements found (only one in case of action references)
         for (let i in configSearchTerms)
         {
+            //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
+            let sensorDeviationCheck = "return !(feedback == setState);";
             //iterate through search terms (classes for elements, action references for... action references) within one element
             for (let index in configSearchTerms[i]) //search through attributes to find class attribute related to type (eg: PnID-Valve_Manual)
             {
@@ -669,6 +684,12 @@ function setStateValue(state, recursionDepth = 0)
                 //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
                 //console.log("search term", searchTerm);
                 //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
+                let defaultSensorDeviation = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+                if (defaultSensorDeviation !== undefined)
+                {
+                    sensorDeviationCheck = defaultSensorDeviation;
+                }
+
                 let evalCode = getConfigData(defaultConfig, searchTerm.replace("_Slim", "").replace("_Short", ""), "eval");
                 //console.log("eval", evalCode);
                 if (evalCode != undefined)
@@ -690,7 +711,13 @@ function setStateValue(state, recursionDepth = 0)
                 stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
-            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", ""), "eval");
+            let customSensorDeviation = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+            if (customSensorDeviation !== undefined)
+            {
+                sensorDeviation = customSensorDeviation;
+            }
+
+            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
             if (customEvalCode != undefined)
             {
                 eval(customEvalCode);
@@ -699,9 +726,33 @@ function setStateValue(state, recursionDepth = 0)
             //only update the pnid if it's not a GUI state (we only want sensor feedback to update the pnid, not setpoint)
             if (!isGuiState)
             {
+                //if the set state is defined (it is an element that even has a set state) and it's not an action reference try checking for set vs feedback value deviation
+                if ((inVars["setState"] != undefined || inVars["setState"] != null) && !isActionReference && sensorDeviationCheck != null && !isWire)
+                {
+                    console.log("checking for set state deviation");
+                    //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
+                    eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+                    if (sensDevChecker(state["value"], inVars["setState"]))
+                    {
+                        //console.log("feedback deviation error");
+                        outVars["color"] = "feedback_deviation_error";
+                    }
+                    /*if (inVars["setState"] < state["value"] - state["value"] * sensorDeviation || inVars["setState"] > state["value"] + state["value"] * sensorDeviation)
+                    {
+                        console.log("feedback deviation error");
+                        outVars["color"] = "feedback_deviation_error";
+                    }*/
+                }
+                
                 applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference);
                 //TODO this part is kinda weird - I don't understand why in case of action references
                 //it actually updates all elements. but it does. so whatever I guess?
+            }
+            else
+            {
+                //todo add handling for set vs feedback value deviation check here as well (if the set state update it should also be able to detect error)
+                //but: is this even wanted? this means that no matter what happens there will always be a short flash of the error state as the feedback value
+                //is always a bit delayed
             }
             
         }
@@ -720,35 +771,30 @@ function setStateValue(state, recursionDepth = 0)
         //probably worth removing altogether, but evaluate first.
     }
 
-    //iterate through all elements linked to this one
+    //iterate through all elements linked to this one unless the current state update is only a child wire update - this brings no new data to the table
     let linkedStateUpdates = [];
-    for (let linkIndex in __stateLinks[state["name"]])
-    {
-        if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
+    if (state["wires_only"] == false || state["wires_only"] == undefined) {
+        for (let linkIndex in __stateLinks[state["name"]])
         {
-            if (state["wires_only"] == false || state["wires_only"] == undefined) //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion)
+            if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
             {
+                //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion) - this is handled by the outermost if
                 linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
                 //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
                 //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
-
             }
-        }
-        else //if we can't find a child wire entry at this index in the link list, push the linked update normally
-        {
-            if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
+            else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
-                if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
+                if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
                 {
-                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in:wire")
+                    if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
                     {
-                        console.log("heat_exchanger_in", state["value"]);
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
                     }
-                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
-                }
-                else
-                {
-                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    else
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    }
                 }
             }
         }

@@ -38,5 +38,15 @@
     },
     "pump": {
         "high": 10
+    },
+    "3wayValve": {
+        "high": 1
+    },
+    "igniter": {
+        "active": 50
+    },
+    "voltage": {
+        "low": 11,
+        "high": 13
     }
 }

@@ -74,20 +74,12 @@
         ]
     },
     "PnID-Valve_Servo_3Way": {
-        "eval": "if (inVars['value'] > 60) { outVars['color']='position_a'; outVars['value']='Pos A ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 40) { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' } else { outVars['color']='position_b'; outVars['value']='Pos B ('+Math.round(inVars['value'])+')' }",
+        "eval": "if (inVars['value'] >= thresholds['3wayValve']['high']) { outVars['color']='position_b'; outVars['value']='Hot' } else { outVars['color']='position_a'; outVars['value']='Cold' }",
 	    "popup": [
             {
                 "type": "display",
                 "style": "text",
                 "variable": "value"
-            },
-            {
-                "type": "input",
-                "style": "slider",
-                "variable": "value",
-                "min": 0,
-                "max": 65535,
-                "step": 1
             }
         ]
     },
@@ -191,8 +183,29 @@
             }
         ]
     },
+    "PnID-igniter": {
+        "eval": "if (inVars['value'] > thresholds['igniter']['active']) { outVars['color']='on' } else { outVars['color']='off' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
+    "PnID-PowerSource": {
+        "eval": "if (inVars['value'] > thresholds['voltage']['high'] || inVars['value'] < thresholds['voltage']['low']) { outVars['color']='outside_range' } else { outVars['color']='nominal'; }"
+    },
     "PnID-Pump": {
         "eval": "if (inVars['value'] > 50) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+        "sens_deviation": "if ((feedback >= thresholds['pump']['high'] && setState == 1) || (feedback < thresholds['pump']['high'] && setState == 0)) { return false; } return true;",
 	    "popup": [
             {
                 "type": "display",
@@ -227,6 +240,23 @@
     },
     "gui-ox_press_depress": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
+    "gui-water_valves": {
+        "eval": "link(inVars['this'], ['water_valves_in:sensor', 'water_valves_out:sensor']); if (inVars['value'] > 0) { outVars['value']='Hot' } else { outVars['value']='Cold' }",
 	    "popup": [
             {
                 "type": "display",
