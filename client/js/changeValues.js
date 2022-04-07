@@ -415,7 +415,16 @@ function link(origin, statesToLink, onlyLinkContents = false)
         }
         else
         {
-            if (!existingLinks.includes(state))
+            let isAlreadyLinked = false;
+            for (let n in existingLinks)
+            {
+                if (existingLinks[n]["child"] == state)
+                {
+                    isAlreadyLinked = true;
+                    break;
+                }
+            }
+            if (!isAlreadyLinked)
             {
                 existingLinks.push({child: state, onlyLinkContent: onlyLinkContents});
             }
@@ -762,35 +771,30 @@ function setStateValue(state, recursionDepth = 0)
         //probably worth removing altogether, but evaluate first.
     }
 
-    //iterate through all elements linked to this one
+    //iterate through all elements linked to this one unless the current state update is only a child wire update - this brings no new data to the table
     let linkedStateUpdates = [];
-    for (let linkIndex in __stateLinks[state["name"]])
-    {
-        if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
+    if (state["wires_only"] == false || state["wires_only"] == undefined) {
+        for (let linkIndex in __stateLinks[state["name"]])
         {
-            if (state["wires_only"] == false || state["wires_only"] == undefined) //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion)
+            if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
             {
+                //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion) - this is handled by the outermost if
                 linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
                 //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
                 //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
-
             }
-        }
-        else //if we can't find a child wire entry at this index in the link list, push the linked update normally
-        {
-            if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
+            else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
-                if (__stateLinks[state["name"]][linkIndex]["child"].endsWith(":wire"))
+                if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
                 {
-                    if (__stateLinks[state["name"]][linkIndex]["child"] == "heat_exchanger_in:wire")
+                    if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
                     {
-                        console.log("heat_exchanger_in", state["value"]);
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
                     }
-                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
-                }
-                else
-                {
-                    linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    else
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    }
                 }
             }
         }

@@ -418,3 +418,22 @@ html body {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
+
+[data-pnid-powersource=nominal] {
+    stroke: var(--neutral);
+    fill: none;
+}
+[data-pnid-powersource=nominal] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
+}
+
+[data-pnid-powersource=outside_range] path, [data-pnid-powersource=outside_range] rect {
+    stroke: var(--error-color);
+    fill: none;
+}
+
+[data-pnid-powersource=outside_range] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}

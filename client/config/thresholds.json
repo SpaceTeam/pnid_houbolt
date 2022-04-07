@@ -44,5 +44,9 @@
     },
     "igniter": {
         "active": 50
+    },
+    "voltage": {
+        "low": 11,
+        "high": 13
     }
 }

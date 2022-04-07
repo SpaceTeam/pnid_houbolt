@@ -206,7 +206,7 @@ function getElementValue(valueReference, valueID)
     if (element == undefined || element.length == 0)
     {
         //consider removing this warning or changing it up, this is now legitimate behavior thanks to getElementValue(id, "setState")
-        printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
+        //printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
         return undefined;
     }
     return element.text();
@@ -231,7 +231,8 @@ function getElementAttrValue(valueReference, attrName)
             //console.log("tried getting attr value for wire, ignoring");
             return undefined;
         }
-        printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${valueReference}!`);
+        //consider removing this warning or changing it up, this is now legitimate behavior thanks to getElementValue(id, "setState")
+        //printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${valueReference}!`);
         return undefined;
     }
     return element.attr(attrName);

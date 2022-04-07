@@ -184,7 +184,24 @@
         ]
     },
     "PnID-igniter": {
-        "eval": "if (inVars['value'] > thresholds['igniter']['active']) { outVars['color']='on'; } else { outVars['color']='off'; }",
+        "eval": "if (inVars['value'] > thresholds['igniter']['active']) { outVars['color']='on' } else { outVars['color']='off' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
+    "PnID-PowerSource": {
+        "eval": "if (inVars['value'] > thresholds['voltage']['high'] || inVars['value'] < thresholds['voltage']['low']) { outVars['color']='outside_range' } else { outVars['color']='nominal'; }",
 	    "popup": [
             {
                 "type": "display",
