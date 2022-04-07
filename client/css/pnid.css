@@ -391,3 +391,30 @@ html body {
 [data-pnid-pump=off] {
 
 }
+
+[data-pnid-igniter=on] {
+    stroke: var(--on);
+    fill: var(--powered);
+}
+[data-pnid-igniter=on] text:not(.static-color) {
+    stroke: var(--on);
+    fill: var(--on);
+}
+[data-pnid-igniter=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-igniter=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}
+
+[data-pnid-igniter=off] path, [data-pnid-igniter=off] rect {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-valve_solenoid_no=off] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}

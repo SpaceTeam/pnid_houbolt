@@ -41,5 +41,8 @@
     },
     "3wayValve": {
         "high": 1
+    },
+    "igniter": {
+        "active": 50
     }
 }

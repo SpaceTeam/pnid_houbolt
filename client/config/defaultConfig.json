@@ -183,6 +183,23 @@
             }
         ]
     },
+    "PnID-igniter": {
+        "eval": "if (inVars['value'] > thresholds['igniter']['active']) { outVars['color']='on'; } else { outVars['color']='off'; }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
     "PnID-Pump": {
         "eval": "if (inVars['value'] > 50) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
         "sens_deviation": "if ((feedback >= thresholds['pump']['high'] && setState == 1) || (feedback < thresholds['pump']['high'] && setState == 0)) { return false; } return true;",
