@@ -200,7 +200,11 @@ html body {
 [data-pnid-sensor_temperature=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_temperature=high] text:not(.static-color) {
+[data-pnid-water_tank=high] text:not(.static-color) {
+    stroke: var(--high-water-tank);
+    fill: var(--high-water-tank);
+}
+[data-pnid-sensor_temperature=high] text:not(.static-color), [data-pnid-water_tank=high] rect:nth-of-type(2) {
     stroke: var(--high);
     fill: var(--high);
 }
@@ -208,7 +212,11 @@ html body {
 [data-pnid-sensor_temperature=mid] {
     stroke: var(--mid);
 }
-[data-pnid-sensor_temperature=mid] text:not(.static-color) {
+[data-pnid-water_tank=mid] text:not(.static-color) {
+    stroke: var(--mid-water-tank);
+    fill: var(--mid-water-tank);
+}
+[data-pnid-sensor_temperature=mid] text:not(.static-color), [data-pnid-water_tank=mid] rect:nth-of-type(2) {
     stroke: var(--mid);
     fill: var(--mid);
 }
@@ -216,7 +224,11 @@ html body {
 [data-pnid-sensor_temperature=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_temperature=low] text:not(.static-color) {
+[data-pnid-water_tank=low] text:not(.static-color) {
+    stroke: var(--low-water-tank);
+    fill: var(--low-water-tank);
+}
+[data-pnid-sensor_temperature=low] text:not(.static-color), [data-pnid-water_tank=low] rect:nth-of-type(2) {
     stroke: var(--low);
     fill: var(--low);
 }
@@ -224,16 +236,20 @@ html body {
 [data-pnid-sensor_temperature=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_temperature=neutral] text:not(.static-color) {
+[data-pnid-water_tank=neutral] text:not(.static-color) {
+    stroke: var(--neutral-water-tank);
+    fill: var(--neutral-water-tank);
+}
+[data-pnid-sensor_temperature=neutral] text:not(.static-color), [data-pnid-water_tank=neutral] rect:nth-of-type(2) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
 
-[data-pnid-sensor_temperature=notconnected] {
+[data-pnid-sensor_temperature=notconnected], [data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
     stroke: var(--default-stroke);
 }
-[data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
+[data-pnid-sensor_temperature=notconnected] text:not(.static-color), [data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }

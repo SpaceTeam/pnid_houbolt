@@ -729,7 +729,7 @@ function setStateValue(state, recursionDepth = 0)
                 //if the set state is defined (it is an element that even has a set state) and it's not an action reference try checking for set vs feedback value deviation
                 if ((inVars["setState"] != undefined || inVars["setState"] != null) && !isActionReference && sensorDeviationCheck != null && !isWire)
                 {
-                    console.log("checking for set state deviation");
+                    //console.log("checking for set state deviation");
                     //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
                     eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
                     if (sensDevChecker(state["value"], inVars["setState"]))

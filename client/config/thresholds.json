@@ -25,12 +25,12 @@
         "high": 9.0
     },
     "waterHotTemps": {
-        "low": 24.0,
-        "high": 34.0
+        "low": 2900.0,
+        "high": 3000.0
     },
     "waterColdTemps": {
-        "low": 1.0,
-        "high": 5.0
+        "low": 40.0,
+        "high": 45.0
     },
     "waterExchangerTemps": {
         "low": 10.0,

@@ -57,7 +57,8 @@
     },
     "PnID-Valve_Servo": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
+	    "sens_deviation": "null",
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -120,6 +121,24 @@
         ]
     },
     "PnID-Sensor_Temperature": {
+        "eval": "if (inVars['value'] > 30) { outVars['color']='high' } else if (inVars['value'] > -200) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": null,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
+    },
+    "PnID-Water_Tank": {
         "eval": "if (inVars['value'] > 30) { outVars['color']='high' } else if (inVars['value'] > -200) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
 	    "popup": [
             {
@@ -204,8 +223,8 @@
         "eval": "if (inVars['value'] > thresholds['voltage']['high'] || inVars['value'] < thresholds['voltage']['low']) { outVars['color']='outside_range' } else { outVars['color']='nominal'; }"
     },
     "PnID-Pump": {
-        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
-        "sens_deviation": "if ((feedback >= thresholds['pump']['high'] && setState == 1) || (feedback < thresholds['pump']['high'] && setState == 0)) { return false; } return true;",
+        "eval": "if (inVars['value'] > 0) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+        "sens_deviation": "null",
 	    "popup": [
             {
                 "type": "display",
