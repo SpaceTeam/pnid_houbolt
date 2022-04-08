@@ -22,6 +22,10 @@
 	border-style: solid;
 	border-color: var(--content-secondary);
 	border-width: 0.1rem;
+
+	
+	resize: both;
+	overflow: auto;
 }
 
 .btn-close
@@ -54,4 +58,12 @@
 .popup iframe
 {
 	border: none;
+	width: 100%;
+	height: auto;
+}
+
+.popup .externalContainer
+{
+    width: 100%;
+    height: calc(100% - 3.7rem);
 }

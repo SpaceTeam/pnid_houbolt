@@ -42,19 +42,19 @@
         "states": [
             "water_hot_temp:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "temp_sens_cold": {
         "states": [
             "water_cold_temp:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "temp_sens_heat_exchanger": {
         "states": [
             "water_mantle_temp:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "3_way_water_valve_out": {
         "states": [

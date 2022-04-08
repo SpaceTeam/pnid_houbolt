@@ -251,12 +251,20 @@ html body {
 }
 
 
-[data-pnid-sensor_temperature=notconnected], [data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
+[data-pnid-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-sensor_temperature=notconnected] text:not(.static-color), [data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
+[data-pnid-water_tank=neutral] text:not(.static-color) {
+    stroke: var(--neutral-water-tank);
+    fill: var(--neutral-water-tank);
+}
+[data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
+}
+[data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
+    stroke: var(--default-stroke);
+    fill: none;
 }
 
 [data-pnid-thermalbarrier=low] {

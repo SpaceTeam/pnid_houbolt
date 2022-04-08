@@ -175,8 +175,8 @@ function createExternalDisplay(config, source)
     }
     let element = $("#externalDisplayTemp").clone();
     element.removeAttr("id");
-    element.find("iframe").attr("width", width);
-    element.find("iframe").attr("height", height);
+    //element.find("iframe").attr("width", width);
+    //element.find("iframe").attr("height", height);
     element.find("iframe").attr("src", source);
     themeSubscribe(element, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
     return element;
@@ -268,6 +268,8 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         newContentRow = createTextDisplay(popupID, curValue);
                         break;
                     case "external":
+                        popup.css("width", "400px");
+                        popup.css("height", "300px");
                         let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let sourceDefault = defaultConfig["externalSourceDefault"];
                         let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replace("-",":"));
@@ -386,7 +388,8 @@ function createPopup(popupID, parent, isActionReference)
         popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
     }
     //console.log("pop pos2:", popupPosition);
-    popupClone.attr('style', `width: auto; height: auto; top: ${popupPosition[1]}px; left: ${popupPosition[0]}px;`);
+    popupClone.css("top", popupPosition[1]+"px");
+    popupClone.css("left" ,popupPosition[0]+"px");
 	popupClone.fadeIn(100);
     
 	activePopups[popupID] = {
