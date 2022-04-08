@@ -369,9 +369,28 @@ function updatePNID(stateList, recursionDepth = 0)
         //{
             setStateValue(stateList[stateIndex], recursionDepth);
         //}
+
+        //HOTFIX pump-valves linkage, PLEASE REMOVE AS SOON AS POSSIBLE!!!
+        if (stateList[stateIndex].name === "gui-water_valves" || stateList[stateIndex].name === "gui-water_pumps")
+            checkPumps(stateList[stateIndex].name);
 	}
 	
 	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
+}
+
+function checkPumps(state)
+{
+    let currValveState = $(".PnID-Valve_Servo_3Way").first().attr("data-pnid-valve_servo_3way");
+    let coldPump = $(".pump_cold_water-sensor");
+    let hotPump = $(".pump_hot_water-sensor");
+    if (currValveState === "position_a" && hotPump.attr("data-pnid-pump") === "on")
+    {
+        updatePNID([{"name": "pump_hot_water:sensor", "value": 0.0}])
+    }
+    if (currValveState === "position_b" && coldPump.attr("data-pnid-pump") === "on")
+    {
+        updatePNID([{"name": "pump_cold_water:sensor", "value": 0.0}])
+    }
 }
 
 /**
