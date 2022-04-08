@@ -628,7 +628,7 @@ function setStateValue(state, recursionDepth = 0)
             }
             else
             {
-                unit = elementGroup.not("g.PnID-ThermalBarrier").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
+                unit = elementGroup.not("g.PnID-ThermalBarrier").not("g.PnID-HeatExchanger").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
                 //TODO I dislike that this is hardcoded, but don't know how else to do that
 
                 //raw value without any processing
