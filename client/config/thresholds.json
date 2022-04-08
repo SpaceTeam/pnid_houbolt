@@ -37,7 +37,7 @@
         "high": 20.0
     },
     "waterTemps": {
-        "notconnected": 1000
+        "notconnected": 4000
     },
     "pump": {
         "high": 1

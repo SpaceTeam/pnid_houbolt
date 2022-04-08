@@ -619,7 +619,7 @@
         <text class="Unit" x="6940" y="7780" visibility="hidden" transform="rotate(90,6940,7780) scale(1,-1) translate(0,-15560)">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_vent_valve-sensor')"></rect>    </g>
-    <g class="U4 PnID-Pump pump_hot_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="">
+    <g class="U4 PnID-Pump pump_hot_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps">
         <!-- coordinates: x = 8440 y = 7980 -->
         <g>        <circle cx="8440" cy="7980" r="94" />
         <circle cx="8440" cy="7980" r="180" />
@@ -634,11 +634,11 @@
         <text class="setState text-C" x="8440" y="7666" visibility="hidden"></text>
         <text class="value text-C" x="8440" y="7666" visibility="visible">pump_hot_water:sensor</text>
         <text class="valueRaw text-C" x="8440" y="7666" visibility="hidden">pump_hot_water:sensor</text>
-        <text class="actionReferenceValue text-C" x="8440" y="7666" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="8440" y="7666" visibility="hidden"> </text>
+        <text class="actionReferenceValue text-C" x="8440" y="7666" visibility="hidden">gui-water_pumps</text>
+        <text class="actionReferenceValueRaw text-C" x="8440" y="7666" visibility="hidden">gui-water_pumps</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pump_hot_water-sensor')"></rect>    </g>
-    <g class="U7 PnID-Pump pump_cold_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference=""transform="scale(-1,1) translate(-19600,0)">
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
+    <g class="U7 PnID-Pump pump_cold_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps"transform="scale(-1,1) translate(-19600,0)">
         <!-- coordinates: x = 9800 y = 7980 -->
         <g>        <circle cx="9800" cy="7980" r="94" />
         <circle cx="9800" cy="7980" r="180" />
@@ -653,10 +653,10 @@
         <text class="setState text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)"></text>
         <text class="value text-C" x="9800" y="7666" visibility="visible" transform="scale(-1,1) translate(-19600,0)">pump_cold_water:sensor</text>
         <text class="valueRaw text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">pump_cold_water:sensor</text>
-        <text class="actionReferenceValue text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)"> </text>
+        <text class="actionReferenceValue text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">gui-water_pumps</text>
+        <text class="actionReferenceValueRaw text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">gui-water_pumps</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pump_cold_water-sensor')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
     <g class="U5 PnID-Valve_Servo_3Way water_valves_out-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves"transform="rotate(180,9120,7550)">
         <!-- coordinates: x = 9120 y = 7550 -->
         <g>        <circle cx="9120" cy="7020" r="100" />
@@ -695,7 +695,7 @@
         <text class="actionReferenceValueRaw text-C" x="9120" y="8646" visibility="hidden">gui-water_valves</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
-    <g class="WaterColdTemp PnID-Water_Tank water_cold_temp-sensor comp" data-unit="" data-pnid-water_tank="" data-content="" action-reference="">
+    <g class="WaterColdTemp PnID-Water_Tank water_cold_temp-sensor comp" data-unit="˚C" data-pnid-water_tank="" data-content="" action-reference="">
         <!-- coordinates: x = 9880 y = 9730 -->
         <g>        <rect class="rect" x="9480" y="9270" width="800" height="80" />
         <rect class="rect" x="9550" y="9545" width="660" height="495" />
@@ -708,6 +708,7 @@
         <text class="valueRaw text-C" x="9875" y="9730" visibility="hidden">water_cold_temp:sensor</text>
         <text class="actionReferenceValue text-C" x="9875" y="9730" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-C" x="9875" y="9730" visibility="hidden"> </text>
+        <text class="Unit" x="9880" y="9730" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_cold_temp-sensor')"></rect>    </g>
     <g class="Pressurant1 PnID-GasBottle GasBottle comp" data-unit="" data-pnid-gasbottle="" data-content="" action-reference="">
@@ -726,7 +727,7 @@
         <text class="actionReferenceValueRaw text-C" x="7440" y="8020" visibility="hidden"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('GasBottle')"></rect>    </g>
-    <g class="WaterTankHot PnID-Water_Tank water_hot_temp-sensor comp" data-unit="" data-pnid-water_tank="" data-content="" action-reference="">
+    <g class="WaterTankHot PnID-Water_Tank water_hot_temp-sensor comp" data-unit="˚C" data-pnid-water_tank="" data-content="" action-reference="">
         <!-- coordinates: x = 8370 y = 9720 -->
         <g>        <rect class="rect" x="7970" y="9260" width="800" height="80" />
         <rect class="rect" x="8040" y="9535" width="660" height="495" />
@@ -739,6 +740,7 @@
         <text class="valueRaw text-C" x="8375" y="9730" visibility="hidden">water_hot_temp:sensor</text>
         <text class="actionReferenceValue text-C" x="8375" y="9730" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-C" x="8375" y="9730" visibility="hidden"> </text>
+        <text class="Unit" x="8370" y="9720" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_hot_temp-sensor')"></rect>    </g>
 

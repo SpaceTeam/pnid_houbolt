@@ -240,6 +240,23 @@
             }
         ]
     },
+    "gui-water_pumps": {
+        "eval": "link(inVars['this'], ['pump_cold_water:sensor', 'pump_hot_water:sensor']); if (inVars['value'] > 0) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
     "gui-fuel_press_depress": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
 	    "popup": [
