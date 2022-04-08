@@ -42,19 +42,19 @@
         "states": [
             "water_hot_temp:sensor"
         ],
-        "eval": "link(inVars['this'], 'WaterTankHot'); if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "temp_sens_cold": {
         "states": [
             "water_cold_temp:sensor"
         ],
-        "eval": "link(inVars['this'], 'WaterTankHot'); if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "temp_sens_heat_exchanger": {
         "states": [
             "water_mantle_temp:sensor"
         ],
-        "eval": "if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+        "eval": "if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
     },
     "3_way_water_valve_out": {
         "states": [
@@ -254,8 +254,9 @@
     "water_wires": {
         "states": [
             "heat_exchanger_in:wire",
-            "pump_hot_water:sensor:wire"
+            "pump_hot_water:sensor:wire",
+            "pump_cold_water:sensor:wire"
         ],
-        "eval": "if (inVars['value'] > thresholds['pump']['high']) { outVars['color'] = 'content' } else { outVars['color'] = 'empty' }"
+        "eval": "if (inVars['value'] >= thresholds['pump']['high']) { outVars['color'] = 'content' } else { outVars['color'] = 'empty' }"
     }
 }

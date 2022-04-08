@@ -69,6 +69,9 @@ function clearElementBuffer()
  */
 function storeElementInBuffer(identifier, subidentifier = "parent")
 {
+    if (identifier == undefined) {
+        return __emptyObject;
+    }
     let isActionReference = false;
     let element = undefined;
     let elementExists = true;
@@ -85,7 +88,7 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
         {
         	//console.error("action reference cache miss", identifier);
             element = $(document).find(`g[action-reference='${identifier}']`);
-            if (element.length == 0) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
+            if (element.length == 0 || element == undefined) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
             {
             	elementExists = false;
                 //TODO not sure whether to return element (which is empty) or undefined at this point.

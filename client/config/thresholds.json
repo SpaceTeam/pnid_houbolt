@@ -37,7 +37,7 @@
         "high": 30.0
     },
     "pump": {
-        "high": 10
+        "high": 1
     },
     "3wayValve": {
         "high": 1

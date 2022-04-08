@@ -226,7 +226,7 @@ async function runTestsHoubolt()
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_mantle_temp:sensor", "value": 25.0}];
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "pump_hot_water:sensor", "value": 2}];
+    var testData = [{"name": "pump_hot_water:sensor", "value": 0}];
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "gui:water_valves", "value": 0}, {"name": "pump_cold_water:sensor", "value": 90}];
@@ -400,7 +400,8 @@ function link(origin, statesToLink, onlyLinkContents = false)
     {
         statesArray.push(statesToLink);
     }
-    else {
+    else
+    {
         statesArray = statesToLink;
     }
 
@@ -451,6 +452,16 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
     {
         statesArray.push(statesToUnlink);
     }
+    else
+    {
+        statesArray = statesToUnlink;
+    }
+    if (statesToUnlink == "all")
+    {
+        statesArray = __stateLinks[origin];
+        //this is not very performant and could be handled as a special case
+    }
+
     origin = origin.replace(":","-");
     for (let i in statesArray)
     {
@@ -458,7 +469,15 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
         let existingLinks = __stateLinks[origin];
         if (existingLinks != undefined && existingLinks.length > 0)
         {
-            let resultIndex = existingLinks.indexOf(state); //search for the location of the state in the existing links, -1 if not in the list.
+            let resultIndex = -1; //search for the location of the state in the existing links, -1 if not in the list.
+            for (let n in existingLinks)
+            {
+                if (existingLinks[n]["child"] == state)
+                {
+                    resultIndex = n;
+                    break;
+                }
+            }
             if (resultIndex != -1)
             {
                 existingLinks.splice(resultIndex, 1); //remove item from array

@@ -1,7 +1,7 @@
 {
     "externalSourceDefault": "http://192.168.1.7:3000/d-solo/_wWiqssnk/uhoubolt?orgId=1&panelId=",
     "wire": {
-        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected' }"
+        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='' } else { outVars['color']='notconnected' }"
     },
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
@@ -57,7 +57,7 @@
     },
     "PnID-Valve_Servo": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
-	    "sens_deviation": "null",
+	    "sens_deviation": null,
         "popup": [
             {
                 "type": "display",
@@ -139,7 +139,7 @@
         ]
     },
     "PnID-Water_Tank": {
-        "eval": "if (inVars['value'] > 30) { outVars['color']='high' } else if (inVars['value'] > -200) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
+        "eval": "if (inVars['value'] > 30) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > -200) { outVars['color']='low'; outVars['content']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected'; outVars['content']='' }",
 	    "popup": [
             {
                 "type": "display",
@@ -187,7 +187,7 @@
         ]
     },
     "PnID-LED": {
-        "eval": "if (inVars['value'] > 3000) { outVars['color']='on'; } else { outVars['color']='off'; }"
+        "eval": "if (inVars['value'] > 0) { outVars['color']='on'; } else { outVars['color']='off'; }"
     },
     "PnID-Engine_TorchIgniter": {
         "eval": "",
@@ -223,8 +223,8 @@
         "eval": "if (inVars['value'] > thresholds['voltage']['high'] || inVars['value'] < thresholds['voltage']['low']) { outVars['color']='outside_range' } else { outVars['color']='nominal'; }"
     },
     "PnID-Pump": {
-        "eval": "if (inVars['value'] > 0) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
-        "sens_deviation": "null",
+        "eval": "if (inVars['value'] >= thresholds['pump']['high']) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+        "sens_deviation": null,
 	    "popup": [
             {
                 "type": "display",
