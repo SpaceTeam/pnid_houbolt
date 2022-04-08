@@ -202,6 +202,7 @@ html body {
     fill: var(--neutral);
 }
 
+
 [data-pnid-sensor_temperature=high] {
     stroke: var(--high);
 }
@@ -213,6 +214,8 @@ html body {
     stroke: var(--high);
     fill: var(--high);
 }
+
+
 
 [data-pnid-sensor_temperature=mid] {
     stroke: var(--mid);
@@ -226,6 +229,7 @@ html body {
     fill: var(--mid);
 }
 
+
 [data-pnid-sensor_temperature=low] {
     stroke: var(--low);
 }
@@ -237,6 +241,7 @@ html body {
     stroke: var(--low);
     fill: var(--low);
 }
+
 
 [data-pnid-sensor_temperature=neutral] {
     stroke: var(--neutral);
@@ -254,9 +259,9 @@ html body {
 [data-pnid-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-water_tank=neutral] text:not(.static-color) {
-    stroke: var(--neutral-water-tank);
-    fill: var(--neutral-water-tank);
+[data-pnid-water_tank=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
 }
 [data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
@@ -266,6 +271,25 @@ html body {
     stroke: var(--default-stroke);
     fill: none;
 }
+
+
+[data-pnid-heatexchanger=high] {
+    stroke: var(--high);
+}
+[data-pnid-heatexchanger=mid] {
+    stroke: var(--mid);
+}
+[data-pnid-heatexchanger=low] {
+    stroke: var(--low);
+}
+[data-pnid-heatexchanger=neutral] {
+    stroke: var(--neutral);
+}
+[data-pnid-heatexchanger=notconnected] {
+    stroke: var(--default-stroke);
+}
+
+
 
 [data-pnid-thermalbarrier=low] {
     stroke: var(--low);
