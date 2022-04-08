@@ -1,3 +1,8 @@
+:root {
+    --pnid-max-width: initial;
+    --pnid-max-height: calc(100%);
+}
+
 html body {
     background-color: var(--background-primary);
     color: var(--content-primary);

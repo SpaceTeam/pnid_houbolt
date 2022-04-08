@@ -1,4 +1,4 @@
-<svg style="position: relative; top: 0; left: 0; max-width: 100%; max-height: calc(100vh - 150px);" viewBox="1048 3506.6 9964 9306.8">
+<svg style="position: relative; top: 0; left: 0; max-width: var(--pnid-max-width); max-height: var(--pnid-max-height);" viewBox="1048 3506.6 9964 9306.8">
 
 <!-- Components -->
 
