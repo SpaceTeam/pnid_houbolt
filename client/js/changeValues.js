@@ -409,12 +409,12 @@ var __stateLinks = {};
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
- * @param {boolean} onlyLinkContents Whether or not to only link the contents and not the state value updates. Setting to true does not pass state updates on from origin to child states, false (default) links fully.
+ * @param {boolean} linkType What kind of link this is - either "all" for linking value and content, "content" for only linking content or "value" for only linking value.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, statesToLink, onlyLinkContents = false)
+function link(origin, statesToLink, linkType)
 {
     let statesArray = [];
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
@@ -433,7 +433,7 @@ function link(origin, statesToLink, onlyLinkContents = false)
         let existingLinks = __stateLinks[origin];
         if (existingLinks == undefined || existingLinks.length == 0)
         {
-            existingLinks = [{child: state, onlyLinkContent: onlyLinkContents}];
+            existingLinks = [{child: state, linkType: linkType}];
         }
         else
         {
@@ -448,7 +448,7 @@ function link(origin, statesToLink, onlyLinkContents = false)
             }
             if (!isAlreadyLinked)
             {
-                existingLinks.push({child: state, onlyLinkContent: onlyLinkContents});
+                existingLinks.push({child: state, linkType: linkType});
             }
         }
         __stateLinks[origin] = existingLinks;
@@ -826,7 +826,7 @@ function setStateValue(state, recursionDepth = 0)
             }
             else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
-                if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
+                if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
                 {
                     if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
                     {
