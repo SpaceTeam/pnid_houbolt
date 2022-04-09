@@ -132,7 +132,7 @@ html body {
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=feedback_deviation_error] path:nth-of-type(3), [data-pnid-valve_servo=feedback_deviation_error] path:nth-of-type(3), [data-pnid-valve_needle_servo=feedback_deviation_error] path:nth-of-type(3) {
+[data-pnid-valve_pneumatic=feedback_deviation_error] path, [data-pnid-valve_servo=feedback_deviation_error] path, [data-pnid-valve_needle_servo=feedback_deviation_error] path {
     stroke: var(--error-color);
     fill: none;
 }

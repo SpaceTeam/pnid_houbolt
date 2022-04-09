@@ -843,7 +843,7 @@
     <g class="pump_cold_water-sensor wire" data-pnid-wire="">
         <line x1="9590" y1="7830" x2="9320" y2="7830" />
     </g>
-    <g class="wire" data-pnid-wire="">
+    <g class="water_tank_cold_return-wire wire" data-pnid-wire="">
         <line x1="9710" y1="9070" x2="9710" y2="9270" />
         <line x1="9320" y1="9070" x2="9710" y2="9070" />
     </g>
