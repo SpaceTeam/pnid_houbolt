@@ -360,7 +360,7 @@ function updatePNID(stateList, recursionDepth = 0)
 
     logStates(stateList);
 	
-	for (stateIndex in stateList)
+	for (let stateIndex in stateList)
 	{
 		//let stateName = stateList[stateIndex]["name"];
 		//let stateValue = stateList[stateIndex]["value"];
@@ -409,12 +409,12 @@ var __stateLinks = {};
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
- * @param {boolean} linkType What kind of link this is - either "all" for linking value and content, "content" for only linking content or "value" for only linking value.
+ * @param {string=all} linkType What kind of link this is - either "all" for linking value and content, "content" for only linking content or "value" for only linking value.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, statesToLink, linkType)
+function link(origin, statesToLink, linkType = "all")
 {
     let statesArray = [];
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
@@ -540,16 +540,20 @@ function findLinkParents(linkedChild, linkType = "all", isWire = false)
     for (let key in __stateLinks)
     {
         //if (__stateLinks[key]["children"].includes(linkedChild))
-        if (__stateLinks[key].some(e => e.child === linkedChild))
+        if (__stateLinks[key].some(e => {
+            //console.log('e', e, key);
+            return (e.child === linkedChild)
+                && (
+                    e.linkType == linkType
+                    || (e.linkType == "value" && linkType == "all")
+                    || (e.linkType == "all" && linkType == "value")
+                    || (e.linkType == "content" && linkType == "all")
+                    || (e.linkType == "all" && linkType == "content")
+                );
+        }))
         {
-            if (e.linkType == linkType
-                || (e.linkType == "value" && linkType == "all")
-                || (e.linkType == "all" && linkType == "value")
-                || (e.linkType == "content" && linkType == "all")
-                || (e.linkType == "all" && linkType == "content"))
-            {
-                parents.push(key);
-            }
+            console.log('found parent', key);
+            parents.push(key);
         }
     }
     if (isWire) // add parent of implicitly linked wires
@@ -833,6 +837,9 @@ function setStateValue(state, recursionDepth = 0)
             }
             else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
+                if (state['name'] == 'pump_cold_water-sensor') {
+                    console.log('checking cold water pump links');
+                }
                 if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
                 {
                     if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
