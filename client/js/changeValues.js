@@ -1,3 +1,5 @@
+const e = require("express");
+
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 $.get('/config/default', function(data) {
@@ -533,7 +535,7 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
  * @see link
  * @see unlink
  */
-function findLinkParents(linkedChild, isWire = false)
+function findLinkParents(linkedChild, linkType = "all", isWire = false)
 {
     //console.log("linked child", linkedChild, isWire);
     let parents = [];
@@ -542,7 +544,14 @@ function findLinkParents(linkedChild, isWire = false)
         //if (__stateLinks[key]["children"].includes(linkedChild))
         if (__stateLinks[key].some(e => e.child === linkedChild))
         {
-            parents.push(key);
+            if (e.linkType == linkType
+                || (e.linkType == "value" && linkType == "all")
+                || (e.linkType == "all" && linkType == "value")
+                || (e.linkType == "content" && linkType == "all")
+                || (e.linkType == "all" && linkType == "content"))
+            {
+                parents.push(key);
+            }
         }
     }
     if (isWire) // add parent of implicitly linked wires
@@ -772,7 +781,7 @@ function setStateValue(state, recursionDepth = 0)
                     //console.log("checking for set state deviation");
                     //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
                     eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
-                    console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+                    //console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
                     if (sensDevChecker(state["value"], parseFloat(inVars["setState"])))
                     {
                         //console.log("feedback deviation error");
@@ -892,7 +901,7 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
                     if (ownContent == undefined || ownContent == "") //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
                     {
                         //console.log("did not find own content", elementGroup);
-                        let parents = findLinkParents(elementName, isWire);
+                        let parents = findLinkParents(elementName, "content", isWire);
                         //console.log("parents", parents);
                         let parentContent = traverseParentsToContent(elementName, isWire);
                         /*for (let i in parents)
@@ -955,7 +964,7 @@ function traverseParentsToContent(elementName, isWire = false, recursionDepth = 
         return undefined;
     }
 
-    let parents = findLinkParents(elementName, isWire);
+    let parents = findLinkParents(elementName, "content", isWire);
     let parentContent = getElementAttrValue(parents[0], "data-content");
     let recContent = traverseParentsToContent(parents[0], false, recursionDepth + 1);
 

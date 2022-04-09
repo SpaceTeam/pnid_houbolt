@@ -441,7 +441,7 @@
         <text class="actionReferenceValueRaw text-C" x="2820" y="12060" visibility="hidden" transform="rotate(180,2820,12060)"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter1_cont-sensor')"></rect>    </g>
-    <g class="WaterMantle PnID-HeatExchanger water_mantle_temp-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-14900,0)">
+    <g class="WaterMantle PnID-HeatExchanger heat_exchanger_mantle-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-14900,0)">
         <!-- coordinates: x = 7450 y = 8910 -->
         <g>        <path d="M 7180 9230 A 401.5420276882608 401.5420276882608 0 0 0 7700 9230" />
         <path d="M 7180 9090 A 401.5420276882608 401.5420276882608 0 0 0 7700 9090" />
@@ -457,12 +457,12 @@
         <path d="M 7080 8530 L 7178 8530" />
         </g>        <text class="reference static-color text-L" x="7800" y="8900" visibility="hidden" transform="scale(-1,1) translate(-15600,0)">WaterMantle</text>
         <text class="setState text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"></text>
-        <text class="value text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">water_mantle_temp:sensor</text>
-        <text class="valueRaw text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">water_mantle_temp:sensor</text>
+        <text class="value text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">heat_exchanger_mantle:sensor</text>
+        <text class="valueRaw text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">heat_exchanger_mantle:sensor</text>
         <text class="actionReferenceValue text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"> </text>
         <text class="actionReferenceValueRaw text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"> </text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle_temp-sensor')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('heat_exchanger_mantle-sensor')"></rect>    </g>
     <g class="Sensor_Temperature4 PnID-Sensor_Temperature water_mantle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="High" action-reference="">
         <!-- coordinates: x = 7920 y = 8950 -->
         <g>        <circle cx="7920" cy="8950" r="100" />

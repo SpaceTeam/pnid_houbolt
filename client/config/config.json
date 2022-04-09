@@ -60,25 +60,31 @@
         "states": [
             "water_valves_out:sensor"
         ],
-        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire'); link('pump_cold_water:sensor', 'heat_exchanger_in:wire'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire'); link('pump_hot_water:sensor', 'heat_exchanger_in:wire') } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire', -10) }"
+        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire'); link('pump_cold_water:sensor', ['heat_exchanger_in:wire','heat_exchanger_mantle:sensor'], 'value'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire'); link('pump_hot_water:sensor', ['heat_exchanger_in:wire','heat_exchanger_mantle:sensor'], 'value') } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire', -10) }"
     },
     "3_way_water_valve_in": {
         "states": [
             "water_valves_in:sensor"
         ],
-        "eval": "if (outVars['color']=='position_a') { outVars['color']='position_b'; unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_cold_return:wire') } else if (outVars['color']=='position_b') {  outVars['color']='position_a'; unlink('water_mantle_temp:sensor', 'water_tank_cold_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_hot_return:wire') } else { unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire', -10); unlink('water_tank_cold_return:sensor', 'heat_exchanger_in:wire', -10) }"
+        "eval": "if (outVars['color']=='position_a') { outVars['color']='position_b'; unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_cold_return:wire', 'content'); link('heat_exchanger_mantle:sensor', 'water_tank_cold_return:wire', 'value') } else if (outVars['color']=='position_b') { outVars['color']='position_a'; unlink('water_mantle_temp:sensor', 'water_tank_cold_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_hot_return:wire', 'content'); link('heat_exchanger_mantle', 'water_tank_hot_return:wire', 'value') } else { unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire'); unlink('heat_exchanger_mantle:sensor', 'water_tank_hot_return:wire', -10); unlink('water_mantle_temp:sensor', 'water_tank_cold_return:sensor', -10); unlink('heat_exchanger_mantle:sensor', 'water_tank_hot_return:wire', -10) }"
+    },
+    "heat_exchanger": {
+        "states": [
+            "heat_exchanger_mantle:sensor"
+        ],
+        "eval": "link(inVars['this'], 'heat_exchanger_out:wire', 'value'); link('water_mantle_temp:sensor', 'heat_exchanger_out:wire', 'content')"
     },
     "pump_hot_water": {
         "states": [
             "pump_hot_water:sensor"
         ],
-        "eval": "link('water_hot_temp:sensor', inVars['this'], true)"
+        "eval": "link('water_hot_temp:sensor', inVars['this'], 'content')"
     },
     "pump_cold_water": {
         "states": [
             "pump_cold_water:sensor"
         ],
-        "eval": "link('water_cold_temp:sensor', inVars['this'], true)"
+        "eval": "link('water_cold_temp:sensor', inVars['this'], 'content')"
     },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
