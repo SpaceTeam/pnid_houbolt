@@ -1,5 +1,3 @@
-const e = require("express");
-
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 $.get('/config/default', function(data) {

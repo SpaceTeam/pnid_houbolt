@@ -827,7 +827,7 @@
         <line x1="6940" y1="10010" x2="7440" y2="10010" />
         <line x1="7440" y1="9520" x2="7440" y2="10010" />
     </g>
-    <g class="water_mantle_temp-sensor wire" data-pnid-wire="">
+    <g class="heat_exchanger_out-wire wire" data-pnid-wire="">
         <line x1="7820" y1="9230" x2="7820" y2="10110" />
         <line x1="7820" y1="10110" x2="9120" y2="10110" />
         <line x1="9120" y1="9270" x2="9120" y2="10110" />
