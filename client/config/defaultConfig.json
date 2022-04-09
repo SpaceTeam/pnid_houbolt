@@ -57,7 +57,7 @@
     },
     "PnID-Valve_Servo": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
-	    "sens_deviation": "if ((feedback >= (setState + (65535 * 0.05))) || (feedback <= (setState - (65535 * 0.05)))) { return true; } return false;",
+	    "sens_deviation": "if ((feedback >= (setState + (65535 * 0.07))) || (feedback <= (setState - (65535 * 0.07)))) { return true; } return false;",
         "popup": [
             {
                 "type": "display",
