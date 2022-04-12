@@ -155,7 +155,7 @@
         <text class="Unit" x="2530" y="8670" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('nitrogen_ox_tank')"></rect>    </g>
-    <g class="Valve_Solenoid1 PnID-Valve_Solenoid_NC supercharge_valve-sensor comp" data-unit="%" data-pnid-valve_solenoid_nc="" data-content="" action-reference="gui-supercharge_valve">
+    <g class="Valve_Solenoid1 PnID-Valve_Solenoid_NC supercharge_valve-sensor comp" data-unit="%" data-pnid-valve_solenoid_nc="" data-content="" action-reference="gui-pressure_control-SetEnable">
         <!-- coordinates: x = 2810 y = 9690 -->
         <g>        <rect class="rect" x="2710" y="9340" width="200" height="200" />
         <path d="M 2810 9540 L 2810 9690 " />
@@ -168,11 +168,11 @@
         <text class="setState text-L" x="3090" y="9540" visibility="hidden"></text>
         <text class="value text-L" x="3090" y="9540" visibility="visible">supercharge_valve:sensor</text>
         <text class="valueRaw text-L" x="3090" y="9540" visibility="hidden">supercharge_valve:sensor</text>
-        <text class="actionReferenceValue text-L" x="3090" y="9540" visibility="hidden">gui-supercharge_valve</text>
-        <text class="actionReferenceValueRaw text-L" x="3090" y="9540" visibility="hidden">gui-supercharge_valve</text>
+        <text class="actionReferenceValue text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnable</text>
+        <text class="actionReferenceValueRaw text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnable</text>
         <text class="Unit" x="2810" y="9690" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-supercharge_valve')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-pressure_control-SetEnable')"></rect>    </g>
     <g class="Sensor_Pressure3 PnID-Sensor_Pressure ox_tank_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference=""transform="rotate(180,2330,9690)">
         <!-- coordinates: x = 2330 y = 9690 -->
         <g>        <circle cx="2330" cy="9690" r="100" />

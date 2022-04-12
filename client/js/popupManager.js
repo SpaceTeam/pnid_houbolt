@@ -81,8 +81,8 @@ function initPNIDHitboxes()
     pnidComps.each(function (index) {
         //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
         //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
-        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined ||
-            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined
+        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
+            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
         ) {
             let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
             let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
@@ -299,9 +299,9 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                     case "external":
                         popup.css("width", "400px");
                         popup.css("height", "300px");
-                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        let customConfig = getConfigData(config, popupID.replaceAll("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let sourceDefault = defaultConfig["externalSourceDefault"];
-                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replace("-",":"));
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replaceAll("-",":"));
                         newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
                     default:
@@ -425,6 +425,7 @@ function createPopup(popupID, parent, isActionReference)
 	activePopups[popupID] = {
 	    "popup": popupClone,
 	    "config": popupConfig,
+        "containedStates": [],
         "timer": undefined,
         "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
         "visibility": true

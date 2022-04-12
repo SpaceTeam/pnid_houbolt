@@ -318,7 +318,7 @@ function setStateNamesPNID(stateNameList)
  */
 function setStateName(state)
 {
-	let elementGroup = $(document).find("g." + state["name"].replace(":","-"));
+	let elementGroup = $(document).find("g." + state["name"].replaceAll(":","-"));
 	if (elementGroup.length === 0)
 	{
 		return;
@@ -426,10 +426,10 @@ function link(origin, statesToLink, onlyLinkContents = false)
         statesArray = statesToLink;
     }
 
-    origin = origin.replace(":","-");
+    origin = origin.replaceAll(":","-");
     for (let i in statesArray)
     {
-        let state = statesArray[i].replace(":","-");
+        let state = statesArray[i].replaceAll(":","-");
         let existingLinks = __stateLinks[origin];
         if (existingLinks == undefined || existingLinks.length == 0)
         {
@@ -483,10 +483,10 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
         //this is not very performant and could be handled as a special case
     }
 
-    origin = origin.replace(":","-");
+    origin = origin.replaceAll(":","-");
     for (let i in statesArray)
     {
-        let state = statesArray[i].replace(":","-");
+        let state = statesArray[i].replaceAll(":","-");
         let existingLinks = __stateLinks[origin];
         if (existingLinks != undefined && existingLinks.length > 0)
         {
@@ -751,13 +751,13 @@ function setStateValue(state, recursionDepth = 0)
                 stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
                 //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
             }
-            let customSensorDeviation = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+            let customSensorDeviation = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
             if (customSensorDeviation !== undefined)
             {
                 sensorDeviation = customSensorDeviation;
             }
 
-            let customEvalCode = getConfigData(config, stateConfigName.replace("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
+            let customEvalCode = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
             if (customEvalCode != undefined)
             {
                 eval(customEvalCode);

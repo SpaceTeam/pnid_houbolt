@@ -7,7 +7,7 @@ function stateUpdate(stateName, value)
     }
     else
     {
-        stateName = stateName.replace("-",":");
+        stateName = stateName.replaceAll("-",":");
         onPNIDInput(stateName, value, Date.now()*1000);
         printLog("info", "stateUpdate: " + stateName + " , value: " + value);
     }

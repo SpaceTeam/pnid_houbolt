@@ -308,7 +308,7 @@
             }
         ]
     },
-    "gui-supercharge_valve": {
+    "gui-pressure_control-SetEnable": {
         "eval": "if (inVars['value'] > 0 { outVars['value']='Pressure Controlled' } else { outVars['value']='Manual' }",
         "popup": [
             {
@@ -330,7 +330,7 @@
                 "max": "100",
                 "label": "Set Point",
                 "suffix": "bar",
-                "variable": "gui-supercharge_valve_setpoint"
+                "variable": "pressure_control-SetTargetPosition"
             },
             {
                 "type": "input",
@@ -339,7 +339,7 @@
                 "max": "100",
                 "label": "Hysteresis",
                 "suffix": "bar",
-                "variable": "gui-supercharge_valve_hysteresis"
+                "variable": "pressure_control-SetHysteresis"
             }
         ]
     }
