@@ -1,0 +1,245 @@
+{
+    "externalSourceDefault": "http://192.168.1.7:3000/d-solo/K20EdKS7z/franz?orgId=1&panelId=",
+    "wire": {
+        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected' }"
+    },
+    "PnID-Valve_Solenoid_NO": {
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Open",
+                "high": "Closed"
+            }
+        ]
+    },
+    "PnID-Valve_Solenoid_NC": {
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "PnID-Valve_Pneumatic": {
+        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "slider",
+                "variable": "value",
+                "min": 0,
+                "max": 65535,
+                "step": 1
+            }
+        ]
+    },
+    "PnID-Valve_Servo": {
+        "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "slider",
+                "variable": "value",
+                "min": 0,
+                "max": 65535,
+                "step": 1
+            }
+        ]
+    },
+    "PnID-Valve_Servo_3Way": {
+        "eval": "if (inVars['value'] > 60) { outVars['color']='position_a'; outVars['value']='Pos A ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 40) { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' } else { outVars['color']='position_b'; outVars['value']='Pos B ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "slider",
+                "variable": "value",
+                "min": 0,
+                "max": 65535,
+                "step": 1
+            }
+        ]
+    },
+	"PnID-Valve_Needle_Servo": {
+        "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "slider",
+                "variable": "value",
+                "min": 0.0,
+                "max": 100.0,
+                "step": 1
+            }
+        ]
+    },
+    "PnID-Sensor_Pressure": {
+        "eval": "if (inVars['value'] > 2) { outVars['color']='content' } else if (inVars['value'] > -8) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": null,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
+    },
+    "PnID-Sensor_Temperature": {
+        "eval": "if (inVars['value'] > 30) { outVars['color']='high' } else if (inVars['value'] > -200) { outVars['color']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": null,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
+    },
+    "PnID-Sensor_MassFlow": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            }
+        ]
+    },
+    "PnID-Tank": {
+        "eval": "",
+        "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "textEntry",
+                "variable": "tank_fill_low"
+            },
+            {
+                "type": "input",
+                "style": "textEntry",
+                "variable": "tank_fill_high"
+            }
+        ]
+    },
+    "PnID-LED": {
+        "eval": "if (inVars['value'] > 3000) { outVars['color']='on'; } else { outVars['color']='off'; }"
+    },
+    "PnID-Engine_TorchIgniter": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "external",
+                "source": null,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
+    },
+    "PnID-Pump": {
+        "eval": "if (inVars['value'] > 50) { outVars['color']='on'; outVars['value']='On'; } else { outVars['color']='off'; outVars['value']='Off'; }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Off",
+                "high": "On"
+            }
+        ]
+    },
+    "gui-fuel_press_depress": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    },
+    "gui-ox_press_depress": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Open' } else { outVars['value']='Closed' }",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "Closed",
+                "high": "Open"
+            }
+        ]
+    }
+}
