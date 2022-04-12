@@ -203,36 +203,47 @@ async function runTestsFranz()
 async function runTestsHoubolt()
 {
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 93.0}, {"name": "water_hot_temp:sensor", "value": 30.0}, {"name": "water_cold_temp:sensor", "value": 1.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "water_hot_temp:sensor", "value": 35.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_mantle_temp:sensor", "value": 25.0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 0}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "gui:water_valves", "value": 0}, {"name": "pump_cold_water:sensor", "value": 90}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_cold_water:sensor", "value": 90}];
+    console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
 }
@@ -360,7 +371,7 @@ function updatePNID(stateList, recursionDepth = 0)
 
     logStates(stateList);
 	
-	for (stateIndex in stateList)
+	for (let stateIndex in stateList)
 	{
 		//let stateName = stateList[stateIndex]["name"];
 		//let stateValue = stateList[stateIndex]["value"];
