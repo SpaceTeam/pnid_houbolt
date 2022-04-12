@@ -36,3 +36,11 @@ function onDigitalCheck(checkbox)
     let newVal = checkbox.checked ? 1 : 0;
     stateUpdate(stateName, newVal);
 }
+
+function onNumberInput(numberInput)
+{
+    let element = $(document).find(`#${numberInput}`);
+    let stateName = element.attr("state");
+    let newVal = parseFloat(element.val());
+    stateUpdate(stateName, newVal);
+}
