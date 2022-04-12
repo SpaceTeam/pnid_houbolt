@@ -807,6 +807,17 @@ function setStateValue(state, recursionDepth = 0)
     }
     else
     {
+        for (let i in activePopups)
+        {
+            for (let n in activePopups[i]["containedStates"])
+            {
+                if (activePopups[i]["containedStates"][n] == state["name"])
+                {
+                    console.log("trying to update contained state", state["name"], isGuiState, isActionReference);
+                    updatePopup(state["name"], undefined, state["value"], isGuiState, isActionReference);
+                }
+            }
+        }
         //printLog("warning", `Received state update with no corresponding pnid element, wire or action reference! State: <code>${state["name"]}</code>: <code>${state["value"]}</code>`);
         //this warning is super spammy and kind of doesn't make sense - this is "intended" behavior as soon as we start splitting one system into several PnIDs.
         //probably worth removing altogether, but evaluate first.

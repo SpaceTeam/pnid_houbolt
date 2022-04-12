@@ -261,6 +261,9 @@ function createTextEntry(config, variable, popupID, curRawValue)
 
 function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
+    //all states contained in a popup which may need updating
+    let containedStates = [];
+
     //construct popup content
     for (contentIndex in popupConfig)
     {
@@ -286,6 +289,10 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
         if (variableName === "value")
         {
             variableName = popupID;
+        }
+        else
+        {
+            containedStates.push(variableName);
         }
         let newContentRow;
         switch (contentType)
@@ -333,6 +340,7 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
         }
         popup.append(newContentRow);
     }
+    return containedStates;
 }
 
 //TODO consider breaking into several smaller functions
@@ -385,7 +393,7 @@ function createPopup(popupID, parent, isActionReference)
         return;
     }
 
-    appendPopupContent(popupClone, popupConfig, popupID, isActionReference);
+    let containedStates = appendPopupContent(popupClone, popupConfig, popupID, isActionReference);
 
     if (isActionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
@@ -425,35 +433,39 @@ function createPopup(popupID, parent, isActionReference)
 	activePopups[popupID] = {
 	    "popup": popupClone,
 	    "config": popupConfig,
-        "containedStates": [],
+        "containedStates": containedStates,
         "timer": undefined,
         "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
         "visibility": true
 	};
 }
 
-function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false)
+function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false, popupID = undefined)
 {
-    let popupID = "";
-    if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
+    //if the popup ID is undefined, search for it. if it's already defined it's likely a sub state of the popup (not bundled action ref)
+    if (popupID == undefined)
     {
-        //console.log("found state name in active popups", stateName);
-        popupID = stateName;
-    }
-    else //if popup for a certain state name doesn't exist, check if the state name may be bundled in an action reference popup.
-    {
-        //console.log("didn't find state name in active popups", stateName);
-        let actionReference = getElementAttrValue(stateName, "action-reference");
-        //console.log("actionref", actionReference);
-        if (actionReference in activePopups) //if there is an active popup of an action reference that bundles this state display
+        if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
         {
-            popupID = actionReference;
+            //console.log("found state name in active popups", stateName);
+            popupID = stateName;
         }
-        else //if there is no popup for it AND no action reference that may have bundled it, there is nothing to udpate - so don't update anything.
+        else //if popup for a certain state name doesn't exist, check if the state name may be bundled in an action reference popup.
         {
-            return;
+            //console.log("didn't find state name in active popups", stateName);
+            let actionReference = getElementAttrValue(stateName, "action-reference");
+            //console.log("actionref", actionReference);
+            if (actionReference in activePopups) //if there is an active popup of an action reference that bundles this state display
+            {
+                popupID = actionReference;
+            }
+            else //if there is no popup for it AND no action reference that may have bundled it, there is nothing to udpate - so don't update anything.
+            {
+                return;
+            }
         }
     }
+    
     let popup = activePopups[popupID]["popup"];
     let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
     if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
@@ -475,84 +487,88 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
         let contentType = rowConfig["type"];
         let contentStyle = rowConfig["style"];
         let elements = {};
-        switch (contentType)
+        //only update this popup row if it's the right variable for it
+        if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
         {
-            case "display":
-                switch (contentStyle)
-                {
-                    case "text":
-                        //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
-                        if (!isGuiState || isActionReference)
-                        {
-                            elements = $(popup).find(`[display="${stateName}"]`);
-                            elements.text(value);
-                        }
-                        break;
-                    case "external": //no update needed
-                        break;
-                    default:
-                        printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
-                        break;
-                }
-                break;
-            case "input":
-                if (activePopups[popupID]["timeUntilActive"] > 0)
-                {
-                    //disable the update pause after user input for now. since sliders now have their value and feedback separated,
-                    //it isn't really needed anymore. evaluate if it should be removed altogether or not
-                    //continue;
-                }
-                switch (contentStyle)
-                {
-                    case "checkbox":
-                        if (isGuiState || isActionReference)
-                        {
-                            //console.log("updating gui state checkbox", rawValue);
-                            //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
-                            elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                            if (rawValue.toString() === rowConfig["low"])
+            switch (contentType)
+            {
+                case "display":
+                    switch (contentStyle)
+                    {
+                        case "text":
+                            //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
+                            if (!isGuiState || isActionReference)
                             {
-                                elements.prop("checked", false);
+                                elements = $(popup).find(`[display="${stateName}"]`);
+                                elements.text(value);
+                            }
+                            break;
+                        case "external": //no update needed
+                            break;
+                        default:
+                            printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                            break;
+                    }
+                    break;
+                case "input":
+                    if (activePopups[popupID]["timeUntilActive"] > 0)
+                    {
+                        //disable the update pause after user input for now. since sliders now have their value and feedback separated,
+                        //it isn't really needed anymore. evaluate if it should be removed altogether or not
+                        //continue;
+                    }
+                    switch (contentStyle)
+                    {
+                        case "checkbox":
+                            if (isGuiState || isActionReference)
+                            {
+                                //console.log("updating gui state checkbox", rawValue);
+                                //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                                elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                                if (rawValue.toString() === rowConfig["low"])
+                                {
+                                    elements.prop("checked", false);
+                                }
+                                else
+                                {
+                                    elements.prop("checked", true);
+                                }
+                            }
+                            break;
+                        case "slider":
+                            elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
+                            if (!isGuiState)
+                            {
+                                //if the value is sensor feedback, update the feedback slider background
+                                if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                                {
+                                    printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
+                                    break;
+                                }
+                                setSliderFeedback(elements, Math.round(rawValue))
                             }
                             else
                             {
-                                elements.prop("checked", true);
+                                //if the value is not sensor feedback, but a set point instead, move the slider
+                                if (!sliderIsMoving())
+                                {
+                                    //but only if the slider isn't being moved right now
+                                    setSliderValue(elements, Math.round(rawValue));
+                                }
+                                /*elements.val(Math.round(rawValue));
+                                let valueOut = elements.siblings("span.range-slider__value");
+                                valueOut.text(Math.round(rawValue));*/
                             }
-                        }
-                        break;
-                    case "slider":
-                        elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
-                        if (!isGuiState)
-                        {
-                            //if the value is sensor feedback, update the feedback slider background
-                            if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
-                            {
-                                printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
-                                break;
-                            }
-                            setSliderFeedback(elements, Math.round(rawValue))
-                        }
-                        else
-                        {
-                            //if the value is not sensor feedback, but a set point instead, move the slider
-                            if (!sliderIsMoving())
-                            {
-                                //but only if the slider isn't being moved right now
-                                setSliderValue(elements, Math.round(rawValue));
-                            }
-                            /*elements.val(Math.round(rawValue));
-                            let valueOut = elements.siblings("span.range-slider__value");
-                            valueOut.text(Math.round(rawValue));*/
-                        }
-                        break;
-                    default:
-                        printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
-                        break;
-                }
-                break;
-            default:
-                printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
-                break;
+                            break;
+                        default:
+                            printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                            break;
+                    }
+                    break;
+                default:
+                    printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
+                    break;
+            }
         }
     }
 }
