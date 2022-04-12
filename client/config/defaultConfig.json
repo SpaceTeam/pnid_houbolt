@@ -309,7 +309,7 @@
         ]
     },
     "gui-pressure_control-SetEnable": {
-        "eval": "if (inVars['value'] > 0 { outVars['value']='Pressure Controlled' } else { outVars['value']='Manual' }",
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Pressure Controlled' } else { outVars['value']='Manual' }",
         "popup": [
             {
                 "type": "display",
