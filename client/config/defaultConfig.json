@@ -308,5 +308,40 @@
                 "high": "1"
             }
         ]
+    },
+    "gui-pressure_control-SetEnable": {
+        "eval": "if (inVars['value'] > 0) { outVars['value']='Pressure Controlled' } else { outVars['value']='Manual' }",
+        "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            },
+            {
+                "type": "input",
+                "style": "numberEntry",
+                "min": "0",
+                "max": "100",
+                "label": "Set Point",
+                "suffix": "bar",
+                "variable": "pressure_control-SetTargetPosition"
+            },
+            {
+                "type": "input",
+                "style": "numberEntry",
+                "min": "0",
+                "max": "100",
+                "label": "Hysteresis",
+                "suffix": "bar",
+                "variable": "pressure_control-SetHysteresis"
+            }
+        ]
     }
 }

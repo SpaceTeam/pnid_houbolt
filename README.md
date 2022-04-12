@@ -205,7 +205,7 @@ Sub-keys for type `input`:
     * `min=` - Which value the minimal value of the slider is. Eg for a servo valve the "low" value could be `30000`. This is the raw (number) value sent to the PnID, not the formatted/interpreted value visible in the UI.
     * `max=` - Similar to min, but for the max value
     * `step=` - The step size of the slider.
-  * `=textEntry` - A free-form text entry. NOT IMPLEMENTED YET
+  * `=numberEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 As mentioned before in the `style=external` description, this is a popup element type that can be further specified in the custom config. It is specified similar to the popup config in the default config file, but only allows the "source" and "autoID" keys to be set:
 
