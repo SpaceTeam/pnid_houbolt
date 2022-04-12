@@ -772,7 +772,7 @@ function setStateValue(state, recursionDepth = 0)
                     //console.log("checking for set state deviation");
                     //if the set state is outside of the actual feedback state +/- the set deviation color the element as error
                     eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
-                    console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+                    //console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
                     if (sensDevChecker(state["value"], parseFloat(inVars["setState"])))
                     {
                         //console.log("feedback deviation error");
