@@ -824,8 +824,8 @@ function setStateValue(state, recursionDepth = 0)
             {
                 if (activePopups[i]["containedStates"][n] == state["name"])
                 {
-                    console.log("trying to update contained state", state["name"], isGuiState, isActionReference);
-                    updatePopup(state["name"], undefined, state["value"], isGuiState, isActionReference);
+                    console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
+                    updatePopup(state["name"], undefined, state["value"], isGuiState, isActionReference, i);
                 }
             }
         }

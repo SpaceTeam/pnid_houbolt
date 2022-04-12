@@ -442,6 +442,7 @@ function createPopup(popupID, parent, isActionReference)
 
 function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false, popupID = undefined)
 {
+    let bundledInActionReference = false;
     //if the popup ID is undefined, search for it. if it's already defined it's likely a sub state of the popup (not bundled action ref)
     if (popupID == undefined)
     {
@@ -458,6 +459,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
             if (actionReference in activePopups) //if there is an active popup of an action reference that bundles this state display
             {
                 popupID = actionReference;
+                bundledInActionReference = true;
             }
             else //if there is no popup for it AND no action reference that may have bundled it, there is nothing to udpate - so don't update anything.
             {
@@ -468,7 +470,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
     
     let popup = activePopups[popupID]["popup"];
     let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
-    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
+    if (stateName != popupID && bundledInActionReference) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
     //but is bundled in an action reference popup. this means we have to search for its popup config
     {
         /*console.log("elem", getElement(stateName));
@@ -488,8 +490,10 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
         let contentStyle = rowConfig["style"];
         let elements = {};
         //only update this popup row if it's the right variable for it
+        console.log("updating rowconfig", rowConfig, stateName, popupID);
         if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
         {
+            console.log("updating row");
             switch (contentType)
             {
                 case "display":
@@ -559,6 +563,9 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                                 let valueOut = elements.siblings("span.range-slider__value");
                                 valueOut.text(Math.round(rawValue));*/
                             }
+                            break;
+                        case "numberEntry":
+                            elements = $(popup).find("input")
                             break;
                         default:
                             printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
