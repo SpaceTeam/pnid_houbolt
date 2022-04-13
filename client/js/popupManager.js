@@ -490,10 +490,10 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
         let contentStyle = rowConfig["style"];
         let elements = {};
         //only update this popup row if it's the right variable for it
-        console.log("updating rowconfig", rowConfig, stateName, popupID);
+        //console.log("updating rowconfig", rowConfig, stateName, popupID);
         if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
         {
-            console.log("updating row");
+            //console.log("updating row");
             switch (contentType)
             {
                 case "display":
@@ -565,7 +565,11 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                             }
                             break;
                         case "numberEntry":
-                            elements = $(popup).find("input")
+                            //console.log("updating number entry");
+                            elements = $(popup).find("input[type=number]");
+                            //console.log(elements);
+                            elements.val(rawValue);
+                            //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be
                             break;
                         default:
                             printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
