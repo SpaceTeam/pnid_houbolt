@@ -1,25 +1,25 @@
-<svg style="position: relative; top: 0; left: 0; max-width: var(--pnid-max-width); max-height: var(--pnid-max-height);" viewBox="1048 3506.6 9964 9306.8">
+<svg style="position: relative; top: 0; left: 0; max-width: var(--pnid-max-width); max-height: var(--pnid-max-height);" viewBox="1048 3496.3 9964 9317.4">
 
 <!-- Components -->
 
     <g class="Tank1 PnID-Tank nitrogen_fuel_tank comp" data-unit="%" data-pnid-tank="" data-content="high" action-reference="">
-        <!-- coordinates: x = 2530 y = 6120 -->
-        <g>        <path d="M 2780 5720 A 375.0333318519835 375.0333318519835 0 0 0 2270 5720" />
-        <path d="M 2270 6520 A 375.0333318519835 375.0333318519835 0 0 0 2780 6520" />
-        <rect class="rect" x="2270" y="5720" width="510" height="800" />
-        <path d="M 2780 5720 L 2780 6520 " />
-        <path d="M 2270 5720 L 2270 6520 " />
-        <path d="M 2280 6520 L 2780 6520 " />
-        <path d="M 2280 5720 L 2780 5720 " />
-        <path d="M 2530 6620 L 2530 6620" />
-        <path d="M 2530 5620 L 2530 5620" />
-        </g>        <text class="reference static-color text-L" x="2908" y="6098" visibility="hidden">Tank1</text>
-        <text class="setState text-L" x="2908" y="6141" visibility="hidden"></text>
-        <text class="value text-L" x="2908" y="6141" visibility="visible">nitrogen_fuel_tank</text>
-        <text class="valueRaw text-L" x="2908" y="6141" visibility="hidden">nitrogen_fuel_tank</text>
-        <text class="actionReferenceValue text-L" x="2908" y="6141" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-L" x="2908" y="6141" visibility="hidden"> </text>
-        <text class="Unit" x="2530" y="6120" visibility="hidden">%</text>
+        <!-- coordinates: x = 2530 y = 5880 -->
+        <g>        <path d="M 2780 5480 A 375.0333318519835 375.0333318519835 0 0 0 2270 5480" />
+        <path d="M 2270 6280 A 375.0333318519835 375.0333318519835 0 0 0 2780 6280" />
+        <rect class="rect" x="2270" y="5480" width="510" height="800" />
+        <path d="M 2780 5480 L 2780 6280 " />
+        <path d="M 2270 5480 L 2270 6280 " />
+        <path d="M 2280 6280 L 2780 6280 " />
+        <path d="M 2280 5480 L 2780 5480 " />
+        <path d="M 2530 6380 L 2530 6380" />
+        <path d="M 2530 5380 L 2530 5380" />
+        </g>        <text class="reference static-color text-L" x="2908" y="5858" visibility="hidden">Tank1</text>
+        <text class="setState text-L" x="2908" y="5901" visibility="hidden"></text>
+        <text class="value text-L" x="2908" y="5901" visibility="hidden">nitrogen_fuel_tank</text>
+        <text class="valueRaw text-L" x="2908" y="5901" visibility="hidden">nitrogen_fuel_tank</text>
+        <text class="actionReferenceValue text-L" x="2908" y="5901" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="2908" y="5901" visibility="hidden"> </text>
+        <text class="Unit" x="2530" y="5880" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('nitrogen_fuel_tank')"></rect>    </g>
     <g class="Tank2 PnID-Tank fuel_tank comp" data-unit="%" data-pnid-tank="" data-content="fuel" action-reference="">
@@ -35,25 +35,25 @@
         <path d="M 2530 7080 L 2530 7080" />
         </g>        <text class="reference static-color text-L" x="2908" y="7558" visibility="hidden">Tank2</text>
         <text class="setState text-L" x="2908" y="7601" visibility="hidden"></text>
-        <text class="value text-L" x="2908" y="7601" visibility="visible">fuel_tank</text>
+        <text class="value text-L" x="2908" y="7601" visibility="hidden">fuel_tank</text>
         <text class="valueRaw text-L" x="2908" y="7601" visibility="hidden">fuel_tank</text>
         <text class="actionReferenceValue text-L" x="2908" y="7601" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-L" x="2908" y="7601" visibility="hidden"> </text>
         <text class="Unit" x="2530" y="7580" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('fuel_tank')"></rect>    </g>
-    <g class="Sensor_Pressure2 PnID-Sensor_Pressure fuel_tank_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference=""transform="rotate(180,2330,6980)">
-        <!-- coordinates: x = 2330 y = 6980 -->
-        <g>        <circle cx="2330" cy="6980" r="100" />
-        <path d="M 2130 6980 L 2230 6980" />
-        </g>        <text class="sensor-letter static-color text-C" x="2330" y="6980" transform="rotate(180,2330,6980)">P</text>
-        <text class="reference static-color text-C" x="2390" y="6850" visibility="hidden" transform="rotate(180,2390,6850)">Sensor_Pressure2</text>
-        <text class="setState text-C" x="2390" y="6820" visibility="hidden" transform="rotate(180,2390,6820)"></text>
-        <text class="value text-C" x="2390" y="6820" visibility="visible" transform="rotate(180,2390,6820)">fuel_tank_pressure:sensor</text>
-        <text class="valueRaw text-C" x="2390" y="6820" visibility="hidden" transform="rotate(180,2390,6820)">fuel_tank_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="2390" y="6820" visibility="hidden" transform="rotate(180,2390,6820)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2390" y="6820" visibility="hidden" transform="rotate(180,2390,6820)"> </text>
-        <text class="Unit" x="2330" y="6980" visibility="hidden" transform="rotate(180,2330,6980)">bar</text>
+    <g class="Sensor_Pressure2 PnID-Sensor_Pressure fuel_tank_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference=""transform="rotate(180,2330,6970)">
+        <!-- coordinates: x = 2330 y = 6970 -->
+        <g>        <circle cx="2330" cy="6970" r="100" />
+        <path d="M 2130 6970 L 2230 6970" />
+        </g>        <text class="sensor-letter static-color text-C" x="2330" y="6970" transform="rotate(180,2330,6970)">P</text>
+        <text class="reference static-color text-C" x="2390" y="6840" visibility="hidden" transform="rotate(180,2390,6840)">Sensor_Pressure2</text>
+        <text class="setState text-R" x="2770" y="6970" visibility="hidden" transform="rotate(180,2770,6970)"></text>
+        <text class="value text-R" x="2770" y="6970" visibility="visible" transform="rotate(180,2770,6970)">fuel_tank_pressure:sensor</text>
+        <text class="valueRaw text-R" x="2770" y="6970" visibility="hidden" transform="rotate(180,2770,6970)">fuel_tank_pressure:sensor</text>
+        <text class="actionReferenceValue text-R" x="2770" y="6970" visibility="hidden" transform="rotate(180,2770,6970)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="2770" y="6970" visibility="hidden" transform="rotate(180,2770,6970)"> </text>
+        <text class="Unit" x="2330" y="6970" visibility="hidden" transform="rotate(180,2330,6970)">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('fuel_tank_pressure-sensor')"></rect>    </g>
     <g class="QuickConnectShort2 PnID-QuickConnect QuickConnect comp" data-unit="" data-pnid-quickconnect="" data-content="" action-reference="">
@@ -107,7 +107,7 @@
         <path d="M 2430 11620 L 2430 11620" />
         <path d="M 2380 11820 L 2380 11820" />
         <path d="M 2630 11620 L 2630 11620" />
-        </g>        <text class="reference static-color text-C" x="2530" y="12169" visibility="visible">Engine1</text>
+        </g>        <text class="reference static-color text-C" x="2530" y="12169" visibility="hidden">Engine1</text>
         <text class="setState text-C" x="2530" y="12210" visibility="hidden"></text>
         <text class="value text-C" x="2530" y="12210" visibility="hidden">Engine</text>
         <text class="valueRaw text-C" x="2530" y="12210" visibility="hidden">Engine</text>
@@ -128,7 +128,7 @@
         <path d="M 2530 9850 L 2530 9850" />
         </g>        <text class="reference static-color text-L" x="2908" y="10328" visibility="hidden">Tank4</text>
         <text class="setState text-L" x="2908" y="10371" visibility="hidden"></text>
-        <text class="value text-L" x="2908" y="10371" visibility="visible">ox_tank</text>
+        <text class="value text-L" x="2908" y="10371" visibility="hidden">ox_tank</text>
         <text class="valueRaw text-L" x="2908" y="10371" visibility="hidden">ox_tank</text>
         <text class="actionReferenceValue text-L" x="2908" y="10371" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-L" x="2908" y="10371" visibility="hidden"> </text>
@@ -148,14 +148,14 @@
         <path d="M 2530 8170 L 2530 8170" />
         </g>        <text class="reference static-color text-L" x="2908" y="8648" visibility="hidden">Tank3</text>
         <text class="setState text-L" x="2908" y="8691" visibility="hidden"></text>
-        <text class="value text-L" x="2908" y="8691" visibility="visible">nitrogen_ox_tank</text>
+        <text class="value text-L" x="2908" y="8691" visibility="hidden">nitrogen_ox_tank</text>
         <text class="valueRaw text-L" x="2908" y="8691" visibility="hidden">nitrogen_ox_tank</text>
         <text class="actionReferenceValue text-L" x="2908" y="8691" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-L" x="2908" y="8691" visibility="hidden"> </text>
         <text class="Unit" x="2530" y="8670" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('nitrogen_ox_tank')"></rect>    </g>
-    <g class="Valve_Solenoid1 PnID-Valve_Solenoid_NC supercharge_valve-sensor comp" data-unit="%" data-pnid-valve_solenoid_nc="" data-content="" action-reference="gui-pressure_control-SetEnable">
+    <g class="Valve_Solenoid1 PnID-Valve_Solenoid_NC supercharge_valve-sensor comp" data-unit="%" data-pnid-valve_solenoid_nc="" data-content="" action-reference="gui-pressure_control-SetEnabled">
         <!-- coordinates: x = 2810 y = 9690 -->
         <g>        <rect class="rect" x="2710" y="9340" width="200" height="200" />
         <path d="M 2810 9540 L 2810 9690 " />
@@ -168,22 +168,22 @@
         <text class="setState text-L" x="3090" y="9540" visibility="hidden"></text>
         <text class="value text-L" x="3090" y="9540" visibility="visible">supercharge_valve:sensor</text>
         <text class="valueRaw text-L" x="3090" y="9540" visibility="hidden">supercharge_valve:sensor</text>
-        <text class="actionReferenceValue text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnable</text>
-        <text class="actionReferenceValueRaw text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnable</text>
+        <text class="actionReferenceValue text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnabled</text>
+        <text class="actionReferenceValueRaw text-L" x="3090" y="9540" visibility="hidden">gui-pressure_control-SetEnabled</text>
         <text class="Unit" x="2810" y="9690" visibility="hidden">%</text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-pressure_control-SetEnable')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-pressure_control-SetEnabled')"></rect>    </g>
     <g class="Sensor_Pressure3 PnID-Sensor_Pressure ox_tank_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference=""transform="rotate(180,2330,9690)">
         <!-- coordinates: x = 2330 y = 9690 -->
         <g>        <circle cx="2330" cy="9690" r="100" />
         <path d="M 2130 9690 L 2230 9690" />
         </g>        <text class="sensor-letter static-color text-C" x="2330" y="9690" transform="rotate(180,2330,9690)">P</text>
         <text class="reference static-color text-C" x="2390" y="9560" visibility="hidden" transform="rotate(180,2390,9560)">Sensor_Pressure3</text>
-        <text class="setState text-C" x="2390" y="9530" visibility="hidden" transform="rotate(180,2390,9530)"></text>
-        <text class="value text-C" x="2390" y="9530" visibility="visible" transform="rotate(180,2390,9530)">ox_tank_pressure:sensor</text>
-        <text class="valueRaw text-C" x="2390" y="9530" visibility="hidden" transform="rotate(180,2390,9530)">ox_tank_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="2390" y="9530" visibility="hidden" transform="rotate(180,2390,9530)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2390" y="9530" visibility="hidden" transform="rotate(180,2390,9530)"> </text>
+        <text class="setState text-R" x="2820" y="9690" visibility="hidden" transform="rotate(180,2820,9690)"></text>
+        <text class="value text-R" x="2820" y="9690" visibility="visible" transform="rotate(180,2820,9690)">ox_tank_pressure:sensor</text>
+        <text class="valueRaw text-R" x="2820" y="9690" visibility="hidden" transform="rotate(180,2820,9690)">ox_tank_pressure:sensor</text>
+        <text class="actionReferenceValue text-R" x="2820" y="9690" visibility="hidden" transform="rotate(180,2820,9690)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="2820" y="9690" visibility="hidden" transform="rotate(180,2820,9690)"> </text>
         <text class="Unit" x="2330" y="9690" visibility="hidden" transform="rotate(180,2330,9690)">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tank_pressure-sensor')"></rect>    </g>
@@ -193,91 +193,49 @@
         <path d="M 2270 10620 L 2370 10620" />
         </g>        <text class="sensor-letter static-color text-C" x="2470" y="10620">T</text>
         <text class="reference static-color text-C" x="2470" y="10420" visibility="hidden">Sensor_Temperature3</text>
-        <text class="setState text-C" x="2470" y="10500" visibility="hidden"></text>
-        <text class="value text-C" x="2470" y="10500" visibility="visible">ox_tank_bottom_temp:sensor</text>
-        <text class="valueRaw text-C" x="2470" y="10500" visibility="hidden">ox_tank_bottom_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="2470" y="10500" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2470" y="10500" visibility="hidden"> </text>
+        <text class="setState text-R" x="1840" y="10610" visibility="hidden"></text>
+        <text class="value text-R" x="1840" y="10610" visibility="visible">ox_tank_bottom_temp:sensor</text>
+        <text class="valueRaw text-R" x="1840" y="10610" visibility="hidden">ox_tank_bottom_temp:sensor</text>
+        <text class="actionReferenceValue text-R" x="1840" y="10610" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-R" x="1840" y="10610" visibility="hidden"> </text>
         <text class="Unit" x="2470" y="10620" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tank_bottom_temp-sensor')"></rect>    </g>
-    <g class="Sensor_Temperature1 PnID-Sensor_Temperature ox_tank_top_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="" action-reference="">
-        <!-- coordinates: x = 2470 y = 10120 -->
-        <g>        <circle cx="2470" cy="10120" r="100" />
-        <path d="M 2270 10120 L 2370 10120" />
-        </g>        <text class="sensor-letter static-color text-C" x="2470" y="10120">T</text>
-        <text class="reference static-color text-C" x="2470" y="9920" visibility="hidden">Sensor_Temperature1</text>
-        <text class="setState text-C" x="2470" y="10000" visibility="hidden"></text>
-        <text class="value text-C" x="2470" y="10000" visibility="visible">ox_tank_top_temp:sensor</text>
-        <text class="valueRaw text-C" x="2470" y="10000" visibility="hidden">ox_tank_top_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="2470" y="10000" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2470" y="10000" visibility="hidden"> </text>
-        <text class="Unit" x="2470" y="10120" visibility="hidden">˚C</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tank_top_temp-sensor')"></rect>    </g>
     <g class="Sensor_Temperature2 PnID-Sensor_Temperature ox_tank_middle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="" action-reference="">
         <!-- coordinates: x = 2470 y = 10370 -->
         <g>        <circle cx="2470" cy="10370" r="100" />
         <path d="M 2270 10370 L 2370 10370" />
         </g>        <text class="sensor-letter static-color text-C" x="2470" y="10370">T</text>
         <text class="reference static-color text-C" x="2470" y="10170" visibility="hidden">Sensor_Temperature2</text>
-        <text class="setState text-C" x="2470" y="10250" visibility="hidden"></text>
-        <text class="value text-C" x="2470" y="10250" visibility="visible">ox_tank_middle_temp:sensor</text>
-        <text class="valueRaw text-C" x="2470" y="10250" visibility="hidden">ox_tank_middle_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="2470" y="10250" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2470" y="10250" visibility="hidden"> </text>
+        <text class="setState text-R" x="1840" y="10370" visibility="hidden"></text>
+        <text class="value text-R" x="1840" y="10370" visibility="visible">ox_tank_middle_temp:sensor</text>
+        <text class="valueRaw text-R" x="1840" y="10370" visibility="hidden">ox_tank_middle_temp:sensor</text>
+        <text class="actionReferenceValue text-R" x="1840" y="10370" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-R" x="1840" y="10370" visibility="hidden"> </text>
         <text class="Unit" x="2470" y="10370" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tank_middle_temp-sensor')"></rect>    </g>
-    <g class="CheckValve2 PnID-CheckValve CheckValve comp" data-unit="" data-pnid-checkvalve="" data-content="" action-reference=""transform="rotate(90,2530,9370)">
-        <!-- coordinates: x = 2530 y = 9370 -->
-        <g>        <path d="M 2630 9270 L 2630 9470 " />
-        <path d="M 2430 9270 L 2430 9470 L 2630 9370 L 2430 9270 " />
-        <path d="M 2430 9370 L 2430 9370" />
-        <path d="M 2630 9370 L 2630 9370" />
-        </g>        <text class="reference static-color text-L" x="2540" y="9640" visibility="hidden" transform="rotate(-90,2540,9640)">CheckValve2</text>
-        <text class="setState text-C" x="2530" y="9540" visibility="hidden" transform="rotate(-90,2530,9540)"></text>
-        <text class="value text-C" x="2530" y="9540" visibility="hidden" transform="rotate(-90,2530,9540)">CheckValve</text>
-        <text class="valueRaw text-C" x="2530" y="9540" visibility="hidden" transform="rotate(-90,2530,9540)">CheckValve</text>
-        <text class="actionReferenceValue text-C" x="2530" y="9540" visibility="hidden" transform="rotate(-90,2530,9540)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2530" y="9540" visibility="hidden" transform="rotate(-90,2530,9540)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('CheckValve')"></rect>    </g>
     <g class="QuickConnect1 PnID-QuickConnect QuickConnect comp" data-unit="" data-pnid-quickconnect="" data-content="" action-reference="">
-        <!-- coordinates: x = 3060 y = 6650 -->
-        <g>        <circle cx="2910" cy="6650" r="50" />
-        <circle cx="3210" cy="6650" r="50" />
-        <path d="M 3010 6650 L 2910 6750 " />
-        <path d="M 3010 6650 L 2960 6650 " />
-        <path d="M 3060 6550 L 3060 6750 " />
-        <path d="M 3110 6650 L 3210 6750 " />
-        <path d="M 3160 6650 L 3110 6650 " />
-        <path d="M 3060 6650 L 3010 6650 L 2910 6550 " />
-        <path d="M 3060 6650 L 3110 6650 L 3210 6550 " />
-        <path d="M 2820 6650 L 2859 6650" />
-        <path d="M 3300 6650 L 3261 6650" />
-        </g>        <text class="reference static-color text-C" x="3060" y="6385" visibility="hidden">QuickConnect1</text>
-        <text class="setState text-C" x="3060" y="6476" visibility="hidden"></text>
-        <text class="value text-C" x="3060" y="6476" visibility="hidden">QuickConnect</text>
-        <text class="valueRaw text-C" x="3060" y="6476" visibility="hidden">QuickConnect</text>
-        <text class="actionReferenceValue text-C" x="3060" y="6476" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="3060" y="6476" visibility="hidden"> </text>
+        <!-- coordinates: x = 3060 y = 6470 -->
+        <g>        <circle cx="2910" cy="6470" r="50" />
+        <circle cx="3210" cy="6470" r="50" />
+        <path d="M 3010 6470 L 2910 6570 " />
+        <path d="M 3010 6470 L 2960 6470 " />
+        <path d="M 3060 6370 L 3060 6570 " />
+        <path d="M 3110 6470 L 3210 6570 " />
+        <path d="M 3160 6470 L 3110 6470 " />
+        <path d="M 3060 6470 L 3010 6470 L 2910 6370 " />
+        <path d="M 3060 6470 L 3110 6470 L 3210 6370 " />
+        <path d="M 2820 6470 L 2859 6470" />
+        <path d="M 3300 6470 L 3261 6470" />
+        </g>        <text class="reference static-color text-C" x="3060" y="6205" visibility="hidden">QuickConnect1</text>
+        <text class="setState text-C" x="3060" y="6296" visibility="hidden"></text>
+        <text class="value text-C" x="3060" y="6296" visibility="hidden">QuickConnect</text>
+        <text class="valueRaw text-C" x="3060" y="6296" visibility="hidden">QuickConnect</text>
+        <text class="actionReferenceValue text-C" x="3060" y="6296" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="3060" y="6296" visibility="hidden"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('QuickConnect')"></rect>    </g>
-    <g class="CheckValve1 PnID-CheckValve CheckValve comp" data-unit="" data-pnid-checkvalve="" data-content="" action-reference=""transform="rotate(90,2530,6780)">
-        <!-- coordinates: x = 2530 y = 6780 -->
-        <g>        <path d="M 2630 6680 L 2630 6880 " />
-        <path d="M 2430 6680 L 2430 6880 L 2630 6780 L 2430 6680 " />
-        <path d="M 2430 6780 L 2430 6780" />
-        <path d="M 2630 6780 L 2630 6780" />
-        </g>        <text class="reference static-color text-L" x="2530" y="6652" visibility="hidden" transform="rotate(-90,2530,6652)">CheckValve1</text>
-        <text class="setState text-C" x="2530" y="6950" visibility="hidden" transform="rotate(-90,2530,6950)"></text>
-        <text class="value text-C" x="2530" y="6950" visibility="hidden" transform="rotate(-90,2530,6950)">CheckValve</text>
-        <text class="valueRaw text-C" x="2530" y="6950" visibility="hidden" transform="rotate(-90,2530,6950)">CheckValve</text>
-        <text class="actionReferenceValue text-C" x="2530" y="6950" visibility="hidden" transform="rotate(-90,2530,6950)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2530" y="6950" visibility="hidden" transform="rotate(-90,2530,6950)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('CheckValve')"></rect>    </g>
     <g class="Vent1 PnID-Vent Vent comp" data-unit="" data-pnid-vent="" data-content="" action-reference="">
         <!-- coordinates: x = 3370 y = 9690 -->
         <g>        <path d="M 3370 9690 L 3170 9690 " />
@@ -297,11 +255,11 @@
         <path d="M 2680 11550 L 2780 11550" />
         </g>        <text class="sensor-letter static-color text-C" x="2880" y="11550">P</text>
         <text class="reference static-color text-C" x="2940" y="11420" visibility="hidden">Sensor_Pressure4</text>
-        <text class="setState text-C" x="3280" y="11550" visibility="hidden"></text>
-        <text class="value text-C" x="3280" y="11550" visibility="visible">ox_injector_pressure:sensor</text>
-        <text class="valueRaw text-C" x="3280" y="11550" visibility="hidden">ox_injector_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="3280" y="11550" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="3280" y="11550" visibility="hidden"> </text>
+        <text class="setState text-C" x="3380" y="11550" visibility="hidden"></text>
+        <text class="value text-C" x="3380" y="11550" visibility="visible">ox_injector_pressure:sensor</text>
+        <text class="valueRaw text-C" x="3380" y="11550" visibility="hidden">ox_injector_pressure:sensor</text>
+        <text class="actionReferenceValue text-C" x="3380" y="11550" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="3380" y="11550" visibility="hidden"> </text>
         <text class="Unit" x="2880" y="11550" visibility="hidden">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_injector_pressure-sensor')"></rect>    </g>
@@ -311,11 +269,11 @@
         <path d="M 2680 11820 L 2780 11820" />
         </g>        <text class="sensor-letter static-color text-C" x="2880" y="11820">P</text>
         <text class="reference static-color text-C" x="2940" y="11690" visibility="hidden">Sensor_Pressure5</text>
-        <text class="setState text-C" x="3260" y="11820" visibility="hidden"></text>
-        <text class="value text-C" x="3260" y="11820" visibility="visible">chamber_pressure:sensor</text>
-        <text class="valueRaw text-C" x="3260" y="11820" visibility="hidden">chamber_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="3260" y="11820" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="3260" y="11820" visibility="hidden"> </text>
+        <text class="setState text-C" x="3310" y="11820" visibility="hidden"></text>
+        <text class="value text-C" x="3310" y="11820" visibility="visible">chamber_pressure:sensor</text>
+        <text class="valueRaw text-C" x="3310" y="11820" visibility="hidden">chamber_pressure:sensor</text>
+        <text class="actionReferenceValue text-C" x="3310" y="11820" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="3310" y="11820" visibility="hidden"> </text>
         <text class="Unit" x="2880" y="11820" visibility="hidden">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('chamber_pressure-sensor')"></rect>    </g>
@@ -325,11 +283,11 @@
         <path d="M 1970 11550 L 2070 11550" />
         </g>        <text class="sensor-letter static-color text-C" x="2170" y="11550" transform="rotate(180,2170,11550)">P</text>
         <text class="reference static-color text-C" x="2230" y="11420" visibility="hidden" transform="rotate(180,2230,11420)">Sensor_Pressure1</text>
-        <text class="setState text-C" x="2520" y="11550" visibility="hidden" transform="rotate(180,2520,11550)"></text>
-        <text class="value text-C" x="2520" y="11550" visibility="visible" transform="rotate(180,2520,11550)">fuel_injector_pressure:sensor</text>
-        <text class="valueRaw text-C" x="2520" y="11550" visibility="hidden" transform="rotate(180,2520,11550)">fuel_injector_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="2520" y="11550" visibility="hidden" transform="rotate(180,2520,11550)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2520" y="11550" visibility="hidden" transform="rotate(180,2520,11550)"> </text>
+        <text class="setState text-C" x="2650" y="11550" visibility="hidden" transform="rotate(180,2650,11550)"></text>
+        <text class="value text-C" x="2650" y="11550" visibility="visible" transform="rotate(180,2650,11550)">fuel_injector_pressure:sensor</text>
+        <text class="valueRaw text-C" x="2650" y="11550" visibility="hidden" transform="rotate(180,2650,11550)">fuel_injector_pressure:sensor</text>
+        <text class="actionReferenceValue text-C" x="2650" y="11550" visibility="hidden" transform="rotate(180,2650,11550)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2650" y="11550" visibility="hidden" transform="rotate(180,2650,11550)"> </text>
         <text class="Unit" x="2170" y="11550" visibility="hidden" transform="rotate(180,2170,11550)">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('fuel_injector_pressure-sensor')"></rect>    </g>
@@ -339,11 +297,11 @@
         <path d="M 2440 12030 L 2340 12030" />
         </g>        <text class="sensor-letter static-color text-C" x="2240" y="12030">I</text>
         <text class="reference static-color text-C" x="2298" y="11837" visibility="hidden">igniter0</text>
-        <text class="setState text-C" x="1940" y="12030" visibility="hidden"></text>
-        <text class="value text-C" x="1940" y="12030" visibility="visible">igniter0:sensor</text>
-        <text class="valueRaw text-C" x="1940" y="12030" visibility="hidden">igniter0:sensor</text>
-        <text class="actionReferenceValue text-C" x="1940" y="12030" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="1940" y="12030" visibility="hidden"> </text>
+        <text class="setState text-C" x="1900" y="12030" visibility="hidden"></text>
+        <text class="value text-C" x="1900" y="12030" visibility="visible">igniter0:sensor</text>
+        <text class="valueRaw text-C" x="1900" y="12030" visibility="hidden">igniter0:sensor</text>
+        <text class="actionReferenceValue text-C" x="1900" y="12030" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="1900" y="12030" visibility="hidden"> </text>
         <text class="Unit" x="2240" y="12030" visibility="hidden">Ohm</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter0-sensor')"></rect>    </g>
@@ -353,11 +311,11 @@
         <path d="M 3020 12030 L 2920 12030" />
         </g>        <text class="sensor-letter static-color text-C" x="2820" y="12030" transform="rotate(180,2820,12030)">I</text>
         <text class="reference static-color text-R" x="2692" y="12052" visibility="hidden" transform="rotate(180,2692,12052)">igniter1</text>
-        <text class="setState text-R" x="2595" y="12030" visibility="hidden" transform="rotate(180,2595,12030)"></text>
-        <text class="value text-R" x="2595" y="12030" visibility="visible" transform="rotate(180,2595,12030)">igniter1:sensor</text>
-        <text class="valueRaw text-R" x="2595" y="12030" visibility="hidden" transform="rotate(180,2595,12030)">igniter1:sensor</text>
-        <text class="actionReferenceValue text-R" x="2595" y="12030" visibility="hidden" transform="rotate(180,2595,12030)"> </text>
-        <text class="actionReferenceValueRaw text-R" x="2595" y="12030" visibility="hidden" transform="rotate(180,2595,12030)"> </text>
+        <text class="setState text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)"></text>
+        <text class="value text-C" x="2470" y="12030" visibility="visible" transform="rotate(180,2470,12030)">igniter1:sensor</text>
+        <text class="valueRaw text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)">igniter1:sensor</text>
+        <text class="actionReferenceValue text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)"> </text>
         <text class="Unit" x="2820" y="12030" visibility="hidden" transform="rotate(180,2820,12030)">Ohm</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter1-sensor')"></rect>    </g>
@@ -371,34 +329,14 @@
         <path d="M 2480 11230 L 2480 11230" />
         </g>        <text class="sensor-letter static-color text-C" x="2360" y="11080" transform="rotate(90,2360,11080)">M</text>
         <text class="reference static-color text-C" x="2360" y="11360" visibility="hidden" transform="rotate(90,2360,11360)">FuelMain</text>
-        <text class="setState text-L" x="2500" y="10890" visibility="hidden" transform="rotate(90,2500,10890)"></text>
-        <text class="value text-L" x="2500" y="10890" visibility="visible" transform="rotate(90,2500,10890)">fuel_main_valve:sensor</text>
-        <text class="valueRaw text-L" x="2500" y="10890" visibility="hidden" transform="rotate(90,2500,10890)">fuel_main_valve:sensor</text>
-        <text class="actionReferenceValue text-L" x="2500" y="10890" visibility="hidden" transform="rotate(90,2500,10890)"> </text>
-        <text class="actionReferenceValueRaw text-L" x="2500" y="10890" visibility="hidden" transform="rotate(90,2500,10890)"> </text>
+        <text class="setState text-C" x="2360" y="10560" visibility="hidden" transform="rotate(90,2360,10560)"></text>
+        <text class="value text-C" x="2360" y="10560" visibility="visible" transform="rotate(90,2360,10560)">fuel_main_valve:sensor</text>
+        <text class="valueRaw text-C" x="2360" y="10560" visibility="hidden" transform="rotate(90,2360,10560)">fuel_main_valve:sensor</text>
+        <text class="actionReferenceValue text-C" x="2360" y="10560" visibility="hidden" transform="rotate(90,2360,10560)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2360" y="10560" visibility="hidden" transform="rotate(90,2360,10560)"> </text>
         <text class="Unit" x="2360" y="11230" visibility="hidden" transform="rotate(90,2360,11230)">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('fuel_main_valve-sensor')"></rect>    </g>
-    <g class="U? PnID-Rocket Rocket comp" data-unit="" data-pnid-rocket="" data-content="" action-reference="">
-        <!-- coordinates: x = 2530 y = 5270 -->
-        <g>        <path d="M 3060 5940 A 4551.158643686243 4551.158643686243 0 0 0 2530 3770" />
-        <path d="M 2800 12470 A 2537.5438912460213 2537.5438912460213 0 0 0 3060 11400" />
-        <path d="M 2000 11400 A 2537.4926600879066 2537.4926600879066 0 0 0 2260 12470" />
-        <path d="M 2530 3770 A 4551.248729744399 4551.248729744399 0 0 0 2000 5940" />
-        <path d="M 2000 11400 L 2000 5940 " />
-        <path d="M 2530 12470 L 2800 12470 " />
-        <path d="M 3060 11400 L 3060 5940 " />
-        <path d="M 2800 12470 L 3730 11890 L 3730 10930 L 3060 10170 " />
-        <path d="M 2260 12470 L 2530 12470 " />
-        <path d="M 2260 12470 L 1330 11890 L 1330 10930 L 2000 10170 " />
-        </g>        <text class="reference static-color text-L" x="3758" y="8074" visibility="visible">U?</text>
-        <text class="setState text-L" x="3758" y="8165" visibility="hidden"></text>
-        <text class="value text-L" x="3758" y="8165" visibility="visible">Rocket</text>
-        <text class="valueRaw text-L" x="3758" y="8165" visibility="hidden">Rocket</text>
-        <text class="actionReferenceValue text-L" x="3758" y="8165" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-L" x="3758" y="8165" visibility="hidden"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Rocket')"></rect>    </g>
     <g class="OxMain PnID-Valve_Servo ox_main_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(90,2700,11230)">
         <!-- coordinates: x = 2700 y = 11230 -->
         <g>        <circle cx="2700" cy="11080" r="60" />
@@ -409,292 +347,26 @@
         <path d="M 2820 11230 L 2820 11230" />
         </g>        <text class="sensor-letter static-color text-C" x="2700" y="11080" transform="rotate(270,2700,11080)">M</text>
         <text class="reference static-color text-C" x="2700" y="11360" visibility="hidden" transform="rotate(-90,2700,11360)">OxMain</text>
-        <text class="setState text-L" x="2540" y="11200" visibility="hidden" transform="rotate(-90,2540,11200)"></text>
-        <text class="value text-L" x="2540" y="11200" visibility="visible" transform="rotate(-90,2540,11200)">ox_main_valve:sensor</text>
-        <text class="valueRaw text-L" x="2540" y="11200" visibility="hidden" transform="rotate(-90,2540,11200)">ox_main_valve:sensor</text>
-        <text class="actionReferenceValue text-L" x="2540" y="11200" visibility="hidden" transform="rotate(-90,2540,11200)"> </text>
-        <text class="actionReferenceValueRaw text-L" x="2540" y="11200" visibility="hidden" transform="rotate(-90,2540,11200)"> </text>
+        <text class="setState text-C" x="2700" y="10560" visibility="hidden" transform="rotate(-90,2700,10560)"></text>
+        <text class="value text-C" x="2700" y="10560" visibility="visible" transform="rotate(-90,2700,10560)">ox_main_valve:sensor</text>
+        <text class="valueRaw text-C" x="2700" y="10560" visibility="hidden" transform="rotate(-90,2700,10560)">ox_main_valve:sensor</text>
+        <text class="actionReferenceValue text-C" x="2700" y="10560" visibility="hidden" transform="rotate(-90,2700,10560)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2700" y="10560" visibility="hidden" transform="rotate(-90,2700,10560)"> </text>
         <text class="Unit" x="2700" y="11230" visibility="hidden" transform="rotate(-90,2700,11230)">%</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_main_valve-sensor')"></rect>    </g>
-    <g class="igniter0_cont PnID-LED igniter0_cont-sensor comp" data-unit="" data-pnid-led="" data-content="" action-reference=""transform="rotate(180,2240,12150)">
-        <!-- coordinates: x = 2240 y = 12150 -->
-        <g>        <path d="M 2290 12170 A 50 50 0 0 0 2190 12170" />
-        <path d="M 2290 12170 L 2190 12170 " />
-        </g>        <text class="reference static-color text-R" x="2162" y="12167" visibility="hidden" transform="rotate(180,2162,12167)">igniter0_cont</text>
-        <text class="setState text-C" x="2240" y="12060" visibility="hidden" transform="rotate(180,2240,12060)"></text>
-        <text class="value text-C" x="2240" y="12060" visibility="visible" transform="rotate(180,2240,12060)">igniter0_cont:sensor</text>
-        <text class="valueRaw text-C" x="2240" y="12060" visibility="hidden" transform="rotate(180,2240,12060)">igniter0_cont:sensor</text>
-        <text class="actionReferenceValue text-C" x="2240" y="12060" visibility="hidden" transform="rotate(180,2240,12060)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2240" y="12060" visibility="hidden" transform="rotate(180,2240,12060)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter0_cont-sensor')"></rect>    </g>
     <g class="igniter1_cont PnID-LED igniter1_cont-sensor comp" data-unit="" data-pnid-led="" data-content="" action-reference=""transform="rotate(180,2820,12150)">
         <!-- coordinates: x = 2820 y = 12150 -->
         <g>        <path d="M 2870 12170 A 50 50 0 0 0 2770 12170" />
         <path d="M 2870 12170 L 2770 12170 " />
         </g>        <text class="reference static-color text-R" x="2742" y="12167" visibility="hidden" transform="rotate(180,2742,12167)">igniter1_cont</text>
-        <text class="setState text-C" x="2820" y="12060" visibility="hidden" transform="rotate(180,2820,12060)"></text>
-        <text class="value text-C" x="2820" y="12060" visibility="visible" transform="rotate(180,2820,12060)">igniter1_cont:sensor</text>
-        <text class="valueRaw text-C" x="2820" y="12060" visibility="hidden" transform="rotate(180,2820,12060)">igniter1_cont:sensor</text>
-        <text class="actionReferenceValue text-C" x="2820" y="12060" visibility="hidden" transform="rotate(180,2820,12060)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="2820" y="12060" visibility="hidden" transform="rotate(180,2820,12060)"> </text>
+        <text class="setState text-C" x="2820" y="12020" visibility="hidden" transform="rotate(180,2820,12020)"></text>
+        <text class="value text-C" x="2820" y="12020" visibility="visible" transform="rotate(180,2820,12020)">igniter1_cont:sensor</text>
+        <text class="valueRaw text-C" x="2820" y="12020" visibility="hidden" transform="rotate(180,2820,12020)">igniter1_cont:sensor</text>
+        <text class="actionReferenceValue text-C" x="2820" y="12020" visibility="hidden" transform="rotate(180,2820,12020)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2820" y="12020" visibility="hidden" transform="rotate(180,2820,12020)"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter1_cont-sensor')"></rect>    </g>
-    <g class="WaterMantle PnID-HeatExchanger heat_exchanger_mantle-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-14900,0)">
-        <!-- coordinates: x = 7450 y = 8910 -->
-        <g>        <path d="M 7180 9230 A 401.5420276882608 401.5420276882608 0 0 0 7700 9230" />
-        <path d="M 7180 9090 A 401.5420276882608 401.5420276882608 0 0 0 7700 9090" />
-        <path d="M 7180 8950 A 401.5420276882608 401.5420276882608 0 0 0 7700 8950" />
-        <path d="M 7180 8810 A 401.5420276882608 401.5420276882608 0 0 0 7700 8810" />
-        <path d="M 7180 8670 A 401.5420276882608 401.5420276882608 0 0 0 7700 8670" />
-        <path d="M 7700 9230 A 550.8003267972887 550.8003267972887 0 0 0 7180 9090" />
-        <path d="M 7700 9090 A 550.8003267972887 550.8003267972887 0 0 0 7180 8950" />
-        <path d="M 7700 8950 A 550.8003267972887 550.8003267972887 0 0 0 7180 8810" />
-        <path d="M 7700 8810 A 550.8003267972887 550.8003267972887 0 0 0 7180 8670" />
-        <path d="M 7700 8670 A 550.8003267972887 550.8003267972887 0 0 0 7180 8530" />
-        <path d="M 7080 9230 L 7178 9230" />
-        <path d="M 7080 8530 L 7178 8530" />
-        </g>        <text class="reference static-color text-L" x="7800" y="8900" visibility="hidden" transform="scale(-1,1) translate(-15600,0)">WaterMantle</text>
-        <text class="setState text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"></text>
-        <text class="value text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">heat_exchanger_mantle:sensor</text>
-        <text class="valueRaw text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)">heat_exchanger_mantle:sensor</text>
-        <text class="actionReferenceValue text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"> </text>
-        <text class="actionReferenceValueRaw text-R" x="7760" y="8790" visibility="hidden" transform="scale(-1,1) translate(-15520,0)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('heat_exchanger_mantle-sensor')"></rect>    </g>
-    <g class="Sensor_Temperature4 PnID-Sensor_Temperature water_mantle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="High" action-reference="">
-        <!-- coordinates: x = 7920 y = 8950 -->
-        <g>        <circle cx="7920" cy="8950" r="100" />
-        <path d="M 7720 8950 L 7820 8950" />
-        </g>        <text class="sensor-letter static-color text-C" x="7920" y="8950">T</text>
-        <text class="reference static-color text-C" x="7920" y="8750" visibility="hidden">Sensor_Temperature4</text>
-        <text class="setState text-C" x="7920" y="8800" visibility="hidden"></text>
-        <text class="value text-C" x="7920" y="8800" visibility="visible">water_mantle_temp:sensor</text>
-        <text class="valueRaw text-C" x="7920" y="8800" visibility="hidden">water_mantle_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="7920" y="8800" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7920" y="8800" visibility="hidden"> </text>
-        <text class="Unit" x="7920" y="8950" visibility="hidden">˚C</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle_temp-sensor')"></rect>    </g>
-    <g class="Valve_Servo3 PnID-Valve_Servo pressurant_tanking_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference="">
-        <!-- coordinates: x = 6350 y = 7320 -->
-        <g>        <circle cx="6350" cy="7070" r="100" />
-        <path d="M 6350 7320 L 6350 7170 " />
-        <path d="M 6350 7320 L 6150 7170 L 6150 7470 L 6350 7320 " />
-        <path d="M 6550 7170 L 6350 7320 L 6550 7470 L 6550 7170 " />
-        <path d="M 6150 7320 L 6150 7320" />
-        <path d="M 6550 7320 L 6550 7320" />
-        </g>        <text class="sensor-letter static-color text-C" x="6350" y="7070">M</text>
-        <text class="reference static-color text-C" x="6350" y="6877" visibility="hidden">Valve_Servo3</text>
-        <text class="setState text-C" x="6370" y="6950" visibility="hidden"></text>
-        <text class="value text-C" x="6370" y="6950" visibility="visible">pressurant_tanking_valve:sensor</text>
-        <text class="valueRaw text-C" x="6370" y="6950" visibility="hidden">pressurant_tanking_valve:sensor</text>
-        <text class="actionReferenceValue text-C" x="6370" y="6950" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="6370" y="6950" visibility="hidden"> </text>
-        <text class="Unit" x="6350" y="7320" visibility="hidden">%</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_tanking_valve-sensor')"></rect>    </g>
-    <g class="N2O1 PnID-GasBottle GasBottle comp" data-unit="" data-pnid-gasbottle="" data-content="" action-reference=""transform="rotate(180,7440,9020)">
-        <!-- coordinates: x = 7440 y = 9020 -->
-        <g>        <path d="M 7640 8720 A 403.11288741492746 403.11288741492746 0 0 0 7240 8720" />
-        <path d="M 7490 8570 A 50 50 0 0 0 7390 8570" />
-        <path d="M 7390 8670 L 7390 8570 " />
-        <path d="M 7490 8670 L 7490 8570 " />
-        <path d="M 7240 8720 L 7240 9520 L 7640 9520 L 7640 8720 " />
-        <path d="M 7440 8520 L 7440 8520" />
-        </g>        <text class="reference static-color text-C" x="7440" y="8990" visibility="visible" transform="rotate(180,7440,8990)">N2O1</text>
-        <text class="setState text-C" x="7440" y="9120" visibility="hidden" transform="rotate(180,7440,9120)"></text>
-        <text class="value text-C" x="7440" y="9120" visibility="hidden" transform="rotate(180,7440,9120)">GasBottle</text>
-        <text class="valueRaw text-C" x="7440" y="9120" visibility="hidden" transform="rotate(180,7440,9120)">GasBottle</text>
-        <text class="actionReferenceValue text-C" x="7440" y="9120" visibility="hidden" transform="rotate(180,7440,9120)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7440" y="9120" visibility="hidden" transform="rotate(180,7440,9120)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('GasBottle')"></rect>    </g>
-    <g class="Valve_Servo4 PnID-Valve_Servo ox_tanking_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference="">
-        <!-- coordinates: x = 6350 y = 10010 -->
-        <g>        <circle cx="6350" cy="9760" r="100" />
-        <path d="M 6350 10010 L 6350 9860 " />
-        <path d="M 6350 10010 L 6150 9860 L 6150 10160 L 6350 10010 " />
-        <path d="M 6550 9860 L 6350 10010 L 6550 10160 L 6550 9860 " />
-        <path d="M 6150 10010 L 6150 10010" />
-        <path d="M 6550 10010 L 6550 10010" />
-        </g>        <text class="sensor-letter static-color text-C" x="6350" y="9760">M</text>
-        <text class="reference static-color text-C" x="6350" y="9567" visibility="hidden">Valve_Servo4</text>
-        <text class="setState text-C" x="6350" y="9600" visibility="hidden"></text>
-        <text class="value text-C" x="6350" y="9600" visibility="visible">ox_tanking_valve:sensor</text>
-        <text class="valueRaw text-C" x="6350" y="9600" visibility="hidden">ox_tanking_valve:sensor</text>
-        <text class="actionReferenceValue text-C" x="6350" y="9600" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="6350" y="9600" visibility="hidden"> </text>
-        <text class="Unit" x="6350" y="10010" visibility="hidden">%</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tanking_valve-sensor')"></rect>    </g>
-    <g class="Valve_Servo6 PnID-Valve_Servo ox_vent_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(-90,6940,9550)">
-        <!-- coordinates: x = 6940 y = 9550 -->
-        <g>        <circle cx="6940" cy="9300" r="100" />
-        <path d="M 6940 9550 L 6940 9400 " />
-        <path d="M 6940 9550 L 6740 9400 L 6740 9700 L 6940 9550 " />
-        <path d="M 7140 9400 L 6940 9550 L 7140 9700 L 7140 9400 " />
-        <path d="M 6740 9550 L 6740 9550" />
-        <path d="M 7140 9550 L 7140 9550" />
-        </g>        <text class="sensor-letter static-color text-C" x="6940" y="9300" transform="rotate(90,6940,9300)">M</text>
-        <text class="reference static-color text-C" x="6940" y="9107" visibility="hidden" transform="rotate(90,6940,9107)">Valve_Servo6</text>
-        <text class="setState text-R" x="7070" y="9100" visibility="hidden" transform="rotate(90,7070,9100)"></text>
-        <text class="value text-R" x="7070" y="9100" visibility="visible" transform="rotate(90,7070,9100)">ox_vent_valve:sensor</text>
-        <text class="valueRaw text-R" x="7070" y="9100" visibility="hidden" transform="rotate(90,7070,9100)">ox_vent_valve:sensor</text>
-        <text class="actionReferenceValue text-R" x="7070" y="9100" visibility="hidden" transform="rotate(90,7070,9100)"> </text>
-        <text class="actionReferenceValueRaw text-R" x="7070" y="9100" visibility="hidden" transform="rotate(90,7070,9100)"> </text>
-        <text class="Unit" x="6940" y="9550" visibility="hidden" transform="rotate(90,6940,9550)">%</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_vent_valve-sensor')"></rect>    </g>
-    <g class="Vent3 PnID-Vent Vent comp" data-unit="" data-pnid-vent="" data-content="" action-reference=""transform="rotate(-90,6940,9050)">
-        <!-- coordinates: x = 6940 y = 9050 -->
-        <g>        <path d="M 6940 9050 L 6740 9050 " />
-        <path d="M 6840 8950 L 6940 9050 L 6840 9150 " />
-        <path d="M 6640 9050 L 6740 9050" />
-        </g>        <text class="reference static-color text-R" x="6782" y="9178" visibility="hidden" transform="rotate(90,6782,9178)">Vent3</text>
-        <text class="setState text-C" x="7040" y="9100" visibility="hidden" transform="rotate(90,7040,9100)"></text>
-        <text class="value text-C" x="7040" y="9100" visibility="hidden" transform="rotate(90,7040,9100)">Vent</text>
-        <text class="valueRaw text-C" x="7040" y="9100" visibility="hidden" transform="rotate(90,7040,9100)">Vent</text>
-        <text class="actionReferenceValue text-C" x="7040" y="9100" visibility="hidden" transform="rotate(90,7040,9100)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7040" y="9100" visibility="hidden" transform="rotate(90,7040,9100)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Vent')"></rect>    </g>
-    <g class="Vent2 PnID-Vent Vent comp" data-unit="" data-pnid-vent="" data-content="" action-reference=""transform="rotate(90,6940,8280) scale(1,-1) translate(0,-16560)">
-        <!-- coordinates: x = 6940 y = 8280 -->
-        <g>        <path d="M 6940 8280 L 6740 8280 " />
-        <path d="M 6840 8180 L 6940 8280 L 6840 8380 " />
-        <path d="M 6640 8280 L 6740 8280" />
-        </g>        <text class="reference static-color text-R" x="6782" y="8408" visibility="hidden" transform="rotate(90,6782,8408) scale(1,-1) translate(0,-16816)">Vent2</text>
-        <text class="setState text-C" x="7040" y="8330" visibility="hidden" transform="rotate(90,7040,8330) scale(1,-1) translate(0,-16660)"></text>
-        <text class="value text-C" x="7040" y="8330" visibility="hidden" transform="rotate(90,7040,8330) scale(1,-1) translate(0,-16660)">Vent</text>
-        <text class="valueRaw text-C" x="7040" y="8330" visibility="hidden" transform="rotate(90,7040,8330) scale(1,-1) translate(0,-16660)">Vent</text>
-        <text class="actionReferenceValue text-C" x="7040" y="8330" visibility="hidden" transform="rotate(90,7040,8330) scale(1,-1) translate(0,-16660)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7040" y="8330" visibility="hidden" transform="rotate(90,7040,8330) scale(1,-1) translate(0,-16660)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Vent')"></rect>    </g>
-    <g class="Sensor_Pressure6 PnID-Sensor_Pressure pressurant_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference="">
-        <!-- coordinates: x = 7640 y = 7320 -->
-        <g>        <circle cx="7640" cy="7320" r="100" />
-        <path d="M 7440 7320 L 7540 7320" />
-        </g>        <text class="sensor-letter static-color text-C" x="7640" y="7320">P</text>
-        <text class="reference static-color text-L" x="7510" y="7100" visibility="hidden">Sensor_Pressure6</text>
-        <text class="setState text-C" x="7640" y="7110" visibility="hidden"></text>
-        <text class="value text-C" x="7640" y="7110" visibility="visible">pressurant_pressure:sensor</text>
-        <text class="valueRaw text-C" x="7640" y="7110" visibility="hidden">pressurant_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="7640" y="7110" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7640" y="7110" visibility="hidden"> </text>
-        <text class="Unit" x="7640" y="7320" visibility="hidden">bar</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_pressure-sensor')"></rect>    </g>
-    <g class="Sensor_Pressure7 PnID-Sensor_Pressure ox_bottle_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference="">
-        <!-- coordinates: x = 7640 y = 10010 -->
-        <g>        <circle cx="7640" cy="10010" r="100" />
-        <path d="M 7440 10010 L 7540 10010" />
-        </g>        <text class="sensor-letter static-color text-C" x="7640" y="10010">P</text>
-        <text class="reference static-color text-L" x="7510" y="9790" visibility="hidden">Sensor_Pressure7</text>
-        <text class="setState text-C" x="7640" y="10200" visibility="hidden"></text>
-        <text class="value text-C" x="7640" y="10200" visibility="visible">ox_bottle_pressure:sensor</text>
-        <text class="valueRaw text-C" x="7640" y="10200" visibility="hidden">ox_bottle_pressure:sensor</text>
-        <text class="actionReferenceValue text-C" x="7640" y="10200" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7640" y="10200" visibility="hidden"> </text>
-        <text class="Unit" x="7640" y="10010" visibility="hidden">bar</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_bottle_pressure-sensor')"></rect>    </g>
-    <g class="Valve_Servo5 PnID-Valve_Servo pressurant_vent_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(90,6940,7780) scale(1,-1) translate(0,-15560)">
-        <!-- coordinates: x = 6940 y = 7780 -->
-        <g>        <circle cx="6940" cy="7530" r="100" />
-        <path d="M 6940 7780 L 6940 7630 " />
-        <path d="M 6940 7780 L 6740 7630 L 6740 7930 L 6940 7780 " />
-        <path d="M 7140 7630 L 6940 7780 L 7140 7930 L 7140 7630 " />
-        <path d="M 6740 7780 L 6740 7780" />
-        <path d="M 7140 7780 L 7140 7780" />
-        </g>        <text class="sensor-letter static-color text-C" x="6940" y="7530" transform="scale(1,-1) translate(0,-15060) rotate(-90, 6940,7530) ">M</text>
-        <text class="reference static-color text-C" x="6940" y="7337" visibility="hidden" transform="rotate(90,6940,7337) scale(1,-1) translate(0,-14674)">Valve_Servo5</text>
-        <text class="setState text-C" x="7070" y="7420" visibility="hidden" transform="rotate(90,7070,7420) scale(1,-1) translate(0,-14840)"></text>
-        <text class="value text-C" x="7070" y="7420" visibility="visible" transform="rotate(90,7070,7420) scale(1,-1) translate(0,-14840)">pressurant_vent_valve:sensor</text>
-        <text class="valueRaw text-C" x="7070" y="7420" visibility="hidden" transform="rotate(90,7070,7420) scale(1,-1) translate(0,-14840)">pressurant_vent_valve:sensor</text>
-        <text class="actionReferenceValue text-C" x="7070" y="7420" visibility="hidden" transform="rotate(90,7070,7420) scale(1,-1) translate(0,-14840)"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7070" y="7420" visibility="hidden" transform="rotate(90,7070,7420) scale(1,-1) translate(0,-14840)"> </text>
-        <text class="Unit" x="6940" y="7780" visibility="hidden" transform="rotate(90,6940,7780) scale(1,-1) translate(0,-15560)">%</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_vent_valve-sensor')"></rect>    </g>
-    <g class="U4 PnID-Pump pump_hot_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps">
-        <!-- coordinates: x = 8440 y = 7980 -->
-        <g>        <circle cx="8440" cy="7980" r="94" />
-        <circle cx="8440" cy="7980" r="180" />
-        <path d="M 8375 7915 L 8505 8045 " />
-        <path d="M 8505 7915 L 8375 8045 " />
-        <path d="M 8650 7800 L 8445 7800 " />
-        <path d="M 8650 7800 L 8650 7860 L 8575 7860 " />
-        <path d="M 8340 8130 L 8240 8240 L 8640 8240 L 8540 8130 " />
-        <path d="M 8260 7980 L 8260 7980" />
-        <path d="M 8650 7830 L 8650 7830" />
-        </g>        <text class="reference static-color text-C" x="8440" y="7575" visibility="hidden">U4</text>
-        <text class="setState text-C" x="8440" y="7666" visibility="hidden"></text>
-        <text class="value text-C" x="8440" y="7666" visibility="visible">pump_hot_water:sensor</text>
-        <text class="valueRaw text-C" x="8440" y="7666" visibility="hidden">pump_hot_water:sensor</text>
-        <text class="actionReferenceValue text-C" x="8440" y="7666" visibility="hidden">gui-water_pumps</text>
-        <text class="actionReferenceValueRaw text-C" x="8440" y="7666" visibility="hidden">gui-water_pumps</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
-    <g class="U7 PnID-Pump pump_cold_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps"transform="scale(-1,1) translate(-19600,0)">
-        <!-- coordinates: x = 9800 y = 7980 -->
-        <g>        <circle cx="9800" cy="7980" r="94" />
-        <circle cx="9800" cy="7980" r="180" />
-        <path d="M 9735 7915 L 9865 8045 " />
-        <path d="M 9865 7915 L 9735 8045 " />
-        <path d="M 10010 7800 L 9805 7800 " />
-        <path d="M 10010 7800 L 10010 7860 L 9935 7860 " />
-        <path d="M 9700 8130 L 9600 8240 L 10000 8240 L 9900 8130 " />
-        <path d="M 9620 7980 L 9620 7980" />
-        <path d="M 10010 7830 L 10010 7830" />
-        </g>        <text class="reference static-color text-C" x="9800" y="7575" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">U7</text>
-        <text class="setState text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)"></text>
-        <text class="value text-C" x="9800" y="7666" visibility="visible" transform="scale(-1,1) translate(-19600,0)">pump_cold_water:sensor</text>
-        <text class="valueRaw text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">pump_cold_water:sensor</text>
-        <text class="actionReferenceValue text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">gui-water_pumps</text>
-        <text class="actionReferenceValueRaw text-C" x="9800" y="7666" visibility="hidden" transform="scale(-1,1) translate(-19600,0)">gui-water_pumps</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
-    <g class="U5 PnID-Valve_Servo_3Way water_valves_out-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves"transform="rotate(180,9120,7550)">
-        <!-- coordinates: x = 9120 y = 7550 -->
-        <g>        <circle cx="9120" cy="7020" r="100" />
-        <path d="M 9120 7270 L 9120 7120 " />
-        <path d="M 9120 7270 L 8920 7120 L 8920 7420 L 9120 7270 " />
-        <path d="M 9270 7470 L 9120 7270 L 8970 7470 L 9270 7470 " />
-        <path d="M 9320 7120 L 9120 7270 L 9320 7420 L 9320 7120 " />
-        <path d="M 8920 7270 L 8920 7270" />
-        <path d="M 9120 7470 L 9120 7470" />
-        <path d="M 9320 7270 L 9320 7270" />
-        </g>        <text class="sensor-letter static-color text-C" x="9120" y="7020" transform="rotate(180,9120,7020)">M</text>
-        <text class="reference static-color text-C" x="9120" y="6847" visibility="hidden" transform="rotate(180,9120,6847)">U5</text>
-        <text class="setState text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)"></text>
-        <text class="value text-C" x="9120" y="6756" visibility="visible" transform="rotate(180,9120,6756)">water_valves_out:sensor</text>
-        <text class="valueRaw text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">water_valves_out:sensor</text>
-        <text class="actionReferenceValue text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">gui-water_valves</text>
-        <text class="actionReferenceValueRaw text-C" x="9120" y="6756" visibility="hidden" transform="rotate(180,9120,6756)">gui-water_valves</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
-    <g class="U6 PnID-Valve_Servo_3Way water_valves_in-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves">
-        <!-- coordinates: x = 9120 y = 9350 -->
-        <g>        <circle cx="9120" cy="8820" r="100" />
-        <path d="M 9120 9070 L 9120 8920 " />
-        <path d="M 9120 9070 L 8920 8920 L 8920 9220 L 9120 9070 " />
-        <path d="M 9270 9270 L 9120 9070 L 8970 9270 L 9270 9270 " />
-        <path d="M 9320 8920 L 9120 9070 L 9320 9220 L 9320 8920 " />
-        <path d="M 8920 9070 L 8920 9070" />
-        <path d="M 9120 9270 L 9120 9270" />
-        <path d="M 9320 9070 L 9320 9070" />
-        </g>        <text class="sensor-letter static-color text-C" x="9120" y="8820">M</text>
-        <text class="reference static-color text-C" x="9120" y="8555" visibility="hidden">U6</text>
-        <text class="setState text-C" x="9120" y="8646" visibility="hidden"></text>
-        <text class="value text-C" x="9120" y="8646" visibility="visible">water_valves_in:sensor</text>
-        <text class="valueRaw text-C" x="9120" y="8646" visibility="hidden">water_valves_in:sensor</text>
-        <text class="actionReferenceValue text-C" x="9120" y="8646" visibility="hidden">gui-water_valves</text>
-        <text class="actionReferenceValueRaw text-C" x="9120" y="8646" visibility="hidden">gui-water_valves</text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
     <g class="WaterColdTemp PnID-Water_Tank water_cold_temp-sensor comp" data-unit="˚C" data-pnid-water_tank="" data-content="" action-reference="">
         <!-- coordinates: x = 9880 y = 9730 -->
         <g>        <rect class="rect" x="9480" y="9270" width="800" height="80" />
@@ -711,38 +383,400 @@
         <text class="Unit" x="9880" y="9730" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_cold_temp-sensor')"></rect>    </g>
+    <g class="Sensor_Temperature1 PnID-Sensor_Temperature ox_tank_top_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="" action-reference="">
+        <!-- coordinates: x = 2470 y = 10120 -->
+        <g>        <circle cx="2470" cy="10120" r="100" />
+        <path d="M 2270 10120 L 2370 10120" />
+        </g>        <text class="sensor-letter static-color text-C" x="2470" y="10120">T</text>
+        <text class="reference static-color text-C" x="2470" y="9920" visibility="hidden">Sensor_Temperature1</text>
+        <text class="setState text-R" x="1840" y="10120" visibility="hidden"></text>
+        <text class="value text-R" x="1840" y="10120" visibility="visible">ox_tank_top_temp:sensor</text>
+        <text class="valueRaw text-R" x="1840" y="10120" visibility="hidden">ox_tank_top_temp:sensor</text>
+        <text class="actionReferenceValue text-R" x="1840" y="10120" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-R" x="1840" y="10120" visibility="hidden"> </text>
+        <text class="Unit" x="2470" y="10120" visibility="hidden">˚C</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tank_top_temp-sensor')"></rect>    </g>
+    <g class="U? PnID-Rocket Rocket comp" data-unit="" data-pnid-rocket="" data-content="" action-reference="">
+        <!-- coordinates: x = 2530 y = 5260 -->
+        <g>        <path d="M 3060 5930 A 4551.158643686243 4551.158643686243 0 0 0 2530 3760" />
+        <path d="M 2800 12460 A 2537.5438912460213 2537.5438912460213 0 0 0 3060 11390" />
+        <path d="M 2000 11390 A 2537.4926600879066 2537.4926600879066 0 0 0 2260 12460" />
+        <path d="M 2530 3760 A 4551.248729744399 4551.248729744399 0 0 0 2000 5930" />
+        <path d="M 2000 11390 L 2000 5930 " />
+        <path d="M 2530 12460 L 2800 12460 " />
+        <path d="M 3060 11390 L 3060 5930 " />
+        <path d="M 2800 12460 L 3730 11880 L 3730 10920 L 3060 10160 " />
+        <path d="M 2260 12460 L 2530 12460 " />
+        <path d="M 2260 12460 L 1330 11880 L 1330 10920 L 2000 10160 " />
+        </g>        <text class="reference static-color text-C" x="2530" y="3595" visibility="hidden">U?</text>
+        <text class="setState text-C" x="2530" y="3686" visibility="hidden"></text>
+        <text class="value text-C" x="2530" y="3686" visibility="hidden">Rocket</text>
+        <text class="valueRaw text-C" x="2530" y="3686" visibility="hidden">Rocket</text>
+        <text class="actionReferenceValue text-C" x="2530" y="3686" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2530" y="3686" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Rocket')"></rect>    </g>
+    <g class="Pressure_Regulator_Small? PnID-Pressure_Regulator Pressure_Regulator_Small comp" data-unit="" data-pnid-pressure_regulator="" data-content="" action-reference=""transform="rotate(-90,2530,9390)">
+        <!-- coordinates: x = 2530 y = 9390 -->
+        <g>        <path d="M 2595 9290 A 79.05694150420949 79.05694150420949 0 0 0 2465 9290" />
+        <path d="M 2465 9290 L 2595 9290 " />
+        <path d="M 2530 9390 L 2530 9290 " />
+        <path d="M 2530 9255 L 2530 9215 L 2370 9215 L 2370 9255 L 2410 9295 " />
+        <path d="M 2530 9390 L 2410 9295 L 2410 9485 L 2530 9390 " />
+        <path d="M 2530 9390 L 2650 9485 L 2650 9295 L 2530 9390 " />
+        <path d="M 2410 9390 L 2410 9390" />
+        <path d="M 2650 9390 L 2650 9390" />
+        </g>        <text class="reference static-color text-C" x="2530" y="9555" visibility="hidden" transform="rotate(90,2530,9555)">Pressure_Regulator_Small?</text>
+        <text class="setState text-R" x="2523" y="9513" visibility="hidden" transform="rotate(90,2523,9513)"></text>
+        <text class="value text-R" x="2523" y="9513" visibility="hidden" transform="rotate(90,2523,9513)">Pressure_Regulator_Small</text>
+        <text class="valueRaw text-R" x="2523" y="9513" visibility="hidden" transform="rotate(90,2523,9513)">Pressure_Regulator_Small</text>
+        <text class="actionReferenceValue text-R" x="2523" y="9513" visibility="hidden" transform="rotate(90,2523,9513)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="2523" y="9513" visibility="hidden" transform="rotate(90,2523,9513)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Pressure_Regulator_Small')"></rect>    </g>
+    <g class="Pressure_Regulator_Small? PnID-Pressure_Regulator Pressure_Regulator_Small comp" data-unit="" data-pnid-pressure_regulator="" data-content="" action-reference=""transform="rotate(-90,2530,6660)">
+        <!-- coordinates: x = 2530 y = 6660 -->
+        <g>        <path d="M 2595 6560 A 79.05694150420949 79.05694150420949 0 0 0 2465 6560" />
+        <path d="M 2465 6560 L 2595 6560 " />
+        <path d="M 2530 6660 L 2530 6560 " />
+        <path d="M 2530 6525 L 2530 6485 L 2370 6485 L 2370 6525 L 2410 6565 " />
+        <path d="M 2530 6660 L 2410 6565 L 2410 6755 L 2530 6660 " />
+        <path d="M 2530 6660 L 2650 6755 L 2650 6565 L 2530 6660 " />
+        <path d="M 2410 6660 L 2410 6660" />
+        <path d="M 2650 6660 L 2650 6660" />
+        </g>        <text class="reference static-color text-C" x="2530" y="6825" visibility="hidden" transform="rotate(90,2530,6825)">Pressure_Regulator_Small?</text>
+        <text class="setState text-R" x="2523" y="6783" visibility="hidden" transform="rotate(90,2523,6783)"></text>
+        <text class="value text-R" x="2523" y="6783" visibility="hidden" transform="rotate(90,2523,6783)">Pressure_Regulator_Small</text>
+        <text class="valueRaw text-R" x="2523" y="6783" visibility="hidden" transform="rotate(90,2523,6783)">Pressure_Regulator_Small</text>
+        <text class="actionReferenceValue text-R" x="2523" y="6783" visibility="hidden" transform="rotate(90,2523,6783)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="2523" y="6783" visibility="hidden" transform="rotate(90,2523,6783)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Pressure_Regulator_Small')"></rect>    </g>
+    <g class="U7 PnID-Pump pump_cold_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps"transform="scale(-1,1) translate(-18900,0)">
+        <!-- coordinates: x = 9450 y = 8850 -->
+        <g>        <circle cx="9450" cy="8850" r="94" />
+        <circle cx="9450" cy="8850" r="180" />
+        <path d="M 9385 8785 L 9515 8915 " />
+        <path d="M 9515 8785 L 9385 8915 " />
+        <path d="M 9660 8670 L 9455 8670 " />
+        <path d="M 9660 8670 L 9660 8730 L 9585 8730 " />
+        <path d="M 9350 9000 L 9250 9110 L 9650 9110 L 9550 9000 " />
+        <path d="M 9270 8850 L 9270 8850" />
+        <path d="M 9660 8700 L 9660 8700" />
+        </g>        <text class="reference static-color text-C" x="9450" y="8445" visibility="hidden" transform="scale(-1,1) translate(-18900,0)">U7</text>
+        <text class="setState text-C" x="9450" y="8536" visibility="hidden" transform="scale(-1,1) translate(-18900,0)"></text>
+        <text class="value text-C" x="9450" y="8536" visibility="visible" transform="scale(-1,1) translate(-18900,0)">pump_cold_water:sensor</text>
+        <text class="valueRaw text-C" x="9450" y="8536" visibility="hidden" transform="scale(-1,1) translate(-18900,0)">pump_cold_water:sensor</text>
+        <text class="actionReferenceValue text-C" x="9450" y="8536" visibility="hidden" transform="scale(-1,1) translate(-18900,0)">gui-water_pumps</text>
+        <text class="actionReferenceValueRaw text-C" x="9450" y="8536" visibility="hidden" transform="scale(-1,1) translate(-18900,0)">gui-water_pumps</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
+    <g class="U4 PnID-Pump pump_hot_water-sensor comp" data-unit="" data-pnid-pump="" data-content="" action-reference="gui-water_pumps">
+        <!-- coordinates: x = 8090 y = 8850 -->
+        <g>        <circle cx="8090" cy="8850" r="94" />
+        <circle cx="8090" cy="8850" r="180" />
+        <path d="M 8025 8785 L 8155 8915 " />
+        <path d="M 8155 8785 L 8025 8915 " />
+        <path d="M 8300 8670 L 8095 8670 " />
+        <path d="M 8300 8670 L 8300 8730 L 8225 8730 " />
+        <path d="M 7990 9000 L 7890 9110 L 8290 9110 L 8190 9000 " />
+        <path d="M 7910 8850 L 7910 8850" />
+        <path d="M 8300 8700 L 8300 8700" />
+        </g>        <text class="reference static-color text-C" x="8090" y="8445" visibility="hidden">U4</text>
+        <text class="setState text-C" x="8090" y="8536" visibility="hidden"></text>
+        <text class="value text-C" x="8090" y="8536" visibility="visible">pump_hot_water:sensor</text>
+        <text class="valueRaw text-C" x="8090" y="8536" visibility="hidden">pump_hot_water:sensor</text>
+        <text class="actionReferenceValue text-C" x="8090" y="8536" visibility="hidden">gui-water_pumps</text>
+        <text class="actionReferenceValueRaw text-C" x="8090" y="8536" visibility="hidden">gui-water_pumps</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
+    <g class="WaterMantle PnID-HeatExchanger heat_exchanger_mantle-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-13500,0)">
+        <!-- coordinates: x = 6750 y = 8910 -->
+        <g>        <path d="M 6480 9230 A 401.5420276882608 401.5420276882608 0 0 0 7000 9230" />
+        <path d="M 6480 9090 A 401.5420276882608 401.5420276882608 0 0 0 7000 9090" />
+        <path d="M 6480 8950 A 401.5420276882608 401.5420276882608 0 0 0 7000 8950" />
+        <path d="M 6480 8810 A 401.5420276882608 401.5420276882608 0 0 0 7000 8810" />
+        <path d="M 6480 8670 A 401.5420276882608 401.5420276882608 0 0 0 7000 8670" />
+        <path d="M 7000 9230 A 550.8003267972887 550.8003267972887 0 0 0 6480 9090" />
+        <path d="M 7000 9090 A 550.8003267972887 550.8003267972887 0 0 0 6480 8950" />
+        <path d="M 7000 8950 A 550.8003267972887 550.8003267972887 0 0 0 6480 8810" />
+        <path d="M 7000 8810 A 550.8003267972887 550.8003267972887 0 0 0 6480 8670" />
+        <path d="M 7000 8670 A 550.8003267972887 550.8003267972887 0 0 0 6480 8530" />
+        <path d="M 6380 9230 L 6478 9230" />
+        <path d="M 6380 8530 L 6478 8530" />
+        </g>        <text class="reference static-color text-L" x="7100" y="8900" visibility="hidden" transform="scale(-1,1) translate(-14200,0)">WaterMantle</text>
+        <text class="setState text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"></text>
+        <text class="value text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">heat_exchanger_mantle:sensor</text>
+        <text class="valueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">heat_exchanger_mantle:sensor</text>
+        <text class="actionReferenceValue text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('heat_exchanger_mantle-sensor')"></rect>    </g>
+    <g class="Sensor_Temperature4 PnID-Sensor_Temperature water_mantle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="High" action-reference="">
+        <!-- coordinates: x = 8980 y = 7170 -->
+        <g>        <circle cx="8980" cy="7170" r="100" />
+        <path d="M 8780 7170 L 8880 7170" />
+        </g>        <text class="sensor-letter static-color text-C" x="8980" y="7170">T</text>
+        <text class="reference static-color text-C" x="8980" y="6970" visibility="hidden">Sensor_Temperature4</text>
+        <text class="setState text-C" x="9410" y="7170" visibility="hidden"></text>
+        <text class="value text-C" x="9410" y="7170" visibility="visible">water_mantle_temp:sensor</text>
+        <text class="valueRaw text-C" x="9410" y="7170" visibility="hidden">water_mantle_temp:sensor</text>
+        <text class="actionReferenceValue text-C" x="9410" y="7170" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="9410" y="7170" visibility="hidden"> </text>
+        <text class="Unit" x="8980" y="7170" visibility="hidden">˚C</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle_temp-sensor')"></rect>    </g>
+    <g class="Valve_Servo3 PnID-Valve_Servo pressurant_tanking_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference="">
+        <!-- coordinates: x = 6230 y = 7320 -->
+        <g>        <circle cx="6230" cy="7070" r="100" />
+        <path d="M 6230 7320 L 6230 7170 " />
+        <path d="M 6230 7320 L 6030 7170 L 6030 7470 L 6230 7320 " />
+        <path d="M 6430 7170 L 6230 7320 L 6430 7470 L 6430 7170 " />
+        <path d="M 6030 7320 L 6030 7320" />
+        <path d="M 6430 7320 L 6430 7320" />
+        </g>        <text class="sensor-letter static-color text-C" x="6230" y="7070">M</text>
+        <text class="reference static-color text-C" x="6230" y="6877" visibility="hidden">Valve_Servo3</text>
+        <text class="setState text-C" x="6230" y="6890" visibility="hidden"></text>
+        <text class="value text-C" x="6230" y="6890" visibility="visible">pressurant_tanking_valve:sensor</text>
+        <text class="valueRaw text-C" x="6230" y="6890" visibility="hidden">pressurant_tanking_valve:sensor</text>
+        <text class="actionReferenceValue text-C" x="6230" y="6890" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6230" y="6890" visibility="hidden"> </text>
+        <text class="Unit" x="6230" y="7320" visibility="hidden">%</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_tanking_valve-sensor')"></rect>    </g>
+    <g class="N2O1 PnID-GasBottle GasBottle comp" data-unit="" data-pnid-gasbottle="" data-content="" action-reference=""transform="rotate(180,6740,9020)">
+        <!-- coordinates: x = 6740 y = 9020 -->
+        <g>        <path d="M 6940 8720 A 403.11288741492746 403.11288741492746 0 0 0 6540 8720" />
+        <path d="M 6790 8570 A 50 50 0 0 0 6690 8570" />
+        <path d="M 6690 8670 L 6690 8570 " />
+        <path d="M 6790 8670 L 6790 8570 " />
+        <path d="M 6540 8720 L 6540 9520 L 6940 9520 L 6940 8720 " />
+        <path d="M 6740 8520 L 6740 8520" />
+        </g>        <text class="reference static-color text-C" x="7130" y="9150" visibility="visible" transform="rotate(180,7130,9150)">N2O1</text>
+        <text class="setState text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)"></text>
+        <text class="value text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)">GasBottle</text>
+        <text class="valueRaw text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)">GasBottle</text>
+        <text class="actionReferenceValue text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('GasBottle')"></rect>    </g>
+    <g class="Valve_Servo4 PnID-Valve_Servo ox_tanking_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference="">
+        <!-- coordinates: x = 6230 y = 10010 -->
+        <g>        <circle cx="6230" cy="9760" r="100" />
+        <path d="M 6230 10010 L 6230 9860 " />
+        <path d="M 6230 10010 L 6030 9860 L 6030 10160 L 6230 10010 " />
+        <path d="M 6430 9860 L 6230 10010 L 6430 10160 L 6430 9860 " />
+        <path d="M 6030 10010 L 6030 10010" />
+        <path d="M 6430 10010 L 6430 10010" />
+        </g>        <text class="sensor-letter static-color text-C" x="6230" y="9760">M</text>
+        <text class="reference static-color text-C" x="6230" y="9567" visibility="hidden">Valve_Servo4</text>
+        <text class="setState text-C" x="6230" y="9560" visibility="hidden"></text>
+        <text class="value text-C" x="6230" y="9560" visibility="visible">ox_tanking_valve:sensor</text>
+        <text class="valueRaw text-C" x="6230" y="9560" visibility="hidden">ox_tanking_valve:sensor</text>
+        <text class="actionReferenceValue text-C" x="6230" y="9560" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6230" y="9560" visibility="hidden"> </text>
+        <text class="Unit" x="6230" y="10010" visibility="hidden">%</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_tanking_valve-sensor')"></rect>    </g>
+    <g class="Valve_Servo6 PnID-Valve_Servo ox_vent_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(-90,5720,9550)">
+        <!-- coordinates: x = 5720 y = 9550 -->
+        <g>        <circle cx="5720" cy="9300" r="100" />
+        <path d="M 5720 9550 L 5720 9400 " />
+        <path d="M 5720 9550 L 5520 9400 L 5520 9700 L 5720 9550 " />
+        <path d="M 5920 9400 L 5720 9550 L 5920 9700 L 5920 9400 " />
+        <path d="M 5520 9550 L 5520 9550" />
+        <path d="M 5920 9550 L 5920 9550" />
+        </g>        <text class="sensor-letter static-color text-C" x="5720" y="9300" transform="rotate(90,5720,9300)">M</text>
+        <text class="reference static-color text-C" x="5720" y="9107" visibility="hidden" transform="rotate(90,5720,9107)">Valve_Servo6</text>
+        <text class="setState text-R" x="5910" y="9140" visibility="hidden" transform="rotate(90,5910,9140)"></text>
+        <text class="value text-R" x="5910" y="9140" visibility="visible" transform="rotate(90,5910,9140)">ox_vent_valve:sensor</text>
+        <text class="valueRaw text-R" x="5910" y="9140" visibility="hidden" transform="rotate(90,5910,9140)">ox_vent_valve:sensor</text>
+        <text class="actionReferenceValue text-R" x="5910" y="9140" visibility="hidden" transform="rotate(90,5910,9140)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="5910" y="9140" visibility="hidden" transform="rotate(90,5910,9140)"> </text>
+        <text class="Unit" x="5720" y="9550" visibility="hidden" transform="rotate(90,5720,9550)">%</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_vent_valve-sensor')"></rect>    </g>
+    <g class="Vent3 PnID-Vent Vent comp" data-unit="" data-pnid-vent="" data-content="" action-reference=""transform="rotate(-90,5720,9050)">
+        <!-- coordinates: x = 5720 y = 9050 -->
+        <g>        <path d="M 5720 9050 L 5520 9050 " />
+        <path d="M 5620 8950 L 5720 9050 L 5620 9150 " />
+        <path d="M 5420 9050 L 5520 9050" />
+        </g>        <text class="reference static-color text-R" x="5562" y="9178" visibility="hidden" transform="rotate(90,5562,9178)">Vent3</text>
+        <text class="setState text-C" x="5820" y="9100" visibility="hidden" transform="rotate(90,5820,9100)"></text>
+        <text class="value text-C" x="5820" y="9100" visibility="hidden" transform="rotate(90,5820,9100)">Vent</text>
+        <text class="valueRaw text-C" x="5820" y="9100" visibility="hidden" transform="rotate(90,5820,9100)">Vent</text>
+        <text class="actionReferenceValue text-C" x="5820" y="9100" visibility="hidden" transform="rotate(90,5820,9100)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="5820" y="9100" visibility="hidden" transform="rotate(90,5820,9100)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Vent')"></rect>    </g>
+    <g class="Vent2 PnID-Vent Vent comp" data-unit="" data-pnid-vent="" data-content="" action-reference=""transform="rotate(90,5720,8280) scale(1,-1) translate(0,-16560)">
+        <!-- coordinates: x = 5720 y = 8280 -->
+        <g>        <path d="M 5720 8280 L 5520 8280 " />
+        <path d="M 5620 8180 L 5720 8280 L 5620 8380 " />
+        <path d="M 5420 8280 L 5520 8280" />
+        </g>        <text class="reference static-color text-R" x="5562" y="8408" visibility="hidden" transform="rotate(90,5562,8408) scale(1,-1) translate(0,-16816)">Vent2</text>
+        <text class="setState text-C" x="5820" y="8330" visibility="hidden" transform="rotate(90,5820,8330) scale(1,-1) translate(0,-16660)"></text>
+        <text class="value text-C" x="5820" y="8330" visibility="hidden" transform="rotate(90,5820,8330) scale(1,-1) translate(0,-16660)">Vent</text>
+        <text class="valueRaw text-C" x="5820" y="8330" visibility="hidden" transform="rotate(90,5820,8330) scale(1,-1) translate(0,-16660)">Vent</text>
+        <text class="actionReferenceValue text-C" x="5820" y="8330" visibility="hidden" transform="rotate(90,5820,8330) scale(1,-1) translate(0,-16660)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="5820" y="8330" visibility="hidden" transform="rotate(90,5820,8330) scale(1,-1) translate(0,-16660)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Vent')"></rect>    </g>
+    <g class="Sensor_Pressure7 PnID-Sensor_Pressure ox_bottle_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference="">
+        <!-- coordinates: x = 6940 y = 10010 -->
+        <g>        <circle cx="6940" cy="10010" r="100" />
+        <path d="M 6740 10010 L 6840 10010" />
+        </g>        <text class="sensor-letter static-color text-C" x="6940" y="10010">P</text>
+        <text class="reference static-color text-L" x="6810" y="9790" visibility="hidden">Sensor_Pressure7</text>
+        <text class="setState text-C" x="6940" y="10200" visibility="hidden"></text>
+        <text class="value text-C" x="6940" y="10200" visibility="visible">ox_bottle_pressure:sensor</text>
+        <text class="valueRaw text-C" x="6940" y="10200" visibility="hidden">ox_bottle_pressure:sensor</text>
+        <text class="actionReferenceValue text-C" x="6940" y="10200" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6940" y="10200" visibility="hidden"> </text>
+        <text class="Unit" x="6940" y="10010" visibility="hidden">bar</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('ox_bottle_pressure-sensor')"></rect>    </g>
+    <g class="Valve_Servo5 PnID-Valve_Servo pressurant_vent_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(90,5720,7780) scale(1,-1) translate(0,-15560)">
+        <!-- coordinates: x = 5720 y = 7780 -->
+        <g>        <circle cx="5720" cy="7530" r="100" />
+        <path d="M 5720 7780 L 5720 7630 " />
+        <path d="M 5720 7780 L 5520 7630 L 5520 7930 L 5720 7780 " />
+        <path d="M 5920 7630 L 5720 7780 L 5920 7930 L 5920 7630 " />
+        <path d="M 5520 7780 L 5520 7780" />
+        <path d="M 5920 7780 L 5920 7780" />
+        </g>        <text class="sensor-letter static-color text-C" x="5720" y="7530" transform="scale(1,-1) translate(0,-15060) rotate(-90, 5720,7530) ">M</text>
+        <text class="reference static-color text-C" x="5720" y="7337" visibility="hidden" transform="rotate(90,5720,7337) scale(1,-1) translate(0,-14674)">Valve_Servo5</text>
+        <text class="setState text-C" x="5930" y="7290" visibility="hidden" transform="rotate(90,5930,7290) scale(1,-1) translate(0,-14580)"></text>
+        <text class="value text-C" x="5930" y="7290" visibility="visible" transform="rotate(90,5930,7290) scale(1,-1) translate(0,-14580)">pressurant_vent_valve:sensor</text>
+        <text class="valueRaw text-C" x="5930" y="7290" visibility="hidden" transform="rotate(90,5930,7290) scale(1,-1) translate(0,-14580)">pressurant_vent_valve:sensor</text>
+        <text class="actionReferenceValue text-C" x="5930" y="7290" visibility="hidden" transform="rotate(90,5930,7290) scale(1,-1) translate(0,-14580)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="5930" y="7290" visibility="hidden" transform="rotate(90,5930,7290) scale(1,-1) translate(0,-14580)"> </text>
+        <text class="Unit" x="5720" y="7780" visibility="hidden" transform="rotate(90,5720,7780) scale(1,-1) translate(0,-15560)">%</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_vent_valve-sensor')"></rect>    </g>
     <g class="Pressurant1 PnID-GasBottle GasBottle comp" data-unit="" data-pnid-gasbottle="" data-content="" action-reference="">
-        <!-- coordinates: x = 7440 y = 7920 -->
-        <g>        <path d="M 7640 7620 A 403.11288741492746 403.11288741492746 0 0 0 7240 7620" />
-        <path d="M 7490 7470 A 50 50 0 0 0 7390 7470" />
-        <path d="M 7390 7570 L 7390 7470 " />
-        <path d="M 7490 7570 L 7490 7470 " />
-        <path d="M 7240 7620 L 7240 8420 L 7640 8420 L 7640 7620 " />
-        <path d="M 7440 7420 L 7440 7420" />
-        </g>        <text class="reference static-color text-C" x="7440" y="7920" visibility="visible">Pressurant1</text>
-        <text class="setState text-C" x="7440" y="8020" visibility="hidden"></text>
-        <text class="value text-C" x="7440" y="8020" visibility="hidden">GasBottle</text>
-        <text class="valueRaw text-C" x="7440" y="8020" visibility="hidden">GasBottle</text>
-        <text class="actionReferenceValue text-C" x="7440" y="8020" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="7440" y="8020" visibility="hidden"> </text>
+        <!-- coordinates: x = 6740 y = 7920 -->
+        <g>        <path d="M 6940 7620 A 403.11288741492746 403.11288741492746 0 0 0 6540 7620" />
+        <path d="M 6790 7470 A 50 50 0 0 0 6690 7470" />
+        <path d="M 6690 7570 L 6690 7470 " />
+        <path d="M 6790 7570 L 6790 7470 " />
+        <path d="M 6540 7620 L 6540 8420 L 6940 8420 L 6940 7620 " />
+        <path d="M 6740 7420 L 6740 7420" />
+        </g>        <text class="reference static-color text-C" x="6740" y="7920" visibility="visible">Pressurant1</text>
+        <text class="setState text-C" x="6740" y="8020" visibility="hidden"></text>
+        <text class="value text-C" x="6740" y="8020" visibility="hidden">GasBottle</text>
+        <text class="valueRaw text-C" x="6740" y="8020" visibility="hidden">GasBottle</text>
+        <text class="actionReferenceValue text-C" x="6740" y="8020" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6740" y="8020" visibility="hidden"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('GasBottle')"></rect>    </g>
     <g class="WaterTankHot PnID-Water_Tank water_hot_temp-sensor comp" data-unit="˚C" data-pnid-water_tank="" data-content="" action-reference="">
-        <!-- coordinates: x = 8370 y = 9720 -->
-        <g>        <rect class="rect" x="7970" y="9260" width="800" height="80" />
-        <rect class="rect" x="8040" y="9535" width="660" height="495" />
-        <rect class="rect" x="8040" y="9340" width="660" height="690" />
-        <path d="M 8200 9260 L 8200 9654" />
-        <path d="M 8530 9260 L 8530 9654" />
-        </g>        <text class="reference static-color text-L" x="8320" y="9840" visibility="hidden">WaterTankHot</text>
-        <text class="setState text-C" x="8375" y="9730" visibility="hidden"></text>
-        <text class="value text-C" x="8375" y="9730" visibility="visible">water_hot_temp:sensor</text>
-        <text class="valueRaw text-C" x="8375" y="9730" visibility="hidden">water_hot_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="8375" y="9730" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="8375" y="9730" visibility="hidden"> </text>
-        <text class="Unit" x="8370" y="9720" visibility="hidden">˚C</text>
+        <!-- coordinates: x = 7670 y = 9720 -->
+        <g>        <rect class="rect" x="7270" y="9260" width="800" height="80" />
+        <rect class="rect" x="7340" y="9535" width="660" height="495" />
+        <rect class="rect" x="7340" y="9340" width="660" height="690" />
+        <path d="M 7500 9260 L 7500 9654" />
+        <path d="M 7830 9260 L 7830 9654" />
+        </g>        <text class="reference static-color text-L" x="7620" y="9840" visibility="hidden">WaterTankHot</text>
+        <text class="setState text-C" x="7675" y="9730" visibility="hidden"></text>
+        <text class="value text-C" x="7675" y="9730" visibility="visible">water_hot_temp:sensor</text>
+        <text class="valueRaw text-C" x="7675" y="9730" visibility="hidden">water_hot_temp:sensor</text>
+        <text class="actionReferenceValue text-C" x="7675" y="9730" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-C" x="7675" y="9730" visibility="hidden"> </text>
+        <text class="Unit" x="7670" y="9720" visibility="hidden">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_hot_temp-sensor')"></rect>    </g>
+    <g class="Sensor_Pressure6 PnID-Sensor_Pressure pressurant_pressure-sensor comp" data-unit="bar" data-pnid-sensor_pressure="" data-content="" action-reference=""transform="rotate(-90,5720,7120)">
+        <!-- coordinates: x = 5720 y = 7120 -->
+        <g>        <circle cx="5720" cy="7120" r="100" />
+        <path d="M 5520 7120 L 5620 7120" />
+        </g>        <text class="sensor-letter static-color text-C" x="5720" y="7120" transform="rotate(90,5720,7120)">P</text>
+        <text class="reference static-color text-L" x="5590" y="6900" visibility="hidden" transform="rotate(90,5590,6900)">Sensor_Pressure6</text>
+        <text class="setState text-C" x="5720" y="6620" visibility="hidden" transform="rotate(90,5720,6620)"></text>
+        <text class="value text-C" x="5720" y="6620" visibility="visible" transform="rotate(90,5720,6620)">pressurant_pressure:sensor</text>
+        <text class="valueRaw text-C" x="5720" y="6620" visibility="hidden" transform="rotate(90,5720,6620)">pressurant_pressure:sensor</text>
+        <text class="actionReferenceValue text-C" x="5720" y="6620" visibility="hidden" transform="rotate(90,5720,6620)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="5720" y="6620" visibility="hidden" transform="rotate(90,5720,6620)"> </text>
+        <text class="Unit" x="5720" y="7120" visibility="hidden" transform="rotate(90,5720,7120)">bar</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('pressurant_pressure-sensor')"></rect>    </g>
+    <g class="igniter0_cont PnID-LED igniter0_cont-sensor comp" data-unit="" data-pnid-led="" data-content="" action-reference=""transform="rotate(180,2240,12150)">
+        <!-- coordinates: x = 2240 y = 12150 -->
+        <g>        <path d="M 2290 12170 A 50 50 0 0 0 2190 12170" />
+        <path d="M 2290 12170 L 2190 12170 " />
+        </g>        <text class="reference static-color text-R" x="2162" y="12167" visibility="hidden" transform="rotate(180,2162,12167)">igniter0_cont</text>
+        <text class="setState text-C" x="2240" y="12020" visibility="hidden" transform="rotate(180,2240,12020)"></text>
+        <text class="value text-C" x="2240" y="12020" visibility="visible" transform="rotate(180,2240,12020)">igniter0_cont:sensor</text>
+        <text class="valueRaw text-C" x="2240" y="12020" visibility="hidden" transform="rotate(180,2240,12020)">igniter0_cont:sensor</text>
+        <text class="actionReferenceValue text-C" x="2240" y="12020" visibility="hidden" transform="rotate(180,2240,12020)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2240" y="12020" visibility="hidden" transform="rotate(180,2240,12020)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter0_cont-sensor')"></rect>    </g>
+    <g class="U5 PnID-Valve_Servo_3Way water_valves_out-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves">
+        <!-- coordinates: x = 8770 y = 8980 -->
+        <g>        <circle cx="8770" cy="8450" r="100" />
+        <path d="M 8770 8700 L 8770 8550 " />
+        <path d="M 8770 8700 L 8570 8550 L 8570 8850 L 8770 8700 " />
+        <path d="M 8920 8900 L 8770 8700 L 8620 8900 L 8920 8900 " />
+        <path d="M 8970 8550 L 8770 8700 L 8970 8850 L 8970 8550 " />
+        <path d="M 8570 8700 L 8570 8700" />
+        <path d="M 8770 8900 L 8770 8900" />
+        <path d="M 8970 8700 L 8970 8700" />
+        </g>        <text class="sensor-letter static-color text-C" x="8770" y="8450">M</text>
+        <text class="reference static-color text-C" x="8770" y="8277" visibility="hidden">U5</text>
+        <text class="setState text-C" x="8770" y="8190" visibility="hidden"></text>
+        <text class="value text-C" x="8770" y="8190" visibility="visible">water_valves_out:sensor</text>
+        <text class="valueRaw text-C" x="8770" y="8190" visibility="hidden">water_valves_out:sensor</text>
+        <text class="actionReferenceValue text-C" x="8770" y="8190" visibility="hidden">gui-water_valves</text>
+        <text class="actionReferenceValueRaw text-C" x="8770" y="8190" visibility="hidden">gui-water_valves</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
+    <g class="U6 PnID-Valve_Servo_3Way water_valves_in-sensor comp" data-unit="" data-pnid-valve_servo_3way="" data-content="" action-reference="gui-water_valves"transform="rotate(180,8780,7250)">
+        <!-- coordinates: x = 8780 y = 7250 -->
+        <g>        <circle cx="8780" cy="6720" r="100" />
+        <path d="M 8780 6970 L 8780 6820 " />
+        <path d="M 8780 6970 L 8580 6820 L 8580 7120 L 8780 6970 " />
+        <path d="M 8930 7170 L 8780 6970 L 8630 7170 L 8930 7170 " />
+        <path d="M 8980 6820 L 8780 6970 L 8980 7120 L 8980 6820 " />
+        <path d="M 8580 6970 L 8580 6970" />
+        <path d="M 8780 7170 L 8780 7170" />
+        <path d="M 8980 6970 L 8980 6970" />
+        </g>        <text class="sensor-letter static-color text-C" x="8780" y="6720" transform="rotate(180,8780,6720)">M</text>
+        <text class="reference static-color text-C" x="8780" y="6455" visibility="hidden" transform="rotate(180,8780,6455)">U6</text>
+        <text class="setState text-C" x="8780" y="6490" visibility="hidden" transform="rotate(180,8780,6490)"></text>
+        <text class="value text-C" x="8780" y="6490" visibility="visible" transform="rotate(180,8780,6490)">water_valves_in:sensor</text>
+        <text class="valueRaw text-C" x="8780" y="6490" visibility="hidden" transform="rotate(180,8780,6490)">water_valves_in:sensor</text>
+        <text class="actionReferenceValue text-C" x="8780" y="6490" visibility="hidden" transform="rotate(180,8780,6490)">gui-water_valves</text>
+        <text class="actionReferenceValueRaw text-C" x="8780" y="6490" visibility="hidden" transform="rotate(180,8780,6490)">gui-water_valves</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_valves')"></rect>    </g>
+    <g class="Motor PnID-Motor umbilical_retract-sensor comp" data-unit="" data-pnid-motor="" data-content="" action-reference="">
+        <!-- coordinates: x = 5250 y = 8700 -->
+        <g>        <rect class="rect" x="5150" y="8595" width="200" height="200" />
+        </g>        <text class="sensor-letter static-color text-C" x="5250" y="8695">M</text>
+        <text class="reference static-color text-C" x="5245" y="8960" visibility="hidden">Motor</text>
+        <text class="setState text-L" x="5378" y="8695" visibility="hidden"></text>
+        <text class="value text-L" x="5378" y="8695" visibility="visible">umbilical_retract:sensor</text>
+        <text class="valueRaw text-L" x="5378" y="8695" visibility="hidden">umbilical_retract:sensor</text>
+        <text class="actionReferenceValue text-L" x="5378" y="8695" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="5378" y="8695" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('umbilical_retract-sensor')"></rect>    </g>
+    <g class="Sensor_Load_Short? PnID-Sensor_Load scale-sensor comp" data-unit="N" data-pnid-sensor_load="" data-content="" action-reference=""transform="scale(-1,1) translate(-4360,0)">
+        <!-- coordinates: x = 2180 y = 11820 -->
+        <g>        <circle cx="2180" cy="11820" r="100" />
+        <path d="M 1980 11820 L 2080 11820" />
+        </g>        <text class="sensor-letter static-color text-C" x="2180" y="11820" transform="scale(-1,1) translate(-4360,0)">L</text>
+        <text class="reference static-color text-C" x="2122" y="11537" visibility="visible" transform="scale(-1,1) translate(-4244,0)">Sensor_Load_Short?</text>
+        <text class="setState text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"></text>
+        <text class="value text-C" x="2530" y="11820" visibility="visible" transform="scale(-1,1) translate(-5060,0)">scale:sensor</text>
+        <text class="valueRaw text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)">scale:sensor</text>
+        <text class="actionReferenceValue text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"> </text>
+        <text class="Unit" x="2180" y="11820" visibility="hidden" transform="scale(-1,1) translate(-4360,0)">N</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('scale-sensor')"></rect>    </g>
 
 <!-- Wires-->
 
@@ -769,33 +803,31 @@
         <line x1="2360" y1="10970" x2="2360" y2="11110" />
     </g>
     <g class="pressurant_pressure-sensor wire" data-pnid-wire="">
-        <line x1="2530" y1="6650" x2="2530" y2="6680" />
-        <line x1="2530" y1="6620" x2="2530" y2="6650" />
-        <line x1="2530" y1="6650" x2="2820" y2="6650" />
-    </g>
-    <g class="wire" data-pnid-wire="">
-        <line x1="2530" y1="6880" x2="2530" y2="6980" />
-        <line x1="2530" y1="6980" x2="2530" y2="7080" />
+        <line x1="2530" y1="6470" x2="2530" y2="6540" />
+        <line x1="2530" y1="6380" x2="2530" y2="6470" />
+        <line x1="2530" y1="6470" x2="2820" y2="6470" />
     </g>
     <g class="wire" data-pnid-wire="">
         <line x1="3010" y1="9690" x2="3070" y2="9690" />
     </g>
     <g class="wire" data-pnid-wire="">
         <line x1="2530" y1="9690" x2="2530" y2="9850" />
-        <line x1="2530" y1="9470" x2="2530" y2="9690" />
         <line x1="2610" y1="9690" x2="2530" y2="9690" />
+        <line x1="2530" y1="9510" x2="2530" y2="9690" />
     </g>
     <g class="pressurant_pressure-sensor wire" data-pnid-wire="">
         <line x1="2530" y1="9170" x2="2530" y2="9220" />
         <line x1="2530" y1="9220" x2="2530" y2="9270" />
         <line x1="2820" y1="9220" x2="2530" y2="9220" />
     </g>
-    <g class="pressurant_pressure-sensor wire" data-pnid-wire="">
+    <g class="wire" data-pnid-wire="">
         <line x1="3300" y1="9220" x2="3890" y2="9220" />
         <line x1="3890" y1="7320" x2="3890" y2="9220" />
-        <line x1="3890" y1="6650" x2="3890" y2="7320" />
-        <line x1="3890" y1="7320" x2="6150" y2="7320" />
-        <line x1="3300" y1="6650" x2="3890" y2="6650" />
+        <line x1="3890" y1="6470" x2="3890" y2="7320" />
+        <line x1="3890" y1="7320" x2="5720" y2="7320" />
+        <line x1="3300" y1="6470" x2="3890" y2="6470" />
+        <line x1="5720" y1="7320" x2="5720" y2="7580" />
+        <line x1="5720" y1="7320" x2="6030" y2="7320" />
     </g>
     <g class="wire" data-pnid-wire="">
         <line x1="2360" y1="11350" x2="2360" y2="11490" />
@@ -804,70 +836,72 @@
         <line x1="2370" y1="11550" x2="2430" y2="11550" />
         <line x1="2430" y1="11550" x2="2430" y2="11620" />
     </g>
-    <g class="wire" data-pnid-wire="">
-        <line x1="3300" y1="10010" x2="6150" y2="10010" />
-    </g>
     <g class="water_cold_temp-sensor wire" data-pnid-wire="">
-        <line x1="10040" y1="7980" x2="10040" y2="9270" />
-        <line x1="10040" y1="7980" x2="9980" y2="7980" />
+        <line x1="9710" y1="8850" x2="9710" y2="9270" />
+        <line x1="9630" y1="8850" x2="9710" y2="8850" />
     </g>
-    <g class="water_hot_temp-sensor wire" data-pnid-wire="">
-        <line x1="8200" y1="7980" x2="8200" y2="9260" />
-        <line x1="8200" y1="7980" x2="8260" y2="7980" />
-    </g>
-    <g class="pressurant_pressure-sensor wire" data-pnid-wire="">
-        <line x1="6550" y1="7320" x2="6940" y2="7320" />
-        <line x1="6940" y1="7320" x2="7440" y2="7320" />
-        <line x1="6940" y1="7320" x2="6940" y2="7580" />
-        <line x1="7440" y1="7420" x2="7440" y2="7320" />
-    </g>
-    <g class="ox_bottle_pressure-sensor wire" data-pnid-wire="">
-        <line x1="6550" y1="10010" x2="6940" y2="10010" />
-        <line x1="6940" y1="10010" x2="6940" y2="9750" />
-        <line x1="6940" y1="10010" x2="7440" y2="10010" />
-        <line x1="7440" y1="9520" x2="7440" y2="10010" />
-    </g>
-    <g class="heat_exchanger_out-wire wire" data-pnid-wire="">
-        <line x1="7820" y1="9230" x2="7820" y2="10110" />
-        <line x1="7820" y1="10110" x2="9120" y2="10110" />
-        <line x1="9120" y1="9270" x2="9120" y2="10110" />
-    </g>
-    <g class="heat_exchanger_in-wire wire" data-pnid-wire="">
-        <line x1="7820" y1="7420" x2="7820" y2="8530" />
-        <line x1="9120" y1="7420" x2="7820" y2="7420" />
-        <line x1="9120" y1="7630" x2="9120" y2="7420" />
-    </g>
-    <g class="pump_hot_water-sensor wire" data-pnid-wire="">
-        <line x1="8650" y1="7830" x2="8920" y2="7830" />
+    <g class="wire" data-pnid-wire="">
+        <line x1="2530" y1="6780" x2="2530" y2="6970" />
+        <line x1="2530" y1="6970" x2="2530" y2="7080" />
     </g>
     <g class="pump_cold_water-sensor wire" data-pnid-wire="">
-        <line x1="9590" y1="7830" x2="9320" y2="7830" />
+        <line x1="9240" y1="8700" x2="8970" y2="8700" />
     </g>
-    <g class="water_tank_cold_return-wire wire" data-pnid-wire="">
-        <line x1="9710" y1="9070" x2="9710" y2="9270" />
-        <line x1="9320" y1="9070" x2="9710" y2="9070" />
+    <g class="pump_hot_water-sensor wire" data-pnid-wire="">
+        <line x1="8300" y1="8700" x2="8570" y2="8700" />
+    </g>
+    <g class="ox_bottle_pressure-sensor wire" data-pnid-wire="">
+        <line x1="5720" y1="10010" x2="5720" y2="9750" />
+        <line x1="5720" y1="10010" x2="6030" y2="10010" />
+        <line x1="3300" y1="10010" x2="5720" y2="10010" />
+    </g>
+    <g class="wire" data-pnid-wire="">
+        <line x1="6740" y1="9520" x2="6740" y2="10010" />
+        <line x1="6430" y1="10010" x2="6740" y2="10010" />
+    </g>
+    <g class="wire" data-pnid-wire="">
+        <line x1="6740" y1="7420" x2="6740" y2="7320" />
+        <line x1="6430" y1="7320" x2="6740" y2="7320" />
+    </g>
+    <g class="heat_exchanger_in-wire wire" data-pnid-wire="">
+        <line x1="7120" y1="9230" x2="7120" y2="10110" />
+        <line x1="7120" y1="10110" x2="8770" y2="10110" />
+        <line x1="8770" y1="8900" x2="8770" y2="10110" />
+    </g>
+    <g class="heat_exchanger_out-wire wire" data-pnid-wire="">
+        <line x1="7120" y1="7170" x2="7120" y2="8530" />
+        <line x1="8780" y1="7170" x2="7120" y2="7170" />
+        <line x1="8780" y1="7170" x2="8780" y2="7330" />
+    </g>
+    <g class="water_hot_temp-sensor wire" data-pnid-wire="">
+        <line x1="7830" y1="8850" x2="7830" y2="9260" />
+        <line x1="7830" y1="8850" x2="7910" y2="8850" />
     </g>
     <g class="water_tank_hot_return-wire wire" data-pnid-wire="">
-        <line x1="8530" y1="9070" x2="8530" y2="9260" />
-        <line x1="8920" y1="9070" x2="8530" y2="9070" />
+        <line x1="8580" y1="7530" x2="7500" y2="7530" />
+        <line x1="7500" y1="7530" x2="7500" y2="9260" />
     </g>
-    <line class="note-line" x1="10730" y1="6760" x2="5720" y2="6760" />
-    <line class="note-line" x1="5720" y1="6760" x2="5720" y2="10310" />
-    <line class="note-line" x1="5720" y1="10310" x2="10730" y2="10310" />
+    <g class="water_tank_cold_return-wire wire" data-pnid-wire="">
+        <line x1="8980" y1="7530" x2="10040" y2="7530" />
+        <line x1="10040" y1="7530" x2="10040" y2="9270" />
+    </g>
     <line class="note-line" x1="10730" y1="10310" x2="10730" y2="6760" />
+    <line class="note-line" x1="10730" y1="6760" x2="5020" y2="6760" />
+    <line class="note-line" x1="5020" y1="6760" x2="5020" y2="10310" />
+    <line class="note-line" x1="5020" y1="10310" x2="10730" y2="10310" />
 
 <!-- Connections-->
 
-    <circle cx="2530" cy="6650" r="2" fill="green" />
-    <circle cx="2530" cy="6980" r="2" fill="green" />
+    <circle cx="2530" cy="6470" r="2" fill="green" />
     <circle cx="2530" cy="9690" r="2" fill="green" />
     <circle cx="2530" cy="9220" r="2" fill="green" />
     <circle cx="2630" cy="11550" r="2" fill="green" />
     <circle cx="2700" cy="10970" r="2" fill="green" />
     <circle cx="2430" cy="11550" r="2" fill="green" />
     <circle cx="3890" cy="7320" r="2" fill="green" />
-    <circle cx="7440" cy="10010" r="2" fill="green" />
-    <circle cx="6940" cy="10010" r="2" fill="green" />
-    <circle cx="7440" cy="7320" r="2" fill="green" />
-    <circle cx="6940" cy="7320" r="2" fill="green" />
+    <circle cx="2530" cy="6970" r="2" fill="green" />
+    <circle cx="6740" cy="10010" r="2" fill="green" />
+    <circle cx="5720" cy="10010" r="2" fill="green" />
+    <circle cx="5720" cy="7320" r="2" fill="green" />
+    <circle cx="8780" cy="7170" r="2" fill="green" />
 </svg>
