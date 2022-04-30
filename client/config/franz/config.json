@@ -1,0 +1,41 @@
+{
+    "pressure": {
+        "states": [
+            "chamber_pressure:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['chamberPressure']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['chamberPressure']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "temperature_oxidizer_tank": {
+        "states": [
+            "ox_top_tank_temp:sensor",
+            "ox_mid_top_tank_temp:sensor",
+            "ox_mid_bottom_tank_temp:sensor",
+            "ox_bottom_tank_temp:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['oxTemp']['high']) { outVars['color']='high' } else if (inVars['value'] > thresholds['oxTemp']['low']) { outVars['color']='neutral' } else { outVars['color']='low' }"
+    },
+    "purge_solenoid_pressure": {
+        "states": [
+            "purge_solenoid:sensor"
+        ],
+        "eval": "if (inVars['value'] > 0) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed'; outVars['crossUpdate']=[{'name':'purge_solenoid_wire','value':2.1}] }"
+    },
+    "purge_solenoid_wire_pressure": {
+        "states": [
+            "purge_regulator_pressure:sensor"
+        ],
+        "eval": "if (inVars['value'] > 2) { outVars['color']='high' } else { outVars['color']='low' } if ($(document).find('g.purge_solenoid').find('text.value').text() === 'Open') { outVars['crossUpdate']=[{'name':'purge_solenoid_wire', 'value':inVars['value']}] } else { }"
+    },
+    "igniter_ox_pressure_wire_update": {
+        "states": [
+            "igniter_ox_solenoid:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_ox_regulator_pressure:sensor', 'igniter_ox_pressure:sensor'); } else { unlink('igniter_ox_regulator_pressure:sensor', 'igniter_ox_pressure:sensor', 0); }"
+    },
+    "igniter_fuel_pressure_wire_update": {
+        "states": [
+            "igniter_fuel_solenoid:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
+    }
+}

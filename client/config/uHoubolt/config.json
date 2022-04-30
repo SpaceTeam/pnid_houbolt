@@ -38,6 +38,48 @@
         ],
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { link('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor'); } else { unlink('igniter_fuel_regulator_pressure:sensor', 'igniter_fuel_pressure:sensor', 0); }"
     },
+    "temp_sens_hot": {
+        "states": [
+            "water_hot_temp:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterHotTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterHotTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "temp_sens_cold": {
+        "states": [
+            "water_cold_temp:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterColdTemps']['high']) { outVars['color']='high'; outVars['content']='high'  } else if (inVars['value'] > thresholds['waterColdTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "temp_sens_heat_exchanger": {
+        "states": [
+            "water_mantle_temp:sensor"
+        ],
+        "eval": "if (inVars['value'] > thresholds['waterTemps']['notconnected']) { outVars['color']='notconnected'; outVars['content']='notconnected'; outVars['value']='Not Conn' } else if (inVars['value'] > thresholds['waterExchangerTemps']['high']) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > thresholds['waterExchangerTemps']['low']) { outVars['color']='mid'; outVars['content']='mid' } else { outVars['color']='low'; outVars['content']='low' }"
+    },
+    "3_way_water_valve_out": {
+        "states": [
+            "water_valves_out:sensor"
+        ],
+        "eval": "if (outVars['color']=='position_a') { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire'); link('pump_cold_water:sensor', 'heat_exchanger_in:wire'); } else if (outVars['color']=='position_b') { unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire'); link('pump_hot_water:sensor', 'heat_exchanger_in:wire') } else { unlink('pump_hot_water:sensor', 'heat_exchanger_in:wire', -10); unlink('pump_cold_water:sensor', 'heat_exchanger_in:wire', -10) }"
+    },
+    "3_way_water_valve_in": {
+        "states": [
+            "water_valves_in:sensor"
+        ],
+        "eval": "if (outVars['color']=='position_a') { outVars['color']='position_b'; unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_cold_return:wire') } else if (outVars['color']=='position_b') {  outVars['color']='position_a'; unlink('water_mantle_temp:sensor', 'water_tank_cold_return:wire', -10); link('water_mantle_temp:sensor', 'water_tank_hot_return:wire') } else { unlink('water_mantle_temp:sensor', 'water_tank_hot_return:wire', -10); unlink('water_tank_cold_return:sensor', 'heat_exchanger_in:wire', -10) }"
+    },
+    "pump_hot_water": {
+        "states": [
+            "pump_hot_water:sensor"
+        ],
+        "eval": "link('water_hot_temp:sensor', inVars['this'], true)"
+    },
+    "pump_cold_water": {
+        "states": [
+            "pump_cold_water:sensor"
+        ],
+        "eval": "link('water_cold_temp:sensor', inVars['this'], true)"
+    },
     "fuel_bottom_tank_pressure:sensor": {
         "states": [
             "fuel_bottom_tank_pressure:sensor"
@@ -208,5 +250,13 @@
             "source": "13",
             "autoID": false
         }
+    },
+    "water_wires": {
+        "states": [
+            "heat_exchanger_in:wire",
+            "pump_hot_water:sensor:wire",
+            "pump_cold_water:sensor:wire"
+        ],
+        "eval": "if (inVars['value'] >= thresholds['pump']['high']) { outVars['color'] = 'content' } else { outVars['color'] = 'empty' }"
     }
 }

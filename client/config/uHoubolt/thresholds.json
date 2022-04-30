@@ -1,0 +1,55 @@
+{
+    "solenoid": {
+        "high": 1000
+    },
+    "servo_valve": {
+        "low": 10000,
+        "high": 55000
+    },
+    "oxPressure": {
+        "low": 32.0,
+        "high": 42.0,
+        "safe": 2.0
+    },
+    "oxTemp": {
+        "low": 2.0,
+        "high": 35.0
+    },
+    "fuelPressure": {
+        "low": 30.0,
+        "high": 34.0,
+        "safe": 2.0
+    },
+    "chamberPressure": {
+        "low": 7.0,
+        "high": 9.0
+    },
+    "waterHotTemps": {
+        "low": 26.0,
+        "high": 34.0
+    },
+    "waterColdTemps": {
+        "low": 5.0,
+        "high": 7.0
+    },
+    "waterExchangerTemps": {
+        "low": 10.0,
+        "high": 20.0
+    },
+    "waterTemps": {
+        "notconnected": 4000
+    },
+    "pump": {
+        "high": 1
+    },
+    "3wayValve": {
+        "high": 1
+    },
+    "igniter": {
+        "active": 50
+    },
+    "voltage": {
+        "low": 11,
+        "high": 13
+    }
+}

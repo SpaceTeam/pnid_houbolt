@@ -36,8 +36,11 @@
         <div id="textDisplayTemp" class="row control-row">
             <label class="popup-value-out"></label>
         </div>
-        <div id="externalDisplayTemp" class="row control-row">
-            <iframe src="" frameborder="0"></iframe>
+        <div id="externalDisplayTemp" class="row control-row externalContainer">
+            <div>
+                <iframe src="" frameborder="0"></iframe>
+            </div>
+            
         </div>
         <div id="sliderTemp" class="row control-row">
             <div title="" class="range-slider col">
@@ -49,6 +52,13 @@
                     <div class="range-slider-caption_left"> Closed </div>
                     <div class="range-slider-caption_right"> Open </div>
                 </div>
+            </div>
+        </div>
+        <div id="numberEntryTemp" class="row control-row">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <label class="popup-value-out"></label>
+                <input type="number" id="" min="" max="" class="form-control-sm"/>
+                <input type="button" onclick="" value="Set" class="btn btn-primary btn-sm"></input>
             </div>
         </div>
         <div id="digitalOutTemp" class="row control-row">
@@ -96,7 +106,7 @@
         </div>
     </div>
     <div id="pnid"></div>
-
+    
 <script src="js/common.js"></script>
 <script src="theming/js/themeSwitcher.js"></script>
 <script src="js/logManager.js"></script>

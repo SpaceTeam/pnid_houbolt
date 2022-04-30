@@ -1,3 +1,8 @@
+:root {
+    --pnid-max-width: initial;
+    --pnid-max-height: calc(100%);
+}
+
 html body {
     background-color: var(--background-primary);
     color: var(--content-primary);
@@ -61,14 +66,14 @@ html body {
     stroke-dasharray: 25,50
 }
 
-.wire {
+.wire, .wire[data-pnid-wire=empty] {
     stroke-width: 8;
     stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
     fill: none;
 }
 
 .value, .reference {
-    font-size: 6.5rem;
+    font-size: 8.5rem;
     stroke-width: 1;
     fill: var(--default-stroke);
 }
@@ -79,6 +84,10 @@ html body {
 
 .wire[data-pnid-wire=high] {
 	stroke: var(--high);
+}
+
+.wire[data-pnid-wire=mid] {
+	stroke: var(--mid);
 }
 
 .wire[data-pnid-wire=low] {
@@ -97,7 +106,7 @@ html body {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color),[data-pnid-valve_needle_servo=open] text:not(.static-color), [data-pnid-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-valve_servo_3way=position_b] text:not(.static-color) {
+[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color), [data-pnid-valve_needle_servo=open] text:not(.static-color), [data-pnid-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-valve_servo_3way=position_b] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
@@ -112,15 +121,20 @@ html body {
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-valve_servo=throttle] path:nth-of-type(3),[data-pnid-valve_needle_servo=throttle] path:nth-of-type(3) {
+[data-pnid-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-valve_servo=throttle] path:nth-of-type(3), [data-pnid-valve_needle_servo=throttle] path:nth-of-type(3) {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
 
-[data-pnid-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-valve_servo=throttle] text:not(.static-color),[data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
+[data-pnid-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-valve_servo=throttle] text:not(.static-color), [data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
+}
+
+[data-pnid-valve_pneumatic=feedback_deviation_error] path, [data-pnid-valve_servo=feedback_deviation_error] path, [data-pnid-valve_needle_servo=feedback_deviation_error] path {
+    stroke: var(--error-color);
+    fill: none;
 }
 
 [data-pnid-valve_servo_3way=closed] path {
@@ -134,6 +148,10 @@ html body {
 [data-pnid-valve_servo_3way=position_a] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(2) {
     stroke: var(--default-stroke);
     fill: var(--closed);
+}
+[data-pnid-valve_servo_3way=feedback_deviation_error] path {
+    stroke: var(--error-color);
+    fill: none;
 }
 
 [data-pnid-sensor_pressure=fuel] {
@@ -184,26 +202,55 @@ html body {
     fill: var(--neutral);
 }
 
+
 [data-pnid-sensor_temperature=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_temperature=high] text:not(.static-color) {
+[data-pnid-water_tank=high] text:not(.static-color) {
+    stroke: var(--high-water-tank);
+    fill: var(--high-water-tank);
+}
+[data-pnid-sensor_temperature=high] text:not(.static-color), [data-pnid-water_tank=high] rect:nth-of-type(2) {
     stroke: var(--high);
     fill: var(--high);
 }
 
+
+
+[data-pnid-sensor_temperature=mid] {
+    stroke: var(--mid);
+}
+[data-pnid-water_tank=mid] text:not(.static-color) {
+    stroke: var(--mid-water-tank);
+    fill: var(--mid-water-tank);
+}
+[data-pnid-sensor_temperature=mid] text:not(.static-color), [data-pnid-water_tank=mid] rect:nth-of-type(2) {
+    stroke: var(--mid);
+    fill: var(--mid);
+}
+
+
 [data-pnid-sensor_temperature=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_temperature=low] text:not(.static-color) {
+[data-pnid-water_tank=low] text:not(.static-color) {
+    stroke: var(--low-water-tank);
+    fill: var(--low-water-tank);
+}
+[data-pnid-sensor_temperature=low] text:not(.static-color), [data-pnid-water_tank=low] rect:nth-of-type(2) {
     stroke: var(--low);
     fill: var(--low);
 }
 
+
 [data-pnid-sensor_temperature=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_temperature=neutral] text:not(.static-color) {
+[data-pnid-water_tank=neutral] text:not(.static-color) {
+    stroke: var(--neutral-water-tank);
+    fill: var(--neutral-water-tank);
+}
+[data-pnid-sensor_temperature=neutral] text:not(.static-color), [data-pnid-water_tank=neutral] rect:nth-of-type(2) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
@@ -212,10 +259,37 @@ html body {
 [data-pnid-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
 }
+[data-pnid-water_tank=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
 [data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
+[data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+
+[data-pnid-heatexchanger=high] {
+    stroke: var(--high);
+}
+[data-pnid-heatexchanger=mid] {
+    stroke: var(--mid);
+}
+[data-pnid-heatexchanger=low] {
+    stroke: var(--low);
+}
+[data-pnid-heatexchanger=neutral] {
+    stroke: var(--neutral);
+}
+[data-pnid-heatexchanger=notconnected] {
+    stroke: var(--default-stroke);
+}
+
+
 
 [data-pnid-thermalbarrier=low] {
     stroke: var(--low);
@@ -277,6 +351,14 @@ html body {
 [data-pnid-valve_solenoid_no=open] text:not(.static-color), [data-pnid-valve_solenoid_nc=open] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
+}
+[data-pnid-valve_solenoid_no=feedback_deviation_error], [data-pnid-valve_solenoid_nc=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-valve_solenoid_no=feedback_deviation_error] text:not(.static-color), [data-pnid-valve_solenoid_nc=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
 }
 
 [data-pnid-valve_solenoid_no=closed] path, [data-pnid-valve_solenoid_nc=closed] path {
@@ -348,6 +430,10 @@ html body {
     }
 }
 
+[data-pnid-pump=feedback_deviation_error] circle, [data-pnid-pump=feedback_deviation_error] path {
+    stroke: var(--error-color);
+}
+
 [data-pnid-pump=on] circle:nth-of-type(1) {
     fill: var(--high);
 }
@@ -357,4 +443,50 @@ html body {
 
 [data-pnid-pump=off] {
 
+}
+
+[data-pnid-igniter=on] {
+    stroke: var(--on);
+    fill: var(--powered);
+}
+[data-pnid-igniter=on] text:not(.static-color) {
+    stroke: var(--on);
+    fill: var(--on);
+}
+[data-pnid-igniter=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-igniter=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}
+
+[data-pnid-igniter=off] path, [data-pnid-igniter=off] rect {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-valve_solenoid_no=off] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
+
+[data-pnid-powersource=nominal] {
+    stroke: var(--neutral);
+    fill: none;
+}
+[data-pnid-powersource=nominal] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
+}
+
+[data-pnid-powersource=outside_range] path, [data-pnid-powersource=outside_range] rect {
+    stroke: var(--error-color);
+    fill: none;
+}
+
+[data-pnid-powersource=outside_range] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
 }

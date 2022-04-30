@@ -69,6 +69,9 @@ function clearElementBuffer()
  */
 function storeElementInBuffer(identifier, subidentifier = "parent")
 {
+    if (identifier == undefined) {
+        return __emptyObject;
+    }
     let isActionReference = false;
     let element = undefined;
     let elementExists = true;
@@ -85,7 +88,7 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
         {
         	//console.error("action reference cache miss", identifier);
             element = $(document).find(`g[action-reference='${identifier}']`);
-            if (element.length == 0) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
+            if (element.length == 0 || element == undefined) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
             {
             	elementExists = false;
                 //TODO not sure whether to return element (which is empty) or undefined at this point.
@@ -121,8 +124,17 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
     }
     else
     {
-        element = getElement(identifier, "parent").find(`text.${subidentifier}`);
-        __elementGroupBuffer[identifier][subidentifier] = element;
+        let rootEl = getElement(identifier, "parent");
+        if (rootEl.length != 0) //should only happen when searching for subidentifier "setState"
+        {
+            element = getElement(identifier, "parent").find(`text.${subidentifier}`);
+            __elementGroupBuffer[identifier][subidentifier] = element;
+        }
+        else
+        {
+            __elementGroupBuffer[identifier][subidentifier] = null;
+        }
+        
     }
     return element;
 }
@@ -161,9 +173,11 @@ function getElement(identifier, subidentifier = "parent")
         element = __elementGroupBuffer[identifier][subidentifier];
         if (element === undefined)
         {
+            //if it's undefined an element with the same identifier (but different sub identifier) has already been found - we still need to search DOM
             findInDOM = true;
         }
     } catch (error) {
+        //if it throws an error no element with this identifier was found in cache -> search for it in DOM
         findInDOM = true;
     }
     if (findInDOM)
@@ -192,9 +206,11 @@ function getElement(identifier, subidentifier = "parent")
 function getElementValue(valueReference, valueID)
 {
     let element = getElement(valueReference, valueID);
-    if (element == undefined)
+    if (element == undefined || element.length == 0)
     {
-        printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${identifier}!`);
+        //consider removing this warning or changing it up, this is now legitimate behavior thanks to getElementValue(id, "setState")
+        //printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
+        return undefined;
     }
     return element.text();
 }
@@ -210,9 +226,17 @@ function getElementValue(valueReference, valueID)
 function getElementAttrValue(valueReference, attrName)
 {
     let element = getElement(valueReference);
-    if (element == undefined)
+    if (element == undefined || element.length == 0)
     {
-        printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${identifier}!`);
+        element = getElement(valueReference, "wire");
+        if (element == undefined || element.length == 0)
+        {
+            //console.log("tried getting attr value for wire, ignoring");
+            return undefined;
+        }
+        //consider removing this warning or changing it up, this is now legitimate behavior thanks to getElementValue(id, "setState")
+        //printLog("warning", `Tried getting attribute ${attrName}, but couldn't find element with value reference ${valueReference}!`);
+        return undefined;
     }
     return element.attr(attrName);
 }

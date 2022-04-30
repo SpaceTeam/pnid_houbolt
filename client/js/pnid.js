@@ -6,6 +6,7 @@ function initPNID(standalone, pathOffset, themes)
         initThemes(themeSwitcherContainer, pathOffset, themes);
         authenticateGrafana();
     }
+
     initTanks();
     initPumps();
     initPNIDHitboxes();

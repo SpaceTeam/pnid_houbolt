@@ -7,7 +7,7 @@ function stateUpdate(stateName, value)
     }
     else
     {
-        stateName = stateName.replace("-",":");
+        stateName = stateName.replaceAll("-",":");
         onPNIDInput(stateName, value, Date.now()*1000);
         printLog("info", "stateUpdate: " + stateName + " , value: " + value);
     }
@@ -34,5 +34,13 @@ function onDigitalCheck(checkbox)
     //this will create true or false as value, but this is not really what we want, the state updates *receive* a number that is then mapped - do we have to make a "reverse mapping" where
     //for now we convert to 0 for false and 1 for true
     let newVal = checkbox.checked ? 1 : 0;
+    stateUpdate(stateName, newVal);
+}
+
+function onNumberInput(numberInput)
+{
+    let element = $(document).find(`#${numberInput}`);
+    let stateName = element.attr("state");
+    let newVal = parseFloat(element.val());
     stateUpdate(stateName, newVal);
 }

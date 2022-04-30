@@ -1,3 +1,5 @@
+var sliderMoveState = false;
+
 var rangeSlider = function(sliderRow)
 {
     var slider = sliderRow.find('.range-slider'),
@@ -16,6 +18,16 @@ var rangeSlider = function(sliderRow)
         {
             $(this).parent().find('.range-slider__value').html(this.value);
         });
+
+        range.on('mousedown', function()
+        {
+            sliderMoveState = true;
+        });
+
+        range.on('mouseup', function()
+        {
+            sliderMoveState = false;
+        });
     });
 };
 
@@ -23,6 +35,20 @@ function setSliderFeedback(slider, feedbackValue)
 {
     let percent = feedbackValue / slider.attr("max") * 100;
     slider.css("background", `-webkit-gradient(linear, left top, right top, color-stop(${percent}%, var(--accent-disabled)), color-stop(${percent}%, var(--background-tertiary)))`);
+}
+
+function setSliderValue(slider, value)
+{
+    slider[0].value = value; //I dislike having this hardcoded
+    let valueOut = slider.siblings("span.range-slider__value");
+    valueOut.text(Math.round(value));
+}
+
+function sliderIsMoving()
+{
+    //console.log("slider is moving?", slider.filter(':active').length == 0 ? false : true);
+    //return slider.filter(':active').length == 0 ? false : true;
+    return sliderMoveState;
 }
 
 var minInput = $("#fuelServoMin");

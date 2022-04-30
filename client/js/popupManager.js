@@ -1,5 +1,11 @@
 var activePopups = {};
 
+let grafanaPanelConfig = {};
+$.get('/config/grafana', function(data) {
+    grafanaPanelConfig = data;
+});
+
+
 function deactiveInputUpdate(popupID, duration)
 {
     if (activePopups[popupID]["timeUntilActive"] > 0) //there's already one timer counting, so just reset it back to full duration
@@ -75,8 +81,8 @@ function initPNIDHitboxes()
     pnidComps.each(function (index) {
         //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
         //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
-        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined ||
-            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined
+        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
+            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
         ) {
             let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
             let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
@@ -97,7 +103,7 @@ function createTextDisplay(variable, curValue)
     return element;
 }
 
-function constructIframeSource(sourceDefault, config, customConfig)
+function constructIframeSource(sourceDefault, config, customConfig, popupID)
 {
     let finalSource = "";
     if (sourceDefault == undefined)
@@ -107,9 +113,9 @@ function constructIframeSource(sourceDefault, config, customConfig)
     let source = config["source"];
 
     let customSource = "";
-    if (customConfig != undefined)
+    if (grafanaPanelConfig[popupID] != undefined)
     {
-        customSource = customConfig["source"];
+        customSource = grafanaPanelConfig[popupID];
     }
 
     //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
@@ -169,8 +175,8 @@ function createExternalDisplay(config, source)
     }
     let element = $("#externalDisplayTemp").clone();
     element.removeAttr("id");
-    element.find("iframe").attr("width", width);
-    element.find("iframe").attr("height", height);
+    //element.find("iframe").attr("width", width);
+    //element.find("iframe").attr("height", height);
     element.find("iframe").attr("src", source);
     themeSubscribe(element, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
     return element;
@@ -224,6 +230,35 @@ function createSlider(config, variable, popupID, curRawValue)
     return element;
 }
 
+function createTextEntry(config, variable, popupID, curRawValue)
+{
+    let element = $("#numberEntryTemp").clone();
+    element.removeAttr("id");
+    if (!checkStringIsNumber(curRawValue))
+    {
+        curRawValue = 0;
+    }
+    element.find("label").text(config["label"]);
+
+    let numberInput = element.find("input[type=number]");
+    numberInput.attr("min", config["min"]);
+    numberInput.attr("max", config["max"]);
+    numberInput.attr("data-suffix", config["suffix"]);
+    numberInput.attr("id", variable);
+    numberInput.attr("placeholder", variable);
+    numberInput.attr("state", variable);
+    numberInput.inputSpinner();
+    numberInput = element.find("input[type=number]")
+    numberInput.attr("id", variable);
+    element.find("div.input-group").attr("style", "width: 60%");
+    
+
+    let button = element.find("input[type=button]");
+    button.attr("onclick", `onNumberInput("${variable}")`);
+
+    return element;
+}
+
 function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
     //construct popup content
@@ -262,9 +297,11 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         newContentRow = createTextDisplay(popupID, curValue);
                         break;
                     case "external":
-                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        popup.css("width", "400px");
+                        popup.css("height", "300px");
+                        let customConfig = getConfigData(config, popupID.replaceAll("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let sourceDefault = defaultConfig["externalSourceDefault"];
-                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig);
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replaceAll("-",":"));
                         newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
                     default:
@@ -276,13 +313,14 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curValue);
+                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curRawValue);
                         break;
                     case "slider":
                         newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
                         break;
-                    case "textEntry":
-                        printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                    case "numberEntry":
+                        newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -380,19 +418,21 @@ function createPopup(popupID, parent, isActionReference)
         popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
     }
     //console.log("pop pos2:", popupPosition);
-    popupClone.attr('style', `width: auto; height: auto; top: ${popupPosition[1]}px; left: ${popupPosition[0]}px;`);
+    popupClone.css("top", popupPosition[1]+"px");
+    popupClone.css("left" ,popupPosition[0]+"px");
 	popupClone.fadeIn(100);
     
 	activePopups[popupID] = {
 	    "popup": popupClone,
 	    "config": popupConfig,
+        "containedStates": [],
         "timer": undefined,
         "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
         "visibility": true
 	};
 }
 
-function updatePopup(stateName, value, rawValue)
+function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false)
 {
     let popupID = "";
     if (stateName in activePopups) //if popup for a certain state name does exist, simply update it.
@@ -416,7 +456,8 @@ function updatePopup(stateName, value, rawValue)
     }
     let popup = activePopups[popupID]["popup"];
     let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
-    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup, but is bundled in an action reference popup. this menas we have to search for its popup config
+    if (stateName != popupID) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
+    //but is bundled in an action reference popup. this means we have to search for its popup config
     {
         /*console.log("elem", getElement(stateName));
         console.log("elem classes", getElement(stateName).attr("class").split(" "));
@@ -440,9 +481,12 @@ function updatePopup(stateName, value, rawValue)
                 switch (contentStyle)
                 {
                     case "text":
-                        
-                        elements = $(popup).find(`[display="${stateName}"]`);
-                        elements.text(value);
+                        //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
+                        if (!isGuiState || isActionReference)
+                        {
+                            elements = $(popup).find(`[display="${stateName}"]`);
+                            elements.text(value);
+                        }
                         break;
                     case "external": //no update needed
                         break;
@@ -454,35 +498,52 @@ function updatePopup(stateName, value, rawValue)
             case "input":
                 if (activePopups[popupID]["timeUntilActive"] > 0)
                 {
-                    //disable the update pause after user input for now. since sliders now have their value and feedback separated, it isn't really needed anymore. evaluate if it should be removed altogether or not
+                    //disable the update pause after user input for now. since sliders now have their value and feedback separated,
+                    //it isn't really needed anymore. evaluate if it should be removed altogether or not
                     //continue;
                 }
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                        if (value === rowConfig["low"])
+                        if (isGuiState || isActionReference)
                         {
-                            elements.prop("checked", false);
-                        }
-                        else
-                        {
-                            elements.prop("checked", true);
+                            //console.log("updating gui state checkbox", rawValue);
+                            //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                            elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                            if (rawValue.toString() === rowConfig["low"])
+                            {
+                                elements.prop("checked", false);
+                            }
+                            else
+                            {
+                                elements.prop("checked", true);
+                            }
                         }
                         break;
                     case "slider":
                         elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
-                        if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                        if (!isGuiState)
                         {
-                            printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
-                            break;
+                            //if the value is sensor feedback, update the feedback slider background
+                            if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                            {
+                                printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
+                                break;
+                            }
+                            setSliderFeedback(elements, Math.round(rawValue))
                         }
-                        setSliderFeedback(elements, Math.round(rawValue))
-                        /*elements.val(Math.round(rawValue));
-                        let valueOut = elements.siblings("span.range-slider__value");
-                        valueOut.text(Math.round(rawValue));*/
-                        /*let feedback = elements.siblings("span.range-slider__feedback");
-                        feedback.text(Math.round(rawValue));*/
+                        else
+                        {
+                            //if the value is not sensor feedback, but a set point instead, move the slider
+                            if (!sliderIsMoving())
+                            {
+                                //but only if the slider isn't being moved right now
+                                setSliderValue(elements, Math.round(rawValue));
+                            }
+                            /*elements.val(Math.round(rawValue));
+                            let valueOut = elements.siblings("span.range-slider__value");
+                            valueOut.text(Math.round(rawValue));*/
+                        }
                         break;
                     default:
                         printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
