@@ -38,6 +38,24 @@
             }
         ]
     },
+    "PnID-Motor": {
+        "eval": "if (inVars['value'] >= thresholds['solenoid']['high']) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
+        "sens_deviation": "if ((setState == 0 && feedback >= thresholds['solenoid']['high']) || (setState == 1 && feedback < thresholds['solenoid']['high'])) { return true; } return false;",
+        "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "input",
+                "style": "checkbox",
+                "variable": "value",
+                "low": "0",
+                "high": "1"
+            }
+        ]
+    },
     "PnID-Valve_Pneumatic": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
 	    "popup": [
@@ -76,7 +94,7 @@
         ]
     },
     "PnID-Valve_Servo_3Way": {
-        "eval": "if (inVars['value'] >= thresholds['3wayValve']['high']) { outVars['color']='position_b'; outVars['value']='Hot' } else { outVars['color']='position_a'; outVars['value']='Cold' }",
+        "eval": "if (inVars['value'] >= thresholds['3wayValve']['high']) { outVars['color']='position_a'; outVars['value']='Hot' } else { outVars['color']='position_b'; outVars['value']='Cold' }",
 	    "popup": [
             {
                 "type": "display",
@@ -309,7 +327,7 @@
             }
         ]
     },
-    "gui-pressure_control-SetEnable": {
+    "gui-pressure_control-SetEnabled": {
         "eval": "if (inVars['value'] > 0) { outVars['value']='Pressure Controlled' } else { outVars['value']='Manual' }",
         "popup": [
             {

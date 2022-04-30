@@ -5,7 +5,8 @@
     },
     "PnID-Valve_Solenoid_NO": {
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='closed'; outVars['value']='Closed' } else { outVars['color']='open'; outVars['value']='Open' }",
-	    "popup": [
+	    "sens_deviation": null,
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -15,14 +16,15 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Open",
-                "high": "Closed"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
     "PnID-Valve_Solenoid_NC": {
         "eval": "if (inVars['value'] > thresholds['solenoid']['high']) { outVars['color']='open'; outVars['value']='Open' } else { outVars['color']='closed'; outVars['value']='Closed' }",
-	    "popup": [
+	    "sens_deviation": null,
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -32,14 +34,15 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
     "PnID-Valve_Pneumatic": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
+	    "sens_deviation": null,
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -57,7 +60,8 @@
     },
     "PnID-Valve_Servo": {
         "eval": "if (inVars['value'] > thresholds['servo_valve']['high']) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > thresholds['servo_valve']['low']) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
+	    "sens_deviation": null,
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -93,7 +97,8 @@
     },
 	"PnID-Valve_Needle_Servo": {
         "eval": "if (inVars['value'] > 80) { outVars['color']='open'; outVars['value']='Open ('+Math.round(inVars['value'])+')' } else if (inVars['value'] > 20) { outVars['color']='throttle'; outVars['value']='Thr. ('+Math.round(inVars['value'])+')' } else { outVars['color']='closed'; outVars['value']='Closed  ('+Math.round(inVars['value'])+')' }",
-	    "popup": [
+	    "sens_deviation": null,
+        "popup": [
             {
                 "type": "display",
                 "style": "text",
@@ -220,8 +225,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     },
@@ -237,8 +242,8 @@
                 "type": "input",
                 "style": "checkbox",
                 "variable": "value",
-                "low": "Closed",
-                "high": "Open"
+                "low": "0",
+                "high": "1"
             }
         ]
     }

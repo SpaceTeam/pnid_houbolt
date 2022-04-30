@@ -396,11 +396,11 @@ function checkPumps()
     let coldPump = $(".pump_cold_water-sensor");
     let hotPump = $(".pump_hot_water-sensor");
     console.log(currValveState, hotPump.attr("data-pnid-pump"), coldPump.attr("data-pnid-pump"))
-    if (currValveState === "position_a" && hotPump.attr("data-pnid-pump") === "on")
+    if (currValveState === "position_b" && hotPump.attr("data-pnid-pump") === "on")
     {
         updatePNID([{"name": "pump_hot_water:sensor", "value": 0.0}])
     }
-    if (currValveState === "position_b" && coldPump.attr("data-pnid-pump") === "on")
+    if (currValveState === "position_a" && coldPump.attr("data-pnid-pump") === "on")
     {
         updatePNID([{"name": "pump_cold_water:sensor", "value": 0.0}])
     }
