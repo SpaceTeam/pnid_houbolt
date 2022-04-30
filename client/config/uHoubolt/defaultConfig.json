@@ -157,6 +157,24 @@
             }
         ]
     },
+    "PnID-Sensor_Load": {
+        "eval": "",
+	    "popup": [
+            {
+                "type": "display",
+                "style": "text",
+                "variable": "value"
+            },
+            {
+                "type": "display",
+                "style": "external",
+                "source": null,
+                "autoID": false,
+                "width": 450,
+                "height": 200
+            }
+        ]
+    },
     "PnID-Water_Tank": {
         "eval": "if (inVars['value'] > 30) { outVars['color']='high'; outVars['content']='high' } else if (inVars['value'] > -200) { outVars['color']='low'; outVars['content']='low' } else { outVars['color']='notconnected'; outVars['value']='Not Connected'; outVars['content']='' }",
 	    "popup": [
