@@ -11,6 +11,8 @@ For development the npm package `nodemon` is helpful as it automatically restart
 
 ## Start Webserver
 
+**ATTENTION! Running the pnid standalone is currently broken as the server.js is not set up to read configs on custom paths and the config has been moved to an external repository. Right now PnID can only be run embedded in ECUI, see instructions there for setup.**
+
 `node server.js [port]`
 
 Port is optional, but nice for permission reasons as with default port (80) sudo is needed on Linux
