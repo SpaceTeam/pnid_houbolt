@@ -73,7 +73,7 @@ html body {
 }
 
 .value, .reference {
-    font-size: 6.5rem;
+    font-size: 8.5rem;
     stroke-width: 1;
     fill: var(--default-stroke);
 }
