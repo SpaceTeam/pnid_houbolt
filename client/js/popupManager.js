@@ -259,6 +259,15 @@ function createTextEntry(config, variable, popupID, curRawValue)
     return element;
 }
 
+function createButton(config, variable, popupID, curRawValue)
+{
+    let element = $("#buttonEntryTemp").clone();
+    element.removeAttr("id");
+    element.find("input").attr("value", config["label"]);
+    element.find("input").attr("onclick", `onButtonInput("${variable}")`);
+    return element;
+}
+
 function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
     //construct popup content
@@ -320,6 +329,10 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         break;
                     case "numberEntry":
                         newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
+                    case "button":
+                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
                         //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:

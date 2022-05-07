@@ -166,6 +166,12 @@
                 "variable": "value"
             },
             {
+                "type": "input",
+                "style": "button",
+                "variable": "scale:Tare",
+                "label": "Tare"
+            },
+            {
                 "type": "display",
                 "style": "external",
                 "source": null,

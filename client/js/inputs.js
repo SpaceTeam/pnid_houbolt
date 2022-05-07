@@ -44,3 +44,8 @@ function onNumberInput(numberInput)
     let newVal = parseFloat(element.val());
     stateUpdate(stateName, newVal);
 }
+
+function onButtonInput(buttonVariable)
+{
+    stateUpdate(buttonVariable, 1);
+}

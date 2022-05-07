@@ -763,6 +763,20 @@
         <text class="actionReferenceValueRaw text-L" x="5378" y="8695" visibility="hidden"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('umbilical_retract-sensor')"></rect>    </g>
+    <g class="Sensor_Load_Short? PnID-Sensor_Load scale-sensor comp" data-unit="N" data-pnid-sensor_load="" data-content="" action-reference=""transform="scale(-1,1) translate(-4360,0)">
+        <!-- coordinates: x = 2180 y = 11820 -->
+        <g>        <circle cx="2180" cy="11820" r="100" />
+        <path d="M 1980 11820 L 2080 11820" />
+        </g>        <text class="sensor-letter static-color text-C" x="2180" y="11820" transform="scale(-1,1) translate(-4360,0)">L</text>
+        <text class="reference static-color text-C" x="2122" y="11537" visibility="hidden" transform="scale(-1,1) translate(-4244,0)">Sensor_Load_Short?</text>
+        <text class="setState text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"></text>
+        <text class="value text-C" x="2530" y="11820" visibility="visible" transform="scale(-1,1) translate(-5060,0)">scale:sensor</text>
+        <text class="valueRaw text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)">scale:sensor</text>
+        <text class="actionReferenceValue text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="2530" y="11820" visibility="hidden" transform="scale(-1,1) translate(-5060,0)"> </text>
+        <text class="Unit" x="2180" y="11820" visibility="hidden" transform="scale(-1,1) translate(-4360,0)">N</text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('scale-sensor')"></rect>    </g>
 
 <!-- Wires-->
 
