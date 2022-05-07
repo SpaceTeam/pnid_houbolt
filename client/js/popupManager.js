@@ -288,11 +288,22 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
         let variableName = rowConfig["variable"];
         if (variableName === "value")
         {
+            //if the variable is "value", this popup element listens to the popup parent state
             variableName = popupID;
         }
         else
         {
+            //if the variable name is something else, push it to the contained states and try getting curValue
             containedStates.push(variableName);
+            
+            //if we have a poll variable specified, send it to llserver to cause a response with the current value
+            if (rowConfig["poll_var"] != undefined)
+            {
+                stateUpdate(rowConfig["poll_var"], 1);
+                //not sure what will happen with asynchronous execution (is it even executed async?)
+                //if creating popup isn't finished by the time the response from the onPNIDInput comes back I don't know if it will be found
+            }
+            
         }
         let newContentRow;
         switch (contentType)
@@ -427,7 +438,7 @@ function createPopup(popupID, parent, isActionReference)
     }
     //console.log("pop pos2:", popupPosition);
     popupClone.css("top", popupPosition[1]+"px");
-    popupClone.css("left" ,popupPosition[0]+"px");
+    popupClone.css("left", popupPosition[0]+"px");
 	popupClone.fadeIn(100);
     
 	activePopups[popupID] = {

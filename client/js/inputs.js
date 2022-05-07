@@ -42,5 +42,8 @@ function onNumberInput(numberInput)
     let element = $(document).find(`#${numberInput}`);
     let stateName = element.attr("state");
     let newVal = parseFloat(element.val());
+    element.val(0); //reset the field to a value of 0.
+    //this gives feedback if it worked or not: if the value got properly set it'll be echoed by llserver and set to the value, if not it will stay at 0
+    
     stateUpdate(stateName, newVal);
 }

@@ -367,7 +367,8 @@
                 "max": "100",
                 "label": "Set Point",
                 "suffix": "bar",
-                "variable": "pressure_control-SetTargetPosition"
+                "variable": "pressure_control-SetTargetPosition",
+                "poll_var": "pressure_control-GetTargetPosition"
             },
             {
                 "type": "input",
@@ -376,7 +377,8 @@
                 "max": "100",
                 "label": "Hysteresis",
                 "suffix": "bar",
-                "variable": "pressure_control-SetHysteresis"
+                "variable": "pressure_control-SetHysteresis",
+                "poll_var": "pressure_control-GetHysteresis"
             }
         ]
     }
