@@ -29,24 +29,20 @@
                 <div class="col popup-heading">Temp Name</div>
                 <button type="button" class="btn btn-outline-danger btn-close">
                     <i class="bi bi-x"></i>
-                </button> 
+                </button>
             </div>
         </div>
-        
-        <div id="textDisplayTemp" class="row control-row">
+        <div id="textDisplayTemp" class="row control-row popup-row">
             <label class="popup-value-out"></label>
         </div>
-        <div id="externalDisplayTemp" class="row control-row externalContainer">
-            <div>
-                <iframe src="" frameborder="0"></iframe>
-            </div>
-            
+        <div id="externalDisplayTemp" class="row control-row popup-row externalContainer">
+            <iframe src=""></iframe>
         </div>
-        <div id="sliderTemp" class="row control-row">
-            <div title="" class="range-slider col">
-                <!--<label class="range-slider-label input-label">Temp Label</label><br>-->
+        <div id="sliderTemp" class="row control-row popup-row">
+            <div class="range-slider col">
+                <label class="range-slider-label input-label">Temp Label</label><br>
                 <input class="range-slider__range servo-slider manual-obj servo-enable-obj"
-                    oninput="onServoSliderInput($(this));" type="range" value="0" min="0" max="100" step="1">
+                    oninput="onServoSliderInput($(this));" type="range" value="40000" min="30000" max="55000" step="1">
                 <span class="range-slider__value">0</span>
                 <div class="range-slider-caption">
                     <div class="range-slider-caption_left"> Closed </div>
@@ -54,14 +50,14 @@
                 </div>
             </div>
         </div>
-        <div id="numberEntryTemp" class="row control-row">
+        <div id="numberEntryTemp" class="row control-row popup-row">
             <div style="display: flex; flex-direction: row; justify-content: space-between;">
                 <label class="popup-value-out"></label>
                 <input type="number" id="" min="" max="" class="form-control-sm"/>
                 <input type="button" onclick="" value="Set" class="btn btn-primary btn-sm"></input>
             </div>
         </div>
-        <div id="digitalOutTemp" class="row control-row">
+        <div id="digitalOutTemp" class="row control-row popup-row">
             <div class="form-control custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input ckbx manual-obj servo-enable-obj digitalOut" id="tempDigitalOut"
                     onclick="onDigitalCheck(this);">
