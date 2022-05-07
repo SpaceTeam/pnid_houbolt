@@ -1,19 +1,19 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
-$.get('/config/default', function(data) {
+$.get('/pnid_config/default', function(data) {
     //console.log("default");
     //console.log("default:", data);
     defaultConfig = data;
 });
 
 let config = {};
-$.get('/config/custom', function(data) {
+$.get('/pnid_config/custom', function(data) {
     //console.log("custom:", data);
     config = data;
 });
 
 let thresholds = {};
-$.get('/config/thresholds', function(data) {
+$.get('/pnid_config/thresholds', function(data) {
     thresholds = data;
 });
 

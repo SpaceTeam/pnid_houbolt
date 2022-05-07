@@ -1,7 +1,7 @@
 var activePopups = {};
 
 let grafanaPanelConfig = {};
-$.get('/config/grafana', function(data) {
+$.get('/pnid_config/grafana', function(data) {
     grafanaPanelConfig = data;
 });
 
