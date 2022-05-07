@@ -580,6 +580,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                             elements = $(popup).find("input[type=number]");
                             //console.log(elements);
                             elements.val(rawValue);
+                            elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
                             //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be
                             break;
                         default:
