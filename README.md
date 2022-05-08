@@ -11,6 +11,8 @@ For development the npm package `nodemon` is helpful as it automatically restart
 
 ## Start Webserver
 
+**ATTENTION! Running the pnid standalone is currently broken as the server.js is not set up to read configs on custom paths and the config has been moved to an external repository. Right now PnID can only be run embedded in ECUI, see instructions there for setup.**
+
 `node server.js [port]`
 
 Port is optional, but nice for permission reasons as with default port (80) sudo is needed on Linux
@@ -205,7 +207,7 @@ Sub-keys for type `input`:
     * `min=` - Which value the minimal value of the slider is. Eg for a servo valve the "low" value could be `30000`. This is the raw (number) value sent to the PnID, not the formatted/interpreted value visible in the UI.
     * `max=` - Similar to min, but for the max value
     * `step=` - The step size of the slider.
-  * `=textEntry` - A free-form text entry. NOT IMPLEMENTED YET
+  * `=numberEntry` - A free-form text entry. NOT IMPLEMENTED YET
 
 As mentioned before in the `style=external` description, this is a popup element type that can be further specified in the custom config. It is specified similar to the popup config in the default config file, but only allows the "source" and "autoID" keys to be set:
 

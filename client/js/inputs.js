@@ -7,7 +7,7 @@ function stateUpdate(stateName, value)
     }
     else
     {
-        stateName = stateName.replace("-",":");
+        stateName = stateName.replaceAll("-",":");
         onPNIDInput(stateName, value, Date.now()*1000);
         printLog("info", "stateUpdate: " + stateName + " , value: " + value);
     }
@@ -35,4 +35,17 @@ function onDigitalCheck(checkbox)
     //for now we convert to 0 for false and 1 for true
     let newVal = checkbox.checked ? 1 : 0;
     stateUpdate(stateName, newVal);
+}
+
+function onNumberInput(numberInput)
+{
+    let element = $(document).find(`#${numberInput}`);
+    let stateName = element.attr("state");
+    let newVal = parseFloat(element.val());
+    stateUpdate(stateName, newVal);
+}
+
+function onButtonInput(buttonVariable)
+{
+    stateUpdate(buttonVariable, 1);
 }

@@ -1,7 +1,7 @@
 var activePopups = {};
 
 let grafanaPanelConfig = {};
-$.get('/config/grafana', function(data) {
+$.get('/pnid_config/grafana', function(data) {
     grafanaPanelConfig = data;
 });
 
@@ -81,8 +81,8 @@ function initPNIDHitboxes()
     pnidComps.each(function (index) {
         //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
         //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
-        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined ||
-            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", ""), "popup") != undefined
+        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
+            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
         ) {
             let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
             let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
@@ -230,6 +230,44 @@ function createSlider(config, variable, popupID, curRawValue)
     return element;
 }
 
+function createTextEntry(config, variable, popupID, curRawValue)
+{
+    let element = $("#numberEntryTemp").clone();
+    element.removeAttr("id");
+    if (!checkStringIsNumber(curRawValue))
+    {
+        curRawValue = 0;
+    }
+    element.find("label").text(config["label"]);
+
+    let numberInput = element.find("input[type=number]");
+    numberInput.attr("min", config["min"]);
+    numberInput.attr("max", config["max"]);
+    numberInput.attr("data-suffix", config["suffix"]);
+    numberInput.attr("id", variable);
+    numberInput.attr("placeholder", variable);
+    numberInput.attr("state", variable);
+    numberInput.inputSpinner();
+    numberInput = element.find("input[type=number]")
+    numberInput.attr("id", variable);
+    element.find("div.input-group").attr("style", "width: 60%");
+    
+
+    let button = element.find("input[type=button]");
+    button.attr("onclick", `onNumberInput("${variable}")`);
+
+    return element;
+}
+
+function createButton(config, variable, popupID, curRawValue)
+{
+    let element = $("#buttonEntryTemp").clone();
+    element.removeAttr("id");
+    element.find("input").attr("value", config["label"]);
+    element.find("input").attr("onclick", `onButtonInput("${variable}")`);
+    return element;
+}
+
 function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
     //construct popup content
@@ -270,9 +308,9 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                     case "external":
                         popup.css("width", "400px");
                         popup.css("height", "300px");
-                        let customConfig = getConfigData(config, popupID.replace("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
+                        let customConfig = getConfigData(config, popupID.replaceAll("-",":"), "popup"); //TODO this custom config thing doesn't really allow for several different custom data fields to be entered - eg: two different sources for two different external displays. only a fringe use case imo, but should be looked into at some point
                         let sourceDefault = defaultConfig["externalSourceDefault"];
-                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replace("-",":"));
+                        let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replaceAll("-",":"));
                         newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
                     default:
@@ -284,13 +322,18 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curValue);
+                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curRawValue);
                         break;
                     case "slider":
                         newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
                         break;
-                    case "textEntry":
-                        printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                    case "numberEntry":
+                        newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
+                    case "button":
+                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -395,6 +438,7 @@ function createPopup(popupID, parent, isActionReference)
 	activePopups[popupID] = {
 	    "popup": popupClone,
 	    "config": popupConfig,
+        "containedStates": [],
         "timer": undefined,
         "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
         "visibility": true
