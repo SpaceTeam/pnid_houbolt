@@ -491,40 +491,18 @@
         <text class="actionReferenceValueRaw text-C" x="8090" y="8536" visibility="hidden">gui-water_pumps</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('gui-water_pumps')"></rect>    </g>
-    <g class="WaterMantle PnID-HeatExchanger heat_exchanger_mantle-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-13500,0)">
-        <!-- coordinates: x = 6750 y = 8910 -->
-        <g>        <path d="M 6480 9230 A 401.5420276882608 401.5420276882608 0 0 0 7000 9230" />
-        <path d="M 6480 9090 A 401.5420276882608 401.5420276882608 0 0 0 7000 9090" />
-        <path d="M 6480 8950 A 401.5420276882608 401.5420276882608 0 0 0 7000 8950" />
-        <path d="M 6480 8810 A 401.5420276882608 401.5420276882608 0 0 0 7000 8810" />
-        <path d="M 6480 8670 A 401.5420276882608 401.5420276882608 0 0 0 7000 8670" />
-        <path d="M 7000 9230 A 550.8003267972887 550.8003267972887 0 0 0 6480 9090" />
-        <path d="M 7000 9090 A 550.8003267972887 550.8003267972887 0 0 0 6480 8950" />
-        <path d="M 7000 8950 A 550.8003267972887 550.8003267972887 0 0 0 6480 8810" />
-        <path d="M 7000 8810 A 550.8003267972887 550.8003267972887 0 0 0 6480 8670" />
-        <path d="M 7000 8670 A 550.8003267972887 550.8003267972887 0 0 0 6480 8530" />
-        <path d="M 6380 9230 L 6478 9230" />
-        <path d="M 6380 8530 L 6478 8530" />
-        </g>        <text class="reference static-color text-L" x="7100" y="8900" visibility="hidden" transform="scale(-1,1) translate(-14200,0)">WaterMantle</text>
-        <text class="setState text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"></text>
-        <text class="value text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">heat_exchanger_mantle:sensor</text>
-        <text class="valueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">heat_exchanger_mantle:sensor</text>
-        <text class="actionReferenceValue text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
-        <text class="actionReferenceValueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
-        <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('heat_exchanger_mantle-sensor')"></rect>    </g>
-    <g class="Sensor_Temperature4 PnID-Sensor_Temperature water_mantle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="High" action-reference="">
-        <!-- coordinates: x = 8980 y = 7170 -->
-        <g>        <circle cx="8980" cy="7170" r="100" />
-        <path d="M 8780 7170 L 8880 7170" />
-        </g>        <text class="sensor-letter static-color text-C" x="8980" y="7170">T</text>
-        <text class="reference static-color text-C" x="8980" y="6970" visibility="hidden">Sensor_Temperature4</text>
-        <text class="setState text-C" x="9410" y="7170" visibility="hidden"></text>
-        <text class="value text-C" x="9410" y="7170" visibility="visible">water_mantle_temp:sensor</text>
-        <text class="valueRaw text-C" x="9410" y="7170" visibility="hidden">water_mantle_temp:sensor</text>
-        <text class="actionReferenceValue text-C" x="9410" y="7170" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-C" x="9410" y="7170" visibility="hidden"> </text>
-        <text class="Unit" x="8980" y="7170" visibility="hidden">˚C</text>
+    <g class="Sensor_Temperature4 PnID-Sensor_Temperature water_mantle_temp-sensor comp" data-unit="˚C" data-pnid-sensor_temperature="" data-content="High" action-reference=""transform="scale(-1,1) translate(-12600,0)">
+        <!-- coordinates: x = 6300 y = 8950 -->
+        <g>        <circle cx="6300" cy="8950" r="100" />
+        <path d="M 6100 8950 L 6200 8950" />
+        </g>        <text class="sensor-letter static-color text-C" x="6300" y="8950" transform="scale(-1,1) translate(-12600,0)">T</text>
+        <text class="reference static-color text-C" x="6300" y="8750" visibility="hidden" transform="scale(-1,1) translate(-12600,0)">Sensor_Temperature4</text>
+        <text class="setState text-C" x="6730" y="8950" visibility="hidden" transform="scale(-1,1) translate(-13460,0)"></text>
+        <text class="value text-C" x="6730" y="8950" visibility="visible" transform="scale(-1,1) translate(-13460,0)">water_mantle_temp:sensor</text>
+        <text class="valueRaw text-C" x="6730" y="8950" visibility="hidden" transform="scale(-1,1) translate(-13460,0)">water_mantle_temp:sensor</text>
+        <text class="actionReferenceValue text-C" x="6730" y="8950" visibility="hidden" transform="scale(-1,1) translate(-13460,0)"> </text>
+        <text class="actionReferenceValueRaw text-C" x="6730" y="8950" visibility="hidden" transform="scale(-1,1) translate(-13460,0)"> </text>
+        <text class="Unit" x="6300" y="8950" visibility="hidden" transform="scale(-1,1) translate(-12600,0)">˚C</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle_temp-sensor')"></rect>    </g>
     <g class="Valve_Servo3 PnID-Valve_Servo pressurant_tanking_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference="">
@@ -553,7 +531,7 @@
         <path d="M 6790 8670 L 6790 8570 " />
         <path d="M 6540 8720 L 6540 9520 L 6940 9520 L 6940 8720 " />
         <path d="M 6740 8520 L 6740 8520" />
-        </g>        <text class="reference static-color text-C" x="7130" y="9150" visibility="visible" transform="rotate(180,7130,9150)">N2O1</text>
+        </g>        <text class="reference static-color text-C" x="6380" y="9160" visibility="visible" transform="rotate(180,6380,9160)">N2O1</text>
         <text class="setState text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)"></text>
         <text class="value text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)">GasBottle</text>
         <text class="valueRaw text-C" x="6740" y="9120" visibility="hidden" transform="rotate(180,6740,9120)">GasBottle</text>
@@ -777,6 +755,28 @@
         <text class="Unit" x="2180" y="11820" visibility="hidden" transform="scale(-1,1) translate(-4360,0)">N</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('scale-sensor')"></rect>    </g>
+    <g class="WaterMantle PnID-HeatExchanger water_mantle_temp-sensor comp" data-unit="" data-pnid-heatexchanger="" data-content="" action-reference=""transform="scale(-1,1) translate(-13500,0)">
+        <!-- coordinates: x = 6750 y = 8910 -->
+        <g>        <path d="M 6480 9230 A 401.5420276882608 401.5420276882608 0 0 0 7000 9230" />
+        <path d="M 6480 9090 A 401.5420276882608 401.5420276882608 0 0 0 7000 9090" />
+        <path d="M 6480 8950 A 401.5420276882608 401.5420276882608 0 0 0 7000 8950" />
+        <path d="M 6480 8810 A 401.5420276882608 401.5420276882608 0 0 0 7000 8810" />
+        <path d="M 6480 8670 A 401.5420276882608 401.5420276882608 0 0 0 7000 8670" />
+        <path d="M 7000 9230 A 550.8003267972887 550.8003267972887 0 0 0 6480 9090" />
+        <path d="M 7000 9090 A 550.8003267972887 550.8003267972887 0 0 0 6480 8950" />
+        <path d="M 7000 8950 A 550.8003267972887 550.8003267972887 0 0 0 6480 8810" />
+        <path d="M 7000 8810 A 550.8003267972887 550.8003267972887 0 0 0 6480 8670" />
+        <path d="M 7000 8670 A 550.8003267972887 550.8003267972887 0 0 0 6480 8530" />
+        <path d="M 6380 9230 L 6478 9230" />
+        <path d="M 6380 8530 L 6478 8530" />
+        </g>        <text class="reference static-color text-L" x="7100" y="8900" visibility="hidden" transform="scale(-1,1) translate(-14200,0)">WaterMantle</text>
+        <text class="setState text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"></text>
+        <text class="value text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">water_mantle_temp:sensor</text>
+        <text class="valueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)">water_mantle_temp:sensor</text>
+        <text class="actionReferenceValue text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
+        <text class="actionReferenceValueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle_temp-sensor')"></rect>    </g>
 
 <!-- Wires-->
 
@@ -863,12 +863,12 @@
         <line x1="6740" y1="7420" x2="6740" y2="7320" />
         <line x1="6430" y1="7320" x2="6740" y2="7320" />
     </g>
-    <g class="heat_exchanger_in-wire wire" data-pnid-wire="">
+    <g class="water_mantle_in-wire wire" data-pnid-wire="">
         <line x1="7120" y1="9230" x2="7120" y2="10110" />
         <line x1="7120" y1="10110" x2="8770" y2="10110" />
         <line x1="8770" y1="8900" x2="8770" y2="10110" />
     </g>
-    <g class="heat_exchanger_out-wire wire" data-pnid-wire="">
+    <g class="water_mantle_out-wire wire" data-pnid-wire="">
         <line x1="7120" y1="7170" x2="7120" y2="8530" />
         <line x1="8780" y1="7170" x2="7120" y2="7170" />
         <line x1="8780" y1="7170" x2="8780" y2="7330" />
@@ -903,5 +903,4 @@
     <circle cx="6740" cy="10010" r="2" fill="green" />
     <circle cx="5720" cy="10010" r="2" fill="green" />
     <circle cx="5720" cy="7320" r="2" fill="green" />
-    <circle cx="8780" cy="7170" r="2" fill="green" />
 </svg>
