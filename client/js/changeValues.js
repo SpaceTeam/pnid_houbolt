@@ -214,7 +214,7 @@ async function runTestsHoubolt()
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}];
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}, {"name": "water_mantle_temp:sensor", "value": 15.0}];
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
@@ -231,6 +231,10 @@ async function runTestsHoubolt()
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_mantle_temp:sensor", "value": 25.0}];
+    console.log("testData", testData);
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 1}];
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);

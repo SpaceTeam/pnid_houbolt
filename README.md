@@ -165,7 +165,7 @@ Functions (call by function name):
 * `link` - links one (or more) state to another (origin). Whenever the origin state receives a state update, the linked state does as well. Does *not* override state updates for the linked state, so those can potentially interfere.
   * Parameter `origin` - the name of the origin ("parent") state of the link.
   * Parameter `statesToLink` - A singular name or a list of names of the state that should be linked to the given origin.
-  * Parameter `onlyLinkContents` - Specifies whether to only link content and not values (if set to "true"). Can be used for example for a pump to reference to another sensor for the content it's pumping without using this sensor's feedback value.
+  * Parameter `linkType` - TODO Valid types: "all", "value", "content". If none specified uses "all" per default. Invalid link type acts as if not linked.
 * `unlink` - unlinks previously linked states.
   * Parameter `origin` - the name of the origin ("parent") state of the link that should be unlinked from.
   * Parameter `statesToUnlink` - A singular name or a list of names of the state that should be unlinked from the given origin. (Optional, if not specified it will default to "all" to unlink all linked states from given origin. "all" can also be explicitly specified).
