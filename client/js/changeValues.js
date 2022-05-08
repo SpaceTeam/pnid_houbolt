@@ -567,7 +567,7 @@ function findLinkParents(linkedChild, linkType = "all", isWire = false)
                 );
         }))
         {
-            console.log('found parent', key);
+            //console.log('found parent', key);
             parents.push(key);
         }
     }
@@ -853,7 +853,7 @@ function setStateValue(state, recursionDepth = 0)
             else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
                 if (state['name'] == 'pump_cold_water-sensor') {
-                    console.log('checking cold water pump links');
+                    //console.log('checking cold water pump links');
                 }
                 if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
                 {
