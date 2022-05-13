@@ -49,3 +49,8 @@ function onNumberInput(numberInput)
 
     stateUpdate(stateName, newVal);
 }
+
+function onButtonInput(buttonVariable)
+{
+    stateUpdate(buttonVariable, 1);
+}

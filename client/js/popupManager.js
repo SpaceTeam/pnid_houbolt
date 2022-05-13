@@ -1,7 +1,7 @@
 var activePopups = {};
 
 let grafanaPanelConfig = {};
-$.get('/config/grafana', function(data) {
+$.get('/pnid_config/grafana', function(data) {
     grafanaPanelConfig = data;
 });
 
@@ -259,6 +259,15 @@ function createTextEntry(config, variable, popupID, curRawValue)
     return element;
 }
 
+function createButton(config, variable, popupID, curRawValue)
+{
+    let element = $("#buttonEntryTemp").clone();
+    element.removeAttr("id");
+    element.find("input").attr("value", config["label"]);
+    element.find("input").attr("onclick", `onButtonInput("${variable}")`);
+    return element;
+}
+
 function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 {
     //all states contained in a popup which may need updating
@@ -338,6 +347,10 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         break;
                     case "numberEntry":
                         newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
+                    case "button":
+                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
                         //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:
@@ -478,7 +491,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
             }
         }
     }
-    
+
     let popup = activePopups[popupID]["popup"];
     let popupConfig = activePopups[popupID]["config"]; //default popup config, just search for the popupID and get the config stored next to it
     if (stateName != popupID && bundledInActionReference) //if state name and popupID differ, we are currenty updating a state that doesn't have its own popup,
@@ -577,8 +590,10 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                             break;
                         case "numberEntry":
                             //console.log("updating number entry");
-                            elements = $(popup).find("input[type=number]");
-                            //console.log(elements);
+                            //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
+                            elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
+                            //console.log('updating following elems', elements);
+                            //TODO: this fix for checking the state name is crucial also for other popup elements that need updating, add later
                             elements.val(rawValue);
                             elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
                             //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be

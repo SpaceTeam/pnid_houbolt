@@ -1,19 +1,19 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
-$.get('/config/default', function(data) {
+$.get('/pnid_config/default', function(data) {
     //console.log("default");
     //console.log("default:", data);
     defaultConfig = data;
 });
 
 let config = {};
-$.get('/config/custom', function(data) {
+$.get('/pnid_config/custom', function(data) {
     //console.log("custom:", data);
     config = data;
 });
 
 let thresholds = {};
-$.get('/config/thresholds', function(data) {
+$.get('/pnid_config/thresholds', function(data) {
     thresholds = data;
 });
 
@@ -214,7 +214,7 @@ async function runTestsHoubolt()
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
-    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}];
+    var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "gui:water_valves", "value": 1}, {"name": "water_mantle_temp:sensor", "value": 15.0}];
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
@@ -231,6 +231,10 @@ async function runTestsHoubolt()
     updatePNID(testData);
     await sleep(1000);
     var testData = [{"name": "pump_hot_water:sensor", "value": 95.0}, {"name": "water_mantle_temp:sensor", "value": 25.0}];
+    console.log("testData", testData);
+    updatePNID(testData);
+    await sleep(1000);
+    var testData = [{"name": "pump_hot_water:sensor", "value": 1}];
     console.log("testData", testData);
     updatePNID(testData);
     await sleep(1000);
@@ -420,12 +424,12 @@ var __stateLinks = {};
  * @description When a state is linked to another it will be called via a state update (using {@link updatePNID}) using the same value as the invoking state. Intended to be used inside eval behavior blocks.
  * @param {string} origin The name of the state that invokes the linked state.
  * @param {string[]} statesToLink The name of the state that should be invoked on state update. Can be an array of several state names or just a single state name.
- * @param {boolean} onlyLinkContents Whether or not to only link the contents and not the state value updates. Setting to true does not pass state updates on from origin to child states, false (default) links fully.
+ * @param {string=all} linkType What kind of link this is - either "all" for linking value and content, "content" for only linking content or "value" for only linking value.
  * @todo consider adding an "update" function so on link time the linked state is updated to its origin so it doesn't have to wait until a new update from origin comes in to update. not really needed for us, but may still be worth to do
  * @todo consider adding a toggle/flag for preventing state updates for the linked-to state to be executed (This would completely "remove" the linked state from state updates and make it completely depend on the origin state). Not needed for our purposes as all the states we want linked don't have their own state update (which is why we need to link them) but maybe it could be useful in the future.
  * @see unlink
  */
-function link(origin, statesToLink, onlyLinkContents = false)
+function link(origin, statesToLink, linkType = "all")
 {
     let statesArray = [];
     if (!Array.isArray(statesToLink)) //if the parameter is not an array, convert it to an array with a single element
@@ -444,7 +448,7 @@ function link(origin, statesToLink, onlyLinkContents = false)
         let existingLinks = __stateLinks[origin];
         if (existingLinks == undefined || existingLinks.length == 0)
         {
-            existingLinks = [{child: state, onlyLinkContent: onlyLinkContents}];
+            existingLinks = [{child: state, linkType: linkType}];
         }
         else
         {
@@ -459,7 +463,7 @@ function link(origin, statesToLink, onlyLinkContents = false)
             }
             if (!isAlreadyLinked)
             {
-                existingLinks.push({child: state, onlyLinkContent: onlyLinkContents});
+                existingLinks.push({child: state, linkType: linkType});
             }
         }
         __stateLinks[origin] = existingLinks;
@@ -544,15 +548,26 @@ function unlink(origin, statesToUnlink = "all", updateValue = undefined, alwaysU
  * @see link
  * @see unlink
  */
-function findLinkParents(linkedChild, isWire = false)
+function findLinkParents(linkedChild, linkType = "all", isWire = false)
 {
     //console.log("linked child", linkedChild, isWire);
     let parents = [];
     for (let key in __stateLinks)
     {
         //if (__stateLinks[key]["children"].includes(linkedChild))
-        if (__stateLinks[key].some(e => e.child === linkedChild))
+        if (__stateLinks[key].some(e => {
+            //console.log('e', e, key);
+            return (e.child === linkedChild)
+                && (
+                    e.linkType == linkType
+                    || (e.linkType == "value" && linkType == "all")
+                    || (e.linkType == "all" && linkType == "value")
+                    || (e.linkType == "content" && linkType == "all")
+                    || (e.linkType == "all" && linkType == "content")
+                );
+        }))
         {
+            //console.log('found parent', key);
             parents.push(key);
         }
     }
@@ -848,7 +863,10 @@ function setStateValue(state, recursionDepth = 0)
             }
             else //if we can't find a child wire entry at this index in the link list, push the linked update normally
             {
-                if (__stateLinks[state["name"]][linkIndex]["onlyLinkContent"] == false) //but only if the link is not set up to only link contents
+                if (state['name'] == 'pump_cold_water-sensor') {
+                    //console.log('checking cold water pump links');
+                }
+                if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
                 {
                     if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
                     {
@@ -914,7 +932,7 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
                     if (ownContent == undefined || ownContent == "") //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
                     {
                         //console.log("did not find own content", elementGroup);
-                        let parents = findLinkParents(elementName, isWire);
+                        let parents = findLinkParents(elementName, "content", isWire);
                         //console.log("parents", parents);
                         let parentContent = traverseParentsToContent(elementName, isWire);
                         /*for (let i in parents)
@@ -977,7 +995,7 @@ function traverseParentsToContent(elementName, isWire = false, recursionDepth = 
         return undefined;
     }
 
-    let parents = findLinkParents(elementName, isWire);
+    let parents = findLinkParents(elementName, "content", isWire);
     let parentContent = getElementAttrValue(parents[0], "data-content");
     let recContent = traverseParentsToContent(parents[0], false, recursionDepth + 1);
 
