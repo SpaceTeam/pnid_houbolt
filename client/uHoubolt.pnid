@@ -777,7 +777,7 @@
         <text class="actionReferenceValueRaw text-R" x="7060" y="8790" visibility="hidden" transform="scale(-1,1) translate(-14120,0)"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('water_mantle-sensor')"></rect>    </g>
-    <g class="R1 PnID-Rocket_Channel Rocket_Channel comp" data-unit=" " data-pnid-rocket_channel="" data-content="" action-reference="">
+    <g class="R1 PnID-Rocket_Channel rocket-sensor comp" data-unit=" " data-pnid-rocket_channel="" data-content="" action-reference="">
         <!-- coordinates: x = 3600 y = 5980 -->
         <g>        <path d="M 3550 6050 A 222.14409737825582 222.14409737825582 0 0 0 3570 6150" />
         <path d="M 3600 5650 A 244.00819658363937 244.00819658363937 0 0 0 3550 5800" />
@@ -789,14 +789,14 @@
         <path d="M 3630 6150 L 3700 6100 L 3700 6020 L 3650 5980 " />
         <path d="M 3570 6150 L 3500 6100 L 3500 6020 L 3550 5980 " />
         </g>        <text class="reference static-color text-L" x="3728" y="5718" visibility="hidden">R1</text>
-        <text class="setState text-L" x="3728" y="5809" visibility="hidden"></text>
-        <text class="value text-L" x="3728" y="5809" visibility="hidden">Rocket_Channel</text>
-        <text class="valueRaw text-L" x="3728" y="5809" visibility="hidden">Rocket_Channel</text>
-        <text class="actionReferenceValue text-L" x="3728" y="5809" visibility="hidden"> </text>
-        <text class="actionReferenceValueRaw text-L" x="3728" y="5809" visibility="hidden"> </text>
+        <text class="setState text-L" x="3770" y="5870" visibility="hidden"></text>
+        <text class="value text-L" x="3770" y="5870" visibility="visible">rocket:sensor</text>
+        <text class="valueRaw text-L" x="3770" y="5870" visibility="hidden">rocket:sensor</text>
+        <text class="actionReferenceValue text-L" x="3770" y="5870" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="3770" y="5870" visibility="hidden"> </text>
         <text class="Unit" x="3728" y="5809" visibility="visible"> </text>
         <!-- pnid element hitbox -->
-        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('Rocket_Channel')"></rect>    </g>
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-sensor')"></rect>    </g>
 
 <!-- Wires-->
 
