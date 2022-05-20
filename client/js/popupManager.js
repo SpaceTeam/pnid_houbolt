@@ -1,5 +1,8 @@
 var activePopups = {};
 
+var popupMoved = "";
+var popupResized = "";
+
 let grafanaPanelConfig = {};
 $.get('/pnid_config/grafana', function(data) {
     grafanaPanelConfig = data;
@@ -92,6 +95,27 @@ function initPNIDHitboxes()
             oldBound.attr("height", boundingBox["height"]);
         }
     });
+}
+
+function restorePopups()
+{
+    //I dislike having to iterate through every key in local storage to find popups
+    //but maintaining a separate key with an array of popups in local storage sucks even more.
+    //I could be using the activePopups dict, but that also contains closed popups and I only
+    //want to store visible popups in the local storage and maintaining a second dict just with
+    //active popups sounds like an even worse time
+    let localStorageKeys = Object.keys(window.localStorage);
+
+    for (let i in localStorageKeys) {
+        if (localStorageKeys[i].startsWith("popup_")) {
+            let popupID = localStorageKeys[i].replace("popup_", "");
+            let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
+            let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+            //todo this should probably check if it's already open? this won't really happen in normal use but would make it more resilient
+            console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"])
+            createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+        }
+    }
 }
 
 function createTextDisplay(variable, curValue)
@@ -368,7 +392,7 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
 }
 
 //TODO consider breaking into several smaller functions
-function createPopup(popupID, parent, isActionReference)
+function createPopup(popupID, parent, isActionReference, x = undefined, y = undefined, width = undefined, height = undefined)
 {
 	let parentPosition = parent.offset();
     //printLog("info", parent);
@@ -432,26 +456,52 @@ function createPopup(popupID, parent, isActionReference)
     }
 
     $(document.body).append(popupClone);
+    //todo this may have unwanted behavior if only one of the two is undefined
+    if (width != undefined && height != undefined)
+    {
+        if (popupClone.style == undefined)
+        {
+            popupClone.style = "";
+        }
+        popupClone.width(width);
+        popupClone.height(height);
+        //popupClone.css("width", width+"px");
+        //popupClone.css("height", height+"px");
+        console.log("popup clone css", popupClone.css("width"));
+    }
     let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
     //console.log("pop size:", popupSize);
     let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
     //console.log("view size:", viewportSize);
     let minPopupPad = 0.02; //in %
     let popupDistance = 10;
-    let popupPosition = [parentPosition.left, parentPosition.top + parent[0].getBoundingClientRect().height + popupDistance]; //TODO with better pnid element bounding boxes the positioning of the popup should be done better
+    let popupPosition = [0,0];
+    if (x == undefined || y == undefined)
+    {
+        popupPosition = [parentPosition.left, parentPosition.top + parent[0].getBoundingClientRect().height + popupDistance];
+        //TODO with better pnid element bounding boxes the positioning of the popup should be done better
+        if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
+        {
+            //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
+            popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
+        }
+        if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
+        {
+            popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
+        }
+    }
+    else
+    {
+        popupPosition = [x, y];
+    }
+    
     //console.log("pop pos:", popupPosition);
-    if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
-    {
-        //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
-        popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
-    }
-    if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
-    {
-        popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
-    }
+    
     //console.log("pop pos2:", popupPosition);
     popupClone.css("top", popupPosition[1]+"px");
     popupClone.css("left", popupPosition[0]+"px");
+
+    popupClone.attr("data-popup-id", popupID);
 	popupClone.fadeIn(100);
     
 	activePopups[popupID] = {
@@ -462,6 +512,23 @@ function createPopup(popupID, parent, isActionReference)
         "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
         "visibility": true
 	};
+
+    //let resize observer watch for this popup
+    resizeObserver.observe(popupClone.get(0));
+
+    //add popup to localstorage
+    window.localStorage.setItem(
+        `popup_${popupID}`,
+        JSON.stringify({
+            parentRef: getReferenceFromClasses(parentClasses),
+            parentValRef: getValReferenceFromClasses(parentClasses),
+            isActionReference: isActionReference,
+            x: popupPosition[0],
+            y: popupPosition[1],
+            width: width,
+            height: height
+        })
+    );
 }
 
 function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false, popupID = undefined)
@@ -634,9 +701,15 @@ function destroyPopup(popupID)
             clearInterval(activePopups[popupID]["timer"]);
         }
         activePopups[popupID]["visibility"] = false;
+        window.localStorage.removeItem(`popup_${popupID}`);
         //activePopups[popupID]["popup"].remove();
         //delete activePopups[popupID];
     });
+}
+
+function clearLocalStorage()
+{
+    window.localStorage.clear();
 }
 
 var mousePosition;
@@ -644,9 +717,41 @@ var offset = [0,0];
 var target;
 var isDown = false;
 
-document.addEventListener('mouseup', function() {
+document.addEventListener('mouseup', function(event) {
     isDown = false;
+    if (popupMoved != "")
+    {
+        let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupMoved}`));
+        oldPopupData["x"] = target.offsetLeft;
+        oldPopupData["y"] = target.offsetTop;
+        window.localStorage.setItem(`popup_${popupMoved}`, JSON.stringify(oldPopupData));
+        popupMoved = "";
+    }
+    if (popupResized != "")
+    {
+        //unfortunately resize events work differently so I can't use target here
+        if (activePopups[popupResized]["visibility"] == true)
+        {
+            //apparently resize also gets triggered if visibility is set to hidden which breaks the following code (we don't even want that)
+            let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupResized}`));
+            oldPopupData["width"] = activePopups[popupResized]["popup"].width();
+            oldPopupData["height"] = activePopups[popupResized]["popup"].height();
+            window.localStorage.setItem(`popup_${popupResized}`, JSON.stringify(oldPopupData));
+        }
+        popupResized = "";
+    }
 	// target = undefined;
+}, true);
+
+var resizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+        popupResized = entry.target.dataset.popupId;
+    }
+});
+
+document.addEventListener('onresize', function(event) {
+    console.log("resize");
+    popupResized = target.dataset.popupId;
 }, true);
 
 document.addEventListener('mousemove', function(event) {
@@ -662,5 +767,7 @@ document.addEventListener('mousemove', function(event) {
         };
         target.style.left = (mousePosition.x + offset[0]) + 'px';
         target.style.top  = (mousePosition.y + offset[1]) + 'px';
+        popupMoved = target.dataset.popupId;
+        //console.log("target", popupMoved, target, event);
     }
 }, true);

@@ -10,6 +10,7 @@ function initPNID(standalone, pathOffset, themes)
     initTanks();
     initPumps();
     initPNIDHitboxes();
+    restorePopups();
     createWireLinks();
 
     //add a check if we want that added (url param?)

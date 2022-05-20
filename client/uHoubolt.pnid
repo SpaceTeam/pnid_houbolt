@@ -291,7 +291,7 @@
         <text class="Unit" x="2170" y="11550" visibility="hidden" transform="rotate(180,2170,11550)">bar</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('fuel_injector_pressure-sensor')"></rect>    </g>
-    <g class="igniter0 PnID-igniter igniter0-sensor comp" data-unit="Ohm" data-pnid-igniter="" data-content="" action-reference="">
+    <g class="igniter0 PnID-igniter igniter0-sensor comp" data-unit="mA" data-pnid-igniter="" data-content="" action-reference="">
         <!-- coordinates: x = 2240 y = 12030 -->
         <g>        <rect class="rect" x="2140" y="11930" width="200" height="200" />
         <path d="M 2440 12030 L 2340 12030" />
@@ -302,10 +302,10 @@
         <text class="valueRaw text-C" x="1900" y="12030" visibility="hidden">igniter0:sensor</text>
         <text class="actionReferenceValue text-C" x="1900" y="12030" visibility="hidden"> </text>
         <text class="actionReferenceValueRaw text-C" x="1900" y="12030" visibility="hidden"> </text>
-        <text class="Unit" x="2240" y="12030" visibility="hidden">Ohm</text>
+        <text class="Unit" x="2240" y="12030" visibility="hidden">mA</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter0-sensor')"></rect>    </g>
-    <g class="igniter1 PnID-igniter igniter1-sensor comp" data-unit="Ohm" data-pnid-igniter="" data-content="" action-reference=""transform="rotate(180,2820,12030)">
+    <g class="igniter1 PnID-igniter igniter1-sensor comp" data-unit="mA" data-pnid-igniter="" data-content="" action-reference=""transform="rotate(180,2820,12030)">
         <!-- coordinates: x = 2820 y = 12030 -->
         <g>        <rect class="rect" x="2720" y="11930" width="200" height="200" />
         <path d="M 3020 12030 L 2920 12030" />
@@ -316,7 +316,7 @@
         <text class="valueRaw text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)">igniter1:sensor</text>
         <text class="actionReferenceValue text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)"> </text>
         <text class="actionReferenceValueRaw text-C" x="2470" y="12030" visibility="hidden" transform="rotate(180,2470,12030)"> </text>
-        <text class="Unit" x="2820" y="12030" visibility="hidden" transform="rotate(180,2820,12030)">Ohm</text>
+        <text class="Unit" x="2820" y="12030" visibility="hidden" transform="rotate(180,2820,12030)">mA</text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('igniter1-sensor')"></rect>    </g>
     <g class="FuelMain1 PnID-Valve_Servo fuel_main_valve-sensor comp" data-unit="%" data-pnid-valve_servo="" data-content="" action-reference=""transform="rotate(-90,2360,11230)">
@@ -860,10 +860,6 @@
         <line x1="9710" y1="8850" x2="9710" y2="9270" />
         <line x1="9630" y1="8850" x2="9710" y2="8850" />
     </g>
-    <g class="wire" data-pnid-wire="">
-        <line x1="2530" y1="6780" x2="2530" y2="6970" />
-        <line x1="2530" y1="6970" x2="2530" y2="7080" />
-    </g>
     <g class="pump_cold_water-sensor wire" data-pnid-wire="">
         <line x1="9240" y1="8700" x2="8970" y2="8700" />
     </g>
@@ -905,6 +901,9 @@
         <line x1="8980" y1="7530" x2="10040" y2="7530" />
         <line x1="10040" y1="7530" x2="10040" y2="9270" />
     </g>
+    <g class="wire" data-pnid-wire="">
+        <line x1="2530" y1="6780" x2="2530" y2="7080" />
+    </g>
     <line class="note-line" x1="10730" y1="10310" x2="10730" y2="6760" />
     <line class="note-line" x1="10730" y1="6760" x2="5020" y2="6760" />
     <line class="note-line" x1="5020" y1="6760" x2="5020" y2="10310" />
@@ -919,9 +918,6 @@
     <circle cx="2700" cy="10970" r="2" fill="green" />
     <circle cx="2430" cy="11550" r="2" fill="green" />
     <circle cx="3890" cy="7320" r="2" fill="green" />
-    <circle cx="2530" cy="6970" r="2" fill="green" />
-    <circle cx="6740" cy="10010" r="2" fill="green" />
     <circle cx="5720" cy="10010" r="2" fill="green" />
     <circle cx="5720" cy="7320" r="2" fill="green" />
-    <circle cx="8780" cy="7170" r="2" fill="green" />
 </svg>
