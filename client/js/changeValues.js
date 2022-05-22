@@ -99,7 +99,7 @@ function initPumps()
 
 function getRocketInternalStateName()
 {
-    return getElementValue("rocket:sensor", "value");
+    return getElementValue("rocket-sensor", "value");
 }
 
 //update the percent of the content that is filled
