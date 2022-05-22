@@ -97,6 +97,11 @@ function initPumps()
     });
 }
 
+function getRocketInternalStateName()
+{
+    return getElementValue("rocket:sensor", "value");
+}
+
 //update the percent of the content that is filled
 /**
  * @summary Updates tank fill level to a specified percentage.
