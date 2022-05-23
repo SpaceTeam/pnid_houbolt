@@ -425,6 +425,24 @@ input.form-control {
     fill: none;
 }
 
+[data-pnid-flowchart_state=on] {
+    fill: var(--flowchart-state-on);
+}
+
+[data-pnid-flowchart_state=on] text:not(.static-color) {
+    fill: var(--flowchart-state-on);
+    stroke: var(--flowchart-state-on);
+}
+
+[data-pnid-flowchart_state=off] {
+    fill: none;
+}
+
+[data-pnid-flowchart_state=off] text:not(.static-color) {
+    fill: var(--default-stroke);
+    stroke: var(--default-stroke);
+}
+
 /*TODO the pump stuff is still WIP, right now they don't properly support fluid content colors and the styling isn't quite done yet*/
 [data-pnid-pump=on] path:nth-of-type(1), [data-pnid-pump=on] path:nth-of-type(2) {
     stroke: var(--on);

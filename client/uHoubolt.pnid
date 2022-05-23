@@ -797,6 +797,94 @@
         <text class="Unit" x="3728" y="5809" visibility="visible"> </text>
         <!-- pnid element hitbox -->
         <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-sensor')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-AutoCheck comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 4440 -->
+        <g>        <rect class="rect" x="7090" y="4340" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="4394" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7590" y="4440" visibility="hidden"></text>
+        <text class="value text-L" x="7590" y="4440" visibility="visible">rocket:AutoCheck</text>
+        <text class="valueRaw text-L" x="7590" y="4440" visibility="hidden">rocket:AutoCheck</text>
+        <text class="actionReferenceValue text-L" x="7590" y="4440" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7590" y="4440" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-AutoCheck')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-IgnitionSequence comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 4720 -->
+        <g>        <rect class="rect" x="7090" y="4620" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="4674" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7590" y="4710" visibility="hidden"></text>
+        <text class="value text-L" x="7590" y="4710" visibility="visible">rocket:IgnitionSequence</text>
+        <text class="valueRaw text-L" x="7590" y="4710" visibility="hidden">rocket:IgnitionSequence</text>
+        <text class="actionReferenceValue text-L" x="7590" y="4710" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7590" y="4710" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-IgnitionSequence')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-HoldDown comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 5000 -->
+        <g>        <rect class="rect" x="7090" y="4900" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="4954" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7590" y="5000" visibility="hidden"></text>
+        <text class="value text-L" x="7590" y="5000" visibility="visible">rocket:HoldDown</text>
+        <text class="valueRaw text-L" x="7590" y="5000" visibility="hidden">rocket:HoldDown</text>
+        <text class="actionReferenceValue text-L" x="7590" y="5000" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7590" y="5000" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-HoldDown')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-PoweredAscent comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 5290 -->
+        <g>        <rect class="rect" x="7090" y="5190" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="5244" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7580" y="5290" visibility="hidden"></text>
+        <text class="value text-L" x="7580" y="5290" visibility="visible">rocket:PoweredAscent</text>
+        <text class="valueRaw text-L" x="7580" y="5290" visibility="hidden">rocket:PoweredAscent</text>
+        <text class="actionReferenceValue text-L" x="7580" y="5290" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7580" y="5290" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-PoweredAscent')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-UnpoweredAscent comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 5570 -->
+        <g>        <rect class="rect" x="7090" y="5470" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="5524" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7580" y="5570" visibility="hidden"></text>
+        <text class="value text-L" x="7580" y="5570" visibility="visible">rocket:UnpoweredAscent</text>
+        <text class="valueRaw text-L" x="7580" y="5570" visibility="hidden">rocket:UnpoweredAscent</text>
+        <text class="actionReferenceValue text-L" x="7580" y="5570" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7580" y="5570" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-UnpoweredAscent')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-Depress comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 5850 -->
+        <g>        <rect class="rect" x="7090" y="5750" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="5804" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7580" y="5850" visibility="hidden"></text>
+        <text class="value text-L" x="7580" y="5850" visibility="visible">rocket:Depress</text>
+        <text class="valueRaw text-L" x="7580" y="5850" visibility="hidden">rocket:Depress</text>
+        <text class="actionReferenceValue text-L" x="7580" y="5850" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7580" y="5850" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-Depress')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-Abort comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 6130 -->
+        <g>        <rect class="rect" x="7090" y="6030" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="6084" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7580" y="6120" visibility="hidden"></text>
+        <text class="value text-L" x="7580" y="6120" visibility="visible">rocket:Abort</text>
+        <text class="valueRaw text-L" x="7580" y="6120" visibility="hidden">rocket:Abort</text>
+        <text class="actionReferenceValue text-L" x="7580" y="6120" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7580" y="6120" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-Abort')"></rect>    </g>
+    <g class="U? PnID-Flowchart_State rocket-PadIdle comp" data-unit="" data-pnid-flowchart_state="" data-content="" action-reference="">
+        <!-- coordinates: x = 7290 y = 4160 -->
+        <g>        <rect class="rect" x="7090" y="4060" width="400" height="200" />
+        </g>        <text class="reference static-color text-L" x="7518" y="4114" visibility="hidden">U?</text>
+        <text class="setState text-L" x="7590" y="4160" visibility="hidden"></text>
+        <text class="value text-L" x="7590" y="4160" visibility="visible">rocket:PadIdle</text>
+        <text class="valueRaw text-L" x="7590" y="4160" visibility="hidden">rocket:PadIdle</text>
+        <text class="actionReferenceValue text-L" x="7590" y="4160" visibility="hidden"> </text>
+        <text class="actionReferenceValueRaw text-L" x="7590" y="4160" visibility="hidden"> </text>
+        <!-- pnid element hitbox -->
+        <rect class="rect hitbox" visibility="hidden" pointer-events="all" onclick="clickEventListener('rocket-PadIdle')"></rect>    </g>
 
 <!-- Wires-->
 
