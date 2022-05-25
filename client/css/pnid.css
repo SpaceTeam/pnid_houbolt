@@ -26,11 +26,6 @@ html body {
     z-index: 1;
 }
 
-.popup-row {
-    padding-top: 0.1em;
-    padding-bottom: 0.1em;
-}
-
 input.uncommitted-highlight {
     border-top: 1px solid var(--error-color) !important;
     border-bottom: 1px solid var(--error-color) !important;

@@ -8,7 +8,7 @@
 
 .popup {
 	display: none;
-	position: absolute;
+	position: fixed;
 	
 	color: var(--content-primary);
 	background-color: var(--background-secondary);
@@ -26,6 +26,11 @@
 	
 	resize: both;
 	overflow: auto;
+}
+
+.popup-row {
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
 }
 
 .btn-close
