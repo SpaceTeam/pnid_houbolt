@@ -404,7 +404,8 @@ function updatePNID(stateList, recursionDepth = 0)
         //{
             for (const [key, value] of Object.entries(REFERENCE_VALUES)) 
             {
-                if (stateList[stateIndex]["name"].includes(":"+key))
+                let re = new RegExp('.*:'+key+'$','g');
+                if (stateList[stateIndex]["name"].match(re))
                 {
                     if (Array.isArray(value) && value.length > 0)
                     {
@@ -660,7 +661,11 @@ function setStateValue(state, recursionDepth = 0)
         isGuiState = true;
         state["name"] = state["name"].replace("gui-", "");
     }
-    
+    else
+    {
+        isGuiState = false;
+    }
+
     let isActionReference = false;
     let isWire = undefined;
     let elementGroup = []; //I'd rather have "undefined" here, but the check later with .length would fail if I did that.
@@ -984,6 +989,7 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
 	}
 	if ("value" in outVars)
 	{
+        
         if (isActionReference)
         {
             elementGroup.find("text.actionReferenceValue").text(outVars["value"]);
