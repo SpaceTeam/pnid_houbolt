@@ -8,7 +8,7 @@
 
 .popup {
 	display: none;
-	position: absolute;
+	position: fixed;
 	
 	color: var(--content-primary);
 	background-color: var(--background-secondary);
@@ -65,5 +65,5 @@
 .popup .externalContainer
 {
     width: 100%;
-    height: calc(100% - 3.7rem);
+    height: calc(100% - 4.0rem);
 }

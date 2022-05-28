@@ -360,6 +360,21 @@ function setStateName(state)
  * @example [{"name": "statename", "value": 123.4}, {"name": "another_statename", "value": 1.2}]
  */
 
+
+const REFERENCE_VALUES = {
+    "TargetPosition": ["sensor", "SetTargetPosition"],
+    "State": "sensor",
+    "Hysteresis": "SetHysteresis",
+    "Enabled": "SetEnabled",
+    "ActivateInternalControl": "InternalControl",
+    "Abort": "Abort",
+    "EndOfFlight": "EndOfFlight",
+    "HolddownTimeout": "SetHolddownTimeout",
+    "MinimumChamberPressure": "SetMinimumChamberPressure",
+    "MinimumFuelPressure": "SetMinimumFuelPressure",
+    "MinimumOxPressure": "SetMinimumOxPressure"
+};
+
 /**
  * @summary Updates the PnID based on the list of given state updates.
  * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setStateValue}.
@@ -387,13 +402,37 @@ function updatePNID(stateList, recursionDepth = 0)
 		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
         //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
         //{
+            for (const [key, value] of Object.entries(REFERENCE_VALUES)) 
+            {
+                if (stateList[stateIndex]["name"].includes(":"+key))
+                {
+                    if (Array.isArray(value) && value.length > 0)
+                    {
+                        stateList[stateIndex]["name"] = "gui:"+stateList[stateIndex]["name"].replace(":"+key,":"+value[0]);
+
+                        for (let i=1; i < value.length; i++)
+                        {   
+                            let clone = JSON.parse(JSON.stringify(stateList[stateIndex]));
+                            clone["name"] = clone["name"].replace(":"+key,":"+value[i]);
+                            stateList.push(clone);
+                        }
+                        
+                    }
+                    else
+                    {
+                        stateList[stateIndex]["name"] = "gui:"+stateList[stateIndex]["name"].replace(":"+key,":"+value);
+                    }
+
+                }
+            }
+            
             setStateValue(stateList[stateIndex], recursionDepth);
         //}
 
         //HOTFIX pump-valves linkage, PLEASE REMOVE AS SOON AS POSSIBLE!!!
-        if (stateList[stateIndex].name === "gui-water_valves" || stateList[stateIndex].name === "gui-water_pumps" ||
-        stateList[stateIndex].name === "water_valves-State" || stateList[stateIndex].name === "water_pumps-State")
-            checkPumps();
+        //if (stateList[stateIndex].name === "gui-water_valves" || stateList[stateIndex].name === "gui-water_pumps" ||
+        //stateList[stateIndex].name === "water_valves-State" || stateList[stateIndex].name === "water_pumps-State")
+            //checkPumps();
 	}
 	
 	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
