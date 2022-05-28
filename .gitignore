@@ -1,5 +1,7 @@
 out/
 docs/html
+*.pnid
+
 
 # Logs
 logs

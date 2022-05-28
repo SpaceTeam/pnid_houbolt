@@ -28,6 +28,11 @@
 	overflow: auto;
 }
 
+.popup-row {
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+}
+
 .btn-close
 {
 	padding: 0 !important;
