@@ -10,7 +10,8 @@ function initPNID(standalone, pathOffset, themes)
     initTanks();
     initPumps();
     initPNIDHitboxes();
-    restorePopups();
+    setTimeout(restorePopups, 3000); //set timeout is a dirty hack so the popup titles are set by llserver before popups get restored.
+    //titles should be able to update though!
     createWireLinks();
 
     //add a check if we want that added (url param?)

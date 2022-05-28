@@ -112,8 +112,11 @@ function restorePopups()
             let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
             let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
             //todo this should probably check if it's already open? this won't really happen in normal use but would make it more resilient
-            console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"])
-            createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+            //console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"]);
+            if (parent.length > 0)
+            {
+                createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+            }
         }
     }
 }
@@ -467,7 +470,7 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
         popupClone.height(height);
         //popupClone.css("width", width+"px");
         //popupClone.css("height", height+"px");
-        console.log("popup clone css", popupClone.css("width"));
+        //console.log("popup clone css", popupClone.css("width"));
     }
     let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
     //console.log("pop size:", popupSize);
