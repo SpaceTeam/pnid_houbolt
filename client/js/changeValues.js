@@ -402,30 +402,6 @@ function updatePNID(stateList, recursionDepth = 0)
 		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
         //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
         //{
-            for (const [key, value] of Object.entries(REFERENCE_VALUES)) 
-            {
-                let re = new RegExp('.*:'+key+'$','g');
-                if (stateList[stateIndex]["name"].match(re))
-                {
-                    if (Array.isArray(value) && value.length > 0)
-                    {
-                        stateList[stateIndex]["name"] = "gui:"+stateList[stateIndex]["name"].replace(":"+key,":"+value[0]);
-
-                        for (let i=1; i < value.length; i++)
-                        {   
-                            let clone = JSON.parse(JSON.stringify(stateList[stateIndex]));
-                            clone["name"] = clone["name"].replace(":"+key,":"+value[i]);
-                            stateList.push(clone);
-                        }
-                        
-                    }
-                    else
-                    {
-                        stateList[stateIndex]["name"] = "gui:"+stateList[stateIndex]["name"].replace(":"+key,":"+value);
-                    }
-
-                }
-            }
             
             setStateValue(stateList[stateIndex], recursionDepth);
         //}

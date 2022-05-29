@@ -18,6 +18,40 @@ function initPNID(standalone, pathOffset, themes)
     createLogBox();
 }
 
+function loadValuesPNID(states)
+{
+    for (const [key, value] of Object.entries(REFERENCE_VALUES)) 
+    {
+        if (states[stateIndex]["name"].includes("pressurant_tanking_valve:") ||
+        states[stateIndex]["name"].includes("pressurant_vent_valve:"))
+        {
+            continue;
+        }
+        let re = new RegExp('.*:'+key+'$','g');
+        if (states[stateIndex]["name"].match(re))
+        {
+            if (Array.isArray(value) && value.length > 0)
+            {
+                states[stateIndex]["name"] = "gui:"+states[stateIndex]["name"].replace(":"+key,":"+value[0]);
+
+                for (let i=1; i < value.length; i++)
+                {   
+                    let clone = JSON.parse(JSON.stringify(states[stateIndex]));
+                    clone["name"] = clone["name"].replace(":"+key,":"+value[i]);
+                    states.push(clone);
+                }
+                
+            }
+            else
+            {
+                states[stateIndex]["name"] = "gui:"+states[stateIndex]["name"].replace(":"+key,":"+value);
+            }
+
+        }
+    }
+    updatePNID(states);
+}
+
 function authenticateGrafana()
 {
 
