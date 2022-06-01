@@ -97,6 +97,15 @@ function initPumps()
     });
 }
 
+function hasInternalControl()
+{
+    if (getElement("rocket-sensor").length == 0)
+    {
+        return false;
+    }
+    return true;
+}
+
 function getRocketInternalStateName()
 {
     return getElementValue("rocket-sensor", "value");
