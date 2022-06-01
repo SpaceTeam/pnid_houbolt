@@ -107,14 +107,13 @@ function getRocketInternalStateName()
  * @summary Updates tank fill level to a specified percentage.
  * @description Sets the fill level of the specified tank to the specified percentage using transform: scale(). Needs the tanks to be initialized prior with {@link initTanks}
  * @param {jQuery} tank The jQuery DOM element of the tank that should be updated.
- * @param {number} fillPercent The (floating point) percentage (0-100, not 0-1)
+ * @param {number} fillScale The (floating point) fill level (form 0 to 1)
  */
-function updateTankContent(tank, fillPercent)
+function updateTankContent(tank, fillScale)
 {
     let contentRect = tank.find("g").find("rect.rect");
     //console.log("content rect", contentRect);
-    let scale = fillPercent / 100.0;
-    contentRect.attr("transform", `scale(1,${scale})`);
+    contentRect.attr("transform", `scale(1,${fillScale})`);
 }
 
 //extract the curved paths from a tank to fill them in tank color
@@ -345,6 +344,7 @@ function setStateName(state)
 	}
 
 	elementGroup.find("text.reference").text(state["label"]);
+    updatePopupTitle(state["name"].replaceAll(":","-"), state["label"]);
 }
 
 /**
@@ -766,10 +766,6 @@ function setStateValue(state, recursionDepth = 0)
                 {
                     eval(evalCode);
                     //console.log("search term", searchTerm);
-                    if (searchTerm.replace("_Slim", "") === "PnID-Tank" && !isGuiState) //TODO this only triggers if the tank has an eval set (even if empty) - is that desired behavior?
-                    {
-                        updateTankContent(elementGroup, state["value"]);
-                    }
                     break; //don't need to iterate further, we already found the config
                 }
             }
@@ -978,6 +974,12 @@ function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
     if ("content" in outVars)
     {
         elementGroup.attr("data-content", outVars["content"]);
+    }
+    //todo this isn't properly scalable to other components that'd need percentage outputs
+    //we just assume that everything that has a percentage output is a tank
+    if ("percent" in outVars)
+    {
+        updateTankContent(elementGroup, outVars['percent']);
     }
 	if ("crossUpdate" in outVars)
 	{

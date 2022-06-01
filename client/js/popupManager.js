@@ -111,11 +111,29 @@ function restorePopups()
             let popupID = localStorageKeys[i].replace("popup_", "");
             let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
             let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
-            //todo this should probably check if it's already open? this won't really happen in normal use but would make it more resilient
             //console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"]);
             if (parent.length > 0)
             {
-                createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+                //todo I dislike that I have this rather long visibility check doubled here and in the click event listener
+                if (popupID in activePopups && activePopups[popupID]["visibility"] == true) // if already exists and visible, highlight
+                {
+                    activePopups[popupID]["popup"].css({"animation-name": "none"});
+                    setTimeout( function() {
+                        activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
+                    }, 100);
+                }
+                else // if doesn't exist, create, if just hidden, show
+                {
+                    if (popupID in activePopups) //just hidden, no need to create again
+                    {
+                        activePopups[popupID]["popup"].fadeIn(100);
+                        activePopups[popupID]["visibility"] = true;
+                    }
+                    else
+                    {
+                        createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+                    }
+                }
             }
         }
     }
@@ -532,6 +550,14 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
             height: height
         })
     );
+}
+
+function updatePopupTitle(popupID, newTitle)
+{
+    if (popupID in activePopups)
+    {
+        activePopups[popupID]["popup"].find("div.popup-heading").first().text(newTitle);
+    }
 }
 
 function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false, popupID = undefined)
