@@ -52,7 +52,7 @@ function clickEventListener(popupID)
             //printLog("info", popupParent);
             if (popupParent.length === 0)
             {
-                popupParent = $(document).find(`g[action-reference='${popupID}']`);
+                popupParent = $(document).find(`g[data-action-reference='${popupID}']`);
                 isActionReference = true;
             }
             createPopup(popupID, popupParent.not(".wire").not(".PnID-ThermalBarrier"), isActionReference); //not a huge fan that the thermalbarrier is hardcoded here, but got no better solution right now. if not sometimes popups wouldn't work
@@ -645,7 +645,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
         else //if popup for a certain state name doesn't exist, check if the state name may be bundled in an action reference popup.
         {
             //console.log("didn't find state name in active popups", stateName);
-            let actionReference = getElementAttrValue(stateName, "action-reference");
+            let actionReference = getElementAttrValue(stateName, "data-action-reference");
             //console.log("actionref", actionReference);
             if (actionReference in activePopups) //if there is an active popup of an action reference that bundles this state display
             {

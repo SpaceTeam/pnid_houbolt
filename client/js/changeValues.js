@@ -385,41 +385,6 @@ const REFERENCE_VALUES = {
 };
 
 /**
- * @summary Updates the PnID based on the list of given state updates.
- * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setStateValue}.
- * @param {StateList} stateList The list of states that should be updated.
- * @param {number} [recursionDepth=0] Internal parameter indicating recursion depth. Only as a safety precaution against infinite recursion that can happen with badly configured links in the config.
- * @see setStateValue
- * @todo I could add a parent name list and append each step for deeper recursions. this way I can check through each step of the recursion and see if the current name has already been executed once and skip it (and give a better trace if the recursion gets too long)
- * @example updatePNID([{"name": "a_cool_state_name", "value": 123.4}]);
- */
-function updatePNID(stateList, recursionDepth = 0)
-{
-    if (recursionDepth >= 5)
-    {
-        printLog("warning", `Reached a recursion depth of 5 while updating the PnID. This is likely due to misconfigured links in the configuration files. Aborting. Last state list was <code>${JSON.stringify(stateList)}</code>.`);
-        return;
-    }
-	//printLog("info", "Updating PnID with: " + stateList);
-
-    logStates(stateList);
-	
-	for (let stateIndex in stateList)
-	{
-		//let stateName = stateList[stateIndex]["name"];
-		//let stateValue = stateList[stateIndex]["value"];
-		//printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
-        //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
-        //{
-            
-            setStateValue(stateList[stateIndex], recursionDepth);
-        //}
-	}
-	
-	//$('.' + stateList[0].name).eval(config[stateName]["eval"])
-}
-
-/**
  * @summary A dictionary of state links.
  * @description When two states get linked the information about this link is kept in here. The link consists of a dictionary entry of the origin state (with the state name being the identifier) which contains an array of states it is linked to.
  * @property {Object} origin The origin of a link. Key is the name of the origin state, value is an array of linked states. On a state update (via {@link updatePNID}) all states that are linked in this entry will be invoked.
@@ -611,6 +576,92 @@ function createWireLinks()
     });
 }
 
+function setStateValue(state, recursionDepth = 0)
+{
+    state["name"] = state["name"].replaceAll(":","-");
+
+    let numberInput = false;
+    if (typeof state["value"] != "number")
+    {
+        if (!checkStringIsNumber(state["value"]))
+        {
+            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update. This is intended to be supported later on");
+            return;
+        }
+        else
+        {
+            numberInput = true;
+        }
+    }
+    else
+    {
+        numberInput = true;
+    }
+
+    if (numberInput)
+    {
+        if (typeof state["value"] != "string")
+        {
+            state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+        }
+        setStateValueNumber(state, recursionDepth);
+    }
+}
+
+const StateTypes = Object.freeze({
+	guiEcho: Symbol("guiEcho"),
+	actionReference: Symbol("actionReference"),
+	setState: Symbol("setState"),
+	sensor: Symbol("sensor"),
+    childWire: Symbol("__child_wire"),
+	custom: Symbol("custom")
+});
+
+function parseStateType(state)
+{
+    if (state["name"].startsWith("gui-"))
+    {
+        //if a state starts with "gui:" it's either a Get/SetState state, in the sense of a set point as opposed to a feedback/sensor value
+        //these states should only be used to update input elements in popups, nothing else, as the rest of the pnid should be feedback value based.
+        //or it could be an action reference
+        if (getIsActionReference(state["name"]))
+        {
+            return StateTypes.actionReference;
+        }
+        return StateTypes.guiEcho;
+    }
+    
+    if (state["name"].endsWith("-sensor"))
+    {
+        return StateTypes.sensor;
+    }
+
+    if (state["name"].endsWith("__child_wire"))
+    {
+        return StateTypes.childWire;
+    }
+
+    return StateTypes.setState;
+}
+
+function extractStateName(fullName, stateType)
+{
+    switch (stateType)
+    {
+        case StateTypes.guiEcho:
+            return fullName.replace("gui-", "");
+        case StateTypes.actionReference:
+            return fullName;
+        case StateTypes.sensor:
+            return fullName.replace("-sensor", "");
+        case StateTypes.childWire:
+            return fullName.replace("__child_wire", "");
+        default:
+            printLog("warning", `Tried extracting state name from "${fullName}" with type ${stateType}, but don't know how to handle this!`);
+            return fullName;
+    }
+}
+
 /**
  * @summary Sets the value of one pnid element based on a state update.
  * @description Takes the provided state update, searches all pnid elements directly affected by it and updates them. Updating means setting the internal values, as well as loading the behavior blocks from the configs and executing them to allow for proper element formatting. Also traverses through elements linked via {@link link} and updates them accordingly.
@@ -619,37 +670,10 @@ function createWireLinks()
  * @see updatePNID
  * @example setStateValue({"name": "a_cool_state_name", "value": 123.0});
  */
-function setStateValue(state, recursionDepth = 0)
+function setStateValueNumber(state, recursionDepth = 0)
 {
-    //console.log("state:", state);
-    if (typeof state["value"] != "number")
-    {
-        if (!checkStringIsNumber(state["value"]))
-        {
-            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update.");
-            return;
-        }
-    }
-    
-    state["name"] = state["name"].replaceAll(":","-");
-    if (typeof state["value"] != "string")
-    {
-        state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
-    }
-
-    //if a state starts with "gui:" it's a Get/SetState state, in the sense of a set point as opposed to a feedback/sensor value
-    //these states should only be used to update input elements in popups, nothing else, as the rest of the pnid should be feedback value based.
-    let isGuiState = false;
-    if (state["name"].startsWith("gui-"))
-    {
-        //console.log("found gui state", state["name"], "with value", state["value"]);
-        isGuiState = true;
-        state["name"] = state["name"].replace("gui-", "");
-    }
-    else
-    {
-        isGuiState = false;
-    }
+    let stateType = parseStateType(state);
+    let stateName = extractStateName(state["name"]);
 
     let isActionReference = false;
     let isWire = undefined;
@@ -657,53 +681,45 @@ function setStateValue(state, recursionDepth = 0)
     if (state["wires_only"] == true) //remove the "__child_wire" postfix if it's a wires only update. TODO I dislike that "wires_only" is synonymous with "child wires", but for now it's only used that way so I'll live with it.
     {
         //console.log("state name", state["name"]);
-        state["name"] = state["name"].replace("__child_wire", ""); //technically doesn't need to be inside this if as I'm already assuming in other places in the code that in normal use there's never "__child_wire" contained in the state name.
+        stateName = state["name"].replace("__child_wire", ""); //technically doesn't need to be inside this if as I'm already assuming in other places in the code that in normal use there's never "__child_wire" contained in the state name.
         //console.log("state name 2", state["name"]);
     }
     else
     {
         //only search for elements if it's not a wire, searching for wires comes later anyways, don't need redundancy. this "2 stage" approach is because we may not always know at
         //this point if we'll have to update wires - if we do know we can skip some unneeded function calls though
-        isActionReference = getIsActionReference("gui-" + state["name"]);
-        if (isActionReference)
-        {
-            state["name"] = "gui-" + state["name"]; //I hate that I have to prepend "gui-" here again after removing it before. TODO clean this up
-            isGuiState = false; //is it though? action reference are set as gui states and I probably should unify them
-        }
-        elementGroup = getElement(state["name"]);
+        elementGroup = getElement(stateName);
     }
 
 	// check if any pnid element is found with the provided state name
 	let unit = "";
 	if (elementGroup.length !== 0 && !state["wires_only"]) // if an element is found and...
 	{
-        if (!isGuiState) // ...and incoming state is not a GUI state, update it.
-        {
-            if (isActionReference)
-            {
-                let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
-                let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
-                actionRefValueRawElement.text(state["value"]);
-                actionRefValueElement.text(state["value"]);
-            }
-            else
-            {
-                unit = elementGroup.not("g.PnID-ThermalBarrier").not("g.PnID-HeatExchanger").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
-                //TODO I dislike that this is hardcoded, but don't know how else to do that
-
-                //raw value without any processing
-                let valueRawElement = getElement(state["name"], "valueRaw");
-                //human visible value that may contain units or further processing
-                let valueElement = getElement(state["name"], "value");
-                valueRawElement.text(state["value"]);
-                valueElement.text(state["value"] + unit);
-            }
-        }
-        else //if it *is* a gui state, store the gui state value
+        if (stateType == StateTypes.guiEcho || stateType == StateTypes.setState) // ...and incoming state is not a GUI state, update it.
         {
             let setStateElement = getElement(state["name"], "setState");
             setStateElement.text(state["value"]);
         }
+        else if (stateType == StateTypes.actionReference)
+        {
+            let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
+            let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
+            actionRefValueRawElement.text(state["value"]);
+            actionRefValueElement.text(state["value"]);
+        }
+        else if (stateType == StateTypes.sensor)
+        {
+            unit = elementGroup.not("g.PnID-ThermalBarrier").not("g.PnID-HeatExchanger").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
+            //TODO I dislike that this is hardcoded, but don't know how else to do that
+
+            //raw value without any processing
+            let valueRawElement = getElement(state["name"], "valueRaw");
+            //human visible value that may contain units or further processing
+            let valueElement = getElement(state["name"], "value");
+            valueRawElement.text(state["value"]);
+            valueElement.text(state["value"] + unit);
+        }
+        
         
 	}
 	else // if no element was found check if the element in question may be a wire instead

@@ -87,7 +87,7 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
         if (element.length == 0) // if no result, try if it may be an action reference
         {
         	//console.error("action reference cache miss", identifier);
-            element = $(document).find(`g[action-reference='${identifier}']`);
+            element = $(document).find(`g[data-action-reference='${identifier}']`);
             if (element.length == 0 || element == undefined) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
             {
             	elementExists = false;
