@@ -613,7 +613,7 @@ const StateTypes = Object.freeze({
 	actionReference: Symbol("actionReference"),
 	setState: Symbol("setState"),
 	sensor: Symbol("sensor"),
-    childWire: Symbol("__child_wire"),
+    wire: Symbol("wire"),
 	custom: Symbol("custom")
 });
 
@@ -636,11 +636,6 @@ function parseStateType(state)
         return StateTypes.sensor;
     }
 
-    if (state["name"].endsWith("__child_wire"))
-    {
-        return StateTypes.childWire;
-    }
-
     return StateTypes.setState;
 }
 
@@ -653,7 +648,7 @@ function extractStateName(fullName, stateType)
         case StateTypes.actionReference:
             return fullName;
         case StateTypes.sensor:
-            return fullName.replace("-sensor", "");
+            return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
         case StateTypes.childWire:
             return fullName.replace("__child_wire", "");
         default:
@@ -697,34 +692,28 @@ function setStateValueNumber(state, recursionDepth = 0)
 	{
         if (stateType == StateTypes.guiEcho || stateType == StateTypes.setState) // ...and incoming state is not a GUI state, update it.
         {
-            let setStateElement = getElement(state["name"], "setState");
-            setStateElement.text(state["value"]);
+            getElement(state["name"], "setState").dataset.setState = state["value"];
         }
         else if (stateType == StateTypes.actionReference)
         {
-            let actionRefValueRawElement = getElement(state["name"], "actionReferenceValueRaw");
-            let actionRefValueElement = getElement(state["name"], "actionReferenceValue");
-            actionRefValueRawElement.text(state["value"]);
+            let actionRefValueElement = getElement(stateName, "actionReferenceValue");
             actionRefValueElement.text(state["value"]);
+            getElement(stateName).dataset.actionReferenceValue = state["value"];
         }
         else if (stateType == StateTypes.sensor)
         {
-            unit = elementGroup.not("g.PnID-ThermalBarrier").not("g.PnID-HeatExchanger").attr("data-unit"); //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
+            unit = elementGroup.not("g.PnID-ThermalBarrier").not("g.PnID-HeatExchanger").dataset.unit; //exclude thermalbarrier from unit search (only the corresponding pressure sensor has a unit set)
             //TODO I dislike that this is hardcoded, but don't know how else to do that
 
-            //raw value without any processing
-            let valueRawElement = getElement(state["name"], "valueRaw");
             //human visible value that may contain units or further processing
             let valueElement = getElement(state["name"], "value");
-            valueRawElement.text(state["value"]);
             valueElement.text(state["value"] + unit);
+            getElement(state["name"]).dataset.value = state["value"];
         }
-        
-        
 	}
 	else // if no element was found check if the element in question may be a wire instead
     {
-        isWire = true;
+        stateType = StateTypes.wire;
         elementGroup = getElement(state["name"], "wire");
     }
 	
@@ -732,7 +721,7 @@ function setStateValueNumber(state, recursionDepth = 0)
     {
         //----- prepare for eval behavior block
         //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
-        let setStateValue = getElementValue(state["name"], "setState");
+        let setStateValue = getElementValue(state["name"]).dataset.setState;
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
