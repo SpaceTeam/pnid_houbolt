@@ -33,6 +33,22 @@
     padding-bottom: 0.1em;
 }
 
+.popup-collapse-content {
+	display: none;
+	overflow: hidden;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 0.5em;
+}
+
+.popup-collapse-label {
+	color: var(--content-secondary);
+	overflow: hidden;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: 0.5em;
+}
+
 .btn-close
 {
 	padding: 0 !important;
@@ -71,4 +87,13 @@
 {
     width: 100%;
     height: calc(100% - 4.0rem);
+}
+
+.separator
+{
+	border: 0;
+	border-top: 1px solid var(--content-secondary);
+	height: 1px;
+	margin: 1.2em 0.1em 1.2em 0.1em;
+	width: 100%;
 }

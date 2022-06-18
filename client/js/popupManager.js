@@ -139,6 +139,16 @@ function restorePopups()
     }
 }
 
+function createCollapsibleWrapper(popupID, variable, config)
+{
+    let wrapper = $("#collapseWrapperTemp").clone();
+    wrapper.removeAttr("id");
+    wrapper.find("button").attr("onclick", `toggleCollapsibleHandler('${popupID}-${variable}')`);
+    wrapper.attr("id", `${popupID}-${variable}`);
+    wrapper.find("div.popup-collapse-label").text(config["collapsibleLabel"] != undefined ? config["collapsibleLabel"] : "Hidden");
+    return wrapper;
+}
+
 function createTextDisplay(variable, curValue)
 {
     let element = $("#textDisplayTemp").clone();
@@ -306,10 +316,25 @@ function createTextEntry(config, variable, popupID, curRawValue)
 
 function createButton(config, variable, popupID, curRawValue)
 {
-    let element = $("#buttonEntryTemp").clone();
+    let element = undefined;
+    if (config["style"] == "button")
+    {
+        element = $("#buttonEntryTemp").clone();
+    }
+    else
+    {
+        element = $("#buttonDangerEntryTemp").clone();
+    }
     element.removeAttr("id");
     element.find("input").attr("value", config["label"]);
     element.find("input").attr("onclick", `onButtonInput("${variable}")`);
+    return element;
+}
+
+function createSeparator()
+{
+    let element = $("#separatorTemp").clone();
+    element.removeAttr("id");
     return element;
 }
 
@@ -376,6 +401,9 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         let iframeSource = constructIframeSource(sourceDefault, rowConfig, customConfig, popupID.replaceAll("-",":"));
                         newContentRow = createExternalDisplay(rowConfig, iframeSource);
                         break;
+                    case "separator":
+                        newContentRow = createSeparator();
+                        break
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
                         break;
@@ -398,6 +426,10 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                         newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
                         //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
+                    case "buttonDanger":
+                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
+                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
                         break;
@@ -407,7 +439,17 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
                 printLog("warning", `Unknown content type while to create popup (${popupID}): '${contentType}'`);
                 break;
         }
-        popup.append(newContentRow);
+        if (rowConfig["collapsible"] == true)
+        {
+            let wrapper = createCollapsibleWrapper(popupID, variableName, rowConfig);
+            newContentRow.removeClass("popup-row");
+            wrapper.find("div.popup-collapse-content").append(newContentRow);
+            popup.append(wrapper);
+        }
+        else
+        {
+            popup.append(newContentRow);
+        }
     }
     return containedStates;
 }
@@ -800,3 +842,28 @@ document.addEventListener('mousemove', function(event) {
         //console.log("target", popupMoved, target, event);
     }
 }, true);
+
+function toggleCollapsibleHandler(event)
+{
+    let buttonIcon = $(`button[onclick="toggleCollapsibleHandler('${event}')"]`).find("i");
+    let wrapper = $(`#${event}`);
+    let content = wrapper.find("div.popup-collapse-content");
+    let label = wrapper.find("div.popup-collapse-label");
+    
+    if (content.is(":visible"))
+    {
+        buttonIcon.removeClass("bi-eye-slash-fill");
+        buttonIcon.addClass("bi-eye-fill");
+        content.fadeOut(50, function(){ 
+            label.fadeIn(50);
+        });
+    }
+    else
+    {
+        buttonIcon.removeClass("bi-eye-fill");
+        buttonIcon.addClass("bi-eye-slash-fill");
+        label.fadeOut(100, function(){ 
+            content.fadeIn(100);
+        });
+    }
+}
