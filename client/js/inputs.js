@@ -24,7 +24,7 @@ function onServoSliderInput(servoSlider)
     stateUpdate(stateName, newVal); //convert date now from milliseconds to micros
 }
 
-function onDigitalCheck(checkbox)
+function onDigitalCheck(checkbox, action = undefined)
 {
     let stateName = $(checkbox).attr("state");
     if (stateName in activePopups)
@@ -35,22 +35,34 @@ function onDigitalCheck(checkbox)
     //for now we convert to 0 for false and 1 for true
     let newVal = checkbox.checked ? 1 : 0;
     stateUpdate(stateName, newVal);
+    if (action != undefined)
+    {
+        eval(action);
+    }
 }
 
-function onNumberInput(numberInput)
+function onNumberInput(numberInput, action = undefined)
 {
     let element = $(document).find(`#${numberInput}`);
     let stateName = element.attr("state");
     let newVal = parseFloat(element.val());
-    console.log("element", element);
-    console.log("element in", element.siblings().find("input.form-control"));
+    //console.log("element", element);
+    //console.log("element in", element.siblings().find("input.form-control"));
     element.siblings().find("input.form-control").addClass("uncommitted-highlight");
     element.prop("textColor", "#777777");
 
     stateUpdate(stateName, newVal);
+    if (action != undefined)
+    {
+        eval(action);
+    }
 }
 
-function onButtonInput(buttonVariable)
+function onButtonInput(buttonVariable, action = undefined)
 {
     stateUpdate(buttonVariable, 1);
+    if (action != undefined)
+    {
+        eval(action);
+    }
 }

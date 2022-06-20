@@ -244,6 +244,7 @@ function createCheckbox(config, variable, popupID, curValue)
     element.removeAttr("id");
     element.find(".ckbx-label").text(variable).attr("for", popupID);
     element.find("input").attr('id', popupID).attr('state', variable);
+    element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
     let highThreshold = config["high"];
     let lowThreshold = config["low"];
@@ -309,7 +310,7 @@ function createTextEntry(config, variable, popupID, curRawValue)
     
 
     let button = element.find("input[type=button]");
-    button.attr("onclick", `onNumberInput("${variable}")`);
+    button.attr("onclick", `onNumberInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
 
     return element;
 }
@@ -327,7 +328,7 @@ function createButton(config, variable, popupID, curRawValue)
     }
     element.removeAttr("id");
     element.find("input").attr("value", config["label"]);
-    element.find("input").attr("onclick", `onButtonInput("${variable}")`);
+    element.find("input").attr("onclick", `onButtonInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
     return element;
 }
 
