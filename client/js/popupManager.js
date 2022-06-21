@@ -126,11 +126,13 @@ function restorePopups()
                 {
                     if (popupID in activePopups) //just hidden, no need to create again
                     {
+                        //console.log("restoring popup", popupID);
                         activePopups[popupID]["popup"].fadeIn(100);
                         activePopups[popupID]["visibility"] = true;
                     }
                     else
                     {
+                        //console.log("creating popup", popupID, parent);
                         createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
                     }
                 }
@@ -793,24 +795,61 @@ document.addEventListener('mouseup', function(event) {
     isDown = false;
     if (popupMoved != "")
     {
-        let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupMoved}`));
-        oldPopupData["x"] = target.offsetLeft;
-        oldPopupData["y"] = target.offsetTop;
-        window.localStorage.setItem(`popup_${popupMoved}`, JSON.stringify(oldPopupData));
-        popupMoved = "";
+        try
+        {
+            //console.log(`popup moved: '${popupMoved}', ${popupMoved.length}`);
+            let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupMoved}`));
+            if (oldPopupData != undefined)
+            {
+                //console.log("old popup data", oldPopupData);
+                oldPopupData["x"] = target.offsetLeft;
+                oldPopupData["y"] = target.offsetTop;
+                window.localStorage.setItem(`popup_${popupMoved}`, JSON.stringify(oldPopupData));
+            }
+            else
+            {
+                console.log("getting popup data structure from local storage failed for", popupMoved);
+            }
+            
+        }
+        catch (e)
+        {
+            console.log("exception occurred when trying to store popup move:", e);
+        }
+        finally
+        {
+            popupMoved = "";
+        }
     }
     if (popupResized != "")
     {
         //unfortunately resize events work differently so I can't use target here
-        if (activePopups[popupResized]["visibility"] == true)
+        try
         {
-            //apparently resize also gets triggered if visibility is set to hidden which breaks the following code (we don't even want that)
-            let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupResized}`));
-            oldPopupData["width"] = activePopups[popupResized]["popup"].width();
-            oldPopupData["height"] = activePopups[popupResized]["popup"].height();
-            window.localStorage.setItem(`popup_${popupResized}`, JSON.stringify(oldPopupData));
+            if (activePopups[popupResized]["visibility"] == true)
+            {
+                //apparently resize also gets triggered if visibility is set to hidden which breaks the following code (we don't even want that)
+                let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupResized}`));
+                if (oldPopupData != undefined)
+                {
+                    oldPopupData["width"] = activePopups[popupResized]["popup"].width();
+                    oldPopupData["height"] = activePopups[popupResized]["popup"].height();
+                    window.localStorage.setItem(`popup_${popupResized}`, JSON.stringify(oldPopupData));
+                }
+                else
+                {
+                    console.log("getting popup data structure from local storage failed for", popupMoved);
+                }
+            }
         }
-        popupResized = "";
+        catch (e)
+        {
+            console.log("exception occurred when trying to store popup resize:", e);
+        }
+        finally
+        {
+            popupResized = "";
+        }
     }
 	// target = undefined;
 }, true);
