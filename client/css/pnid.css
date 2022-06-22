@@ -676,3 +676,17 @@ data-pnid-battery text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
+
+[data-pnid-quickconnect=fuel] {
+	stroke: var(--fuel);
+}
+[data-pnid-quickconnect=ox] {
+	stroke: var(--ox);
+}
+
+[data-pnid-checkvalve=fuel] {
+	stroke: var(--fuel);
+}
+[data-pnid-checkvalve=ox] {
+	stroke: var(--ox);
+}
