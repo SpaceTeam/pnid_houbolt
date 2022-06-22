@@ -212,6 +212,48 @@ input.form-control {
     fill: var(--neutral);
 }
 
+data-pnid-battery text:not(.static-color) {
+    stroke: var(--default-stroke);
+}
+
+[data-pnid-battery=battery_high] {
+    fill: var(--battery_high);
+}
+[data-pnid-battery=battery_high] text:not(.static-color) {
+    fill: var(--battery_high);
+}
+
+[data-pnid-battery=battery_nominal] {
+    fill: var(--battery_nominal);
+}
+[data-pnid-battery=battery_nominal] text:not(.static-color) {
+    fill: var(--battery_nominal);
+}
+
+[data-pnid-battery=battery_low] {
+    fill: var(--battery_low);
+}
+[data-pnid-battery=battery_low] text:not(.static-color) {
+    fill: var(--battery_low);
+}
+
+[data-pnid-battery=battery_critical] {
+    fill: var(--battery_critical);
+}
+[data-pnid-battery=battery_critical] text:not(.static-color) {  
+    fill: var(--battery_critical);
+}
+
+[data-pnid-battery=notconnected] {
+    fill: var(--default-stroke);
+}
+[data-pnid-battery=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
+
+
+
 
 [data-pnid-sensor_temperature=high] {
     stroke: var(--high);
@@ -517,4 +559,120 @@ input.form-control {
 [data-pnid-powersource=outside_range] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
+}
+
+[data-pnid-camera=on] {
+    stroke: var(--on);
+    fill: var(--powered);
+}
+[data-pnid-camera=on] text:not(.static-color) {
+    stroke: var(--on);
+    fill: var(--on);
+}
+[data-pnid-camera=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-camera=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}
+
+[data-pnid-camera=off] path, [data-pnid-camera=off] rect {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-logging=on] {
+    stroke: var(--on);
+    fill: var(--powered);
+}
+[data-pnid-logging=on] text:not(.static-color) {
+    stroke: var(--on);
+    fill: var(--on);
+}
+[data-pnid-logging=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-logging=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}
+
+[data-pnid-logging=off] path, [data-pnid-logging=off] rect {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-sensor_pressure_big=high] {
+    stroke: var(--high);
+}
+[data-pnid-sensor_pressure_big=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
+}
+
+[data-pnid-sensor_pressure_big=low] {
+    stroke: var(--low);
+}
+[data-pnid-sensor_pressure_big=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
+}
+
+[data-pnid-sensor_pressure_big=notconnected] {
+    stroke: var(--default-stroke);
+}
+[data-pnid-sensor_pressure_big=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
+
+[data-pnid-sensor_pressure_big=neutral] {
+    stroke: var(--neutral);
+}
+[data-pnid-sensor_pressure_big=neutral] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
+}
+
+[data-pnid-sensor_height] .sensor-letter, [data-pnid-imu] .sensor-letter, [data-pnid-sensor_pressure_big] .sensor-letter {
+    font-size: var(--big-letters);
+}
+
+[data-pnid-imu] .sensor-letter {
+    font-size: var(--medium-letters);
+}
+
+[data-pnid-sensor_height=high] {
+    stroke: var(--high);
+}
+[data-pnid-sensor_height=high] text:not(.static-color) {
+    stroke: var(--high);
+    fill: var(--high);
+}
+
+[data-pnid-sensor_height=low] {
+    stroke: var(--low);
+}
+[data-pnid-sensor_height=low] text:not(.static-color) {
+    stroke: var(--low);
+    fill: var(--low);
+}
+
+[data-pnid-sensor_height=notconnected] {
+    stroke: var(--default-stroke);
+}
+[data-pnid-sensor_height=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
+
+[data-pnid-sensor_height=neutral] {
+    stroke: var(--neutral);
+}
+[data-pnid-sensor_height=neutral] text:not(.static-color) {
+    stroke: var(--neutral);
+    fill: var(--neutral);
 }

@@ -174,6 +174,11 @@ function constructIframeSource(sourceDefault, config, customConfig, popupID)
     {
         customSource = grafanaPanelConfig[popupID];
     }
+    if (grafanaPanelConfig[source] != undefined)
+    {
+        customSource = grafanaPanelConfig[source];
+        source = undefined;
+    }
 
     //try creating a URL from the source field in default config. if it's a fully valid URL overwrite the default URL, else handle it as a path specified and append it to the default source
     try
@@ -234,6 +239,10 @@ function createExternalDisplay(config, source)
     element.removeAttr("id");
     //element.find("iframe").attr("width", width);
     //element.find("iframe").attr("height", height);
+    if (config["source"] != undefined)
+    {
+        source = config["source"];
+    }
     element.find("iframe").attr("src", source);
     themeSubscribe(element, function(){iframeThemeToggle(event)}); //this is kinda hardcoded to work with grafana, but I have no freaking clue how I could do that more generalized and/or customizable
     return element;
