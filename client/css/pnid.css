@@ -454,6 +454,14 @@ data-pnid-battery text:not(.static-color) {
     fill: var(--ox);
 }
 
+[data-pnid-led=success] {
+    fill: var(--success-color);
+}
+
+[data-pnid-led=error] {
+    fill: var(--error-color);
+}
+
 [data-pnid-led=on] {
     fill: var(--on);
 }
