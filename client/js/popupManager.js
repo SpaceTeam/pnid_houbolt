@@ -573,8 +573,9 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
         //TODO with better pnid element bounding boxes the positioning of the popup should be done better
         if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
         {
+            
             //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
-            popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
+            //popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
         }
         if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
         {
