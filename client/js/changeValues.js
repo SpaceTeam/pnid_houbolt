@@ -657,53 +657,6 @@ const StateTypes = Object.freeze({
 	custom: Symbol("custom")
 });
 
-function parseStateType(state)
-{
-    if (state["name"].startsWith("gui-"))
-    {
-        //if a state starts with "gui:" it's either a Get/SetState state, in the sense of a set point as opposed to a feedback/sensor value
-        //these states should only be used to update input elements in popups, nothing else, as the rest of the pnid should be feedback value based.
-        //or it could be an action reference
-        if (getIsActionReference(state["name"]))
-        {
-            return StateTypes.actionReference;
-        }
-        return StateTypes.guiEcho;
-    }
-    
-    if (state["wires_only"] == true || state["name"].endsWith("-wire"))
-    {
-        return StateTypes.wire;
-    }
-    else if (state["name"].endsWith("-sensor"))
-    {
-        return StateTypes.sensor;
-    }
-
-    return StateTypes.setState;
-}
-
-function extractStateName(fullName, stateType)
-{
-    switch (stateType)
-    {
-        case StateTypes.sensor:
-            return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
-        case StateTypes.guiEcho:
-            return fullName.replace("gui-", "");
-        case StateTypes.actionReference:
-            return fullName; //todo: should this include the gui- prefix?
-        case StateTypes.setState:
-            return fullName;
-        case StateTypes.wire:
-            return fullName.replace("__child_wire", "");
-        default:
-            //printLog("warning", `Tried extracting state name from "${fullName}" with type ${stateType.toString()}, but don't know how to handle this!`);
-            console.log(`Tried extracting state name from "${fullName}" with type ${stateType.toString()}, but don't know how to handle this!`);
-            return fullName;
-    }
-}
-
 function setSensorState(state)
 {
     let stateName = extractStateName(state["name"], StateTypes.sensor);
