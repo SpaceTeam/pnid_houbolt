@@ -283,7 +283,7 @@ function runRandom()
 	$("g.comp").each(function(index)
 	{
 		var state = {};
-        let name = $(this).attr("class").split(" ")[2];
+        let name = $(this).attr("class").replaceAll("\n", "").replace(/ +(?= )/g,"").split(" ")[2]; //have to sanitize string first from weird whitespace
         if (name !== "comp" && name !== "wire" && name !== "")
         {
             state["name"] = name.replace(":state", "");
@@ -579,8 +579,74 @@ function createWireLinks()
 function setStateValue(state, recursionDepth = 0)
 {
     state["name"] = state["name"].replaceAll(":","-");
+    //todo: I don't want to be restricted to just numbers in the future, but for now too many places in the code expect the input to be a number
+    //or at least convertible to a number.
+    if (typeof state["value"] != "number")
+    {
+        if (!checkStringIsNumber(state["value"]))
+        {
+            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update. This is intended to be supported later on");
+            return;
+        }
+    }
 
-    let numberInput = false;
+    let stateType = parseStateType(state);
+
+    switch (stateType)
+    {
+        case StateTypes.sensor:
+            setSensorState(state);
+            break;
+        case StateTypes.guiEcho:
+            break;
+        case StateTypes.actionReference:
+            break;
+        case StateTypes.setState:
+            setTargetState(state);
+            break;
+        case StateTypes.wire:
+            break;
+        default:
+            break;
+    }
+
+    //iterate through all elements linked to this one unless the current state update is only a child wire update - this brings no new data to the table
+    let linkedStateUpdates = [];
+    if (state["wires_only"] == false || state["wires_only"] == undefined) {
+        for (let linkIndex in __stateLinks[state["name"]])
+        {
+            if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
+            {
+                //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion) - this is handled by the outermost if
+                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
+                //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
+                //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+            }
+            else //if we can't find a child wire entry at this index in the link list, push the linked update normally
+            {
+                if (state['name'] == 'pump_cold_water-sensor') {
+                    //console.log('checking cold water pump links');
+                }
+                if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
+                {
+                    if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
+                    }
+                    else
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    }
+                }
+            }
+        }
+    }
+    if (linkedStateUpdates.length > 0)
+    {
+        updatePNID(linkedStateUpdates, recursionDepth + 1);
+    }
+
+    /*let numberInput = false;
     if (typeof state["value"] != "number")
     {
         if (!checkStringIsNumber(state["value"]))
@@ -605,7 +671,7 @@ function setStateValue(state, recursionDepth = 0)
             state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
         }
         setStateValueNumber(state, recursionDepth);
-    }
+    }*/
 }
 
 const StateTypes = Object.freeze({
@@ -646,15 +712,153 @@ function extractStateName(fullName, stateType)
         case StateTypes.guiEcho:
             return fullName.replace("gui-", "");
         case StateTypes.actionReference:
-            return fullName;
+            return fullName; //todo: should this include the gui- prefix?
         case StateTypes.sensor:
             return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
         case StateTypes.childWire:
             return fullName.replace("__child_wire", "");
+        case StateTypes.setState:
+            return fullName;
         default:
             printLog("warning", `Tried extracting state name from "${fullName}" with type ${stateType}, but don't know how to handle this!`);
             return fullName;
     }
+}
+
+function setSensorState(state)
+{
+    let stateName = extractStateName(state["name"], StateTypes.sensor);
+    let elementGroup = getElement(stateName);
+
+    let unit = "";
+    if (elementGroup.length != 0)
+    {
+        elementGroup.each(function (index) {
+            let arrayUnit = elementGroup[index].dataset.unit;
+            if (arrayUnit != undefined && arrayUnit != "")
+            {
+                unit = arrayUnit;
+                return; //todo: I don't think this actually breaks the loop. I don't *particularly* care, but it would be nicer if it would stop iterating here
+            }
+        });
+
+        //human visible value that may contain units or further processing
+        let valueElement = getElement(stateName, "value");
+        valueElement.text(state["value"] + unit);
+        elementGroup[0].dataset.value = state["value"];
+    }
+    else
+    {
+        //if no element was found, it could be a wire instead
+        setWireState();
+        return;
+    }
+
+    let setStateValue = elementGroup[0].dataset.setState;
+    const inVars = {
+        "this": stateName,
+        "value" : state["value"],
+        "setState": setStateValue == "" ? undefined : setStateValue,
+        "unit" : unit
+    };
+
+    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+    elementGroup.each(function(index) {
+        let elementType = getTypeFromClasses($(this).attr("class").split(" "))
+        let outVars = execBehaviors(stateName, elementType, StateTypes.sensor, inVars);
+        if (outVars["value"] == undefined)
+        {
+            outVars["value"] = state["value"] + unit;
+        }
+        applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.sensor, outVars);
+
+        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
+        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+        updatePopup(stateName, outVars["value"], state["value"], StateTypes.sensor);
+    });
+
+    //todo: is this code path needed on sensor updates?
+    for (let i in activePopups)
+    {
+        for (let n in activePopups[i]["containedStates"])
+        {
+            if (activePopups[i]["containedStates"][n] == state["name"])
+            {
+                //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
+                updatePopup(stateName, undefined, state["value"], StateTypes.sensor, i);
+            }
+        }
+    }
+}
+
+function setTargetState(state)
+{
+    let stateName = extractStateName(state["name"], StateTypes.sensor);
+    let elementGroup = getElement(stateName);
+
+    let unit = "";
+    if (elementGroup.length != 0)
+    {
+        elementGroup.each(function (index) {
+            elementGroup[index].dataset.setState = state["value"];
+        });
+    }
+}
+
+function execBehaviors(stateName, elementType, stateType, inVars)
+{
+    let outVars = { }
+
+    //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
+    let sensorDeviationCheck = "return !(feedback == setState);";
+
+    //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
+    //console.log("search term", searchTerm);
+    //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
+    let defaultSensorDeviation = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+    if (defaultSensorDeviation !== undefined)
+    {
+        sensorDeviationCheck = defaultSensorDeviation;
+    }
+
+    let evalCode = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "eval");
+    //console.log("eval", evalCode);
+    if (evalCode != undefined)
+    {
+        eval(evalCode);
+        //console.log("search term", searchTerm);
+    }
+
+    //traverse custom JSON to find all evals applicable to current element. evals later in JSON overwrite changes made by evals earlier (if they change the same parameters)
+    let stateConfigName = stateName;
+    if (stateType == StateTypes.wire)
+    {
+        stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
+        //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
+    }
+    let customSensorDeviation = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
+    if (customSensorDeviation !== undefined)
+    {
+        sensorDeviationCheck = customSensorDeviation;
+    }
+
+    let customEvalCode = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
+    if (customEvalCode != undefined)
+    {
+        eval(customEvalCode);
+    }
+
+    if ((inVars["setState"] != undefined || inVars["setState"] != null) && stateType == StateTypes.sensor && sensorDeviationCheck != null)
+    {
+        eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+        //console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+        if (sensDevChecker(inVars["value"], parseFloat(inVars["setState"])))
+        {
+            //console.log("feedback deviation error");
+            outVars["color"] = "feedback_deviation_error";
+        }
+    }
+    return outVars;
 }
 
 /**
@@ -692,13 +896,13 @@ function setStateValueNumber(state, recursionDepth = 0)
 	{
         if (stateType == StateTypes.guiEcho || stateType == StateTypes.setState) // ...and incoming state is not a GUI state, update it.
         {
-            getElement(state["name"], "setState").dataset.setState = state["value"];
+            elementGroup[0].dataset.setState = state["value"];
         }
         else if (stateType == StateTypes.actionReference)
         {
             let actionRefValueElement = getElement(stateName, "actionReferenceValue");
             actionRefValueElement.text(state["value"]);
-            getElement(stateName).dataset.actionReferenceValue = state["value"];
+            elementGroup[0].dataset.actionReferenceValue = state["value"];
         }
         else if (stateType == StateTypes.sensor)
         {
@@ -708,7 +912,7 @@ function setStateValueNumber(state, recursionDepth = 0)
             //human visible value that may contain units or further processing
             let valueElement = getElement(state["name"], "value");
             valueElement.text(state["value"] + unit);
-            getElement(state["name"]).dataset.value = state["value"];
+            elementGroup[0].dataset.value = state["value"];
         }
 	}
 	else // if no element was found check if the element in question may be a wire instead
@@ -721,7 +925,7 @@ function setStateValueNumber(state, recursionDepth = 0)
     {
         //----- prepare for eval behavior block
         //In Variables for the eval() code specified in config.json. Will be reset/overwritten for every state and every loop
-        let setStateValue = getElementValue(state["name"]).dataset.setState;
+        let setStateValue = elementGroup[0].dataset.setState;
         const inVars = {
             "this": state["name"],
             "value" : state["value"],
@@ -901,99 +1105,56 @@ function setStateValueNumber(state, recursionDepth = 0)
 }
 
 //TODO update to use element name instead of element group now that getElement properly caches stuff (haha) it's more efficient and better readable
-function applyUpdatesToPnID(elementGroup, outVars, isActionReference)
-{
-    let elementName = undefined;
-    let classes = elementGroup.attr("class").split(" ");
-    let isWire = false;
-    if (classes.includes("wire"))
-    {
-        isWire = true;
-        elementName = classes[0];
-    }
-    else
-    {
-        elementName = getValReferenceFromClasses(classes);
-    }
-	//fetch all attributes of the element group
-	let attributes = elementGroup.prop("attributes");
-	//printLog("info", "Found these attributes:" + attributes);
-	
+function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)
+{	
 	//apply all outVars to PnID
-	if ("color" in outVars && !isActionReference)
+	if ("color" in outVars && stateType != StateTypes.actionReferencec)
 	{
-		for (attrIndex in attributes)
-		{
-            //console.log("attr", attributes[attrIndex]);
-			if (attrIndex == "length") //otherwise JS also iterates over control elements in the array for whatever stupid reason
-			{
-				break;
-			}
-			let attribute = attributes[attrIndex];
-			let re = /data-pnid-\S*/;
-			if (re.test(attribute.name))
-			{
-                let color = outVars["color"];
-                if (color == "content") //if the color is "content" figure out what content is actually there and enter this.
+        let color = outVars["color"];
+        if (color == "content") //if the color is "content" figure out what content is actually there and enter this.
+        {
+            //console.log("trying to enter content", elementGroup, elementName);
+            let ownContent = getElementAttrValue(stateName, "data-content");
+            if (ownContent == undefined || ownContent == "") //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
+            {
+                //console.log("did not find own content", elementGroup);
+                let parents = findLinkParents(stateName, "content", stateType == StateTypes.wire);
+                //console.log("parents", parents);
+                let parentContent = traverseParentsToContent(stateName, stateType == StateTypes.wire);
+                if (parentContent != undefined)
                 {
-                    //console.log("trying to enter content", elementGroup, elementName);
-                    let ownContent = undefined;
-                    if (!isWire)
-                    {
-                        //console.log("not a wire so trying to find own content");
-                        ownContent = getElementAttrValue(elementName, "data-content");
-                    }
-                    if (ownContent == undefined || ownContent == "") //if the own content attribute is not set/undefined, backtrace links to parents and find their content attribute
-                    {
-                        //console.log("did not find own content", elementGroup);
-                        let parents = findLinkParents(elementName, "content", isWire);
-                        //console.log("parents", parents);
-                        let parentContent = traverseParentsToContent(elementName, isWire);
-                        /*for (let i in parents)
-                        {
-                            let parentContent = getElementAttrValue(parents[i], "data-content");
-                            if (parentContent != undefined) //use first parent content that is found
-                            {
-                                //console.log("found parent with content", elementGroup, parents[i]);
-                                color = parentContent;
-                            }
-                        }*/
-                        if (parentContent != undefined)
-                        {
-                            color = parentContent;
-                        }
-                    }
-                    else
-                    {
-                        //console.log("found own content", elementGroup);
-                        color = ownContent;
-                    }
+                    color = parentContent;
                 }
-				elementGroup.attr(attribute.name, color);
-			}
-		}
+            }
+            else
+            {
+                //console.log("found own content", elementGroup);
+                color = ownContent;
+            }
+        }
+        element[0].dataset[dashToCamel(elementType)] = color; //todo: check if that way of accessing the dataset is correct
 	}
 	if ("value" in outVars)
 	{
         
-        if (isActionReference)
+        if (stateType == StateTypes.actionReference)
         {
-            elementGroup.find("text.actionReferenceValue").text(outVars["value"]);
+            element.find("text.actionReferenceValue").text(outVars["value"]);
         }
         else
         {
-            elementGroup.find("text.value").text(outVars["value"]);
+            element.find("text.value").text(outVars["value"]);
         }
 	}
     if ("content" in outVars)
     {
-        elementGroup.attr("data-content", outVars["content"]);
+        element.attr("data-content", outVars["content"]);
     }
     //todo this isn't properly scalable to other components that'd need percentage outputs
     //we just assume that everything that has a percentage output is a tank
     if ("percent" in outVars)
     {
-        updateTankContent(elementGroup, outVars['percent']);
+        updateTankContent(element, outVars['percent']);
     }
 	if ("crossUpdate" in outVars)
 	{

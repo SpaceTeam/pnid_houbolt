@@ -631,7 +631,7 @@ function updatePopupTitle(popupID, newTitle)
     }
 }
 
-function updatePopup(stateName, value, rawValue, isGuiState = false, isActionReference = false, popupID = undefined)
+function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
 {
     let bundledInActionReference = false;
     //if the popup ID is undefined, search for it. if it's already defined it's likely a sub state of the popup (not bundled action ref)
@@ -692,7 +692,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                     {
                         case "text":
                             //only update the text for actual sensor feedback values, not GUI states/set points. TODO consider adding a switch for that in the config
-                            if (!isGuiState || isActionReference)
+                            if (stateType == StateTypes.sensor)
                             {
                                 elements = $(popup).find(`[display="${stateName}"]`);
                                 elements.text(value);
@@ -715,7 +715,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                     switch (contentStyle)
                     {
                         case "checkbox":
-                            if (isGuiState || isActionReference)
+                            if (stateType == StateTypes.guiEcho || stateType == StateTypes.actionReference)
                             {
                                 //console.log("updating gui state checkbox", rawValue);
                                 //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
@@ -732,7 +732,7 @@ function updatePopup(stateName, value, rawValue, isGuiState = false, isActionRef
                             break;
                         case "slider":
                             elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
-                            if (!isGuiState)
+                            if (stateType != StateTypes.guiEcho)
                             {
                                 //if the value is sensor feedback, update the feedback slider background
                                 if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)

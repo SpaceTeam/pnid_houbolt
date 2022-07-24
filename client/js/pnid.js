@@ -61,31 +61,30 @@ function loadValuesPNID(states)
  * @todo I could add a parent name list and append each step for deeper recursions. this way I can check through each step of the recursion and see if the current name has already been executed once and skip it (and give a better trace if the recursion gets too long)
  * @example updatePNID([{"name": "a_cool_state_name", "value": 123.4}]);
  */
- function updatePNID(stateList, recursionDepth = 0)
- {
-     if (recursionDepth >= 5)
-     {
-         printLog("warning", `Reached a recursion depth of 5 while updating the PnID. This is likely due to misconfigured links in the configuration files. Aborting. Last state list was <code>${JSON.stringify(stateList)}</code>.`);
-         return;
-     }
-     //printLog("info", "Updating PnID with: " + stateList);
- 
-     logStates(stateList);
-     
-     for (let stateIndex in stateList)
-     {
-         //let stateName = stateList[stateIndex]["name"];
-         //let stateValue = stateList[stateIndex]["value"];
-         //printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
-         //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
-         //{
-             
-             setStateValue(stateList[stateIndex], recursionDepth);
-         //}
-     }
-     
-     //$('.' + stateList[0].name).eval(config[stateName]["eval"])
- }
+function updatePNID(stateList, recursionDepth = 0)
+{
+    if (recursionDepth >= 5)
+    {
+        printLog("warning", `Reached a recursion depth of 5 while updating the PnID. This is likely due to misconfigured links in the configuration files. Aborting. Last state list was <code>${JSON.stringify(stateList)}</code>.`);
+        return;
+    }
+    //printLog("info", "Updating PnID with: " + stateList);
+
+    logStates(stateList);
+    
+    for (let stateIndex in stateList)
+    {
+        //let stateName = stateList[stateIndex]["name"];
+        //let stateValue = stateList[stateIndex]["value"];
+        //printLog("info", "updating pnid for state name: '" + stateName + "' value: " + stateValue);
+        //if (stateList[stateIndex] != parentState) //if the last element in the recursion was named the same as the current element, don't execute setStateValue, as we'd get infinite recursions otherwise. I'm really not happy with this implementation.
+        //{
+        setStateValue(stateList[stateIndex], recursionDepth);
+        //}
+    }
+    
+    //$('.' + stateList[0].name).eval(config[stateName]["eval"])
+}
 
 function authenticateGrafana()
 {

@@ -25,6 +25,13 @@ function checkStringIsNumber(string)
     return true;
 }
 
+function dashToCamel(dashStr)
+{
+    return dashStr.toLowerCase().replace(/-(.)/g, function(match, group1) {
+        return group1.toUpperCase();
+    });
+}
+
 /**
  * @typedef {Object} ElementBuffer
  * @property {string} valueReference The key / ID of the buffer.
