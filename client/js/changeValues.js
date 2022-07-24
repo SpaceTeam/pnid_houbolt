@@ -605,6 +605,7 @@ function setStateValue(state, recursionDepth = 0)
             setTargetState(state);
             break;
         case StateTypes.wire:
+            setWireState(state);
             break;
         default:
             break;
@@ -645,40 +646,13 @@ function setStateValue(state, recursionDepth = 0)
     {
         updatePNID(linkedStateUpdates, recursionDepth + 1);
     }
-
-    /*let numberInput = false;
-    if (typeof state["value"] != "number")
-    {
-        if (!checkStringIsNumber(state["value"]))
-        {
-            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update. This is intended to be supported later on");
-            return;
-        }
-        else
-        {
-            numberInput = true;
-        }
-    }
-    else
-    {
-        numberInput = true;
-    }
-
-    if (numberInput)
-    {
-        if (typeof state["value"] != "string")
-        {
-            state["value"] = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
-        }
-        setStateValueNumber(state, recursionDepth);
-    }*/
 }
 
 const StateTypes = Object.freeze({
+	sensor: Symbol("sensor"),
 	guiEcho: Symbol("guiEcho"),
 	actionReference: Symbol("actionReference"),
 	setState: Symbol("setState"),
-	sensor: Symbol("sensor"),
     wire: Symbol("wire"),
 	custom: Symbol("custom")
 });
@@ -697,7 +671,11 @@ function parseStateType(state)
         return StateTypes.guiEcho;
     }
     
-    if (state["name"].endsWith("-sensor"))
+    if (state["wires_only"] == true || state["name"].endsWith("-wire"))
+    {
+        return StateTypes.wire;
+    }
+    else if (state["name"].endsWith("-sensor"))
     {
         return StateTypes.sensor;
     }
@@ -709,18 +687,19 @@ function extractStateName(fullName, stateType)
 {
     switch (stateType)
     {
+        case StateTypes.sensor:
+            return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
         case StateTypes.guiEcho:
             return fullName.replace("gui-", "");
         case StateTypes.actionReference:
             return fullName; //todo: should this include the gui- prefix?
-        case StateTypes.sensor:
-            return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
-        case StateTypes.childWire:
-            return fullName.replace("__child_wire", "");
         case StateTypes.setState:
             return fullName;
+        case StateTypes.wire:
+            return fullName.replace("__child_wire", "");
         default:
-            printLog("warning", `Tried extracting state name from "${fullName}" with type ${stateType}, but don't know how to handle this!`);
+            //printLog("warning", `Tried extracting state name from "${fullName}" with type ${stateType.toString()}, but don't know how to handle this!`);
+            console.log(`Tried extracting state name from "${fullName}" with type ${stateType.toString()}, but don't know how to handle this!`);
             return fullName;
     }
 }
@@ -749,6 +728,7 @@ function setSensorState(state)
     }
     else
     {
+        console.log("sensor update but actually wire update");
         //if no element was found, it could be a wire instead
         setWireState();
         return;
@@ -805,9 +785,29 @@ function setTargetState(state)
     }
 }
 
+function setWireState(state)
+{
+    console.log("updating wire:", state);
+    let stateName = extractStateName(state["name"], StateTypes.wire);
+    let elementGroup = getElement(stateName, "wire");
+
+    const inVars = {
+        "this": stateName,
+        "value" : state["value"]
+    };
+
+    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+    elementGroup.each(function(index) {
+        console.log("updating wire element:", elementGroup[index]);
+        let outVars = execBehaviors(stateName, "wire", StateTypes.wire, inVars);
+        console.log("outVars:", outVars);
+        applyUpdatesToPnID(stateName, $(this), "wire", StateTypes.wire, outVars);
+    });
+}
+
 function execBehaviors(stateName, elementType, stateType, inVars)
 {
-    let outVars = { }
+    let outVars = { };
 
     //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
     let sensorDeviationCheck = "return !(feedback == setState);";
@@ -1107,6 +1107,11 @@ function setStateValueNumber(state, recursionDepth = 0)
 //TODO update to use element name instead of element group now that getElement properly caches stuff (haha) it's more efficient and better readable
 function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)
 {	
+    if (elementType == "wire")
+    {
+        elementType = "pnid-wire";
+        //todo: translation here because we need to access the data-pnid-wire dataset and I don't want to have to remember this every time I run this function
+    }
 	//apply all outVars to PnID
 	if ("color" in outVars && stateType != StateTypes.actionReferencec)
 	{
