@@ -576,6 +576,45 @@ function createWireLinks()
     });
 }
 
+function updateLinkedStates(state, recursionDepth = 0)
+{
+    //iterate through all elements linked to this one unless the current state update is only a child wire update - this brings no new data to the table
+    let linkedStateUpdates = [];
+    if (state["wires_only"] != true) {
+        for (let linkIndex in __stateLinks[state["name"]])
+        {
+            if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
+            {
+                //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion) - this is handled by the outermost if
+                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
+                //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
+                //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
+            }
+            else //if we can't find a child wire entry at this index in the link list, push the linked update normally
+            {
+                if (state['name'] == 'pump_cold_water-sensor') {
+                    //console.log('checking cold water pump links');
+                }
+                if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
+                {
+                    if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
+                    }
+                    else
+                    {
+                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
+                    }
+                }
+            }
+        }
+    }
+    if (linkedStateUpdates.length > 0)
+    {
+        updatePNID(linkedStateUpdates, recursionDepth + 1);
+    }
+}
+
 function setStateValue(state, recursionDepth = 0)
 {
     state["name"] = state["name"].replaceAll(":","-");
@@ -611,41 +650,7 @@ function setStateValue(state, recursionDepth = 0)
             break;
     }
 
-    //iterate through all elements linked to this one unless the current state update is only a child wire update - this brings no new data to the table
-    let linkedStateUpdates = [];
-    if (state["wires_only"] == false || state["wires_only"] == undefined) {
-        for (let linkIndex in __stateLinks[state["name"]])
-        {
-            if (__stateLinks[state["name"]][linkIndex]["child"] == "__child_wire") //find if the current state name has an associated child wire group
-            {
-                //but only initiate a child wire update if we aren't already in that child wire update (otherwise we'd get infinite recursion) - this is handled by the outermost if
-                linkedStateUpdates.push({"name": state["name"] + "__child_wire", "value": state["value"], "wires_only": true});
-                //wires_only is needed because normal elements take precedence over wires so if the wires need an update the normal elements need to be manually disabled for this.
-                //I'm both not really happy with the wires_only implementation nor the "__child_wire" appended, but I can't think of anything better right now.
-            }
-            else //if we can't find a child wire entry at this index in the link list, push the linked update normally
-            {
-                if (state['name'] == 'pump_cold_water-sensor') {
-                    //console.log('checking cold water pump links');
-                }
-                if (__stateLinks[state["name"]][linkIndex]["linkType"] == "all" || __stateLinks[state["name"]][linkIndex]["linkType"] == "value") //but only if the link is not set up to only link contents
-                {
-                    if (__stateLinks[state["name"]][linkIndex]["child"].endsWith("-wire"))
-                    {
-                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"], "wires_only": true});
-                    }
-                    else
-                    {
-                        linkedStateUpdates.push({"name": __stateLinks[state["name"]][linkIndex]["child"], "value": state["value"]});
-                    }
-                }
-            }
-        }
-    }
-    if (linkedStateUpdates.length > 0)
-    {
-        updatePNID(linkedStateUpdates, recursionDepth + 1);
-    }
+    updateLinkedStates(state, recursionDepth);
 }
 
 const StateTypes = Object.freeze({
@@ -729,7 +734,6 @@ function setTargetState(state)
     let stateName = extractStateName(state["name"], StateTypes.sensor);
     let elementGroup = getElement(stateName);
 
-    let unit = "";
     if (elementGroup.length != 0)
     {
         elementGroup.each(function (index) {
@@ -740,7 +744,6 @@ function setTargetState(state)
 
 function setWireState(state)
 {
-    console.log("updating wire:", state);
     let stateName = extractStateName(state["name"], StateTypes.wire);
     let elementGroup = getElement(stateName, "wire");
 
@@ -751,9 +754,7 @@ function setWireState(state)
 
     //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
     elementGroup.each(function(index) {
-        console.log("updating wire element:", elementGroup[index]);
         let outVars = execBehaviors(stateName, "wire", StateTypes.wire, inVars);
-        console.log("outVars:", outVars);
         applyUpdatesToPnID(stateName, $(this), "wire", StateTypes.wire, outVars);
     });
 }
