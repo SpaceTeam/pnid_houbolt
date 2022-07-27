@@ -639,6 +639,7 @@ function setStateValue(state, recursionDepth = 0)
         case StateTypes.guiEcho:
             break;
         case StateTypes.actionReference:
+            setActionReferenceState(state);
             break;
         case StateTypes.setState:
             setTargetState(state);
@@ -670,14 +671,7 @@ function setSensorState(state)
     let unit = "";
     if (elementGroup.length != 0)
     {
-        elementGroup.each(function (index) {
-            let arrayUnit = elementGroup[index].dataset.unit;
-            if (arrayUnit != undefined && arrayUnit != "")
-            {
-                unit = arrayUnit;
-                return; //todo: I don't think this actually breaks the loop. I don't *particularly* care, but it would be nicer if it would stop iterating here
-            }
-        });
+        unit = findUnitFromElements(elementGroup);
 
         //human visible value that may contain units or further processing
         let valueElement = getElement(stateName, "value");
@@ -716,17 +710,51 @@ function setSensorState(state)
     });
 
     //todo: is this code path needed on sensor updates?
-    for (let i in activePopups)
+    updatePopupsFromContainedStates(stateName, state["value"], StateTypes.sensor);
+}
+
+function setActionReferenceState(state)
+{
+    console.log("action reference state", state);
+    let stateName = extractStateName(state["name"], StateTypes.sensor);
+    let elementGroup = getElement(stateName);
+
+    let unit = "";
+    if (elementGroup.length != 0)
     {
-        for (let n in activePopups[i]["containedStates"])
-        {
-            if (activePopups[i]["containedStates"][n] == state["name"])
-            {
-                //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
-                updatePopup(stateName, undefined, state["value"], StateTypes.sensor, i);
-            }
-        }
+        //todo: do I even still need the actual DOM element of the action reference value?
+        //it's not used everywhere I think, but not 100% sure
+        let actionRefValueElement = getElement(stateName, "actionReferenceValue");
+        actionRefValueElement.text(state["value"]);
+        elementGroup.each(function (index) {
+            elementGroup[index].dataset.actionReferenceValue = state["value"];
+        });
+        unit = findUnitFromElements(elementGroup);
     }
+    
+    const inVars = {
+        "this": stateName,
+        "value" : state["value"],
+        "unit" : unit
+    };
+
+    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+    elementGroup.each(function(index) {
+        let elementType = getTypeFromClasses($(this).attr("class").split(" "))
+        let outVars = execBehaviors(stateName, stateName, StateTypes.actionReference, inVars);
+        //state name twice in exec behaviors so it searches in both default and custom config for action reference config
+        if (outVars["value"] == undefined)
+        {
+            outVars["value"] = state["value"] + unit;
+        }
+        applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.actionReference, outVars);
+
+        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
+        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+        updatePopup(stateName, outVars["value"], state["value"], StateTypes.actionReference);
+    });
+
+    updatePopupsFromContainedStates(stateName, state["value"], StateTypes.actionReference);
 }
 
 function setTargetState(state)
@@ -1095,7 +1123,7 @@ function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)
 	}
 	if ("value" in outVars)
 	{
-        
+        //todo: is the extra field still needed?
         if (stateType == StateTypes.actionReference)
         {
             element.find("text.actionReferenceValue").text(outVars["value"]);

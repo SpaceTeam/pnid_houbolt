@@ -631,6 +631,21 @@ function updatePopupTitle(popupID, newTitle)
     }
 }
 
+function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
+{
+    for (let i in activePopups)
+    {
+        for (let n in activePopups[i]["containedStates"])
+        {
+            if (activePopups[i]["containedStates"][n] == stateName)
+            {
+                //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
+                updatePopup(stateName, undefined, valueRaw, stateType, i);
+            }
+        }
+    }
+}
+
 function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
 {
     let bundledInActionReference = false;

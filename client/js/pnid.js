@@ -99,6 +99,20 @@ function extractStateName(fullName, stateType)
     }
 }
 
+function findUnitFromElements(elements)
+{
+    let unit = "";
+    elements.each(function (index) {
+        let arrayUnit = elements[index].dataset.unit;
+        if (arrayUnit != undefined && arrayUnit != "")
+        {
+            unit = arrayUnit;
+            return; //todo: I don't think this actually breaks the loop. I don't *particularly* care, but it would be nicer if it would stop iterating here
+        }
+    });
+    return unit;
+}
+
 /**
  * @summary Updates the PnID based on the list of given state updates.
  * @description Takes the {@link StateList}, iterates through every state and updates the corresponding PnID elements with the new state values by passing each state to {@link setStateValue}.
