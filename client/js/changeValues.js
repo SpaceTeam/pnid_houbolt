@@ -801,7 +801,7 @@ function handleTargetState(stateName, stateValue)
     }
 }
 
-function handleWireState(state)
+function handleWireState(stateName, stateValue)
 {
     let elementGroup = getElement(stateName, "wire");
 
