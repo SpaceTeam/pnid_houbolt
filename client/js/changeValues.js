@@ -630,24 +630,31 @@ function setStateValue(state, recursionDepth = 0)
     }
 
     let stateType = parseStateType(state);
-
+    let stateName = state["name"];
     switch (stateType)
     {
         case StateTypes.sensor:
-            setSensorState(state);
+            stateName = extractStateName(state["name"], StateTypes.sensor);
+            handleSensorState(stateName, state["value"]);
             break;
         case StateTypes.guiEcho:
+            stateName = extractStateName(state["name"], StateTypes.guiEcho);
+            handleGuiEchoState(stateName, state["value"]);
             break;
         case StateTypes.actionReference:
-            setActionReferenceState(state);
+            stateName = extractStateName(state["name"], StateTypes.actionReference);
+            handleActionReferenceState(stateName, state["value"]);
             break;
         case StateTypes.setState:
-            setTargetState(state);
+            stateName = extractStateName(state["name"], StateTypes.setState);
+            handleTargetState(stateName, state["value"]);
             break;
         case StateTypes.wire:
-            setWireState(state);
+            stateName = extractStateName(state["name"], StateTypes.wire);
+            handleWireState(stateName, state["value"]);
             break;
         default:
+            printLog("error", `Encountered unknown state type: ${stateType.toString()}`);
             break;
     }
 
@@ -663,9 +670,8 @@ const StateTypes = Object.freeze({
 	custom: Symbol("custom")
 });
 
-function setSensorState(state)
+function handleSensorState(stateName, stateValue)
 {
-    let stateName = extractStateName(state["name"], StateTypes.sensor);
     let elementGroup = getElement(stateName);
 
     let unit = "";
@@ -675,21 +681,21 @@ function setSensorState(state)
 
         //human visible value that may contain units or further processing
         let valueElement = getElement(stateName, "value");
-        valueElement.text(state["value"] + unit);
-        elementGroup[0].dataset.value = state["value"];
+        valueElement.text(stateValue + unit);
+        elementGroup[0].dataset.value = stateValue;
     }
     else
     {
         console.log("sensor update but actually wire update");
         //if no element was found, it could be a wire instead
-        setWireState();
+        setWireState(stateName, stateValue);
         return;
     }
 
     let setStateValue = elementGroup[0].dataset.setState;
     const inVars = {
         "this": stateName,
-        "value" : state["value"],
+        "value" : stateValue,
         "setState": setStateValue == "" ? undefined : setStateValue,
         "unit" : unit
     };
@@ -700,23 +706,49 @@ function setSensorState(state)
         let outVars = execBehaviors(stateName, elementType, StateTypes.sensor, inVars);
         if (outVars["value"] == undefined)
         {
-            outVars["value"] = state["value"] + unit;
+            outVars["value"] = stateValue + unit;
         }
         applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.sensor, outVars);
 
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], state["value"], StateTypes.sensor);
+        updatePopup(stateName, outVars["value"], stateValue, StateTypes.sensor);
     });
 
     //todo: is this code path needed on sensor updates?
-    updatePopupsFromContainedStates(stateName, state["value"], StateTypes.sensor);
+    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor);
 }
 
-function setActionReferenceState(state)
+function handleGuiEchoState(stateName, stateValue)
 {
-    console.log("action reference state", state);
-    let stateName = extractStateName(state["name"], StateTypes.sensor);
+    //todo: completely untested, but needs popup refactor first
+    let elementGroup = getElement(stateName);
+
+    if (elementGroup.length != 0)
+    {
+        elementGroup[0].dataset.guiEcho = stateValue;
+        updatePopup(stateName, undefined, stateValue, StateTypes.guiEcho);
+    }
+    else
+    {
+        //if we can't find a corresponding state directly, it may be a variable just contained in a popup
+        for (let i in activePopups)
+        {
+            for (let n in activePopups[i]["containedStates"])
+            {
+                if (activePopups[i]["containedStates"][n] == stateName)
+                {
+                    //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
+                    updatePopup(stateName, undefined, stateValue, StateTypes.guiEcho, i);
+                }
+            }
+        }
+    }
+}
+
+function handleActionReferenceState(stateName, stateValue)
+{
+    //console.log("action reference state", state);
     let elementGroup = getElement(stateName);
 
     let unit = "";
@@ -725,16 +757,16 @@ function setActionReferenceState(state)
         //todo: do I even still need the actual DOM element of the action reference value?
         //it's not used everywhere I think, but not 100% sure
         let actionRefValueElement = getElement(stateName, "actionReferenceValue");
-        actionRefValueElement.text(state["value"]);
+        actionRefValueElement.text(stateValue);
         elementGroup.each(function (index) {
-            elementGroup[index].dataset.actionReferenceValue = state["value"];
+            elementGroup[index].dataset.actionReferenceValue = stateValue;
         });
         unit = findUnitFromElements(elementGroup);
     }
     
     const inVars = {
         "this": stateName,
-        "value" : state["value"],
+        "value" : stateValue,
         "unit" : unit
     };
 
@@ -745,39 +777,37 @@ function setActionReferenceState(state)
         //state name twice in exec behaviors so it searches in both default and custom config for action reference config
         if (outVars["value"] == undefined)
         {
-            outVars["value"] = state["value"] + unit;
+            outVars["value"] = stateValue + unit;
         }
         applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.actionReference, outVars);
 
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], state["value"], StateTypes.actionReference);
+        updatePopup(stateName, outVars["value"], stateValue, StateTypes.actionReference);
     });
 
-    updatePopupsFromContainedStates(stateName, state["value"], StateTypes.actionReference);
+    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.actionReference);
 }
 
-function setTargetState(state)
+function handleTargetState(stateName, stateValue)
 {
-    let stateName = extractStateName(state["name"], StateTypes.sensor);
     let elementGroup = getElement(stateName);
 
     if (elementGroup.length != 0)
     {
         elementGroup.each(function (index) {
-            elementGroup[index].dataset.setState = state["value"];
+            elementGroup[index].dataset.setState = stateValue;
         });
     }
 }
 
-function setWireState(state)
+function handleWireState(state)
 {
-    let stateName = extractStateName(state["name"], StateTypes.wire);
     let elementGroup = getElement(stateName, "wire");
 
     const inVars = {
         "this": stateName,
-        "value" : state["value"]
+        "value" : stateValue
     };
 
     //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop

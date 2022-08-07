@@ -10,7 +10,7 @@ function initPNID(standalone, pathOffset, themes)
     initTanks();
     initPumps();
     initPNIDHitboxes();
-    setTimeout(restorePopups, 3000); //set timeout is a dirty hack so the popup titles are set by llserver before popups get restored.
+    setTimeout(restorePopupsFromLocalStorage, 3000); //set timeout is a dirty hack so the popup titles are set by llserver before popups get restored.
     //titles should be able to update though!
     createWireLinks();
 
@@ -145,6 +145,25 @@ function updatePNID(stateList, recursionDepth = 0)
     }
     
     //$('.' + stateList[0].name).eval(config[stateName]["eval"])
+}
+
+function initPNIDHitboxes()
+{
+    let pnidComps = $("g.comp");
+    pnidComps.each(function (index) {
+        //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
+        //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
+        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
+            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
+        ) {
+            let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
+            let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
+            oldBound.attr("x", boundingBox["x"]);
+            oldBound.attr("y", boundingBox["y"]);
+            oldBound.attr("width", boundingBox["width"]);
+            oldBound.attr("height", boundingBox["height"]);
+        }
+    });
 }
 
 function authenticateGrafana()

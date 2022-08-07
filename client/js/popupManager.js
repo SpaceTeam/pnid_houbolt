@@ -1,4 +1,5 @@
 var activePopups = {};
+var currentPnID = undefined;
 
 var popupMoved = "";
 var popupResized = "";
@@ -9,22 +10,31 @@ $.get('/pnid_config/grafana', function(data) {
 });
 
 
-function deactiveInputUpdate(popupID, duration)
+function switchPnIDPopups(pnidName)
 {
-    if (activePopups[popupID]["timeUntilActive"] > 0) //there's already one timer counting, so just reset it back to full duration
+    //console.log("switch popups to pnid", pnidName, "from", currentPnID);
+    if (currentPnID != undefined)
     {
-        activePopups[popupID]["timeUntilActive"] = duration; // timer has a resolution of 1/10th of a second
-        return;
-    }
-    activePopups[popupID]["timeUntilActive"] = duration; // timer has a resolution of 1/10th of a second
-    activePopups[popupID]["timer"] = setInterval(function () {
-        activePopups[popupID]["timeUntilActive"] -= 1;
-        if (activePopups[popupID]["timeUntilActive"] <= 0)
+        for (popup of Object.keys(activePopups[currentPnID]))
         {
-            clearInterval(activePopups[popupID]["timer"]);
-            activePopups[popupID]["timeUntilActive"] = 0;
+            hidePopup(popup);
         }
-    }, 100);
+    }
+    
+    if (activePopups[pnidName] == undefined)
+    {
+        //if the pnid has never been opened, create an entry for it in the active popups dict
+        activePopups[pnidName] = {};
+    }
+    else
+    {
+        //if it does exist, restore all its popups
+        for (let popup of Object.keys(activePopups[pnidName]))
+        {
+            unhidePopup(popup);
+        }
+    }
+    currentPnID = pnidName;
 }
 
 //popup ID is the GUI ID (action_reference in kicad)
@@ -33,17 +43,13 @@ function clickEventListener(popupID)
     // check if popup already exists
     if (popupID in activePopups && activePopups[popupID]["visibility"] == true) // if already exists and visible, highlight
 	{
-		activePopups[popupID]["popup"].css({"animation-name": "none"});
-		setTimeout( function() {
-		    activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
-		}, 100);
+		highlightPopup(popupID);
 	}
 	else // if doesn't exist, create, if just hidden, show
 	{
         if (popupID in activePopups) //just hidden, no need to create again
         {
-            activePopups[popupID]["popup"].fadeIn(100);
-            activePopups[popupID]["visibility"] = true;
+            unhidePopup(popupID);
         }
         else
         {
@@ -77,27 +83,7 @@ function toggleHitboxDisplay()
     });
 }
 
-//should this really be in the popup manager? right now the hitboxes are only used for this, but maybe in the future not?
-function initPNIDHitboxes()
-{
-    let pnidComps = $("g.comp");
-    pnidComps.each(function (index) {
-        //only create bounding box rectangle if there is a popup definition for it - otherwise it doesn't need the hitbox
-        //the .replace("_Slim", "") is a dirty hack to get the other variant of tanks to use the same config as the main type
-        if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
-            getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
-        ) {
-            let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
-            let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
-            oldBound.attr("x", boundingBox["x"]);
-            oldBound.attr("y", boundingBox["y"]);
-            oldBound.attr("width", boundingBox["width"]);
-            oldBound.attr("height", boundingBox["height"]);
-        }
-    });
-}
-
-function restorePopups()
+function restorePopupsFromLocalStorage()
 {
     //I dislike having to iterate through every key in local storage to find popups
     //but maintaining a separate key with an array of popups in local storage sucks even more.
@@ -776,8 +762,14 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
                             elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
                             //console.log('updating following elems', elements);
                             //TODO: this fix for checking the state name is crucial also for other popup elements that need updating, add later
-                            elements.val(rawValue);
-                            elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
+                            if (stateType == StateTypes.guiEcho)
+                            {
+                                elements.val(rawValue);
+                            }
+                            if (stateType == StateTypes.setState)
+                            {
+                                elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
+                            }
                             //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be
                             break;
                         default:
@@ -808,18 +800,35 @@ function iframeThemeToggle(event)
 
 }
 
-function destroyPopup(popupID)
+function highlightPopup(popupID)
 {
-    $(activePopups[popupID]["popup"]).fadeOut(100, function() {
+    activePopups[popupID]["popup"].css({"animation-name": "none"});
+    setTimeout( function() {
+        activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
+    }, 100);
+}
+
+function hidePopup(popupID)
+{
+    $(activePopups[popupID]["popup"]).fadeOut(200, function() {
         if (activePopups[popupID]["timer"] != undefined)
         {
             clearInterval(activePopups[popupID]["timer"]);
         }
         activePopups[popupID]["visibility"] = false;
-        window.localStorage.removeItem(`popup_${popupID}`);
-        //activePopups[popupID]["popup"].remove();
-        //delete activePopups[popupID];
     });
+}
+
+function unhidePopup(popupID)
+{
+    activePopups[popupID]["popup"].fadeIn(100);
+    activePopups[popupID]["visibility"] = true;
+}
+
+function destroyPopup(popupID)
+{
+    hidePopup(popupID);
+    window.localStorage.removeItem(`popup_${popupID}`);
 }
 
 function clearLocalStorage()
