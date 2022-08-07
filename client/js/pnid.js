@@ -166,6 +166,22 @@ function initPNIDHitboxes()
     });
 }
 
+function toggleHitboxDisplay()
+{
+    let hitboxes = $("g.comp").find('rect[pointer-events="all"]');
+    hitboxes.each(function (index) {
+        let visibility = hitboxes.eq(index).attr("visibility");
+        if (visibility === "hidden")
+        {
+            hitboxes.eq(index).attr("visibility", "visible");
+        }
+        else if (visibility == "visible")
+        {
+            hitboxes.eq(index).attr("visibility", "hidden");
+        }
+    });
+}
+
 function authenticateGrafana()
 {
 

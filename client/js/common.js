@@ -248,6 +248,11 @@ function getElementAttrValue(valueReference, attrName)
     return element.attr(attrName);
 }
 
+function extractClasses(classesString)
+{
+    return classesString.replaceAll("\n", "").replace(/ +(?= )/g,"").split(" ");
+}
+
 //I really dislike having this hardcoded to the n-th entry in the classes, but it's the quickest and safest way to do it right now.
 function getReferenceFromClasses(classes)
 {

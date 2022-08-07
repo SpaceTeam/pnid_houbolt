@@ -66,23 +66,6 @@ function clickEventListener(popupID)
 	}
 }
 
-//same as with initPNIDHitboxes - should this be here?
-function toggleHitboxDisplay()
-{
-    let hitboxes = $("g.comp").find('rect[pointer-events="all"]');
-    hitboxes.each(function (index) {
-        let visibility = hitboxes.eq(index).attr("visibility");
-        if (visibility === "hidden")
-        {
-            hitboxes.eq(index).attr("visibility", "visible");
-        }
-        else if (visibility == "visible")
-        {
-            hitboxes.eq(index).attr("visibility", "hidden");
-        }
-    });
-}
-
 function restorePopupsFromLocalStorage()
 {
     //I dislike having to iterate through every key in local storage to find popups
@@ -352,7 +335,7 @@ function createSeparator()
     return element;
 }
 
-function appendPopupContent(popup, popupConfig, popupID, isActionReference)
+function appendPopupContent(popup, popupConfig, popupID, stateType)
 {
     //all states contained in a popup which may need updating
     let containedStates = [];
@@ -363,7 +346,7 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
         //this variable loading doesn't support elements with other variables
         let curValue = 0;
         let curRawValue = 0;
-        if (isActionReference) // if it is action reference, load the values from there instead of the normal pnid values
+        if (stateType == StateTypes.actionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
             curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
@@ -468,16 +451,14 @@ function appendPopupContent(popup, popupConfig, popupID, isActionReference)
     return containedStates;
 }
 
-//TODO consider breaking into several smaller functions
-function createPopup(popupID, parent, isActionReference, x = undefined, y = undefined, width = undefined, height = undefined)
+function calcPopupPosition()
 {
-	let parentPosition = parent.offset();
-    //printLog("info", parent);
-	
-	let popupClone = $("#popupTemp").clone();
-	popupClone.removeAttr('id');
-	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
-	popupClone.attr('style', `width: auto; height: auto;`);
+
+}
+
+function createPopupTitleBar(popupClone)
+{
+    popupClone.attr('style', `width: auto; height: auto;`);
 	
 	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
 	popupClone.find("div.row").find(".btn-drag").first().on('mousedown', function(e) {
@@ -488,15 +469,29 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
 			popupClone[0].offsetTop - e.clientY
 		];
 	});
+    return popupClone;
+}
+
+//TODO consider breaking into several smaller functions
+function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
+{
+	let parentPosition = parent.offset();
+    //printLog("info", parent);
 	
-	let parentClasses = parent.attr("class").split(" ");
+	let popupClone = $("#popupTemp").clone();
+	popupClone.removeAttr('id');
+	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
+	popupClone = createPopupTitleBar(popupClone);
+	
+	let parentClasses = extractClasses(parent.attr("class"));
 	let title = "";
-	if (isActionReference) //if popup is for action reference, set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
+	if (stateType == StateTypes.actionReference) //if popup is for action reference, set name of action reference as title. TODO this is not really a human readable name, add a feature (how?) to get human readable action references
 	{
 	    title = popupID;
 	}
 	else
 	{
+        console.log("parent classes:", parentClasses, "val ref:", getValReferenceFromClasses(parentClasses));
 	    title = getElementValue(getValReferenceFromClasses(parentClasses), "reference");
 	}
     popupClone.find("div.popup-heading").first().text(title);
@@ -518,9 +513,9 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
         return;
     }
 
-    let containedStates = appendPopupContent(popupClone, popupConfig, popupID, isActionReference);
+    let containedStates = appendPopupContent(popupClone, popupConfig, popupID, stateType);
 
-    if (isActionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
+    if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
         popupClone.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
@@ -600,7 +595,7 @@ function createPopup(popupID, parent, isActionReference, x = undefined, y = unde
         JSON.stringify({
             parentRef: getReferenceFromClasses(parentClasses),
             parentValRef: getValReferenceFromClasses(parentClasses),
-            isActionReference: isActionReference,
+            isActionReference: stateType == StateTypes.isActionReference,
             x: popupPosition[0],
             y: popupPosition[1],
             width: width,
