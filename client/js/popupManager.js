@@ -10,33 +10,6 @@ $.get('/pnid_config/grafana', function(data) {
 });
 
 
-function switchPnIDPopups(pnidName)
-{
-    //console.log("switch popups to pnid", pnidName, "from", currentPnID);
-    if (currentPnID != undefined)
-    {
-        for (popup of Object.keys(activePopups[currentPnID]))
-        {
-            hidePopup(popup);
-        }
-    }
-    
-    if (activePopups[pnidName] == undefined)
-    {
-        //if the pnid has never been opened, create an entry for it in the active popups dict
-        activePopups[pnidName] = {};
-    }
-    else
-    {
-        //if it does exist, restore all its popups
-        for (let popup of Object.keys(activePopups[pnidName]))
-        {
-            unhidePopup(popup);
-        }
-    }
-    currentPnID = pnidName;
-}
-
 //popup ID is the GUI ID (action_reference in kicad)
 function clickEventListener(popupID)
 {
@@ -66,6 +39,61 @@ function clickEventListener(popupID)
 	}
 }
 
+function hideAllPnIDPopups()
+{
+    if (currentPnID == undefined)
+    {
+        //if the current pnid is undefined, there's nothing we can do
+        return;
+    }
+    if (currentPnID != undefined && activePopups[currentPnID] != undefined)
+    {
+        for (popup of Object.keys(activePopups[currentPnID]))
+        {
+            hidePopup(popup);
+        }
+    }
+}
+
+function editStoredPopupData(popupID, key, value, pnid = undefined)
+{
+    let pnidToEdit = currentPnID;
+    if (pnid != undefined)
+    {
+        pnidToEdit = pnid;
+    }
+    try
+    {
+        let storedPopupsData = JSON.parse(window.localStorage.getItem("popups"));
+        storedPopupsData[pnidToEdit][popupID][key] = value;
+        window.localStorage.setItem("popups", JSON.stringify(storedPopupsData));
+    }
+    catch (error)
+    {
+        //probably the popup doesn't exist in local storage. this should never happen though
+        printLog("error", `Tried editing the local storage entry of a popup that doesn't exist there: Popup "${popupID}" in ${pnidToEdit} at key ${key}`)
+    }
+}
+
+function readStoredPopupData(popupID, key, pnid = undefined)
+{
+    let pnidToEdit = currentPnID;
+    if (pnid != undefined)
+    {
+        pnidToEdit = pnid;
+    }
+    try
+    {
+        let storedPopupsData = JSON.parse(window.localStorage.getItem("popups"));
+        return storedPopupsData[pnidToEdit][popupID][key];
+    }
+    catch (error)
+    {
+        //probably the popup doesn't exist in local storage. this should never happen though
+        printLog("error", `Tried reading the local storage entry of a popup that doesn't exist there: Popup "${popupID}" in ${pnidToEdit} at key ${key}`)
+    }
+}
+
 function restorePopupsFromLocalStorage()
 {
     //I dislike having to iterate through every key in local storage to find popups
@@ -73,41 +101,79 @@ function restorePopupsFromLocalStorage()
     //I could be using the activePopups dict, but that also contains closed popups and I only
     //want to store visible popups in the local storage and maintaining a second dict just with
     //active popups sounds like an even worse time
-    let localStorageKeys = Object.keys(window.localStorage);
+    let storedPopupsString = window.localStorage.getItem("popups");
+    console.log(storedPopupsString);
+    if (storedPopupsString == null)
+    {
+        return;
+    }
+    let storedPopups = JSON.parse(storedPopupsString)[currentPnID];
 
-    for (let i in localStorageKeys) {
-        if (localStorageKeys[i].startsWith("popup_")) {
-            let popupID = localStorageKeys[i].replace("popup_", "");
-            let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
-            let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
-            //console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"]);
-            if (parent.length > 0)
+    if (storedPopups == undefined)
+    {
+        return;
+    }
+
+    for (let popupID of Object.keys(storedPopups)) {
+        let popupData = storedPopups[popupID];
+        let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+        //console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"]);
+        if (parent.length > 0)
+        {
+            //todo I dislike that I have this rather long visibility check doubled here and in the click event listener
+            if (popupID in activePopups && activePopups[currentPnID][popupID]["visibility"] == true) // if already exists and visible, highlight
             {
-                //todo I dislike that I have this rather long visibility check doubled here and in the click event listener
-                if (popupID in activePopups && activePopups[popupID]["visibility"] == true) // if already exists and visible, highlight
+                activePopups[currentPnID][popupID]["popup"].css({"animation-name": "none"});
+                setTimeout( function() {
+                    activePopups[currentPnID][popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
+                }, 100);
+            }
+            else // if doesn't exist, create, if just hidden, show
+            {
+                if (activePopups[currentPnID] != undefined && popupID in activePopups[currentPnID]) //just hidden, no need to create again
                 {
-                    activePopups[popupID]["popup"].css({"animation-name": "none"});
-                    setTimeout( function() {
-                        activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
-                    }, 100);
+                    //console.log("restoring popup", popupID);
+                    activePopups[currentPnID][popupID]["popup"].fadeIn(100);
+                    activePopups[currentPnID][popupID]["visibility"] = true;
                 }
-                else // if doesn't exist, create, if just hidden, show
+                else
                 {
-                    if (popupID in activePopups) //just hidden, no need to create again
-                    {
-                        //console.log("restoring popup", popupID);
-                        activePopups[popupID]["popup"].fadeIn(100);
-                        activePopups[popupID]["visibility"] = true;
-                    }
-                    else
-                    {
-                        //console.log("creating popup", popupID, parent);
-                        createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
-                    }
+                    //console.log("creating popup", popupID, parent);
+                    createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
                 }
             }
         }
     }
+}
+
+function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, popupPosition, popupSize)
+{
+    let curPopupDataStore = {
+        parentRef: parentRef,
+        parentValRef: parentValRef,
+        isActionReference: stateType == StateTypes.isActionReference,
+        x: popupPosition[0],
+        y: popupPosition[1],
+        width: popupSize[0],
+        height: popupSize[1]
+    };
+    let storedPopups = JSON.parse(window.localStorage.getItem("popups"));
+    if (storedPopups == undefined)
+    {
+        storedPopups = {};
+    }
+    if (storedPopups[currentPnID] == undefined)
+    {
+        storedPopups[currentPnID] = {
+            [popupID]: curPopupDataStore
+        };
+    }
+    else
+    {
+        storedPopups[currentPnID][popupID] = curPopupDataStore;
+    }
+    //add popup to localstorage
+    window.localStorage.setItem("popups", JSON.stringify(storedPopups));
 }
 
 function createCollapsibleWrapper(popupID, variable, config)
@@ -456,8 +522,9 @@ function calcPopupPosition()
 
 }
 
-function createPopupTitleBar(popupClone)
+function createPopupTitleBar(popupClone, popupID)
 {
+    console.log("popupclone", popupClone);
     popupClone.attr('style', `width: auto; height: auto;`);
 	
 	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
@@ -481,7 +548,7 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
 	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
-	popupClone = createPopupTitleBar(popupClone);
+	popupClone = createPopupTitleBar(popupClone, popupID);
 	
 	let parentClasses = extractClasses(parent.attr("class"));
 	let title = "";
@@ -577,31 +644,26 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     popupClone.attr("data-popup-id", popupID);
 	popupClone.fadeIn(100);
     
-	activePopups[popupID] = {
-	    "popup": popupClone,
-	    "config": popupConfig,
-        "containedStates": containedStates,
-        "timer": undefined,
-        "timeUntilActive": 0, // if 0 it should listen to updates, if higher it should count down
-        "visibility": true
-	};
+    console.log("add to active popups", currentPnID, popupID);
+    if (currentPnID != undefined)
+    {
+        if (activePopups[currentPnID] == undefined)
+        {
+            activePopups[currentPnID] = {};
+        }
+        activePopups[currentPnID][popupID] = {
+            "popup": popupClone,
+            "config": popupConfig,
+            "containedStates": containedStates,
+            "visibility": true
+        };
+        
+        storePopupInLocalStorage(popupID, getReferenceFromClasses(parentClasses), getValReferenceFromClasses(parentClasses), stateType, popupPosition, [width, height]);
+    }
 
     //let resize observer watch for this popup
     resizeObserver.observe(popupClone.get(0));
 
-    //add popup to localstorage
-    window.localStorage.setItem(
-        `popup_${popupID}`,
-        JSON.stringify({
-            parentRef: getReferenceFromClasses(parentClasses),
-            parentValRef: getValReferenceFromClasses(parentClasses),
-            isActionReference: stateType == StateTypes.isActionReference,
-            x: popupPosition[0],
-            y: popupPosition[1],
-            width: width,
-            height: height
-        })
-    );
 }
 
 function updatePopupTitle(popupID, newTitle)
@@ -702,12 +764,6 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
                     }
                     break;
                 case "input":
-                    if (activePopups[popupID]["timeUntilActive"] > 0)
-                    {
-                        //disable the update pause after user input for now. since sliders now have their value and feedback separated,
-                        //it isn't really needed anymore. evaluate if it should be removed altogether or not
-                        //continue;
-                    }
                     switch (contentStyle)
                     {
                         case "checkbox":
@@ -805,19 +861,18 @@ function highlightPopup(popupID)
 
 function hidePopup(popupID)
 {
-    $(activePopups[popupID]["popup"]).fadeOut(200, function() {
-        if (activePopups[popupID]["timer"] != undefined)
-        {
-            clearInterval(activePopups[popupID]["timer"]);
-        }
-        activePopups[popupID]["visibility"] = false;
+    //console.log("hiding popup", popupID, currentPnID);
+    let cacheCurrentPnID = currentPnID;
+    $(activePopups[cacheCurrentPnID][popupID]["popup"]).fadeOut(200, function() {
+        activePopups[cacheCurrentPnID][popupID]["visibility"] = false;
     });
 }
 
 function unhidePopup(popupID)
 {
-    activePopups[popupID]["popup"].fadeIn(100);
-    activePopups[popupID]["visibility"] = true;
+    //console.log("unhiding popup", popupID, currentPnID);
+    activePopups[currentPnID][popupID]["popup"].fadeIn(100);
+    activePopups[currentPnID][popupID]["visibility"] = true;
 }
 
 function destroyPopup(popupID)
@@ -826,9 +881,9 @@ function destroyPopup(popupID)
     window.localStorage.removeItem(`popup_${popupID}`);
 }
 
-function clearLocalStorage()
+function clearPopupStorage()
 {
-    window.localStorage.clear();
+    window.localStorage.setItem("popups", "");
 }
 
 var mousePosition;
@@ -838,24 +893,13 @@ var isDown = false;
 
 document.addEventListener('mouseup', function(event) {
     isDown = false;
-    if (popupMoved != "")
+    if (popupMoved.length > 0)
     {
         try
         {
             //console.log(`popup moved: '${popupMoved}', ${popupMoved.length}`);
-            let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupMoved}`));
-            if (oldPopupData != undefined)
-            {
-                //console.log("old popup data", oldPopupData);
-                oldPopupData["x"] = target.offsetLeft;
-                oldPopupData["y"] = target.offsetTop;
-                window.localStorage.setItem(`popup_${popupMoved}`, JSON.stringify(oldPopupData));
-            }
-            else
-            {
-                console.log("getting popup data structure from local storage failed for", popupMoved);
-            }
-            
+            editStoredPopupData(popupMoved, "x", target.offsetLeft);
+            editStoredPopupData(popupMoved, "y", target.offsetTop);
         }
         catch (e)
         {
@@ -866,25 +910,16 @@ document.addEventListener('mouseup', function(event) {
             popupMoved = "";
         }
     }
-    if (popupResized != "")
+    if (popupResized.length > 0)
     {
         //unfortunately resize events work differently so I can't use target here
         try
         {
-            if (activePopups[popupResized]["visibility"] == true)
+            if (activePopups[currentPnID][popupResized]["visibility"] == true)
             {
                 //apparently resize also gets triggered if visibility is set to hidden which breaks the following code (we don't even want that)
-                let oldPopupData = JSON.parse(window.localStorage.getItem(`popup_${popupResized}`));
-                if (oldPopupData != undefined)
-                {
-                    oldPopupData["width"] = activePopups[popupResized]["popup"].width();
-                    oldPopupData["height"] = activePopups[popupResized]["popup"].height();
-                    window.localStorage.setItem(`popup_${popupResized}`, JSON.stringify(oldPopupData));
-                }
-                else
-                {
-                    console.log("getting popup data structure from local storage failed for", popupMoved);
-                }
+                editStoredPopupData(popupResized, "width", activePopups[currentPnID][popupResized]["popup"].width());
+                editStoredPopupData(popupResized, "height", activePopups[currentPnID][popupResized]["popup"].height());
             }
         }
         catch (e)
@@ -901,14 +936,22 @@ document.addEventListener('mouseup', function(event) {
 
 var resizeObserver = new ResizeObserver(entries => {
     for (let entry of entries) {
-        popupResized = entry.target.dataset.popupId;
+        if ($(entry.target).is(":visible"))
+        {
+            //resize event also triggers on show/hide. can lead to errors if we switch pnid so
+            //we filter out popups that aren't visible as those are on another pnid
+            //might bite me in the ass at some point in the future if this happens somewhere else
+            popupResized = entry.target.dataset.popupId;
+        }
     }
 });
 
-document.addEventListener('onresize', function(event) {
+//I think this segment below is obsolete, but I'll keep it around a bit longer in case I just didn't notice what it did.
+//If you read this and have no idea what I'm talking about, delete the commented out event listener
+/*document.addEventListener('onresize', function(event) {
     console.log("resize");
     popupResized = target.dataset.popupId;
-}, true);
+}, true);*/
 
 document.addEventListener('mousemove', function(event) {
     // event.preventDefault();

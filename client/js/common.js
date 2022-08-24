@@ -1,3 +1,8 @@
+function clearLocalStorage()
+{
+    window.localStorage.clear();
+}
+
 /**
  * @summary Checks if a string can be cast properly to a number.
  * @description Checks whether the input was actually a string. If it was, tests against a regex to see if that string contains only numbers. Fancy formats like 13e6 and the like are not supported.

@@ -1,4 +1,4 @@
-function initPNID(standalone, pathOffset, themes)
+function initPNID(standalone, pathOffset, themes, pnidName)
 {
     if (standalone)
     {
@@ -10,8 +10,9 @@ function initPNID(standalone, pathOffset, themes)
     initTanks();
     initPumps();
     initPNIDHitboxes();
-    setTimeout(restorePopupsFromLocalStorage, 3000); //set timeout is a dirty hack so the popup titles are set by llserver before popups get restored.
-    //titles should be able to update though!
+    hideAllPnIDPopups();
+    currentPnID = pnidName;
+    restorePopupsFromLocalStorage();
     createWireLinks();
 
     //add a check if we want that added (url param?)
