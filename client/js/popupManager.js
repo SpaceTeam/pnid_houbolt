@@ -160,7 +160,7 @@ function restorePopupsFromLocalStorage()
                     createPopup(
                         popupID,
                         parent,
-                        popupData["stateType"] == 'Symbol("sensor")' ? StateTypes.sensor : StateTypes.actionReference,
+                        popupData["stateType"] == StateTypes.sensor.toString() ? StateTypes.sensor : StateTypes.actionReference,
                         popupData["x"],
                         popupData["y"],
                         popupData["width"],
