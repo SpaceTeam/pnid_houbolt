@@ -825,8 +825,7 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     let sensorDeviationCheck = "return !(feedback == setState);";
 
     //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
-    //console.log("search term", searchTerm);
-    //console.log("true search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
+    //console.log("search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
     let defaultSensorDeviation = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "sens_deviation");
     if (defaultSensorDeviation !== undefined)
     {
@@ -881,6 +880,7 @@ function execBehaviors(stateName, elementType, stateType, inVars)
  * @see updatePNID
  * @example setStateValue({"name": "a_cool_state_name", "value": 123.0});
  */
+/*
 function setStateValueNumber(state, recursionDepth = 0)
 {
     let stateType = parseStateType(state);
@@ -1034,11 +1034,6 @@ function setStateValueNumber(state, recursionDepth = 0)
                         //console.log("feedback deviation error");
                         outVars["color"] = "feedback_deviation_error";
                     }
-                    /*if (inVars["setState"] < state["value"] - state["value"] * sensorDeviation || inVars["setState"] > state["value"] + state["value"] * sensorDeviation)
-                    {
-                        console.log("feedback deviation error");
-                        outVars["color"] = "feedback_deviation_error";
-                    }*/
                 }
                 
                 applyUpdatesToPnID(elementGroup.eq(i), outVars, isActionReference);
@@ -1115,6 +1110,7 @@ function setStateValueNumber(state, recursionDepth = 0)
         updatePNID(linkedStateUpdates, recursionDepth + 1);
     }
 }
+*/
 
 //TODO update to use element name instead of element group now that getElement properly caches stuff (haha) it's more efficient and better readable
 function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)

@@ -26,15 +26,16 @@ function clickEventListener(popupID)
         }
         else
         {
-            let isActionReference = false;
+            let stateType = StateTypes.sensor;
             let popupParent = $(document).find(`g.${popupID}`);
             //printLog("info", popupParent);
             if (popupParent.length === 0)
             {
                 popupParent = $(document).find(`g[data-action-reference='${popupID}']`);
-                isActionReference = true;
+                stateType = StateTypes.actionReference;
             }
-            createPopup(popupID, popupParent.not(".wire").not(".PnID-ThermalBarrier"), isActionReference); //not a huge fan that the thermalbarrier is hardcoded here, but got no better solution right now. if not sometimes popups wouldn't work
+            createPopup(popupID, popupParent.not(".wire").not(".PnID-ThermalBarrier"), stateType);
+            //not a huge fan that the thermalbarrier is hardcoded here, but got no better solution right now. if not sometimes popups wouldn't work
         }
 	}
 }
@@ -53,6 +54,24 @@ function hideAllPnIDPopups()
             hidePopup(popup);
         }
     }
+}
+
+function getPopupConfig(popupID, stateType, parentClasses)
+{
+    let popupConfig = getConfigData(config, popupID, "popup");
+    if (popupConfig == undefined)
+    {
+        //if no config was found in the custom config, check the default config
+        if (stateType == StateTypes.actionReference)
+        {
+            popupConfig = getConfigData(defaultConfig, popupID, "popup");
+        }
+        else
+        {
+            popupConfig = getConfigData(defaultConfig, getTypeFromClasses(parentClasses), "popup");
+        }
+    }
+    return popupConfig;
 }
 
 function editStoredPopupData(popupID, key, value, pnid = undefined)
@@ -139,7 +158,15 @@ function restorePopupsFromLocalStorage()
                 else
                 {
                     //console.log("creating popup", popupID, parent);
-                    createPopup(popupID, parent, popupData["isActionReference"], popupData["x"], popupData["y"], popupData["width"], popupData["height"]);
+                    createPopup(
+                        popupID,
+                        parent,
+                        popupData["isActionReference"] == true ? StateTypes.actionReference : StateTypes.sensor,
+                        popupData["x"],
+                        popupData["y"],
+                        popupData["width"],
+                        popupData["height"]
+                    );
                 }
             }
         }
@@ -517,16 +544,41 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
     return containedStates;
 }
 
-function calcPopupPosition()
+/**
+ * @summary Calculates a sensible default position of a popup based on its parent element and the positioning within the viewport.
+ * @param {Object} parents DOM Element of the parents.
+ * @param {Dictionary} parentPosition Position of the parent.
+ * @param {number} minPopupPad Padding from viewport boundaries with values 0 ... 1 being 0% ... 100%
+ * @param {number} popupDistance Distance from parent element in px
+ * @returns {Array} Array of x and y position at index 0 and 1 respectively
+ */
+function calcPopupPosition(parents, parentPosition, minPopupPad = 0.02, popupDistance = 10)
 {
+    let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
+    let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
+	let parentPosition = parent.offset();
 
+    popupPosition = [parentPosition.left, parentPosition.top + parents[0].getBoundingClientRect().height + popupDistance];
+    if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
+    {
+        //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
+        //popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
+    }
+    if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
+    {
+        popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
+    }
+    return popupPosition;
 }
 
-function createPopupTitleBar(popupClone, popupID)
+function createPopupTitleBar(popupClone, popupID, title)
 {
     console.log("popupclone", popupClone);
+	// I'd like to not have to have the width and height specified here, but when it's in the .css it
+    //gets ignored unless written with !important because the style here is more specific
     popupClone.attr('style', `width: auto; height: auto;`);
 	
+    popupClone.find("div.popup-heading").first().text(title);
 	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
 	popupClone.find("div.row").find(".btn-drag").first().on('mousedown', function(e) {
 		isDown = true;
@@ -539,16 +591,24 @@ function createPopupTitleBar(popupClone, popupID)
     return popupClone;
 }
 
+function createBundledElements(popup, parents)
+{
+    popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
+    parents.each(function(index) {
+        let parentReference = getValReferenceFromClasses(extractClasses(parents.eq(index).attr("class")));
+        let parentType = getTypeFromClasses(extractClasses(parents.eq(index).attr("class")));
+        appendPopupContent(popup, getConfigData(defaultConfig, parentType, "popup"), parentReference, StateTypes.sensor);
+    });
+}
+
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
-	let parentPosition = parent.offset();
+    console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	
 	let popupClone = $("#popupTemp").clone();
 	popupClone.removeAttr('id');
-	// I'd like to not have to have the width and height specified here, but when it's in the .css it gets ignored unless written with !important because the style here is more specific
-	popupClone = createPopupTitleBar(popupClone, popupID);
 	
 	let parentClasses = extractClasses(parent.attr("class"));
 	let title = "";
@@ -558,25 +618,15 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
 	}
 	else
 	{
-        console.log("parent classes:", parentClasses, "val ref:", getValReferenceFromClasses(parentClasses));
+        //console.log("parent classes:", parentClasses, "val ref:", getValReferenceFromClasses(parentClasses));
 	    title = getElementValue(getValReferenceFromClasses(parentClasses), "reference");
 	}
-    popupClone.find("div.popup-heading").first().text(title);
+	popupClone = createPopupTitleBar(popupClone, popupID, title);
 
-    let type = getTypeFromClasses(parentClasses);
-    if (popupID in defaultConfig) // indicates a custom action reference that wants/needs its own popup definition
-    {
-        type = popupID;
-    }
-    if (defaultConfig[type] === undefined)
-    {
-        return; //would be nice if this would be called earlier so less code is run uselessly, but it's not really a point where optimization is *needed*
-    }
-    
-    let popupConfig = getConfigData(defaultConfig, type, "popup");
+    let popupConfig = getPopupConfig(popupID, stateType, parentClasses);
     if (popupConfig == undefined)
     {
-        printLog("warning", `Tried creating a popup from ID "${popupID}" with type "${type}", but no popup configuration was found.`); //does this make sense to print? this can be 100% wanted/intended to be the case
+        printLog("warning", `Tried creating a popup from ID "${popupID}", but no popup configuration was found.`); //does this make sense to print? this can be 100% wanted/intended to be the case
         return;
     }
 
@@ -585,66 +635,36 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
-        popupClone.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
-        parent.each(function(index) {
-            let parentReference = getValReferenceFromClasses(parent.eq(index).attr("class").split(" "));
-            let parentType = getTypeFromClasses(parent.eq(index).attr("class").split(" "));
-            appendPopupContent(popupClone, getConfigData(defaultConfig, parentType, "popup"), parentReference, false);
-        });
-        //appendPopupContent(popupClone);
+        createBundledElements(popupClone, parent);
     }
 
-    $(document.body).append(popupClone);
-    //todo this may have unwanted behavior if only one of the two is undefined
     if (width != undefined && height != undefined)
     {
+        //todo this may have unwanted behavior if only one of the two is undefined
         if (popupClone.style == undefined)
         {
             popupClone.style = "";
         }
         popupClone.width(width);
         popupClone.height(height);
-        //popupClone.css("width", width+"px");
-        //popupClone.css("height", height+"px");
-        //console.log("popup clone css", popupClone.css("width"));
     }
-    let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
-    //console.log("pop size:", popupSize);
-    let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
-    //console.log("view size:", viewportSize);
-    let minPopupPad = 0.02; //in %
-    let popupDistance = 10;
     let popupPosition = [0,0];
     if (x == undefined || y == undefined)
     {
-        popupPosition = [parentPosition.left, parentPosition.top + parent[0].getBoundingClientRect().height + popupDistance];
-        //TODO with better pnid element bounding boxes the positioning of the popup should be done better
-        if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
-        {
-            
-            //popupPosition[1] = viewportSize[1] * (1 - minPopupPad) - popupSize[1];
-            //popupPosition[1] = parentPosition.top - popupSize[1] - popupDistance;
-        }
-        if (parentPosition.left + popupSize[0] > viewportSize[0] * (1 - minPopupPad))
-        {
-            popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
-        }
+        popupPosition = calcPopupPosition();
     }
     else
     {
         popupPosition = [x, y];
     }
     
-    //console.log("pop pos:", popupPosition);
-    
-    //console.log("pop pos2:", popupPosition);
     popupClone.css("top", popupPosition[1]+"px");
     popupClone.css("left", popupPosition[0]+"px");
 
     popupClone.attr("data-popup-id", popupID);
+    $(document.body).append(popupClone);
 	popupClone.fadeIn(100);
     
-    console.log("add to active popups", currentPnID, popupID);
     if (currentPnID != undefined)
     {
         if (activePopups[currentPnID] == undefined)
