@@ -661,15 +661,6 @@ function setStateValue(state, recursionDepth = 0)
     updateLinkedStates(state, recursionDepth);
 }
 
-const StateTypes = Object.freeze({
-	sensor: Symbol("sensor"),
-	guiEcho: Symbol("guiEcho"),
-	actionReference: Symbol("actionReference"),
-	setState: Symbol("setState"),
-    wire: Symbol("wire"),
-	custom: Symbol("custom")
-});
-
 function handleSensorState(stateName, stateValue)
 {
     let elementGroup = getElement(stateName);

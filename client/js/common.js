@@ -1,3 +1,12 @@
+const StateTypes = Object.freeze({
+	sensor: Symbol("sensor"),
+	guiEcho: Symbol("guiEcho"),
+	actionReference: Symbol("actionReference"),
+	setState: Symbol("setState"),
+    wire: Symbol("wire"),
+	custom: Symbol("custom")
+});
+
 function clearLocalStorage()
 {
     window.localStorage.clear();
@@ -301,3 +310,37 @@ function getConfigData(config, elementName, key)
     
     return undefined;
 }
+
+//I dislike that I need this function. Do I really need this?
+//I can't store symbols in localstorage so when retrieving it from there I only have a string to work with
+/*function matchStringToStateType(str)
+{
+    console.log("matching string", str, "to state type symbol");
+    let matchStr = `Symbol(${str})`;
+    if (matchStr == StateTypes.sensor.toString())
+    {
+        return StateTypes.sensor;
+    }
+    else if (matchStr == StateTypes.guiEcho.toString())
+    {
+        return StateTypes.guiEcho;
+    }
+    else if (matchStr == StateTypes.actionReference.toString())
+    {
+        return StateTypes.actionReference;
+    }
+    else if (matchStr == StateTypes.setState.toString())
+    {
+        return StateTypes.setState;
+    }
+    else if (matchStr == StateTypes.wire.toString())
+    {
+        return StateTypes.wire;
+    }
+    else if (matchStr == StateTypes.custom.toString())
+    {
+        return StateTypes.custom;
+    }
+    
+    printLog("warning", `Tried matching the string "${str}" to a state type, but couldn't!`);
+}*/

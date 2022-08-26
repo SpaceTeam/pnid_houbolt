@@ -20,7 +20,7 @@ function clickEventListener(popupID)
 	}
 	else // if doesn't exist, create, if just hidden, show
 	{
-        if (popupID in activePopups) //just hidden, no need to create again
+        if (activePopups[currentPnID] != undefined && popupID in activePopups[currentPnID]) //just hidden, no need to create again
         {
             unhidePopup(popupID);
         }
@@ -121,8 +121,7 @@ function restorePopupsFromLocalStorage()
     //want to store visible popups in the local storage and maintaining a second dict just with
     //active popups sounds like an even worse time
     let storedPopupsString = window.localStorage.getItem("popups");
-    console.log(storedPopupsString);
-    if (storedPopupsString == null)
+    if (storedPopupsString == null || storedPopupsString.length == 0)
     {
         return;
     }
@@ -161,7 +160,7 @@ function restorePopupsFromLocalStorage()
                     createPopup(
                         popupID,
                         parent,
-                        popupData["isActionReference"] == true ? StateTypes.actionReference : StateTypes.sensor,
+                        popupData["stateType"] == 'Symbol("sensor")' ? StateTypes.sensor : StateTypes.actionReference,
                         popupData["x"],
                         popupData["y"],
                         popupData["width"],
@@ -178,16 +177,18 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
     let curPopupDataStore = {
         parentRef: parentRef,
         parentValRef: parentValRef,
-        isActionReference: stateType == StateTypes.isActionReference,
+        stateType: stateType.toString(),
         x: popupPosition[0],
         y: popupPosition[1],
         width: popupSize[0],
         height: popupSize[1]
     };
-    let storedPopups = JSON.parse(window.localStorage.getItem("popups"));
-    if (storedPopups == undefined)
+    let storedPopupsString = window.localStorage.getItem("popups");
+    let storedPopups = {};
+    if (storedPopupsString != null && storedPopupsString.length > 0)
     {
-        storedPopups = {};
+        //todo this doesn't properly handle if the popup string somehow isn't a valid JSON string. should probably fall back to clearing the popups localstorage in that case
+        storedPopups = JSON.parse(storedPopupsString);
     }
     if (storedPopups[currentPnID] == undefined)
     {
@@ -200,6 +201,19 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
         storedPopups[currentPnID][popupID] = curPopupDataStore;
     }
     //add popup to localstorage
+    window.localStorage.setItem("popups", JSON.stringify(storedPopups));
+}
+
+function removePopupFromLocalStorage(popupID, pnid = undefined)
+{
+    let storedPopupsString = window.localStorage.getItem("popups");
+    if (storedPopupsString.length == 0)
+    {
+        //if there are no popups stored, we don't need to remove anything
+        return;
+    }
+    let storedPopups = JSON.parse(storedPopupsString);
+    delete storedPopups[pnid == undefined ? currentPnID : pnid][popupID];
     window.localStorage.setItem("popups", JSON.stringify(storedPopups));
 }
 
@@ -547,16 +561,14 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
 /**
  * @summary Calculates a sensible default position of a popup based on its parent element and the positioning within the viewport.
  * @param {Object} parents DOM Element of the parents.
- * @param {Dictionary} parentPosition Position of the parent.
  * @param {number} minPopupPad Padding from viewport boundaries with values 0 ... 1 being 0% ... 100%
  * @param {number} popupDistance Distance from parent element in px
  * @returns {Array} Array of x and y position at index 0 and 1 respectively
  */
-function calcPopupPosition(parents, parentPosition, minPopupPad = 0.02, popupDistance = 10)
+function calcPopupPosition(parents, popupSize, minPopupPad = 0.02, popupDistance = 10)
 {
-    let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
     let viewportSize = [Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0), Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)];
-	let parentPosition = parent.offset();
+	let parentPosition = parents.offset();
 
     popupPosition = [parentPosition.left, parentPosition.top + parents[0].getBoundingClientRect().height + popupDistance];
     if (parentPosition.top + popupSize[1] > viewportSize[1] * (1 - minPopupPad))
@@ -651,7 +663,8 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     let popupPosition = [0,0];
     if (x == undefined || y == undefined)
     {
-        popupPosition = calcPopupPosition();
+        let popupSize = [popupClone.outerWidth(), popupClone.outerHeight()];
+        popupPosition = calcPopupPosition(parent, popupSize);
     }
     else
     {
@@ -673,12 +686,15 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
         }
         activePopups[currentPnID][popupID] = {
             "popup": popupClone,
+            "stateType": stateType,
+            "parentRef": getReferenceFromClasses(parentClasses),
+            "parentValRef": getValReferenceFromClasses(parentClasses),
             "config": popupConfig,
             "containedStates": containedStates,
             "visibility": true
         };
         
-        storePopupInLocalStorage(popupID, getReferenceFromClasses(parentClasses), getValReferenceFromClasses(parentClasses), stateType, popupPosition, [width, height]);
+        storePopupInLocalStorage(popupID, getReferenceFromClasses(parentClasses), getValReferenceFromClasses(parentClasses), stateType, popupPosition, [popupClone.outerWidth(), popupClone.outerHeight()]);
     }
 
     //let resize observer watch for this popup
@@ -893,12 +909,26 @@ function unhidePopup(popupID)
     //console.log("unhiding popup", popupID, currentPnID);
     activePopups[currentPnID][popupID]["popup"].fadeIn(100);
     activePopups[currentPnID][popupID]["visibility"] = true;
+    storePopupInLocalStorage(
+        popupID,
+        activePopups[currentPnID][popupID]["parentRef"],
+        activePopups[currentPnID][popupID]["parentValRef"],
+        activePopups[currentPnID][popupID]["stateType"],
+        [
+            activePopups[currentPnID][popupID]["popup"][0].offsetLeft,
+            activePopups[currentPnID][popupID]["popup"][0].offsetTop
+        ],
+        [
+            activePopups[currentPnID][popupID]["popup"].outerWidth(), 
+            activePopups[currentPnID][popupID]["popup"].outerHeight()
+        ]
+    );
 }
 
 function destroyPopup(popupID)
 {
     hidePopup(popupID);
-    window.localStorage.removeItem(`popup_${popupID}`);
+    removePopupFromLocalStorage(popupID);
 }
 
 function clearPopupStorage()
