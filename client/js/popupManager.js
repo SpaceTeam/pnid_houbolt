@@ -191,6 +191,7 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
         width: popupSize[0],
         height: popupSize[1]
     };
+    console.log("storing popup data", curPopupDataStore);
     let storedPopupsString = window.localStorage.getItem("popups");
     let storedPopups = {};
     if (storedPopupsString != null && storedPopupsString.length > 0)
@@ -208,6 +209,8 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
     {
         storedPopups[currentPnID][popupID] = curPopupDataStore;
     }
+    console.log("stored popups", storedPopups);
+    console.log("popups stringified", JSON.stringify(storedPopups));
     //add popup to localstorage
     window.localStorage.setItem("popups", JSON.stringify(storedPopups));
 }
@@ -593,7 +596,6 @@ function calcPopupPosition(parents, popupSize, minPopupPad = 0.02, popupDistance
 
 function createPopupTitleBar(popupClone, popupID, title)
 {
-    console.log("popupclone", popupClone);
 	// I'd like to not have to have the width and height specified here, but when it's in the .css it
     //gets ignored unless written with !important because the style here is more specific
     popupClone.attr('style', `width: auto; height: auto;`);
@@ -977,8 +979,8 @@ document.addEventListener('mouseup', function(event) {
             if (activePopups[currentPnID][popupResized]["visibility"] == true)
             {
                 //apparently resize also gets triggered if visibility is set to hidden which breaks the following code (we don't even want that)
-                editStoredPopupData(popupResized, "width", activePopups[currentPnID][popupResized]["popup"].width());
-                editStoredPopupData(popupResized, "height", activePopups[currentPnID][popupResized]["popup"].height());
+                editStoredPopupData(popupResized, "width", activePopups[currentPnID][popupResized]["popup"].outerWidth());
+                editStoredPopupData(popupResized, "height", activePopups[currentPnID][popupResized]["popup"].outerHeight());
             }
         }
         catch (e)
