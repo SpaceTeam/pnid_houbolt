@@ -134,7 +134,15 @@ function restorePopupsFromLocalStorage()
 
     for (let popupID of Object.keys(storedPopups)) {
         let popupData = storedPopups[popupID];
-        let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+        let parent = undefined;
+        if (storedPopups[popupID]["stateType"] == StateTypes.actionReference.toString())
+        {
+            parent = $(document).find(`g[data-action-reference='${popupID}']`);
+        }
+        else
+        {
+            parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+        }
         //console.log("create popup with", popupID, popupData["x"], popupData["y"], popupData["width"],popupData["height"]);
         if (parent.length > 0)
         {
@@ -605,6 +613,7 @@ function createPopupTitleBar(popupClone, popupID, title)
 
 function createBundledElements(popup, parents)
 {
+    popup.append(createSeparator());
     popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
     parents.each(function(index) {
         let parentReference = getValReferenceFromClasses(extractClasses(parents.eq(index).attr("class")));
@@ -688,7 +697,7 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
             "popup": popupClone,
             "stateType": stateType,
             "parentRef": getReferenceFromClasses(parentClasses),
-            "parentValRef": getValReferenceFromClasses(parentClasses),
+            "parentValRef": stateType == StateTypes.actionReference ? popupID : getValReferenceFromClasses(parentClasses),
             "config": popupConfig,
             "containedStates": containedStates,
             "visibility": true
