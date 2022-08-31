@@ -615,12 +615,21 @@ function createPopupTitleBar(popupClone, popupID, title)
 
 function createBundledElements(popup, parents)
 {
-    popup.append(createSeparator());
-    popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
+    let appendedElements = false;
     parents.each(function(index) {
         let parentReference = getValReferenceFromClasses(extractClasses(parents.eq(index).attr("class")));
         let parentType = getTypeFromClasses(extractClasses(parents.eq(index).attr("class")));
-        appendPopupContent(popup, getConfigData(defaultConfig, parentType, "popup"), parentReference, StateTypes.sensor);
+        let popupConfig = getConfigData(defaultConfig, parentType, "popup");
+        if (appendedElements == false && popupConfig != undefined)
+        {
+            //Only append the "bundled elements" sub header to a popup if there actually are elements to bundle
+            //todo: this is currently (almost) useless because if there's no popup definition you can't open a popup from that element
+            //this should however be remedied in the future
+            appendedElements = true;
+            popup.append(createSeparator());
+            popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
+        }
+        appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor);
     });
 }
 
@@ -733,6 +742,56 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
                 updatePopup(stateName, undefined, valueRaw, stateType, i);
             }
         }
+    }
+}
+
+function findPopupWithState(stateName)
+{
+    //todo: I dislike that I have to return an array here (not particularly about the array, but I dislike that I need to return 2 pieces of information)
+    let bundledInActionReference = false; //I know that I don't really need that variable, but it makes the code more readable IMO
+    if (currentPnID != undefined && activePopups[currentPnID] != undefined)
+    {
+        if (stateName in activePopups[currentPnID])
+        {
+            return [stateName, bundledInActionReference];
+        }
+    
+        let actionReference = getElementAttrValue(stateName, "data-action-reference");
+        if (actionReference in actionReference[currentPnID])
+        {
+            bundledInActionReference = true;
+            return [actionReference, bundledInActionReference];
+        }
+        //todo I feel like I should also check for bundled states here, but for some reason the old code also had bundled states working here?
+    }
+    else
+    {
+        printLog("error", `Tried finding a popup for the state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
+        return [undefined, false];
+    }
+}
+
+function updatePopup_new(stateName, value, stateType, popupID = undefined)
+{
+    if (currentPnID == undefined || activePopups[currentPnID] == undefined)
+    {
+        printLog("error", `Tried updating a popup for state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
+        return;
+    }
+
+    let bundledInActionReference = false;
+    if (popupID == undefined)
+    {
+        [popupID, bundledInActionReference] = findPopupWithState(stateName);
+    }
+
+    let popup = activePopups[currentPnID][popupID]["popup"];
+    let popupConfig = activePopups[currentPnID][popupID]["config"];
+
+    if (bundledInActionReference)
+    {
+        //todo: popup creation now respects custom config for popups as well, this does not (yet). fix.
+        popupConfig = getConfigData(defaultConfig, getTypeFromClasses(extractClasses(getElement(stateName).first().attr("class"))), "popup");
     }
 }
 
