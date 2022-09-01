@@ -732,14 +732,19 @@ function updatePopupTitle(popupID, newTitle)
 
 function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 {
-    for (let i in activePopups)
+    if (currentPnID == undefined || activePopups[currentPnID] == undefined)
     {
-        for (let n in activePopups[i]["containedStates"])
+        printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
+        return;
+    }
+    for (let i in activePopups[currentPnID])
+    {
+        for (let n in activePopups[currentPnID][i]["containedStates"])
         {
-            if (activePopups[i]["containedStates"][n] == stateName)
+            if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
             {
                 //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
-                updatePopup(stateName, undefined, valueRaw, stateType, i);
+                updatePopup(stateName, valueRaw, stateType, i);
             }
         }
     }
@@ -771,7 +776,7 @@ function findPopupWithState(stateName)
     }
 }
 
-function updatePopup_new(stateName, value, stateType, popupID = undefined)
+function updatePopup(stateName, value, stateType, popupID = undefined)
 {
     if (currentPnID == undefined || activePopups[currentPnID] == undefined)
     {
@@ -792,10 +797,269 @@ function updatePopup_new(stateName, value, stateType, popupID = undefined)
     {
         //todo: popup creation now respects custom config for popups as well, this does not (yet). fix.
         popupConfig = getConfigData(defaultConfig, getTypeFromClasses(extractClasses(getElement(stateName).first().attr("class"))), "popup");
+        if (popupConfig == undefined) //if this bundled state has no popup config it also can't have a bundled element in the action reference popup, so there is nothing to update
+        {
+            return;
+        }
+    }
+
+    for (let rowConfig of popupConfig)
+    {
+        //only update this popup row if it's the right variable for it
+        //console.log("updating rowconfig", rowConfig, stateName, popupID);
+        if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
+        {
+            switch (stateType)
+            {
+                //I'm not too happy with the split here as I need to go through the same
+                case StateTypes.sensor:
+                    updatePopupSensorState(stateName, value, popup, rowConfig);
+                    console.log("updating popup from sensor state type:", stateName, value);
+                    break;
+                case StateTypes.guiEcho:
+                    updatePopupGuiEchoState(stateName, value, popup, rowConfig);
+                    console.log("updating popup from gui echo state type:", stateName, value);
+                    break;
+                case StateTypes.actionReference:
+                    updatePopupActionReferenceState(stateName, value, popup, rowConfig);
+                    console.log("updating popup from action reference state type:", stateName, value);
+                    break;
+                case StateTypes.setState:
+                    updatePopupSetStateState(stateName, value, popup, rowConfig);
+                    console.log("updating popup from set state state type:", stateName, value);
+                    break;
+            }
+        }
     }
 }
 
-function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
+function updatePopupSensorState(stateName, value, popup, rowConfig)
+{
+    let contentType = rowConfig["type"];
+    let contentStyle = rowConfig["style"];
+    let elements = {};
+    switch (contentType)
+    {
+        case "display":
+            switch (contentStyle)
+            {
+                case "text":
+                    elements = $(popup).find(`[display="${stateName}"]`);
+                    elements.text(value);
+                    break;
+                case "external": //no update needed
+                    break;
+                default:
+                    printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        case "input":
+            switch (contentStyle)
+            {
+                case "checkbox":
+                    break;
+                case "slider":
+                    //if the value is sensor feedback, update the feedback slider background
+                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    {
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
+                        break;
+                    }
+                    setSliderFeedback(elements, Math.round(rawValue))
+                    break;
+                case "numberEntry":
+                    //todo: right now number entry is never used to manipulate a pnid element/sensor/actuator directly, so the sensor state type doesn't do anything, but that may need to change in the future.
+                    break;
+                default:
+                    printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        default:
+            printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
+            break;
+    }
+}
+
+function updatePopupGuiEchoState(stateName, value, popup, rowConfig)
+{
+    //todo: all input elements should have a similar behaviour to number entry where uncommitted changes are marked in red
+    let contentType = rowConfig["type"];
+    let contentStyle = rowConfig["style"];
+    let elements = {};
+    //only update this popup row if it's the right variable for it
+    //console.log("updating rowconfig", rowConfig, stateName, popupID);
+    switch (contentType)
+    {
+        case "display":
+            switch (contentStyle)
+            {
+                case "text":
+                    //TODO consider adding the ability for text displays to show other types of state updates
+                    break;
+                case "external": //no update needed
+                    break;
+                default:
+                    printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        case "input":
+            switch (contentStyle)
+            {
+                case "checkbox":
+                    //console.log("updating gui state checkbox", rawValue);
+                    //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                    //todo: ask markus/georg; do we want this update on gui echo or on set state?
+                    elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                    if (value.toString() === rowConfig["low"])
+                    {
+                        elements.prop("checked", false);
+                    }
+                    else
+                    {
+                        elements.prop("checked", true);
+                    }
+                    break;
+                case "slider":
+                    elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
+                    //if the value is not sensor feedback, but a set point instead, move the slider
+                    if (!sliderIsMoving())
+                    {
+                        //but only if the slider isn't being moved right now
+                        setSliderValue(elements, Math.round(value));
+                    }
+                    break;
+                case "numberEntry":
+                    //console.log("updating number entry");
+                    //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
+                    elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
+                    elements.val(value);
+                    //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be
+                    break;
+                default:
+                    printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        default:
+            printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
+            break;
+    }
+}
+
+function updatePopupActionReferenceState(stateName, value, popup, rowConfig)
+{
+    let contentType = rowConfig["type"];
+    let contentStyle = rowConfig["style"];
+    let elements = {};
+    switch (contentType)
+    {
+        case "display":
+            switch (contentStyle)
+            {
+                case "text":
+                    //TODO consider adding the ability for text displays to show other types of state updates
+                    break;
+                case "external": //no update needed
+                    break;
+                default:
+                    printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        case "input":
+            switch (contentStyle)
+            {
+                case "checkbox":
+                    if (stateType == StateTypes.actionReference)
+                    {
+                        //console.log("updating gui state checkbox", rawValue);
+                        //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                        //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
+                        elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                        if (value.toString() === rowConfig["low"])
+                        {
+                            elements.prop("checked", false);
+                        }
+                        else
+                        {
+                            elements.prop("checked", true);
+                        }
+                    }
+                    break;
+                case "slider":
+                    elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
+                    //if the value is sensor feedback, update the feedback slider background
+                    if (!checkStringIsNumber(value)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    {
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring update.`);
+                        break;
+                    }
+                    setSliderFeedback(elements, Math.round(value));
+                    break;
+                case "numberEntry":
+                    //todo: right now number entry is never used to manipulate an action reference, so the sensor state type doesn't do anything, but that may need to change in the future.
+                    break;
+                default:
+                    printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        default:
+            printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
+            break;
+    }
+}
+
+//I hate this function name but it fits the scheme and I don't know anything better
+function updatePopupSetStateState(stateName, value, popup, rowConfig)
+{
+    let contentType = rowConfig["type"];
+    let contentStyle = rowConfig["style"];
+    let elements = {};
+    switch (contentType)
+    {
+        case "display":
+            switch (contentStyle)
+            {
+                case "text":
+                    //TODO consider adding the ability for text displays to show other types of state updates
+                    break;
+                case "external": //no update needed
+                    break;
+                default:
+                    printLog("warning", `Unknown display style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        case "input":
+            switch (contentStyle)
+            {
+                case "checkbox":
+                    break;
+                case "slider":
+                    break;
+                case "numberEntry":
+                    //console.log("updating number entry");
+                    //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
+                    elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
+                    elements.val(value);
+                    elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
+                    break;
+                default:
+                    printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
+                    break;
+            }
+            break;
+        default:
+            printLog("warning", `Unknown content type while trying to update popup (${popupID}) with state (${stateName}): '${contentType}'`);
+            break;
+    }
+}
+
+function updatePopup_old(stateName, value, rawValue, stateType, popupID = undefined)
 {
     let bundledInActionReference = false;
     //if the popup ID is undefined, search for it. if it's already defined it's likely a sub state of the popup (not bundled action ref)

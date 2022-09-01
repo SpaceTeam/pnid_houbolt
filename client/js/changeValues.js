@@ -703,11 +703,11 @@ function handleSensorState(stateName, stateValue)
 
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], stateValue, StateTypes.sensor);
+        updatePopup(stateName, outVars["value"], StateTypes.sensor);
     });
 
     //todo: is this code path needed on sensor updates?
-    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor);
+    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
 }
 
 function handleGuiEchoState(stateName, stateValue)
@@ -718,22 +718,12 @@ function handleGuiEchoState(stateName, stateValue)
     if (elementGroup.length != 0)
     {
         elementGroup[0].dataset.guiEcho = stateValue;
-        updatePopup(stateName, undefined, stateValue, StateTypes.guiEcho);
+        updatePopup(stateName, stateValue, StateTypes.guiEcho);
     }
     else
     {
         //if we can't find a corresponding state directly, it may be a variable just contained in a popup
-        for (let i in activePopups)
-        {
-            for (let n in activePopups[i]["containedStates"])
-            {
-                if (activePopups[i]["containedStates"][n] == stateName)
-                {
-                    //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
-                    updatePopup(stateName, undefined, stateValue, StateTypes.guiEcho, i);
-                }
-            }
-        }
+        updatePopupsFromContainedStates(stateName, stateValue, StateTypes.guiEcho);
     }
 }
 
@@ -774,7 +764,7 @@ function handleActionReferenceState(stateName, stateValue)
 
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], stateValue, StateTypes.actionReference);
+        updatePopup(stateName, outVars["value"], StateTypes.actionReference);
     });
 
     updatePopupsFromContainedStates(stateName, stateValue, StateTypes.actionReference);
