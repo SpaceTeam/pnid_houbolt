@@ -13,8 +13,13 @@ $.get('/pnid_config/grafana', function(data) {
 //popup ID is the GUI ID (action_reference in kicad)
 function clickEventListener(popupID)
 {
+    if (currentPnID == undefined)
+    {
+        //if the current pnid is undefined, there's nothing we can do
+        return;
+    }
     // check if popup already exists
-    if (popupID in activePopups && activePopups[popupID]["visibility"] == true) // if already exists and visible, highlight
+    if (activePopups[currentPnID] != undefined && popupID in activePopups[currentPnID] && activePopups[currentPnID][popupID]["visibility"] == true) // if already exists and visible, highlight
 	{
 		highlightPopup(popupID);
 	}
@@ -1223,9 +1228,10 @@ function iframeThemeToggle(event)
 
 function highlightPopup(popupID)
 {
-    activePopups[popupID]["popup"].css({"animation-name": "none"});
+    console.log("highlighting popup:", activePopups[currentPnID][popupID]["popup"]);
+    activePopups[currentPnID][popupID]["popup"].css({"animation-name": "none"});
     setTimeout( function() {
-        activePopups[popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
+        activePopups[currentPnID][popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});
     }, 100);
 }
 
