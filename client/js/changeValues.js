@@ -752,20 +752,18 @@ function handleActionReferenceState(stateName, stateValue)
     };
 
     //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
-    elementGroup.each(function(index) {
-        let elementType = getTypeFromClasses($(this).attr("class").split(" "))
-        let outVars = execBehaviors(stateName, stateName, StateTypes.actionReference, inVars);
-        //state name twice in exec behaviors so it searches in both default and custom config for action reference config
-        if (outVars["value"] == undefined)
-        {
-            outVars["value"] = stateValue + unit;
-        }
-        applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.actionReference, outVars);
+    //let elementType = getTypeFromClasses($(this).attr("class").split(" "))
+    let outVars = execBehaviors(stateName, stateName, StateTypes.actionReference, inVars);
+    //state name twice in exec behaviors so it searches in both default and custom config for action reference config
+    if (outVars["value"] == undefined)
+    {
+        outVars["value"] = stateValue + unit;
+    }
+    //applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.actionReference, outVars);
 
-        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
-        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], StateTypes.actionReference);
-    });
+    //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
+    //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+    updatePopup(stateName, stateValue, StateTypes.actionReference);
 
     updatePopupsFromContainedStates(stateName, stateValue, StateTypes.actionReference);
 }

@@ -956,6 +956,7 @@ function updatePopupGuiEchoState(stateName, value, popup, rowConfig)
 
 function updatePopupActionReferenceState(stateName, value, popup, rowConfig)
 {
+    console.log("update action ref popup", stateName, value, popup, rowConfig);
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];
     let elements = {};
@@ -978,20 +979,17 @@ function updatePopupActionReferenceState(stateName, value, popup, rowConfig)
             switch (contentStyle)
             {
                 case "checkbox":
-                    if (stateType == StateTypes.actionReference)
+                    //console.log("updating gui state checkbox", rawValue);
+                    //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
+                    //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
+                    elements = $(popup).find(`input#${stateName}[type=checkbox]`);
+                    if (value.toString() === rowConfig["low"])
                     {
-                        //console.log("updating gui state checkbox", rawValue);
-                        //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
-                        //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
-                        elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                        if (value.toString() === rowConfig["low"])
-                        {
-                            elements.prop("checked", false);
-                        }
-                        else
-                        {
-                            elements.prop("checked", true);
-                        }
+                        elements.prop("checked", false);
+                    }
+                    else
+                    {
+                        elements.prop("checked", true);
                     }
                     break;
                 case "slider":
