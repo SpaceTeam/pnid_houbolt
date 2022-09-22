@@ -737,11 +737,16 @@ function updatePopupTitle(popupID, newTitle)
 
 function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 {
-    if (currentPnID == undefined || activePopups[currentPnID] == undefined)
+    if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
         return;
     }
+    if (activePopups[currentPnID] == undefined)
+	{
+		return;
+	}
+	
     for (let i in activePopups[currentPnID])
     {
         for (let n in activePopups[currentPnID][i]["containedStates"])
@@ -767,7 +772,7 @@ function findPopupWithState(stateName)
         }
     
         let actionReference = getElementAttrValue(stateName, "data-action-reference");
-        if (actionReference in actionReference[currentPnID])
+        if (actionReference in activePopups[currentPnID])
         {
             bundledInActionReference = true;
             return [actionReference, bundledInActionReference];
@@ -776,6 +781,10 @@ function findPopupWithState(stateName)
     }
     else
     {
+    	if (activePopups[currentPnID] == undefined)
+		{
+		    return;
+		}
         printLog("error", `Tried finding a popup for the state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
         return [undefined, false];
     }
@@ -783,16 +792,27 @@ function findPopupWithState(stateName)
 
 function updatePopup(stateName, value, stateType, popupID = undefined)
 {
-    if (currentPnID == undefined || activePopups[currentPnID] == undefined)
+    if (currentPnID == undefined)
     {
+		
         printLog("error", `Tried updating a popup for state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
         return;
     }
+    if (activePopups[currentPnID] == undefined)
+	{
+		return;
+	}
 
     let bundledInActionReference = false;
     if (popupID == undefined)
     {
-        [popupID, bundledInActionReference] = findPopupWithState(stateName);
+    	let foundPopup = findPopupWithState(stateName);
+    	if (foundPopup == undefined)
+    	{
+    		//if no popup is found, nothing to update
+    		return;
+    	}
+        [popupID, bundledInActionReference] = foundPopup;
     }
 
     let popup = activePopups[currentPnID][popupID]["popup"];

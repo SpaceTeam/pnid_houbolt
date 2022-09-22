@@ -631,27 +631,28 @@ function setStateValue(state, recursionDepth = 0)
 
     let stateType = parseStateType(state);
     let stateName = state["name"];
+    let stateValue = Math.round(state["value"] + Number.EPSILON * 100) / 100;
     switch (stateType)
     {
         case StateTypes.sensor:
             stateName = extractStateName(state["name"], StateTypes.sensor);
-            handleSensorState(stateName, state["value"]);
+            handleSensorState(stateName, stateValue);
             break;
         case StateTypes.guiEcho:
             stateName = extractStateName(state["name"], StateTypes.guiEcho);
-            handleGuiEchoState(stateName, state["value"]);
+            handleGuiEchoState(stateName, stateValue);
             break;
         case StateTypes.actionReference:
             stateName = extractStateName(state["name"], StateTypes.actionReference);
-            handleActionReferenceState(stateName, state["value"]);
+            handleActionReferenceState(stateName, stateValue);
             break;
         case StateTypes.setState:
             stateName = extractStateName(state["name"], StateTypes.setState);
-            handleTargetState(stateName, state["value"]);
+            handleTargetState(stateName, stateValue);
             break;
         case StateTypes.wire:
             stateName = extractStateName(state["name"], StateTypes.wire);
-            handleWireState(stateName, state["value"]);
+            handleWireState(stateName, stateValue);
             break;
         default:
             printLog("error", `Encountered unknown state type: ${stateType.toString()}`);
@@ -677,9 +678,9 @@ function handleSensorState(stateName, stateValue)
     }
     else
     {
-        console.log("sensor update but actually wire update");
+        //console.log("sensor update but actually wire update");
         //if no element was found, it could be a wire instead
-        setWireState(stateName, stateValue);
+        handleWireState(stateName, stateValue);
         return;
     }
 
@@ -693,7 +694,7 @@ function handleSensorState(stateName, stateValue)
 
     //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
     elementGroup.each(function(index) {
-        let elementType = getTypeFromClasses($(this).attr("class").split(" "))
+        let elementType = getTypeFromClasses(extractClasses($(this).attr("class")))
         let outVars = execBehaviors(stateName, elementType, StateTypes.sensor, inVars);
         if (outVars["value"] == undefined)
         {
@@ -783,6 +784,12 @@ function handleTargetState(stateName, stateValue)
 function handleWireState(stateName, stateValue)
 {
     let elementGroup = getElement(stateName, "wire");
+    
+    if (elementGroup.length == 0)
+    {
+    	//no wire with this state name found. either wrong config or state that doesn't exist in pnid encountered
+    	return;
+    }
 
     const inVars = {
         "this": stateName,
