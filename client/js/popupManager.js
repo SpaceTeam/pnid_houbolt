@@ -737,6 +737,10 @@ function updatePopupTitle(popupID, newTitle)
 
 function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 {
+	if (stateName == "water_valves_return-sensor")
+    {
+        console.log("trying to update bundled popup content:", stateName, valueRaw, stateType.toString());
+    }
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -753,7 +757,7 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
         {
             if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
             {
-                //console.log("trying to update contained state", state["name"], isGuiState, isActionReference, i);
+                console.log("trying to update contained state", state["name"], stateType.toString(), i);
                 updatePopup(stateName, valueRaw, stateType, i);
             }
         }
@@ -790,8 +794,8 @@ function findPopupWithState(stateName)
     }
 }
 
-function updatePopup(stateName, value, stateType, popupID = undefined)
-{
+function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
+{		
     if (currentPnID == undefined)
     {
 		
@@ -838,27 +842,27 @@ function updatePopup(stateName, value, stateType, popupID = undefined)
             {
                 //I'm not too happy with the split here as I need to go through the same
                 case StateTypes.sensor:
-                    updatePopupSensorState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from sensor state type:", stateName, value, popupID);
+                    updatePopupSensorState(stateName, value, rawValue, popup, rowConfig);
+                    //console.log("updating popup from sensor state type:", stateName, value, popupID);
                     break;
                 case StateTypes.guiEcho:
-                    updatePopupGuiEchoState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from gui echo state type:", stateName, value, popupID);
+                    updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig);
+                    //console.log("updating popup from gui echo state type:", stateName, value, popupID);
                     break;
                 case StateTypes.actionReference:
-                    updatePopupActionReferenceState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from action reference state type:", stateName, value, popupID);
+                    updatePopupActionReferenceState(stateName, value, rawValue, popup, rowConfig);
+                    //console.log("updating popup from action reference state type:", stateName, value, popupID);
                     break;
                 case StateTypes.setState:
-                    updatePopupSetStateState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from set state state type:", stateName, value, popupID);
+                    updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig);
+                    //console.log("updating popup from set state state type:", stateName, value, popupID);
                     break;
             }
         }
     }
 }
 
-function updatePopupSensorState(stateName, value, popup, rowConfig, popupID)
+function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, popupID)
 {
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];
@@ -886,12 +890,14 @@ function updatePopupSensorState(stateName, value, popup, rowConfig, popupID)
                     break;
                 case "slider":
                     //if the value is sensor feedback, update the feedback slider background
-                    if (!checkStringIsNumber(value)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
+                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                     {
                         printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring update.`);
                         break;
                     }
-                    setSliderFeedback(elements, Math.round(value))
+                    
+                    setSliderFeedback(elements, Math.round(rawValue))
                     break;
                 case "numberEntry":
                     //todo: right now number entry is never used to manipulate a pnid element/sensor/actuator directly, so the sensor state type doesn't do anything, but that may need to change in the future.
@@ -907,7 +913,7 @@ function updatePopupSensorState(stateName, value, popup, rowConfig, popupID)
     }
 }
 
-function updatePopupGuiEchoState(stateName, value, popup, rowConfig, popupID)
+function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, popupID)
 {
     //todo: all input elements should have a similar behaviour to number entry where uncommitted changes are marked in red
     let contentType = rowConfig["type"];
@@ -974,7 +980,7 @@ function updatePopupGuiEchoState(stateName, value, popup, rowConfig, popupID)
     }
 }
 
-function updatePopupActionReferenceState(stateName, value, popup, rowConfig, popupID)
+function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowConfig, popupID)
 {
     console.log("update action ref popup", stateName, value, popup, rowConfig);
     let contentType = rowConfig["type"];
@@ -1037,7 +1043,7 @@ function updatePopupActionReferenceState(stateName, value, popup, rowConfig, pop
 }
 
 //I hate this function name but it fits the scheme and I don't know anything better
-function updatePopupSetStateState(stateName, value, popup, rowConfig, popupID)
+function updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig, popupID)
 {
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];

@@ -637,6 +637,7 @@ function setStateValue(state, recursionDepth = 0)
         case StateTypes.sensor:
             stateName = extractStateName(state["name"], StateTypes.sensor);
             handleSensorState(stateName, stateValue);
+            //console.log("update state", state["name"], state["value"]);
             break;
         case StateTypes.guiEcho:
             stateName = extractStateName(state["name"], StateTypes.guiEcho);
@@ -683,8 +684,10 @@ function handleSensorState(stateName, stateValue)
         handleWireState(stateName, stateValue);
         return;
     }
-
+	
     let setStateValue = elementGroup[0].dataset.setState;
+    //if (stateName == "pressurant_tanking_valve-sensor")
+    	//console.log("set state value", setStateValue, elementGroup[0].dataset);
     const inVars = {
         "this": stateName,
         "value" : stateValue,
@@ -696,15 +699,15 @@ function handleSensorState(stateName, stateValue)
     elementGroup.each(function(index) {
         let elementType = getTypeFromClasses(extractClasses($(this).attr("class")))
         let outVars = execBehaviors(stateName, elementType, StateTypes.sensor, inVars);
+        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         if (outVars["value"] == undefined)
         {
             outVars["value"] = stateValue + unit;
         }
         applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.sensor, outVars);
 
-        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], StateTypes.sensor);
+        updatePopup(stateName, outVars["value"], stateValue, StateTypes.sensor);
     });
 
     //todo: is this code path needed on sensor updates?
@@ -719,12 +722,12 @@ function handleGuiEchoState(stateName, stateValue)
     if (elementGroup.length != 0)
     {
         elementGroup[0].dataset.guiEcho = stateValue;
-        updatePopup(stateName, stateValue, StateTypes.guiEcho);
+        updatePopup(stateName, stateValue, stateValue, StateTypes.guiEcho);
     }
     else
     {
         //if we can't find a corresponding state directly, it may be a variable just contained in a popup
-        updatePopupsFromContainedStates(stateName, stateValue, StateTypes.guiEcho);
+        updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.guiEcho);
     }
 }
 
@@ -764,14 +767,14 @@ function handleActionReferenceState(stateName, stateValue)
 
     //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
     //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-    updatePopup(stateName, stateValue, StateTypes.actionReference);
+    updatePopup(stateName, stateValue, stateValue, StateTypes.actionReference);
 
-    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.actionReference);
+    updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.actionReference);
 }
 
 function handleTargetState(stateName, stateValue)
 {
-    let elementGroup = getElement(stateName);
+    let elementGroup = getElement(stateName + "-sensor"); //todO: hardcoded -sensor postfix? 
 
     if (elementGroup.length != 0)
     {
@@ -816,6 +819,8 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     if (defaultSensorDeviation !== undefined)
     {
         sensorDeviationCheck = defaultSensorDeviation;
+        //if (stateName == "pressurant_tanking_valve-sensor")
+	        //console.log("sensor deviation", sensorDeviationCheck);
     }
 
     let evalCode = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "eval");
@@ -837,6 +842,8 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     if (customSensorDeviation !== undefined)
     {
         sensorDeviationCheck = customSensorDeviation;
+        //if (stateName == "pressurant_tanking_valve-sensor")
+	        //console.log("custom sensor deviation", sensorDeviationCheck);
     }
 
     let customEvalCode = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "eval");
@@ -844,15 +851,21 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     {
         eval(customEvalCode);
     }
-
+	//if (stateName == "pressurant_tanking_valve-sensor")
+		//console.log("before sens check", inVars["setState"]);
     if ((inVars["setState"] != undefined || inVars["setState"] != null) && stateType == StateTypes.sensor && sensorDeviationCheck != null)
     {
         eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+        
+        //if (stateName == "pressurant_tanking_valve-sensor")
+        	//console.log("dev check with", inVars["value"], parseFloat(inVars["setState"]));
         //console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
         if (sensDevChecker(inVars["value"], parseFloat(inVars["setState"])))
         {
             //console.log("feedback deviation error");
             outVars["color"] = "feedback_deviation_error";
+            
+	        //console.log("deviation error");
         }
     }
     return outVars;

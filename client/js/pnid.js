@@ -76,7 +76,13 @@ function parseStateType(state)
         return StateTypes.sensor;
     }
 
-    return StateTypes.setState;
+	if (state["name"].endsWith("-State") || state["name"].endsWith("-TargetPosition"))
+	{
+        return StateTypes.setState;
+    }
+    //printLog("error", "Encountered State that cannot be assigned to a state type:");
+    //defaulting to sensor state type. todo: check if that make sense
+    return StateTypes.sensor;
 }
 
 function extractStateName(fullName, stateType)
@@ -90,7 +96,7 @@ function extractStateName(fullName, stateType)
         case StateTypes.actionReference:
             return fullName; //todo: should this include the gui- prefix?
         case StateTypes.setState:
-            return fullName;
+            return fullName.replace("-State", "").replace("-TargetPosition", "");
         case StateTypes.wire:
             return fullName.replace("__child_wire", "");
         default:
