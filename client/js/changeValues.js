@@ -631,7 +631,7 @@ function setStateValue(state, recursionDepth = 0)
 
     let stateType = parseStateType(state);
     let stateName = state["name"];
-    let stateValue = Math.round(state["value"] + Number.EPSILON * 100) / 100;
+    let stateValue = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
     switch (stateType)
     {
         case StateTypes.sensor:

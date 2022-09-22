@@ -839,26 +839,26 @@ function updatePopup(stateName, value, stateType, popupID = undefined)
                 //I'm not too happy with the split here as I need to go through the same
                 case StateTypes.sensor:
                     updatePopupSensorState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from sensor state type:", stateName, value);
+                    console.log("updating popup from sensor state type:", stateName, value, popupID);
                     break;
                 case StateTypes.guiEcho:
                     updatePopupGuiEchoState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from gui echo state type:", stateName, value);
+                    console.log("updating popup from gui echo state type:", stateName, value, popupID);
                     break;
                 case StateTypes.actionReference:
                     updatePopupActionReferenceState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from action reference state type:", stateName, value);
+                    console.log("updating popup from action reference state type:", stateName, value, popupID);
                     break;
                 case StateTypes.setState:
                     updatePopupSetStateState(stateName, value, popup, rowConfig);
-                    console.log("updating popup from set state state type:", stateName, value);
+                    console.log("updating popup from set state state type:", stateName, value, popupID);
                     break;
             }
         }
     }
 }
 
-function updatePopupSensorState(stateName, value, popup, rowConfig)
+function updatePopupSensorState(stateName, value, popup, rowConfig, popupID)
 {
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];
@@ -886,12 +886,12 @@ function updatePopupSensorState(stateName, value, popup, rowConfig)
                     break;
                 case "slider":
                     //if the value is sensor feedback, update the feedback slider background
-                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    if (!checkStringIsNumber(value)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                     {
-                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring update.`);
                         break;
                     }
-                    setSliderFeedback(elements, Math.round(rawValue))
+                    setSliderFeedback(elements, Math.round(value))
                     break;
                 case "numberEntry":
                     //todo: right now number entry is never used to manipulate a pnid element/sensor/actuator directly, so the sensor state type doesn't do anything, but that may need to change in the future.
@@ -907,7 +907,7 @@ function updatePopupSensorState(stateName, value, popup, rowConfig)
     }
 }
 
-function updatePopupGuiEchoState(stateName, value, popup, rowConfig)
+function updatePopupGuiEchoState(stateName, value, popup, rowConfig, popupID)
 {
     //todo: all input elements should have a similar behaviour to number entry where uncommitted changes are marked in red
     let contentType = rowConfig["type"];
@@ -974,7 +974,7 @@ function updatePopupGuiEchoState(stateName, value, popup, rowConfig)
     }
 }
 
-function updatePopupActionReferenceState(stateName, value, popup, rowConfig)
+function updatePopupActionReferenceState(stateName, value, popup, rowConfig, popupID)
 {
     console.log("update action ref popup", stateName, value, popup, rowConfig);
     let contentType = rowConfig["type"];
@@ -1037,7 +1037,7 @@ function updatePopupActionReferenceState(stateName, value, popup, rowConfig)
 }
 
 //I hate this function name but it fits the scheme and I don't know anything better
-function updatePopupSetStateState(stateName, value, popup, rowConfig)
+function updatePopupSetStateState(stateName, value, popup, rowConfig, popupID)
 {
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];
