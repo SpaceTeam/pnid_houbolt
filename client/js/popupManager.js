@@ -488,12 +488,14 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         if (variableName === "value")
         {
             //if the variable is "value", this popup element listens to the popup parent state
+            console.log("variable is value");
             variableName = popupID;
         }
         else
         {
             //if the variable name is something else, push it to the contained states and try getting curValue
             containedStates.push(variableName);
+            console.log("pushing new contained state", variableName);
             
             //if we have a poll variable specified, send it to llserver to cause a response with the current value
             if (rowConfig["poll_var"] != undefined)
@@ -618,8 +620,9 @@ function createPopupTitleBar(popupClone, popupID, title)
     return popupClone;
 }
 
-function createBundledElements(popup, parents)
+function createBundledElements(popup, parents, popupID = undefined)
 {
+	let containedStates = [];
     let appendedElements = false;
     parents.each(function(index) {
         let parentReference = getValReferenceFromClasses(extractClasses(parents.eq(index).attr("class")));
@@ -634,8 +637,12 @@ function createBundledElements(popup, parents)
             popup.append(createSeparator());
             popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
         }
-        appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor);
+        containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor));
+        containedStates.push(parentReference);
+        console.log('concatted', parentReference, containedStates);
     });
+    console.log('returning bundled contained states', containedStates);
+    return containedStates;
 }
 
 //TODO consider breaking into several smaller functions
@@ -672,7 +679,8 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
-        createBundledElements(popupClone, parent);
+        containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID));
+        console.log('contained states is now', containedStates);
     }
 
     if (width != undefined && height != undefined)
@@ -729,9 +737,13 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
 
 function updatePopupTitle(popupID, newTitle)
 {
-    if (popupID in activePopups)
+	if (currentPnID == undefined)
+	{
+		return;
+	}
+    if (activePopups[currentPnID] != undefined && popupID in activePopups[currentPnID])
     {
-        activePopups[popupID]["popup"].find("div.popup-heading").first().text(newTitle);
+        activePopups[currentPnID][popupID]["popup"].find("div.popup-heading").first().text(newTitle);
     }
 }
 
@@ -798,7 +810,6 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
 {		
     if (currentPnID == undefined)
     {
-		
         printLog("error", `Tried updating a popup for state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
         return;
     }
@@ -817,6 +828,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
     		return;
     	}
         [popupID, bundledInActionReference] = foundPopup;
+        //together with the updated version of contained states this may now update action reference bundles twice. todo: figure out
     }
 
     let popup = activePopups[currentPnID][popupID]["popup"];
@@ -835,7 +847,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
     for (let rowConfig of popupConfig)
     {
         //only update this popup row if it's the right variable for it
-        //console.log("updating rowconfig", rowConfig, stateName, popupID);
+        console.log("updating rowconfig", rowConfig, stateName, popupID);
         if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
         {
             switch (stateType)
