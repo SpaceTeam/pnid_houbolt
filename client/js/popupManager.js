@@ -196,7 +196,6 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
         width: popupSize[0],
         height: popupSize[1]
     };
-    console.log("storing popup data", curPopupDataStore);
     let storedPopupsString = window.localStorage.getItem("popups");
     let storedPopups = {};
     if (storedPopupsString != null && storedPopupsString.length > 0)
@@ -214,8 +213,6 @@ function storePopupInLocalStorage(popupID, parentRef, parentValRef, stateType, p
     {
         storedPopups[currentPnID][popupID] = curPopupDataStore;
     }
-    console.log("stored popups", storedPopups);
-    console.log("popups stringified", JSON.stringify(storedPopups));
     //add popup to localstorage
     window.localStorage.setItem("popups", JSON.stringify(storedPopups));
 }
@@ -472,7 +469,6 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         if (stateType == StateTypes.actionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
-            console.log("cur value", curValue);
             curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
         }
         else
@@ -489,7 +485,6 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         if (variableName === "value")
         {
             //if the variable is "value", this popup element listens to the popup parent state
-            console.log("variable is value");
             variableName = popupID;
         }
         else
@@ -647,7 +642,7 @@ function createBundledElements(popup, parents, popupID = undefined)
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
-    console.log("creating popup with id", popupID, "and state type", stateType);
+    //console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	
 	let popupClone = $("#popupTemp").clone();
@@ -680,7 +675,7 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     {
         //containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID)); //I don't think I want to add to the contained states here
         createBundledElements(popupClone, parent, popupID);
-        console.log('contained states is now', containedStates);
+        //console.log('contained states is now', containedStates);
     }
 
     if (width != undefined && height != undefined)
@@ -749,10 +744,6 @@ function updatePopupTitle(popupID, newTitle)
 
 function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 {
-	if (stateName == "water_valves_return-sensor")
-    {
-        console.log("trying to update bundled popup content:", stateName, valueRaw, stateType.toString());
-    }
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -769,7 +760,7 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
         {
             if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
             {
-                console.log("trying to update contained state", state["name"], stateType.toString(), i);
+                //console.log("trying to update contained state", state["name"], stateType.toString(), i);
                 updatePopup(stateName, valueRaw, stateType, i);
             }
         }
@@ -847,7 +838,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
         //only update this popup row if it's the right variable for it
         //if it's a state bundled by an action reference, update it regardless
         //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
-        console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
+        //console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
         if (
             !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
             bundledInActionReference
@@ -958,7 +949,6 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     //console.log("updating gui state checkbox", rawValue);
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: ask markus/georg; do we want this update on gui echo or on set state?
-                    console.log("updating via gui echo");
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
                     if (value.toString() === rowConfig["low"])
                     {
