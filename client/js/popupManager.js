@@ -242,6 +242,7 @@ function createCollapsibleWrapper(popupID, variable, config)
 
 function createTextDisplay(variable, curValue)
 {
+    console.log("creating text entry", variable, curValue);
     let element = $("#textDisplayTemp").clone();
     element.removeAttr("id");
     element.find(".popup-value-out").attr("display", variable);
@@ -463,6 +464,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
     //construct popup content
     for (contentIndex in popupConfig)
     {
+        console.log("creating popup entry", popupConfig[contentIndex]);
         //this variable loading doesn't support elements with other variables
         let curValue = 0;
         let curRawValue = 0;
@@ -509,7 +511,15 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
                 switch (contentStyle)
                 {
                     case "text":
-                        newContentRow = createTextDisplay(popupID, curValue);
+                        if (variableName == popupID)
+                        {
+                            newContentRow = createTextDisplay(variableName, curValue);
+                        }
+                        else
+                        {
+                            newContentRow = createTextDisplay(variableName, variableName);
+                        }
+                        
                         break;
                     case "external":
                         popup.css("width", "400px");
@@ -744,6 +754,7 @@ function updatePopupTitle(popupID, newTitle)
 
 function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 {
+    console.log("update contained state");
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -760,8 +771,8 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
         {
             if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
             {
-                //console.log("trying to update contained state", state["name"], stateType.toString(), i);
-                updatePopup(stateName, valueRaw, stateType, i);
+                console.log("trying to update contained state", stateName, stateType.toString(), i);
+                updatePopup(stateName, valueRaw, valueRaw, stateType, i);
             }
         }
     }
@@ -769,6 +780,7 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 
 function findPopupWithState(stateName)
 {
+    console.log("searching for popup with contained state", stateName);
     if (currentPnID != undefined && activePopups[currentPnID] != undefined)
     {
         if (stateName in activePopups[currentPnID])
@@ -780,6 +792,18 @@ function findPopupWithState(stateName)
         if (actionReference in activePopups[currentPnID])
         {
             return actionReference;
+        }
+
+        //state could be a contained state from popup definitions
+        for (let i in activePopups[currentPnID])
+        {
+            for (let n in activePopups[currentPnID][i]["containedStates"])
+            {
+                if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
+                {
+                    return i;
+                }
+            }
         }
     }
     else
@@ -795,6 +819,7 @@ function findPopupWithState(stateName)
 
 function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
 {		
+    console.log("update popup");
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -838,7 +863,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
         //only update this popup row if it's the right variable for it
         //if it's a state bundled by an action reference, update it regardless
         //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
-        //console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
+        console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
         if (
             !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
             bundledInActionReference

@@ -677,6 +677,13 @@ function handleSensorState(stateName, stateValue)
         valueElement.text(stateValue + unit);
         elementGroup[0].dataset.value = stateValue;
     }
+    else if (findPopupWithState(stateName) != undefined)
+    {
+        //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
+        console.log("updating contained state popups", stateName, stateValue);
+        updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
+        return;
+    }
     else
     {
         //console.log("sensor update but actually wire update");
@@ -684,6 +691,7 @@ function handleSensorState(stateName, stateValue)
         handleWireState(stateName, stateValue);
         return;
     }
+    console.log("updating sensor state");
 	
     let setStateValue = elementGroup[0].dataset.setState;
     //if (stateName == "pressurant_tanking_valve-sensor")
@@ -709,9 +717,6 @@ function handleSensorState(stateName, stateValue)
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
         updatePopup(stateName, outVars["value"], stateValue, StateTypes.sensor);
     });
-
-    //todo: is this code path needed on sensor updates?
-    updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
 }
 
 function handleGuiEchoState(stateName, stateValue)
