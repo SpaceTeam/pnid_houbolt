@@ -741,6 +741,10 @@ function handleActionReferenceState(stateName, stateValue)
     {
         //todo: do I even still need the actual DOM element of the action reference value?
         //it's not used everywhere I think, but not 100% sure
+        //todo: I don't think I do, but I might need an extra data-* attribute for raw and formatted action ref value
+        //currently popups can't initialize correctly with action refs as they only have the non formatted value stored.
+        //either store the formatted in the DOM element like the normal values are (sucks because we don't need to show it)
+        //or store it in a data-* attribute. for now the behavior is good enough though, it's only a superficial beauty issue
         let actionRefValueElement = getElement(stateName, "actionReferenceValue");
         actionRefValueElement.text(stateValue);
         elementGroup.each(function (index) {
@@ -767,9 +771,9 @@ function handleActionReferenceState(stateName, stateValue)
 
     //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
     //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-    updatePopup(stateName, stateValue, stateValue, StateTypes.actionReference);
+    updatePopup(stateName, outVars["value"], stateValue, StateTypes.actionReference);
 
-    updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.actionReference);
+    updatePopupsFromContainedStates(stateName, outVars["value"], stateValue, StateTypes.actionReference);
 }
 
 function handleTargetState(stateName, stateValue)
@@ -824,6 +828,10 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     }
 
     let evalCode = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "eval");
+    if (stateType == StateTypes.actionReference)
+    {
+        console.log("exec behaviors for action ref", stateName, elementType, evalCode);
+    }
     //console.log("eval", evalCode);
     if (evalCode != undefined)
     {

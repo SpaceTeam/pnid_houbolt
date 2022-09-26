@@ -60,6 +60,8 @@ function parseStateType(state)
         //if a state starts with "gui:" it's either a Get/SetState state, in the sense of a set point as opposed to a feedback/sensor value
         //these states should only be used to update input elements in popups, nothing else, as the rest of the pnid should be feedback value based.
         //or it could be an action reference
+        //Todo: I dislike this ambiguity here. It should be fine for now, but it makes things awkward when updating popups - gui echo and action ref states now need to update the same things.
+        //in general the action ref state has a lot of copied code in how it updates popups from other state types. 
         if (getIsActionReference(state["name"]))
         {
             return StateTypes.actionReference;

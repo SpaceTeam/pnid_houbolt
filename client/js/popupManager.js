@@ -472,6 +472,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         if (stateType == StateTypes.actionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
+            console.log("cur value", curValue);
             curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
         }
         else
@@ -639,10 +640,8 @@ function createBundledElements(popup, parents, popupID = undefined)
         }
         containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor));
         containedStates.push(parentReference);
-        console.log('concatted', parentReference, containedStates);
     });
-    console.log('returning bundled contained states', containedStates);
-    return containedStates;
+    //return containedStates; //I don't think I want to return those, contained states are implicitly updated elsewhere
 }
 
 //TODO consider breaking into several smaller functions
@@ -679,7 +678,8 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
     if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
-        containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID));
+        //containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID)); //I don't think I want to add to the contained states here
+        createBundledElements(popupClone, parent, popupID);
         console.log('contained states is now', containedStates);
     }
 
@@ -778,31 +778,27 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 
 function findPopupWithState(stateName)
 {
-    //todo: I dislike that I have to return an array here (not particularly about the array, but I dislike that I need to return 2 pieces of information)
-    let bundledInActionReference = false; //I know that I don't really need that variable, but it makes the code more readable IMO
     if (currentPnID != undefined && activePopups[currentPnID] != undefined)
     {
         if (stateName in activePopups[currentPnID])
         {
-            return [stateName, bundledInActionReference];
+            return stateName;
         }
     
         let actionReference = getElementAttrValue(stateName, "data-action-reference");
         if (actionReference in activePopups[currentPnID])
         {
-            bundledInActionReference = true;
-            return [actionReference, bundledInActionReference];
+            return actionReference;
         }
-        //todo I feel like I should also check for bundled states here, but for some reason the old code also had bundled states working here?
     }
     else
     {
     	if (activePopups[currentPnID] == undefined)
 		{
-		    return;
+		    return undefined;
 		}
         printLog("error", `Tried finding a popup for the state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
-        return [undefined, false];
+        return undefined;
     }
 }
 
@@ -821,14 +817,16 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
     let bundledInActionReference = false;
     if (popupID == undefined)
     {
-    	let foundPopup = findPopupWithState(stateName);
-    	if (foundPopup == undefined)
+    	popupID = findPopupWithState(stateName);
+    	if (popupID == undefined)
     	{
     		//if no popup is found, nothing to update
     		return;
     	}
-        [popupID, bundledInActionReference] = foundPopup;
-        //together with the updated version of contained states this may now update action reference bundles twice. todo: figure out
+        if (popupID != stateName)
+        {
+            bundledInActionReference = true;
+        }
     }
 
     let popup = activePopups[currentPnID][popupID]["popup"];
@@ -847,8 +845,13 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
     for (let rowConfig of popupConfig)
     {
         //only update this popup row if it's the right variable for it
-        console.log("updating rowconfig", rowConfig, stateName, popupID);
-        if (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value"))
+        //if it's a state bundled by an action reference, update it regardless
+        //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
+        console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
+        if (
+            !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
+            bundledInActionReference
+        )
         {
             switch (stateType)
             {
@@ -955,6 +958,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     //console.log("updating gui state checkbox", rawValue);
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: ask markus/georg; do we want this update on gui echo or on set state?
+                    console.log("updating via gui echo");
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
                     if (value.toString() === rowConfig["low"])
                     {
@@ -1004,7 +1008,8 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
             switch (contentStyle)
             {
                 case "text":
-                    //TODO consider adding the ability for text displays to show other types of state updates
+                    elements = $(popup).find(`[display="${stateName}"]`);
+                    elements.text(value);
                     break;
                 case "external": //no update needed
                     break;
@@ -1021,7 +1026,7 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                    if (value.toString() === rowConfig["low"])
+                    if (rawValue.toString() === rowConfig["low"])
                     {
                         elements.prop("checked", false);
                     }
@@ -1033,12 +1038,12 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
                 case "slider":
                     elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
                     //if the value is sensor feedback, update the feedback slider background
-                    if (!checkStringIsNumber(value)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                     {
-                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring update.`);
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
                         break;
                     }
-                    setSliderFeedback(elements, Math.round(value));
+                    setSliderFeedback(elements, Math.round(rawValue));
                     break;
                 case "numberEntry":
                     //todo: right now number entry is never used to manipulate an action reference, so the sensor state type doesn't do anything, but that may need to change in the future.

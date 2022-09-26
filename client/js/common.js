@@ -233,7 +233,13 @@ function getElementValue(valueReference, valueID)
         //printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
         return undefined;
     }
-    return element.text();
+    //if (valueID == "actionReferenceValue" || valueID == "actionReferenceValueRaw")
+    //{
+    //    return element.first().text();
+    //}
+    //TODO: only taking the first element for fetching value might have unforseen side effects, but I think it should be fine and it's nicer than the
+    //hardcoded version only for action references that is commented out above. if there are issues, use the above code just for action refs.
+    return element.first().text();
 }
 
 /**
