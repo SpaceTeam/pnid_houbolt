@@ -681,7 +681,7 @@ function handleSensorState(stateName, stateValue)
     {
         //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
         console.log("updating contained state popups", stateName, stateValue);
-        updatePopupsFromContainedStates(stateName, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
+        updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
         return;
     }
     else
@@ -791,6 +791,9 @@ function handleTargetState(stateName, stateValue)
             elementGroup[index].dataset.setState = stateValue;
         });
     }
+
+    //updatePopup(stateName, stateValue, stateValue, StateTypes.setState);
+    updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.setState);
 }
 
 function handleWireState(stateName, stateValue)

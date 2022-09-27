@@ -240,13 +240,16 @@ function createCollapsibleWrapper(popupID, variable, config)
     return wrapper;
 }
 
-function createTextDisplay(variable, curValue)
+function createTextDisplay(variable, curValue, label = undefined)
 {
-    console.log("creating text entry", variable, curValue);
     let element = $("#textDisplayTemp").clone();
     element.removeAttr("id");
-    element.find(".popup-value-out").attr("display", variable);
-    element.find(".popup-value-out").text(curValue);
+    if (label != undefined)
+    {
+        element.find("a").text(label + ":").append("&nbsp;&nbsp;");
+    }
+    element.find("label.popup-value-out").attr("display", variable);
+    element.find("label.popup-value-out").text(curValue);
     return element;
 }
 
@@ -464,7 +467,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
     //construct popup content
     for (contentIndex in popupConfig)
     {
-        console.log("creating popup entry", popupConfig[contentIndex]);
+        //console.log("creating popup entry", popupConfig[contentIndex]);
         //this variable loading doesn't support elements with other variables
         let curValue = 0;
         let curRawValue = 0;
@@ -493,7 +496,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         {
             //if the variable name is something else, push it to the contained states and try getting curValue
             containedStates.push(variableName);
-            console.log("pushing new contained state", variableName);
+            //console.log("pushing new contained state", variableName);
             
             //if we have a poll variable specified, send it to llserver to cause a response with the current value
             if (rowConfig["poll_var"] != undefined)
@@ -513,11 +516,11 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
                     case "text":
                         if (variableName == popupID)
                         {
-                            newContentRow = createTextDisplay(variableName, curValue);
+                            newContentRow = createTextDisplay(variableName, curValue, rowConfig["label"]);
                         }
                         else
                         {
-                            newContentRow = createTextDisplay(variableName, variableName);
+                            newContentRow = createTextDisplay(variableName, variableName, rowConfig["label"]);
                         }
                         
                         break;
@@ -752,9 +755,9 @@ function updatePopupTitle(popupID, newTitle)
     }
 }
 
-function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
+function updatePopupsFromContainedStates(stateName, value, valueRaw, stateType)
 {
-    console.log("update contained state");
+    //console.log("update contained state");
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for possibly contained state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -771,8 +774,8 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
         {
             if (activePopups[currentPnID][i]["containedStates"][n] == stateName)
             {
-                console.log("trying to update contained state", stateName, stateType.toString(), i);
-                updatePopup(stateName, valueRaw, valueRaw, stateType, i);
+                //console.log("trying to update contained state", stateName, stateType.toString(), i);
+                updatePopup(stateName, value, valueRaw, stateType, i);
             }
         }
     }
@@ -780,7 +783,7 @@ function updatePopupsFromContainedStates(stateName, valueRaw, stateType)
 
 function findPopupWithState(stateName)
 {
-    console.log("searching for popup with contained state", stateName);
+    //console.log("searching for popup with contained state", stateName);
     if (currentPnID != undefined && activePopups[currentPnID] != undefined)
     {
         if (stateName in activePopups[currentPnID])
@@ -819,7 +822,7 @@ function findPopupWithState(stateName)
 
 function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
 {		
-    console.log("update popup");
+    //console.log("update popup");
     if (currentPnID == undefined)
     {
         printLog("error", `Tried updating a popup for state ${stateName}, but either no pnid is defined or no popups at that pnid (PnID: ${currentPnID}, Popups for PnID: ${activePopups[currentPnID]})`);
@@ -863,7 +866,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
         //only update this popup row if it's the right variable for it
         //if it's a state bundled by an action reference, update it regardless
         //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
-        console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
+        //console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
         if (
             !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
             bundledInActionReference
@@ -994,9 +997,10 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     }
                     break;
                 case "numberEntry":
-                    //console.log("updating number entry");
+                    //console.log("updating number entry gui echo");
                     //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
                     elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
+                    elements.siblings().find("input.form-control").addClass("uncommitted-highlight");
                     elements.val(value);
                     //todo some sort of check whether the input is currently active/in focus to not update it in this case. check what the intended behavior should be
                     break;
@@ -1013,7 +1017,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
 
 function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowConfig, popupID)
 {
-    console.log("update action ref popup", stateName, value, popup, rowConfig);
+    //console.log("update action ref popup", stateName, value, popup, rowConfig);
     let contentType = rowConfig["type"];
     let contentStyle = rowConfig["style"];
     let elements = {};
@@ -1103,11 +1107,18 @@ function updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig, 
                 case "slider":
                     break;
                 case "numberEntry":
-                    //console.log("updating number entry");
+                    //console.log("updating number entry set state");
                     //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
                     elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
-                    elements.val(value);
                     elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
+                    if (rawValue.toString() == elements.first().val())
+                    {
+                        elements.siblings().find("input.form-control").removeClass("incorrect-highlight");
+                    }
+                    else
+                    {
+                        elements.siblings().find("input.form-control").addClass("incorrect-highlight");
+                    }
                     break;
                 default:
                     printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
@@ -1284,7 +1295,7 @@ function iframeThemeToggle(event)
 
 function highlightPopup(popupID)
 {
-    console.log("highlighting popup:", activePopups[currentPnID][popupID]["popup"]);
+    //console.log("highlighting popup:", activePopups[currentPnID][popupID]["popup"]);
     activePopups[currentPnID][popupID]["popup"].css({"animation-name": "none"});
     setTimeout( function() {
         activePopups[currentPnID][popupID]["popup"].css({"animation-name": "highlight", "animation-duration": "2s"});

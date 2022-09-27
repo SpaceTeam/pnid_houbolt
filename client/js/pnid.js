@@ -78,7 +78,7 @@ function parseStateType(state)
         return StateTypes.sensor;
     }
 
-	if (state["name"].endsWith("-State") || state["name"].endsWith("-TargetPosition"))
+	if (state["name"].endsWith("-State") || state["name"].endsWith("-TargetPosition") || state["name"].includes("-Set"))
 	{
         return StateTypes.setState;
     }
