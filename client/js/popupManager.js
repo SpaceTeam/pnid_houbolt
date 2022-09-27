@@ -988,6 +988,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     }
                     break;
                 case "slider":
+                    console.log("updating slider gui echo");
                     elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
                     //if the value is not sensor feedback, but a set point instead, move the slider
                     if (!sliderIsMoving())
@@ -1055,14 +1056,7 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
                     }
                     break;
                 case "slider":
-                    elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
-                    //if the value is sensor feedback, update the feedback slider background
-                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
-                    {
-                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${rawValue}. Ignoring update.`);
-                        break;
-                    }
-                    setSliderFeedback(elements, Math.round(rawValue));
+                    //elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
                     break;
                 case "numberEntry":
                     //todo: right now number entry is never used to manipulate an action reference, so the sensor state type doesn't do anything, but that may need to change in the future.
