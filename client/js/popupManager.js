@@ -141,6 +141,47 @@ function restorePopups()
     }
 }
 
+function hidePopups()
+{
+    let localStorageKeys = Object.keys(window.localStorage);
+
+    for (let i in localStorageKeys) {
+        if (localStorageKeys[i].startsWith("popup_")) {
+            let popupID = localStorageKeys[i].replace("popup_", "");
+            let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
+            let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+            if (parent.length > 0 && popupID in activePopups)
+            {
+    		$(activePopups[popupID]["popup"]).fadeOut(100, function() {
+			if (activePopups[popupID]["timer"] != undefined)
+			{
+			    clearInterval(activePopups[popupID]["timer"]);
+			}
+			activePopups[popupID]["visibility"] = false;
+		});
+            }
+        }
+    }
+}
+
+function showPopups()
+{
+    let localStorageKeys = Object.keys(window.localStorage);
+
+    for (let i in localStorageKeys) {
+        if (localStorageKeys[i].startsWith("popup_")) {
+            let popupID = localStorageKeys[i].replace("popup_", "");
+            let popupData = JSON.parse(window.localStorage.getItem(`popup_${popupID}`));
+            let parent = $(document).find(`.${popupData["parentRef"]}.${popupData["parentValRef"]}`);
+            if (parent.length > 0 && popupID in activePopups)
+            {
+            	activePopups[popupID]["popup"].fadeIn(100);
+                activePopups[popupID]["visibility"] = true;
+            }
+        }
+    }
+}
+
 function createCollapsibleWrapper(popupID, variable, config)
 {
     let wrapper = $("#collapseWrapperTemp").clone();

@@ -1,6 +1,11 @@
 :root {
-    --pnid-max-width: initial;
-    --pnid-max-height: calc(100%);
+    --pnid-max-width: 100%;
+    --pnid-max-height: calc(100vh - 150px);
+}
+
+#pnid {
+	display: flex;
+	justify-content: center;
 }
 
 html body {
