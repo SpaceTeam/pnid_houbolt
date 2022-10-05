@@ -6,6 +6,10 @@
     margin-top: .7rem;
 }
 
+.popup-label {
+		font-weight: bold;
+}
+
 .popup {
 	display: none;
 	position: fixed;

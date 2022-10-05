@@ -1,3 +1,17 @@
+const StateTypes = Object.freeze({
+	sensor: Symbol("sensor"),
+	guiEcho: Symbol("guiEcho"),
+	actionReference: Symbol("actionReference"),
+	setState: Symbol("setState"),
+    wire: Symbol("wire"),
+	custom: Symbol("custom")
+});
+
+function clearLocalStorage()
+{
+    window.localStorage.clear();
+}
+
 /**
  * @summary Checks if a string can be cast properly to a number.
  * @description Checks whether the input was actually a string. If it was, tests against a regex to see if that string contains only numbers. Fancy formats like 13e6 and the like are not supported.
@@ -23,6 +37,13 @@ function checkStringIsNumber(string)
         return false;
     }
     return true;
+}
+
+function dashToCamel(dashStr)
+{
+    return dashStr.toLowerCase().replace(/-(.)/g, function(match, group1) {
+        return group1.toUpperCase();
+    });
 }
 
 /**
@@ -87,7 +108,7 @@ function storeElementInBuffer(identifier, subidentifier = "parent")
         if (element.length == 0) // if no result, try if it may be an action reference
         {
         	//console.error("action reference cache miss", identifier);
-            element = $(document).find(`g[action-reference='${identifier}']`);
+            element = $(document).find(`g[data-action-reference='${identifier}']`);
             if (element.length == 0 || element == undefined) //if there was still no result return because nothing was found and we don't want to create an empty buffer entry
             {
             	elementExists = false;
@@ -212,7 +233,13 @@ function getElementValue(valueReference, valueID)
         //printLog("warning", `Tried getting element for extracting value, but couldn't find element ${valueID} in element with value reference ${valueReference}!`);
         return undefined;
     }
-    return element.text();
+    //if (valueID == "actionReferenceValue" || valueID == "actionReferenceValueRaw")
+    //{
+    //    return element.first().text();
+    //}
+    //TODO: only taking the first element for fetching value might have unforseen side effects, but I think it should be fine and it's nicer than the
+    //hardcoded version only for action references that is commented out above. if there are issues, use the above code just for action refs.
+    return element.first().text();
 }
 
 /**
@@ -239,6 +266,11 @@ function getElementAttrValue(valueReference, attrName)
         return undefined;
     }
     return element.attr(attrName);
+}
+
+function extractClasses(classesString)
+{
+    return classesString.replaceAll("\n", "").replace(/ +(?= )/g,"").split(" ");
 }
 
 //I really dislike having this hardcoded to the n-th entry in the classes, but it's the quickest and safest way to do it right now.
@@ -284,3 +316,37 @@ function getConfigData(config, elementName, key)
     
     return undefined;
 }
+
+//I dislike that I need this function. Do I really need this?
+//I can't store symbols in localstorage so when retrieving it from there I only have a string to work with
+/*function matchStringToStateType(str)
+{
+    console.log("matching string", str, "to state type symbol");
+    let matchStr = `Symbol(${str})`;
+    if (matchStr == StateTypes.sensor.toString())
+    {
+        return StateTypes.sensor;
+    }
+    else if (matchStr == StateTypes.guiEcho.toString())
+    {
+        return StateTypes.guiEcho;
+    }
+    else if (matchStr == StateTypes.actionReference.toString())
+    {
+        return StateTypes.actionReference;
+    }
+    else if (matchStr == StateTypes.setState.toString())
+    {
+        return StateTypes.setState;
+    }
+    else if (matchStr == StateTypes.wire.toString())
+    {
+        return StateTypes.wire;
+    }
+    else if (matchStr == StateTypes.custom.toString())
+    {
+        return StateTypes.custom;
+    }
+    
+    printLog("warning", `Tried matching the string "${str}" to a state type, but couldn't!`);
+}*/
