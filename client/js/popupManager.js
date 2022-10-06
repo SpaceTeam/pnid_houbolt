@@ -447,7 +447,14 @@ function createButton(config, variable, popupID, curRawValue)
         element = $("#buttonDangerEntryTemp").clone();
     }
     element.removeAttr("id");
-    element.find("input").attr("value", config["label"]);
+    if (config["label"] == "value")
+    {
+        element.find("input").attr("value", variable);
+    }
+    else
+    {
+        element.find("input").attr("value", config["label"]);
+    }
     element.find("input").attr("onclick", `onButtonInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
     return element;
 }
