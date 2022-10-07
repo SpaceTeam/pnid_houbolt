@@ -680,7 +680,7 @@ function handleSensorState(stateName, stateValue)
     else if (findPopupWithState(stateName) != undefined)
     {
         //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
-        console.log("updating contained state popups", stateName, stateValue);
+        //console.log("updating contained state popups", stateName, stateValue);
         updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
         return;
     }
@@ -691,7 +691,7 @@ function handleSensorState(stateName, stateValue)
         handleWireState(stateName, stateValue);
         return;
     }
-    console.log("updating sensor state");
+    //console.log("updating sensor state");
 	
     let setStateValue = elementGroup[0].dataset.setState;
     //if (stateName == "pressurant_tanking_valve-sensor")

@@ -228,31 +228,35 @@ data-pnid-battery text:not(.static-color) {
 }
 
 [data-pnid-battery=battery_high] {
-    fill: var(--battery_high);
+    fill: var(--battery-high);
 }
 [data-pnid-battery=battery_high] text:not(.static-color) {
-    fill: var(--battery_high);
+    fill: var(--battery-high);
+    stroke: var(--battery-high);
 }
 
 [data-pnid-battery=battery_nominal] {
-    fill: var(--battery_nominal);
+    fill: var(--battery-nominal);
 }
 [data-pnid-battery=battery_nominal] text:not(.static-color) {
-    fill: var(--battery_nominal);
+    fill: var(--battery-nominal);
+    stroke: var(--battery-nominal);
 }
 
 [data-pnid-battery=battery_low] {
-    fill: var(--battery_low);
+    fill: var(--battery-low);
 }
 [data-pnid-battery=battery_low] text:not(.static-color) {
-    fill: var(--battery_low);
+    fill: var(--battery-low);
+    stroke: var(--battery-low);
 }
 
 [data-pnid-battery=battery_critical] {
-    fill: var(--battery_critical);
+    fill: var(--battery-critical);
 }
 [data-pnid-battery=battery_critical] text:not(.static-color) {  
-    fill: var(--battery_critical);
+    fill: var(--battery-critical);
+    stroke: var(--battery-critical);
 }
 
 [data-pnid-battery=notconnected] {
