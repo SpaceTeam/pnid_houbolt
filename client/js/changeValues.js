@@ -329,7 +329,8 @@ function stopRandomLoop()
  */
 function setStateNamesPNID(stateNameList)
 {
-	for (stateIndex in stateNameList)
+	//for (let stateIndex in stateNameList) //TODO: I think this is the correct line, but due to fucked up JS scoping and var lifetime this might break loadValuesPNID(states)
+    for (stateIndex in stateNameList)
 	{
 		//let stateName = stateNameList[stateIndex]["name"];
 		//let stateValue = stateNameList[stateIndex]["value"];
@@ -627,6 +628,7 @@ function setStateValue(state, recursionDepth = 0)
             printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update. This is intended to be supported later on");
             return;
         }
+        state["value"] = parseFloat(state["value"]);
     }
 
     let stateType = parseStateType(state);
@@ -721,7 +723,6 @@ function handleSensorState(stateName, stateValue)
 
 function handleGuiEchoState(stateName, stateValue)
 {
-    //todo: completely untested, but needs popup refactor first
     let elementGroup = getElement(stateName);
 
     if (elementGroup.length != 0)
@@ -838,7 +839,7 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     let evalCode = getConfigData(defaultConfig, elementType.replace("_Slim", "").replace("_Short", ""), "eval");
     if (stateType == StateTypes.actionReference)
     {
-        console.log("exec behaviors for action ref", stateName, elementType, evalCode);
+        //console.log("exec behaviors for action ref", stateName, elementType, evalCode);
     }
     //console.log("eval", evalCode);
     if (evalCode != undefined)
@@ -851,7 +852,9 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     let stateConfigName = stateName;
     if (stateType == StateTypes.wire)
     {
-        stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire"); //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string. doesn't occur with our naming scheme, but who's to say this won't change in the future
+        stateConfigName = stateConfigName.replace("-sensor", ":sensor:wire");
+        //TODO this could lead to issues if there is a "-sensor" string in the middle, not the end of the string.
+        //doesn't occur with our naming scheme, but who's to say this won't change in the future
         //console.log("updated config search name for wire", stateConfigName.replace("-", ":"));
     }
     let customSensorDeviation = getConfigData(config, stateConfigName.replaceAll("-", ":").replace("_Slim", "").replace("_Short", ""), "sens_deviation");
