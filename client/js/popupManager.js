@@ -941,7 +941,16 @@ function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, po
                     setSliderFeedback(elements, Math.round(rawValue))
                     break;
                 case "numberEntry":
-                    //todo: right now number entry is never used to manipulate a pnid element/sensor/actuator directly, so the sensor state type doesn't do anything, but that may need to change in the future.
+                    elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
+                    elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
+                    if (rawValue.toString() == elements.first().val())
+                    {
+                        elements.siblings().find("input.form-control").removeClass("incorrect-highlight");
+                    }
+                    else
+                    {
+                        elements.siblings().find("input.form-control").addClass("incorrect-highlight");
+                    }
                     break;
                 default:
                     printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);
@@ -1007,6 +1016,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                 case "numberEntry":
                     //console.log("updating number entry gui echo");
                     //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
+                    console.log("updating gui echo number entry", stateName, value);
                     elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
                     elements.siblings().find("input.form-control").addClass("uncommitted-highlight");
                     elements.val(value);
@@ -1110,16 +1120,6 @@ function updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig, 
                 case "numberEntry":
                     //console.log("updating number entry set state");
                     //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
-                    elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
-                    elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
-                    if (rawValue.toString() == elements.first().val())
-                    {
-                        elements.siblings().find("input.form-control").removeClass("incorrect-highlight");
-                    }
-                    else
-                    {
-                        elements.siblings().find("input.form-control").addClass("incorrect-highlight");
-                    }
                     break;
                 default:
                     printLog("warning", `Unknown input style while trying to update popup (${popupID}) with state (${stateName}): '${contentStyle}'`);

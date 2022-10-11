@@ -632,29 +632,24 @@ function setStateValue(state, recursionDepth = 0)
     }
 
     let stateType = parseStateType(state);
-    let stateName = state["name"];
+    let stateName = extractStateName(state["name"], stateType);
     let stateValue = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
     switch (stateType)
     {
         case StateTypes.sensor:
-            stateName = extractStateName(state["name"], StateTypes.sensor);
             handleSensorState(stateName, stateValue);
             //console.log("update state", state["name"], state["value"]);
             break;
         case StateTypes.guiEcho:
-            stateName = extractStateName(state["name"], StateTypes.guiEcho);
             handleGuiEchoState(stateName, stateValue);
             break;
         case StateTypes.actionReference:
-            stateName = extractStateName(state["name"], StateTypes.actionReference);
             handleActionReferenceState(stateName, stateValue);
             break;
         case StateTypes.setState:
-            stateName = extractStateName(state["name"], StateTypes.setState);
             handleTargetState(stateName, stateValue);
             break;
         case StateTypes.wire:
-            stateName = extractStateName(state["name"], StateTypes.wire);
             handleWireState(stateName, stateValue);
             break;
         default:

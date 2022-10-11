@@ -94,11 +94,11 @@ function extractStateName(fullName, stateType)
         case StateTypes.sensor:
             return fullName; //todo: I'm not sure if it wouldn't make more sense to not have the :sensor postfix in the kicad elements, worth revisiting before the rewrite
         case StateTypes.guiEcho:
-            return fullName.replace("gui-", "");
+            return fullName.replace("gui-", "").replace("-Set", "-"); //Todo: I don't like that I'm removing that "set" here, but I think in the long run that's the better way. hopefully this doesn't break anything.
         case StateTypes.actionReference:
             return fullName; //todo: should this include the gui- prefix?
         case StateTypes.setState:
-            return fullName.replace("-State", "").replace("-TargetPosition", "");
+            return fullName.replace("-State", "").replace("-TargetPosition", "").replace("-Set", "-");
         case StateTypes.wire:
             return fullName.replace("__child_wire", "");
         default:
