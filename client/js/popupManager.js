@@ -1016,7 +1016,6 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                 case "numberEntry":
                     //console.log("updating number entry gui echo");
                     //todo: I kinda dislike that I'm using the placeholder for checking the variable but it's the easiest I can do rn
-                    console.log("updating gui echo number entry", stateName, value);
                     elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
                     elements.siblings().find("input.form-control").addClass("uncommitted-highlight");
                     elements.val(value);
