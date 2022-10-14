@@ -422,7 +422,7 @@ function createTextEntry(config, variable, popupID, curRawValue)
     numberInput.attr("data-suffix", config["suffix"]);
     numberInput.attr("id", variable);
     numberInput.attr("placeholder", variable);
-    numberInput.attr("state", variable);
+    numberInput.attr("state", config["set_var"]);
     numberInput.inputSpinner();
     numberInput = element.find("input[type=number]")
     numberInput.attr("id", variable);
@@ -614,6 +614,9 @@ function calcPopupPosition(parents, popupSize, minPopupPad = 0.02, popupDistance
     {
         popupPosition[0] = viewportSize[0] * (1 - minPopupPad) - popupSize[0];
     }
+    
+    popupPosition[0] = Math.min(Math.max(popupPosition[0], 0), viewportSize[0]);
+    popupPosition[1] = Math.min(Math.max(popupPosition[1], 0), viewportSize[1]);
     return popupPosition;
 }
 
