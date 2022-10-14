@@ -47,7 +47,7 @@ input.form-control {
     height: 100% !important;
 }
 
-.text-C {
+.text-C, text.Label {
     text-anchor: middle;
 }
 
@@ -93,7 +93,7 @@ input.form-control {
     fill: none;
 }
 
-.value, .reference {
+.value, .reference, text.Label {
     font-size: 8.5rem;
     stroke-width: 1;
     fill: var(--default-stroke);

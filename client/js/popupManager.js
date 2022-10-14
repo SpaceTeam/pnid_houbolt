@@ -946,7 +946,7 @@ function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, po
                 case "numberEntry":
                     elements = $(popup).find("input[type=number]").filter(`[placeholder=${stateName}]`);
                     elements.siblings().find("input.form-control").removeClass("uncommitted-highlight");
-                    if (rawValue > parseFloat(elements.first().val()) * 0.95 && rawValue < parseFloat(elements.first().val()) * 1.05) //todo: this should be a configurable check, but for now we hard code an acceptable range
+                    if (rawValue > parseFloat(elements.first().val()) - 0.2 && rawValue < parseFloat(elements.first().val()) + 0.2) //todo: this should be a configurable check, but for now we hard code an acceptable range
                     {
                         elements.siblings().find("input.form-control").removeClass("incorrect-highlight");
                     }
