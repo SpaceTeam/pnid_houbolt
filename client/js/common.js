@@ -309,7 +309,14 @@ function getConfigData(config, elementName, key)
     }
 
     // if it's not in the custom config, get key (eval or popup) from default config structure
-    if (elementName in config) //TODO this is kind of buggy, if the custom config contains an object with name identical to the state name (which is not needed, the first order names in custom config are completely irrelevant and just for human readable commenting) this will incorrectly identify it as the default config. this is why the searching through custom config is now before default config, however even then it can still lead to issues (if something is not found in the custom config format, aka it doesn't exist, it then may incorrectly be detected as being in the default config format. however this shouldn't be a problem in the vast majority of cases. not sure how to fix it without passing a bool/config name or hardcoding custom and default config variables. investigate
+    if (elementName in config)
+    //TODO this is kind of buggy, if the custom config contains an object with name identical to the state name (which is not needed, the first
+    //order names in custom config are completely irrelevant and just for human readable commenting) this will incorrectly identify it as the
+    //default config. this is why the searching through custom config is now before default config, however even then it can still lead to issues
+    //(if something is not found in the custom config format, aka it doesn't exist, it then may incorrectly be detected as being in the default
+    //config format. however this shouldn't be a problem in the vast majority of cases. not sure how to fix it without passing a bool/config name
+    //or hardcoding custom and default config variables. could also move away from the custom config format so it's just an array of objects and doesn't
+    //have the superfluous key that is just for human readability
     {
         return config[elementName][key];
     }
