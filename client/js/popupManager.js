@@ -237,6 +237,7 @@ function createCollapsibleWrapper(popupID, variable, config)
     wrapper.find("button").attr("onclick", `toggleCollapsibleHandler('${popupID}-${variable}')`);
     wrapper.attr("id", `${popupID}-${variable}`);
     wrapper.find("div.popup-collapse-label").text(config["collapsibleLabel"] != undefined ? config["collapsibleLabel"] : "Hidden");
+    //todo: consider defaulting to variable instead of "hidden" if no label is specified
     return wrapper;
 }
 
@@ -366,8 +367,9 @@ function createCheckbox(config, variable, popupID, curValue)
     element.find("input").attr('id', popupID).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
-    let highThreshold = config["high"];
-    let lowThreshold = config["low"];
+    //consider completely removing this, it is currently being completely unused
+    let highThreshold = config["high"] == undefined ? "1" : config["high"];
+    let lowThreshold = config["low"] == undefined ? "0" : config["low"];
     if (curValue === highThreshold)
     {
         element.find("input").prop("checked", true);
@@ -406,7 +408,7 @@ function createSlider(config, variable, popupID, curRawValue)
     return element;
 }
 
-function createTextEntry(config, variable, popupID, curRawValue)
+function createNumberEntry(config, variable, popupID, curRawValue)
 {
     let element = $("#numberEntryTemp").clone();
     element.removeAttr("id");
@@ -447,7 +449,7 @@ function createButton(config, variable, popupID, curRawValue)
         element = $("#buttonDangerEntryTemp").clone();
     }
     element.removeAttr("id");
-    if (config["label"] == "value")
+    if (config["label"] == "value" || config["label"] == undefined)
     {
         element.find("input").attr("value", variable);
     }
@@ -493,7 +495,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         let rowConfig = popupConfig[contentIndex];
         let contentType = rowConfig["type"];
         let contentStyle = rowConfig["style"];
-        let variableName = rowConfig["variable"];
+        let variableName = rowConfig["variable"] == undefined ? "value" : rowConfig["variable"];
         if (variableName === "value")
         {
             //if the variable is "value", this popup element listens to the popup parent state
@@ -557,16 +559,13 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
                         newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
                         break;
                     case "numberEntry":
-                        newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        newContentRow = createNumberEntry(rowConfig, variableName, popupID, curRawValue);
                         break;
                     case "button":
                         newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     case "buttonDanger":
                         newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
                         break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
