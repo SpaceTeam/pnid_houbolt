@@ -877,7 +877,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
         //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
         //console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
         if (
-            !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
+            !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && ((rowConfig["variable"] || "value") == "value") )) ||
             bundledInActionReference
         )
         {

@@ -894,7 +894,7 @@ function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)
         //todo: translation here because we need to access the data-pnid-wire dataset and I don't want to have to remember this every time I run this function
     }
 	//apply all outVars to PnID
-	if ("color" in outVars && stateType != StateTypes.actionReferencec)
+	if ("color" in outVars && stateType != StateTypes.actionReference)
 	{
         let color = outVars["color"];
         if (color == "content") //if the color is "content" figure out what content is actually there and enter this.
