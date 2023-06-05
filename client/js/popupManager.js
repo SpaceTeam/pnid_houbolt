@@ -359,7 +359,7 @@ function createExternalDisplay(config, source)
 }
 
 
-function createCheckbox(config, variable, popupID, curValue)
+function createCheckbox(config, variable, enabled, popupID, curValue)
 {
     let element = $("#digitalOutTemp").clone();
     element.removeAttr("id");
@@ -383,10 +383,13 @@ function createCheckbox(config, variable, popupID, curValue)
         printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
         element.find("input").prop("checked", false);
     }
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createSlider(config, variable, popupID, curRawValue)
+function createSlider(config, variable, enabled, popupID, curRawValue)
 {
     let element = $("#sliderTemp").clone();
     element.removeAttr("id");
@@ -405,10 +408,13 @@ function createSlider(config, variable, popupID, curRawValue)
     element.find("input").first().val(Math.round(curRawValue/config["max"])).attr("state", variable);
     rangeSlider(element);
     element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createNumberEntry(config, variable, popupID, curRawValue)
+function createNumberEntry(config, variable, enabled, popupID, curRawValue)
 {
     let element = $("#numberEntryTemp").clone();
     element.removeAttr("id");
@@ -434,10 +440,13 @@ function createNumberEntry(config, variable, popupID, curRawValue)
     let button = element.find("input[type=button]");
     button.attr("onclick", `onNumberInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
 
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createButton(config, variable, popupID, curRawValue)
+function createButton(config, variable, enabled, popupID, curRawValue)
 {
     let element = undefined;
     if (config["style"] == "button")
@@ -458,6 +467,9 @@ function createButton(config, variable, popupID, curRawValue)
         element.find("input").attr("value", config["label"]);
     }
     element.find("input").attr("onclick", `onButtonInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
@@ -468,7 +480,7 @@ function createSeparator()
     return element;
 }
 
-function appendPopupContent(popup, popupConfig, popupID, stateType)
+function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateType)
 {
     //all states contained in a popup which may need updating
     let containedStates = [];
@@ -553,19 +565,19 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createCheckbox(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "slider":
-                        newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createSlider(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "numberEntry":
-                        newContentRow = createNumberEntry(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createNumberEntry(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "button":
-                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createButton(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "buttonDanger":
-                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createButton(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -638,7 +650,7 @@ function createPopupTitleBar(popupClone, popupID, title)
     return popupClone;
 }
 
-function createBundledElements(popup, parents, popupID = undefined)
+function createBundledElements(popup, parents, inputsEnabled = true, popupID = undefined)
 {
 	let containedStates = [];
     let appendedElements = false;
@@ -655,7 +667,7 @@ function createBundledElements(popup, parents, popupID = undefined)
             popup.append(createSeparator());
             popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
         }
-        containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor));
+        containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, inputsEnabled, parentReference, StateTypes.sensor));
         containedStates.push(parentReference);
     });
     //return containedStates; //I don't think I want to return those, contained states are implicitly updated elsewhere
@@ -664,6 +676,8 @@ function createBundledElements(popup, parents, popupID = undefined)
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
+    inputsEnabled = master; //this is an ugly hack
+    console.log("enabled", inputsEnabled);
     //console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	
@@ -690,13 +704,13 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
         return;
     }
 
-    let containedStates = appendPopupContent(popupClone, popupConfig, popupID, stateType);
+    let containedStates = appendPopupContent(popupClone, popupConfig, inputsEnabled, popupID, stateType);
 
     if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
         //containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID)); //I don't think I want to add to the contained states here
-        createBundledElements(popupClone, parent, popupID);
+        createBundledElements(popupClone, parent, inputsEnabled, popupID);
         //console.log('contained states is now', containedStates);
     }
 
