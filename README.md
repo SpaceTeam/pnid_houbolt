@@ -1,9 +1,23 @@
 # Interactive PnID Visualizer
 
-Allows to parse a KiCad schematic file (.sch) to generate a .html webpage. Via embedded JavaScript it's possible to edit values of elements on the PnID via state update messages. Each (named = updatabale) element can also be clicked to open a popup to control the value directly from the PnID (Proper click hitbox only works on Chromium based browsers currenty).
+Allows to parse a KiCad schematic file (.sch) to generate a .html webpage. Via embedded JavaScript it's possible to edit values of elements on the PnID via state update messages. Each (named = updateable) element can also be clicked to open a popup to control the value directly from the PnID (Proper click hitbox only works on Chromium based browsers currenty).
 
-The behaviour of the PnID is controlled in parts by a JSON config file (currently hardcoded in changeValues.js) in the elements' respective "eval" block.
-Styling is (obviously) controlled by CSS (in `/client/css`)
+The PnID visualizer was made to be as configurable and widely usable as possible, but as it has so far only been used for a certain kind of projects (our internal rocket projects) it necessarily evolved to fit our use cases better. Some hardcoded behaviours and logic still remain and certain config options are heavily influenced by what we needed from it at the time, meaning some options are available only for some elements and elements overall may not have a fully consistent behaviour in what they display how.
+
+As of right now we use KiCad5 schematics and library files, as KiCad6 has changed those formats significantly and we haven't finished porting the converter over to the new version.
+
+The behaviour of the PnID is controlled in parts by a JSON config file in the elements' respective "eval" block.
+Styling is controlled by CSS (in `/client/css`)
+
+# Security Disclaimer
+
+A lot of the core functionality depends on JavaScript's eval() function meaning that *this is not a "safe" tool* in an IT security sense. We have chosen this for the following reasons:
+- All inputs (= files) that can set arbitrary JS strings to be executed are locally on the server and there can be no online user input that drives these values.
+- Not using eval meant that we would need to put significant time into developing our own "script language" that allows us to build in as many features and as much flexibility as we had access to when using eval. As we had more than enough to do with the already very large scope of the project (completely self developing and building an extremely lightweight bi-liquid rocket, its ground support equipment and its accompanying mission control software in a modular and configurable fashion) we simply didn't have the time and resources to commit to this.
+- Our entire mission control infrastructure runs on a local network that doesn't need to be connected to the internet to function.
+
+All of this means that while using eval() is still a large security risk, we felt like it was manageable risk as realistically the only way someone could exploit this, they would need to have direct access to our server from within our network, at which point they already have access to our server so why bother with injecting malicious JS into config files instead of just getting whatever they want directly.
+That said, there are almost definitely attack vectors we didn't think about (we're students and rocketry hobbyists, not IT security researchers) and ways for bad actors to exploit this. We are fine with these risks in our current situation with our current setup, but this is something that you - the potential user - will have to **carefully** consider for yourself and your situation.
 
 # Usage
 
@@ -75,10 +89,16 @@ Usage example: `node kicad-schematic-parser.js ../path_to_sch/pnid_schematic_nam
 
 ### Overview
 
-Config files are parsed top to bottom, so if several behaviour blocks apply to one element the effects of the last one will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
+Config files contain the "formatting behaviour" of pnid elements, meaning they define how a pnid element's style reacts to inputs (which colours to choose when), how to format the incoming data to a human readable value, how to link to other elements and how their popups should look and behave like. There are two config files, `config.json` which is the default config meant to be used for types of elements (i.e. All Solenoid valves get a default behaviour there) and `customConfig.json` which is the custom config that overrides the default config for one or more specific elements. The default config is a dictionary of pnid element types while the custom config is parsed top to bottom. This means that if several behaviour blocks apply to one element, the effects of the last one will override the previous ones. Similarly, the default config is parsed before the custom config, so anything that happens in the custom config will override (and/or extend) default behaviour.
 
 For example if there is a behaviour in the default config setting the colour of an element based on the received value and another behaviour in the custom config changing the formatting of the value output, both outputs will be visible. If however the custom behaviour changes the formatting of the value output AND sets another colour, it will overwrite the colour set by the default config.
 
+Additionally (and optionally) to that there is also
+- `thresholds.json` which contains dictionaries of values to be used in the behaviour scripts. This is not needed, but for longer/more complex configs this is useful as it allows to define certain thresholds (e.g. the threshold value at which a solenoid is considered to be turned on) "globally" and if this changes it can be globally changed. It also reduces the amount of "magic numbers" used in behaviour blocks and as such serves for self-documenting limits/behaviours.
+
+and
+
+- `grafanaPanelConfig.json` which contains a dictionary of value references that map to grafana panel configs. This is (as may be evident from the name) used to map PnID element identifiers to the (semi-arbitrary) panel IDs from grafana to allow displaying grafana graphs in popups.
 
 ### Grafana Panel Config
 
@@ -86,9 +106,10 @@ To enable embedding iframes, every element with an iframe may need a specific ur
 in the grafana panel config (renaming required, it's currently 4 o'clock, I want to go home :P). If grafana is 
 used with a fresh setup, following command may be used inside the browser console. It is required that the grafana dashboard in question including the panels needed are opened up inside this tab.
 
-`var panelData = {}; $("[data-panelid]").each(function(){panelData[$(this).find(".panel-title h2").html()] = $(this).attr("data-panelid");})`
-and 
-`console.log(panelData)`
+```js
+var panelData = {}; $("[data-panelid]").each(function(){panelData[$(this).find(".panel-title h2").html()] = $(this).attr("data-panelid");})
+console.log(panelData)
+```
 
 There's no guarantee this works with newer grafana versions (i.e. newer than v8.3.4). Copy the generated json object into the config file
 That's it.
@@ -110,15 +131,13 @@ Example:
     {
       "type": "input",
       "style": "checkbox",
-      "variable": "value",
-      "low": "Closed",
-      "high": "Open"
+      "variable": "value"
     }
   ]
 }
 ```
 
-The default config also contains the key `externalSourceDefault` which can be used to set a default source for external displays for [popups](#popup-definitions).
+The default config also contains the key `externalSourceDefault` which can be used to set a default source for popup display elements of the "external" type (See [popups](#popup-definitions)).
 
 The subsections [eval behaviour blocks](#eval-behaviour-blocks) and [popup definitions](#popup-definitions) contain more info for their respective configs.
 
@@ -185,7 +204,8 @@ Possible types:
 * `display` - Used to simply display data without any option for interaction.
 * `input` - Used to create an input for a variable.
 
-All types use `variable` as a "sub-key" which defines which variable to display/affect. The "default" value should be `value` which is translated to the *value reference* of the element that the popup is opened at (or the action reference if one is set). Should allow for customizing to show several different values in one popup such as computed values. *WIP: Different variables don't actually work yet, has to be implemented properly first (maybe after the popup refactor. Or consider if it's even needed because right now there's only fringe usecases at best).*
+All types use `variable` as a "sub-key" which defines which variable to display/affect. It can always be left out which makes it default to `value` which is translated to the *value reference* of the element that the popup is opened at (or the action reference if one is set). This allows for customizing to show several different values in one popup such as computed values.
+Additionally, all popup rows can have the key `collapsible` set to true (`"collapsible": true`), which hides the element (no matter if it's an input or a display type) behind an "eye" button that only shows the element on click. This is helpful for elements that are either unnecessary clutter most of the time or inputs that are potentially dangerous to accidentally click. To know what is behind a collapsible it's also possible to define a `collapsibleLabel` to show a text when the actual element is collapsed. If left out it will by default just say "Hidden".
 
 *Note: The following description will use `word=` with an "=" sign at the end if the word in question is a key that has values assigned to it and `=word` if the word is a value that is assigned to a key.*
 
@@ -197,30 +217,41 @@ Sub-keys for type `display`:
     * `autoID=` - If set to `true`, appends the popupID (which is either the value reference or action reference of the parent element) to the source path. Allows individually 'unique' URLs without needing to manually set the URL for each element in the config. Can be omitted which will cause it to default to `false`.
     * `width=` - Width of the iframe. Can be omitted and defaults to 300px.
     * `height=` - Height of the iframe. Can be omitted and defaults to 200px.
+  * `=separator` - Adds a horizontal separator line to the popup.
 
 Sub-keys for type `input`:
 * `style=`
   * `=checkbox` - Display a checkbox
-    * `low=` - Which value the "low" value is. Eg for a solenoid valve the "low" value could be `"Closed"`. This is the actual value displayed by the UI in the PnID, not the raw value sent via state updates.
+    * `low=` - Which value the "low" value is. This is the raw value that is sent, so for example "0", not "Closed". This is optional and defaults to 0.
     * `high=` - Similar to low, but for the high value
   * `=slider` - Display a slider
     * `min=` - Which value the minimal value of the slider is. Eg for a servo valve the "low" value could be `30000`. This is the raw (number) value sent to the PnID, not the formatted/interpreted value visible in the UI.
     * `max=` - Similar to min, but for the max value
     * `step=` - The step size of the slider.
-  * `=numberEntry` - A free-form text entry. NOT IMPLEMENTED YET
+  * `=numberEntry` - An input field for numbers. Displays and sets the target value for the hardware to hit and checks incoming sensor values to see whether the value has been set correctly (or has been acknowledged at all)
+    * `min=` - The minimum number that can be entered
+    * `max=` - The maximum number that can be entered
+    * `suffix=` - A text suffix to the number, can be used for units, eg: "bar" or "ms"
+    * `set_var=` - The variable/command name that sets a new value. Used for highlighting the input field if a new set value is received (from eg: a networked client), but the hardware doesn't react with an acknowledgement.
+    * `poll_var=` - The variable/command name that gets the current value. Used for initializing the input field to whatever value is currently the target value for the hardware.
+    * `action=` - A string that will be evaluated as JS (using eval) after the input is finished. Can do anything that you want it to do, but was used for triggering additional actions after the number input action was sent out.
+  * `=button` & `buttonDanger` - Creates a button input. Button and button danger behave and configurate identically apart from button danger being styled red.
+    * `label=` - Defines the text inside the button. If label is set to "value" or not defined it will default to using the name of the variable that the button drives.
+    * `action=` See description of "action" in numberEntry.
+
 
 As mentioned before in the `style=external` description, this is a popup element type that can be further specified in the custom config. It is specified similar to the popup config in the default config file, but only allows the "source" and "autoID" keys to be set:
 
 ```json
 "human_readable_group_label": {
-        "states": [
-            "fuel_mid_bottom_tank_temp:sensor"
-        ],
-        "popup": {
-            "source": "23",
-            "autoID": false
-        }
+    "states": [
+        "fuel_mid_bottom_tank_temp:sensor"
+    ],
+    "popup": {
+        "source": "23",
+        "autoID": false
     }
+}
 ```
 
 ## pnid.css
@@ -233,5 +264,5 @@ When creating new states an element can have such as
 }
 ```
 
-it is *absolutely necessary* that the state begins with `data-pnid-` for the code in [changeValues.js](client/js/changeValues.js) to recognize it.
+It is *absolutely necessary* that the state begins with `data-pnid-` for the code in [changeValues.js](client/js/changeValues.js) to recognize it.
 

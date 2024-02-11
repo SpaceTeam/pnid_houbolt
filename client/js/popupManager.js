@@ -237,6 +237,7 @@ function createCollapsibleWrapper(popupID, variable, config)
     wrapper.find("button").attr("onclick", `toggleCollapsibleHandler('${popupID}-${variable}')`);
     wrapper.attr("id", `${popupID}-${variable}`);
     wrapper.find("div.popup-collapse-label").text(config["collapsibleLabel"] != undefined ? config["collapsibleLabel"] : "Hidden");
+    //todo: consider defaulting to variable instead of "hidden" if no label is specified
     return wrapper;
 }
 
@@ -358,7 +359,7 @@ function createExternalDisplay(config, source)
 }
 
 
-function createCheckbox(config, variable, popupID, curValue)
+function createCheckbox(config, variable, enabled, popupID, curValue)
 {
     let element = $("#digitalOutTemp").clone();
     element.removeAttr("id");
@@ -366,8 +367,9 @@ function createCheckbox(config, variable, popupID, curValue)
     element.find("input").attr('id', popupID).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
-    let highThreshold = config["high"];
-    let lowThreshold = config["low"];
+    //consider completely removing this, it is currently being completely unused
+    let highThreshold = config["high"] == undefined ? "1" : config["high"];
+    let lowThreshold = config["low"] == undefined ? "0" : config["low"];
     if (curValue === highThreshold)
     {
         element.find("input").prop("checked", true);
@@ -381,10 +383,13 @@ function createCheckbox(config, variable, popupID, curValue)
         printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
         element.find("input").prop("checked", false);
     }
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createSlider(config, variable, popupID, curRawValue)
+function createSlider(config, variable, enabled, popupID, curRawValue)
 {
     let element = $("#sliderTemp").clone();
     element.removeAttr("id");
@@ -403,10 +408,13 @@ function createSlider(config, variable, popupID, curRawValue)
     element.find("input").first().val(Math.round(curRawValue/config["max"])).attr("state", variable);
     rangeSlider(element);
     element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createTextEntry(config, variable, popupID, curRawValue)
+function createNumberEntry(config, variable, enabled, popupID, curRawValue)
 {
     let element = $("#numberEntryTemp").clone();
     element.removeAttr("id");
@@ -432,10 +440,13 @@ function createTextEntry(config, variable, popupID, curRawValue)
     let button = element.find("input[type=button]");
     button.attr("onclick", `onNumberInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
 
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
-function createButton(config, variable, popupID, curRawValue)
+function createButton(config, variable, enabled, popupID, curRawValue)
 {
     let element = undefined;
     if (config["style"] == "button")
@@ -447,7 +458,7 @@ function createButton(config, variable, popupID, curRawValue)
         element = $("#buttonDangerEntryTemp").clone();
     }
     element.removeAttr("id");
-    if (config["label"] == "value")
+    if (config["label"] == "value" || config["label"] == undefined)
     {
         element.find("input").attr("value", variable);
     }
@@ -456,6 +467,9 @@ function createButton(config, variable, popupID, curRawValue)
         element.find("input").attr("value", config["label"]);
     }
     element.find("input").attr("onclick", `onButtonInput("${variable}", "${config['action'] != undefined ? config['action'] : ''}")`);
+    if (!enabled) {
+        element.find("input").prop('disabled', true);
+    }
     return element;
 }
 
@@ -466,7 +480,7 @@ function createSeparator()
     return element;
 }
 
-function appendPopupContent(popup, popupConfig, popupID, stateType)
+function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateType)
 {
     //all states contained in a popup which may need updating
     let containedStates = [];
@@ -493,7 +507,7 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
         let rowConfig = popupConfig[contentIndex];
         let contentType = rowConfig["type"];
         let contentStyle = rowConfig["style"];
-        let variableName = rowConfig["variable"];
+        let variableName = rowConfig["variable"] == undefined ? "value" : rowConfig["variable"];
         if (variableName === "value")
         {
             //if the variable is "value", this popup element listens to the popup parent state
@@ -551,22 +565,19 @@ function appendPopupContent(popup, popupConfig, popupID, stateType)
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createCheckbox(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "slider":
-                        newContentRow = createSlider(rowConfig, variableName, popupID, curRawValue);
+                        newContentRow = createSlider(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "numberEntry":
-                        newContentRow = createTextEntry(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        newContentRow = createNumberEntry(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "button":
-                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        newContentRow = createButton(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     case "buttonDanger":
-                        newContentRow = createButton(rowConfig, variableName, popupID, curRawValue);
-                        //printLog("warning", "Style 'textEntry' not yet implemented for input styles in popups");
+                        newContentRow = createButton(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
                         break;
                     default:
                         printLog("warning", `Unknown input style for popup (${popupID}) encountered in config: '${contentStyle}'`);
@@ -639,7 +650,7 @@ function createPopupTitleBar(popupClone, popupID, title)
     return popupClone;
 }
 
-function createBundledElements(popup, parents, popupID = undefined)
+function createBundledElements(popup, parents, inputsEnabled = true, popupID = undefined)
 {
 	let containedStates = [];
     let appendedElements = false;
@@ -656,7 +667,7 @@ function createBundledElements(popup, parents, popupID = undefined)
             popup.append(createSeparator());
             popup.append(createTextDisplay("none", "Bundled PnID element inputs:")); //at some point change this to another element, possibly a collapsible element
         }
-        containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, parentReference, StateTypes.sensor));
+        containedStates = containedStates.concat(appendPopupContent(popup, popupConfig, inputsEnabled, parentReference, StateTypes.sensor));
         containedStates.push(parentReference);
     });
     //return containedStates; //I don't think I want to return those, contained states are implicitly updated elsewhere
@@ -665,6 +676,8 @@ function createBundledElements(popup, parents, popupID = undefined)
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
+    inputsEnabled = master; //this is an ugly hack
+    console.log("enabled", inputsEnabled);
     //console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	
@@ -691,13 +704,13 @@ function createPopup(popupID, parent, stateType, x = undefined, y = undefined, w
         return;
     }
 
-    let containedStates = appendPopupContent(popupClone, popupConfig, popupID, stateType);
+    let containedStates = appendPopupContent(popupClone, popupConfig, inputsEnabled, popupID, stateType);
 
     if (stateType == StateTypes.actionReference) //if it is an action reference, append all pnid elements' popup content rows to the current popup TODO Consider whether this should be toggleable behind a config flag
     //TODO if it should have a config flag, every part where I update needs to check this flag to not create bugs. eg: update popup for updating bundled states in action reference popups
     {
         //containedStates = containedStates.concat(createBundledElements(popupClone, parent, popupID)); //I don't think I want to add to the contained states here
-        createBundledElements(popupClone, parent, popupID);
+        createBundledElements(popupClone, parent, inputsEnabled, popupID);
         //console.log('contained states is now', containedStates);
     }
 
@@ -878,7 +891,7 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
         //TODO: I'm not sure if the condition for bundled action ref states is correct. it should work for all action refs, but it may include too much other stuff.
         //console.log("updating rowconfig", rowConfig, stateName, popupID, stateType.toString());
         if (
-            !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && rowConfig["variable"] == "value")) ||
+            !bundledInActionReference && (stateName == rowConfig["variable"] || (stateName == popupID && ((rowConfig["variable"] || "value") == "value") )) ||
             bundledInActionReference
         )
         {
@@ -997,7 +1010,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: ask markus/georg; do we want this update on gui echo or on set state?
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                    if (value.toString() === rowConfig["low"])
+                    if (rawValue === 0)
                     {
                         elements.prop("checked", false);
                     }
@@ -1065,7 +1078,7 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                    if (rawValue.toString() === rowConfig["low"])
+                    if (rawValue === 0)
                     {
                         elements.prop("checked", false);
                     }

@@ -87,7 +87,7 @@ input.form-control {
     stroke-dasharray: 25,50
 }
 
-.wire, .wire[data-pnid-wire=empty] {
+.wire, .wire[data-pnid-lib-wire=empty] {
     stroke-width: 8;
     stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
     fill: none;
@@ -103,166 +103,166 @@ input.form-control {
     stroke-width: 0;
 }
 
-.wire[data-pnid-wire=high] {
+.wire[data-pnid-lib-wire=high] {
 	stroke: var(--high);
 }
 
-.wire[data-pnid-wire=mid] {
+.wire[data-pnid-lib-wire=mid] {
 	stroke: var(--mid);
 }
 
-.wire[data-pnid-wire=low] {
+.wire[data-pnid-lib-wire=low] {
 	stroke: var(--low);
 }
 
-.wire[data-pnid-wire=fuel] {
+.wire[data-pnid-lib-wire=fuel] {
 	stroke: var(--fuel);
 }
 
-.wire[data-pnid-wire=ox] {
+.wire[data-pnid-lib-wire=ox] {
 	stroke: var(--ox);
 }
 
-[data-pnid-valve_pneumatic=open], [data-pnid-valve_servo=open],[data-pnid-valve_needle_servo=open] {
+[data-pnid-lib-valve_pneumatic=open], [data-pnid-lib-valve_servo=open],[data-pnid-lib-valve_needle_servo=open] {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_pneumatic=open] text:not(.static-color), [data-pnid-valve_servo=open] text:not(.static-color), [data-pnid-valve_needle_servo=open] text:not(.static-color), [data-pnid-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-valve_servo_3way=position_b] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=open] text:not(.static-color), [data-pnid-lib-valve_servo=open] text:not(.static-color), [data-pnid-lib-valve_needle_servo=open] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_b] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
 
-[data-pnid-valve_pneumatic=closed] path, [data-pnid-valve_servo=closed] path,[data-pnid-valve_needle_servo=closed] path {
+[data-pnid-lib-valve_pneumatic=closed] path, [data-pnid-lib-valve_servo=closed] path,[data-pnid-lib-valve_needle_servo=closed] path {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=closed] text:not(.static-color), [data-pnid-valve_servo=closed] text:not(.static-color),[data-pnid-valve_needle_servo=closed] text:not(.static-color), [data-pnid-valve_servo_3way=closed] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=closed] text:not(.static-color), [data-pnid-lib-valve_servo=closed] text:not(.static-color),[data-pnid-lib-valve_needle_servo=closed] text:not(.static-color), [data-pnid-lib-valve_servo_3way=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-valve_servo=throttle] path:nth-of-type(3), [data-pnid-valve_needle_servo=throttle] path:nth-of-type(3) {
+[data-pnid-lib-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-lib-valve_servo=throttle] path:nth-of-type(3), [data-pnid-lib-valve_needle_servo=throttle] path:nth-of-type(3) {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
 
-[data-pnid-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-valve_servo=throttle] text:not(.static-color), [data-pnid-valve_needle_servo=throttle] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-lib-valve_servo=throttle] text:not(.static-color), [data-pnid-lib-valve_needle_servo=throttle] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-valve_pneumatic=feedback_deviation_error] path, [data-pnid-valve_servo=feedback_deviation_error] path, [data-pnid-valve_needle_servo=feedback_deviation_error] path {
+[data-pnid-lib-valve_pneumatic=feedback_deviation_error] path, [data-pnid-lib-valve_servo=feedback_deviation_error] path, [data-pnid-lib-valve_needle_servo=feedback_deviation_error] path {
     stroke: var(--error-color);
     fill: none;
 }
 
-[data-pnid-valve_servo_3way=closed] path {
+[data-pnid-lib-valve_servo_3way=closed] path {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
-[data-pnid-valve_servo_3way=position_a] path:nth-of-type(2), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_a] path:nth-of-type(3), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(3) {
+[data-pnid-lib-valve_servo_3way=position_a] path:nth-of-type(2), [data-pnid-lib-valve_servo_3way=position_b] path:nth-of-type(4), [data-pnid-lib-valve_servo_3way=position_a] path:nth-of-type(3), [data-pnid-lib-valve_servo_3way=position_b] path:nth-of-type(3) {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_servo_3way=position_a] path:nth-of-type(4), [data-pnid-valve_servo_3way=position_b] path:nth-of-type(2) {
+[data-pnid-lib-valve_servo_3way=position_a] path:nth-of-type(4), [data-pnid-lib-valve_servo_3way=position_b] path:nth-of-type(2) {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
-[data-pnid-valve_servo_3way=feedback_deviation_error] path {
+[data-pnid-lib-valve_servo_3way=feedback_deviation_error] path {
     stroke: var(--error-color);
     fill: none;
 }
 
-[data-pnid-sensor_pressure=fuel] {
+[data-pnid-lib-sensor_pressure=fuel] {
     stroke: var(--fuel);
 }
-[data-pnid-sensor_pressure=fuel] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=fuel] text:not(.static-color) {
     stroke: var(--fuel);
     fill: var(--fuel);
 }
 
-[data-pnid-sensor_pressure=ox] {
+[data-pnid-lib-sensor_pressure=ox] {
     stroke: var(--ox);
 }
-[data-pnid-sensor_pressure=ox] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=ox] text:not(.static-color) {
     stroke: var(--ox);
     fill: var(--ox);
 }
 
-[data-pnid-sensor_pressure=high] {
+[data-pnid-lib-sensor_pressure=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_pressure=high] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
 
-[data-pnid-sensor_pressure=low] {
+[data-pnid-lib-sensor_pressure=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_pressure=low] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=low] text:not(.static-color) {
     stroke: var(--low);
     fill: var(--low);
 }
 
-[data-pnid-sensor_pressure=notconnected] {
+[data-pnid-lib-sensor_pressure=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-sensor_pressure=notconnected] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
 
-[data-pnid-sensor_pressure=neutral] {
+[data-pnid-lib-sensor_pressure=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_pressure=neutral] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure=neutral] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
-data-pnid-battery text:not(.static-color) {
+data-pnid-lib-battery text:not(.static-color) {
     stroke: var(--default-stroke);
 }
 
-[data-pnid-battery=battery_high] {
+[data-pnid-lib-battery=battery_high] {
     fill: var(--battery-high);
 }
-[data-pnid-battery=battery_high] text:not(.static-color) {
+[data-pnid-lib-battery=battery_high] text:not(.static-color) {
     fill: var(--battery-high);
     stroke: var(--battery-high);
 }
 
-[data-pnid-battery=battery_nominal] {
+[data-pnid-lib-battery=battery_nominal] {
     fill: var(--battery-nominal);
 }
-[data-pnid-battery=battery_nominal] text:not(.static-color) {
+[data-pnid-lib-battery=battery_nominal] text:not(.static-color) {
     fill: var(--battery-nominal);
     stroke: var(--battery-nominal);
 }
 
-[data-pnid-battery=battery_low] {
+[data-pnid-lib-battery=battery_low] {
     fill: var(--battery-low);
 }
-[data-pnid-battery=battery_low] text:not(.static-color) {
+[data-pnid-lib-battery=battery_low] text:not(.static-color) {
     fill: var(--battery-low);
     stroke: var(--battery-low);
 }
 
-[data-pnid-battery=battery_critical] {
+[data-pnid-lib-battery=battery_critical] {
     fill: var(--battery-critical);
 }
-[data-pnid-battery=battery_critical] text:not(.static-color) {  
+[data-pnid-lib-battery=battery_critical] text:not(.static-color) {  
     fill: var(--battery-critical);
     stroke: var(--battery-critical);
 }
 
-[data-pnid-battery=notconnected] {
+[data-pnid-lib-battery=notconnected] {
     fill: var(--default-stroke);
 }
-[data-pnid-battery=notconnected] text:not(.static-color) {
+[data-pnid-lib-battery=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
@@ -270,241 +270,241 @@ data-pnid-battery text:not(.static-color) {
 
 
 
-[data-pnid-sensor_temperature=high] {
+[data-pnid-lib-sensor_temperature=high] {
     stroke: var(--high);
 }
-[data-pnid-water_tank=high] text:not(.static-color) {
+[data-pnid-lib-water_tank=high] text:not(.static-color) {
     stroke: var(--high-water-tank);
     fill: var(--high-water-tank);
 }
-[data-pnid-sensor_temperature=high] text:not(.static-color), [data-pnid-water_tank=high] rect:nth-of-type(2) {
+[data-pnid-lib-sensor_temperature=high] text:not(.static-color), [data-pnid-lib-water_tank=high] rect:nth-of-type(2) {
     stroke: var(--high);
     fill: var(--high);
 }
 
 
 
-[data-pnid-sensor_temperature=mid] {
+[data-pnid-lib-sensor_temperature=mid] {
     stroke: var(--mid);
 }
-[data-pnid-water_tank=mid] text:not(.static-color) {
+[data-pnid-lib-water_tank=mid] text:not(.static-color) {
     stroke: var(--mid-water-tank);
     fill: var(--mid-water-tank);
 }
-[data-pnid-sensor_temperature=mid] text:not(.static-color), [data-pnid-water_tank=mid] rect:nth-of-type(2) {
+[data-pnid-lib-sensor_temperature=mid] text:not(.static-color), [data-pnid-lib-water_tank=mid] rect:nth-of-type(2) {
     stroke: var(--mid);
     fill: var(--mid);
 }
 
 
-[data-pnid-sensor_temperature=low] {
+[data-pnid-lib-sensor_temperature=low] {
     stroke: var(--low);
 }
-[data-pnid-water_tank=low] text:not(.static-color) {
+[data-pnid-lib-water_tank=low] text:not(.static-color) {
     stroke: var(--low-water-tank);
     fill: var(--low-water-tank);
 }
-[data-pnid-sensor_temperature=low] text:not(.static-color), [data-pnid-water_tank=low] rect:nth-of-type(2) {
+[data-pnid-lib-sensor_temperature=low] text:not(.static-color), [data-pnid-lib-water_tank=low] rect:nth-of-type(2) {
     stroke: var(--low);
     fill: var(--low);
 }
 
 
-[data-pnid-sensor_temperature=neutral] {
+[data-pnid-lib-sensor_temperature=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-water_tank=neutral] text:not(.static-color) {
+[data-pnid-lib-water_tank=neutral] text:not(.static-color) {
     stroke: var(--neutral-water-tank);
     fill: var(--neutral-water-tank);
 }
-[data-pnid-sensor_temperature=neutral] text:not(.static-color), [data-pnid-water_tank=neutral] rect:nth-of-type(2) {
+[data-pnid-lib-sensor_temperature=neutral] text:not(.static-color), [data-pnid-lib-water_tank=neutral] rect:nth-of-type(2) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
 
-[data-pnid-sensor_temperature=notconnected] {
+[data-pnid-lib-sensor_temperature=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-water_tank=notconnected] text:not(.static-color) {
-    stroke: var(--default-stroke);
-    fill: var(--default-stroke);
-}
-[data-pnid-sensor_temperature=notconnected] text:not(.static-color) {
+[data-pnid-lib-water_tank=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
-[data-pnid-water_tank=notconnected] rect:nth-of-type(2) {
+[data-pnid-lib-sensor_temperature=notconnected] text:not(.static-color) {
+    stroke: var(--default-stroke);
+    fill: var(--default-stroke);
+}
+[data-pnid-lib-water_tank=notconnected] rect:nth-of-type(2) {
     stroke: var(--default-stroke);
     fill: none;
 }
 
 
-[data-pnid-heatexchanger=high] {
+[data-pnid-lib-heatexchanger=high] {
     stroke: var(--high);
 }
-[data-pnid-heatexchanger=mid] {
+[data-pnid-lib-heatexchanger=mid] {
     stroke: var(--mid);
 }
-[data-pnid-heatexchanger=low] {
+[data-pnid-lib-heatexchanger=low] {
     stroke: var(--low);
 }
-[data-pnid-heatexchanger=neutral] {
+[data-pnid-lib-heatexchanger=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-heatexchanger=notconnected] {
+[data-pnid-lib-heatexchanger=notconnected] {
     stroke: var(--default-stroke);
 }
 
 
 
-[data-pnid-thermalbarrier=low] {
+[data-pnid-lib-thermalbarrier=low] {
     stroke: var(--low);
 }
-[data-pnid-thermalbarrier=low] text:not(.static-color) {
+[data-pnid-lib-thermalbarrier=low] text:not(.static-color) {
     stroke: var(--low);
     fill: var(--low);
 }
-[data-pnid-thermalbarrier=high] {
+[data-pnid-lib-thermalbarrier=high] {
     stroke: var(--high);
 }
-[data-pnid-thermalbarrier=high] text:not(.static-color) {
+[data-pnid-lib-thermalbarrier=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
-[data-pnid-thermalbarrier=ox] {
+[data-pnid-lib-thermalbarrier=ox] {
     stroke: var(--ox);
 }
-[data-pnid-thermalbarrier=ox] text:not(.static-color) {
+[data-pnid-lib-thermalbarrier=ox] text:not(.static-color) {
     stroke: var(--ox);
     fill: var(--ox);
 }
-[data-pnid-thermalbarrier=fuel] {
+[data-pnid-lib-thermalbarrier=fuel] {
     stroke: var(--fuel);
 }
-[data-pnid-thermalbarrier=fuel] text:not(.static-color) {
+[data-pnid-lib-thermalbarrier=fuel] text:not(.static-color) {
     stroke: var(--fuel);
     fill: var(--fuel);
 }
 
-[data-pnid-sensor_massflow=high] {
+[data-pnid-lib-sensor_massflow=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_massflow=high] text:not(.static-color) {
+[data-pnid-lib-sensor_massflow=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
 
-[data-pnid-sensor_massflow=low] {
+[data-pnid-lib-sensor_massflow=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_massflow=low] text:not(.static-color) {
+[data-pnid-lib-sensor_massflow=low] text:not(.static-color) {
     stroke: var(--low);
     fill: var(--low);
 }
 
-[data-pnid-sensor_massflow=neutral] {
+[data-pnid-lib-sensor_massflow=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_massflow=neutral] text:not(.static-color) {
+[data-pnid-lib-sensor_massflow=neutral] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
-[data-pnid-valve_solenoid_no=open], [data-pnid-valve_solenoid_nc=open] {
+[data-pnid-lib-valve_solenoid_no=open], [data-pnid-lib-valve_solenoid_nc=open] {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-valve_solenoid_no=open] text:not(.static-color), [data-pnid-valve_solenoid_nc=open] text:not(.static-color) {
+[data-pnid-lib-valve_solenoid_no=open] text:not(.static-color), [data-pnid-lib-valve_solenoid_nc=open] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
-[data-pnid-valve_solenoid_no=feedback_deviation_error], [data-pnid-valve_solenoid_nc=feedback_deviation_error] {
+[data-pnid-lib-valve_solenoid_no=feedback_deviation_error], [data-pnid-lib-valve_solenoid_nc=feedback_deviation_error] {
     stroke: var(--error-color);
     fill: none;
 }
-[data-pnid-valve_solenoid_no=feedback_deviation_error] text:not(.static-color), [data-pnid-valve_solenoid_nc=feedback_deviation_error] text:not(.static-color) {
+[data-pnid-lib-valve_solenoid_no=feedback_deviation_error] text:not(.static-color), [data-pnid-lib-valve_solenoid_nc=feedback_deviation_error] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
 
-[data-pnid-valve_solenoid_no=closed] path, [data-pnid-valve_solenoid_nc=closed] path {
+[data-pnid-lib-valve_solenoid_no=closed] path, [data-pnid-lib-valve_solenoid_nc=closed] path {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid_no=closed] text:not(.static-color), [data-pnid-valve_solenoid_nc=closed] text:not(.static-color) {
+[data-pnid-lib-valve_solenoid_no=closed] text:not(.static-color), [data-pnid-lib-valve_solenoid_nc=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-valve_solenoid_no=closed] rect, [data-pnid-valve_solenoid_nc=open] rect {
+[data-pnid-lib-valve_solenoid_no=closed] rect, [data-pnid-lib-valve_solenoid_nc=open] rect {
     fill: var(--powered);
 }
-[data-pnid-valve_solenoid_no=open] rect, [data-pnid-valve_solenoid_nc=closed] rect {
+[data-pnid-lib-valve_solenoid_no=open] rect, [data-pnid-lib-valve_solenoid_nc=closed] rect {
     fill: none;
 }
 
-[data-pnid-valve_solenoid_no=undefined], [data-pnid-valve_solenoid_nc=undefined] {
+[data-pnid-lib-valve_solenoid_no=undefined], [data-pnid-lib-valve_solenoid_nc=undefined] {
     stroke: var(--undefined);
 }
 
-[data-pnid-valve_overpressure=open] {
+[data-pnid-lib-valve_overpressure=open] {
     stroke: var(--open);
 }
 
-[data-pnid-valve_overpressure=closed] {
+[data-pnid-lib-valve_overpressure=closed] {
     stroke: var(--closed);
 }
 
-[data-pnid-valve_overpressure=undefined] {
+[data-pnid-lib-valve_overpressure=undefined] {
     stroke: var(--undefined);
 }
 
-[data-pnid-tank_content=fuel] {
+[data-pnid-lib-tank_content=fuel] {
     fill: var(--fuel);
 }
 
-[data-pnid-tank_content=ox] {
+[data-pnid-lib-tank_content=ox] {
     fill: var(--ox);
 }
 
-[data-pnid-led=success] {
+[data-pnid-lib-led=success] {
     fill: var(--success-color);
 }
 
-[data-pnid-led=error] {
+[data-pnid-lib-led=error] {
     fill: var(--error-color);
 }
 
-[data-pnid-led=on] {
+[data-pnid-lib-led=on] {
     fill: var(--on);
 }
 
-[data-pnid-led=off] {
+[data-pnid-lib-led=off] {
     fill: none;
 }
 
-[data-pnid-flowchart_state=on] {
+[data-pnid-lib-flowchart_state=on] {
     fill: var(--flowchart-state-on);
 }
 
-[data-pnid-flowchart_state=on] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=on] text:not(.static-color) {
     fill: var(--flowchart-state-on);
     stroke: var(--flowchart-state-on);
 }
 
-[data-pnid-flowchart_state=off] {
+[data-pnid-lib-flowchart_state=off] {
     fill: none;
 }
 
-[data-pnid-flowchart_state=off] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=off] text:not(.static-color) {
     fill: var(--default-stroke);
     stroke: var(--default-stroke);
 }
 
 /*TODO the pump stuff is still WIP, right now they don't properly support fluid content colors and the styling isn't quite done yet*/
-[data-pnid-pump=on] path:nth-of-type(1), [data-pnid-pump=on] path:nth-of-type(2) {
+[data-pnid-lib-pump=on] path:nth-of-type(1), [data-pnid-lib-pump=on] path:nth-of-type(2) {
     stroke: var(--on);
     -webkit-animation: spin 1s linear infinite;
     -moz-animation: spin 1s linear infinite;
@@ -523,193 +523,193 @@ data-pnid-battery text:not(.static-color) {
     }
 }
 
-[data-pnid-pump=feedback_deviation_error] circle, [data-pnid-pump=feedback_deviation_error] path {
+[data-pnid-lib-pump=feedback_deviation_error] circle, [data-pnid-lib-pump=feedback_deviation_error] path {
     stroke: var(--error-color);
 }
 
-[data-pnid-pump=on] circle:nth-of-type(1) {
+[data-pnid-lib-pump=on] circle:nth-of-type(1) {
     fill: var(--high);
 }
-[data-pnid-pump=on] circle:nth-of-type(2) {
+[data-pnid-lib-pump=on] circle:nth-of-type(2) {
     fill: var(--background-primary); /*this sucks but I don't see any easier way to do this in a general way. I can't use fill-rule as those only work on paths that can intersect themselves (circles can't do that) and converting these circles into a compound path isn't an easy and straightforward thing to do (generalized that is). Still, I hate it.*/
 }
 
-[data-pnid-pump=off] {
+[data-pnid-lib-pump=off] {
 
 }
 
-[data-pnid-igniter=on] {
+[data-pnid-lib-igniter=on] {
     stroke: var(--on);
     fill: var(--powered);
 }
-[data-pnid-igniter=on] text:not(.static-color) {
+[data-pnid-lib-igniter=on] text:not(.static-color) {
     stroke: var(--on);
     fill: var(--on);
 }
-[data-pnid-igniter=feedback_deviation_error] {
+[data-pnid-lib-igniter=feedback_deviation_error] {
     stroke: var(--error-color);
     fill: none;
 }
-[data-pnid-igniter=feedback_deviation_error] text:not(.static-color) {
+[data-pnid-lib-igniter=feedback_deviation_error] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
 
-[data-pnid-igniter=off] path, [data-pnid-igniter=off] rect {
+[data-pnid-lib-igniter=off] path, [data-pnid-lib-igniter=off] rect {
     stroke: var(--default-stroke);
     fill: none;
 }
 
-[data-pnid-valve_solenoid_no=off] text:not(.static-color) {
+[data-pnid-lib-valve_solenoid_no=off] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
 
-[data-pnid-powersource=nominal] {
+[data-pnid-lib-powersource=nominal] {
     stroke: var(--neutral);
     fill: none;
 }
-[data-pnid-powersource=nominal] text:not(.static-color) {
+[data-pnid-lib-powersource=nominal] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
-[data-pnid-powersource=outside_range] path, [data-pnid-powersource=outside_range] rect {
+[data-pnid-lib-powersource=outside_range] path, [data-pnid-lib-powersource=outside_range] rect {
     stroke: var(--error-color);
     fill: none;
 }
 
-[data-pnid-powersource=outside_range] text:not(.static-color) {
+[data-pnid-lib-powersource=outside_range] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
 
-[data-pnid-camera=on] {
+[data-pnid-lib-camera=on] {
     stroke: var(--on);
     fill: var(--powered);
 }
-[data-pnid-camera=on] text:not(.static-color) {
+[data-pnid-lib-camera=on] text:not(.static-color) {
     stroke: var(--on);
     fill: var(--on);
 }
-[data-pnid-camera=feedback_deviation_error] {
+[data-pnid-lib-camera=feedback_deviation_error] {
     stroke: var(--error-color);
     fill: none;
 }
-[data-pnid-camera=feedback_deviation_error] text:not(.static-color) {
+[data-pnid-lib-camera=feedback_deviation_error] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
 
-[data-pnid-camera=off] path, [data-pnid-camera=off] rect {
+[data-pnid-lib-camera=off] path, [data-pnid-lib-camera=off] rect {
     stroke: var(--default-stroke);
     fill: none;
 }
 
-[data-pnid-logging=on] {
+[data-pnid-lib-logging=on] {
     stroke: var(--on);
     fill: var(--powered);
 }
-[data-pnid-logging=on] text:not(.static-color) {
+[data-pnid-lib-logging=on] text:not(.static-color) {
     stroke: var(--on);
     fill: var(--on);
 }
-[data-pnid-logging=feedback_deviation_error] {
+[data-pnid-lib-logging=feedback_deviation_error] {
     stroke: var(--error-color);
     fill: none;
 }
-[data-pnid-logging=feedback_deviation_error] text:not(.static-color) {
+[data-pnid-lib-logging=feedback_deviation_error] text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
 
-[data-pnid-logging=off] path, [data-pnid-logging=off] rect {
+[data-pnid-lib-logging=off] path, [data-pnid-lib-logging=off] rect {
     stroke: var(--default-stroke);
     fill: none;
 }
 
-[data-pnid-sensor_pressure_big=high] {
+[data-pnid-lib-sensor_pressure_big=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_pressure_big=high] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure_big=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
 
-[data-pnid-sensor_pressure_big=low] {
+[data-pnid-lib-sensor_pressure_big=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_pressure_big=low] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure_big=low] text:not(.static-color) {
     stroke: var(--low);
     fill: var(--low);
 }
 
-[data-pnid-sensor_pressure_big=notconnected] {
+[data-pnid-lib-sensor_pressure_big=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-sensor_pressure_big=notconnected] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure_big=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
 
-[data-pnid-sensor_pressure_big=neutral] {
+[data-pnid-lib-sensor_pressure_big=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_pressure_big=neutral] text:not(.static-color) {
+[data-pnid-lib-sensor_pressure_big=neutral] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
-[data-pnid-sensor_height] .sensor-letter, [data-pnid-imu] .sensor-letter, [data-pnid-sensor_pressure_big] .sensor-letter {
+[data-pnid-lib-sensor_height] .sensor-letter, [data-pnid-lib-imu] .sensor-letter, [data-pnid-lib-sensor_pressure_big] .sensor-letter {
     font-size: var(--big-letters);
 }
 
-[data-pnid-imu] .sensor-letter {
+[data-pnid-lib-imu] .sensor-letter {
     font-size: var(--medium-letters);
 }
 
-[data-pnid-sensor_height=high] {
+[data-pnid-lib-sensor_height=high] {
     stroke: var(--high);
 }
-[data-pnid-sensor_height=high] text:not(.static-color) {
+[data-pnid-lib-sensor_height=high] text:not(.static-color) {
     stroke: var(--high);
     fill: var(--high);
 }
 
-[data-pnid-sensor_height=low] {
+[data-pnid-lib-sensor_height=low] {
     stroke: var(--low);
 }
-[data-pnid-sensor_height=low] text:not(.static-color) {
+[data-pnid-lib-sensor_height=low] text:not(.static-color) {
     stroke: var(--low);
     fill: var(--low);
 }
 
-[data-pnid-sensor_height=notconnected] {
+[data-pnid-lib-sensor_height=notconnected] {
     stroke: var(--default-stroke);
 }
-[data-pnid-sensor_height=notconnected] text:not(.static-color) {
+[data-pnid-lib-sensor_height=notconnected] text:not(.static-color) {
     stroke: var(--default-stroke);
     fill: var(--default-stroke);
 }
 
-[data-pnid-sensor_height=neutral] {
+[data-pnid-lib-sensor_height=neutral] {
     stroke: var(--neutral);
 }
-[data-pnid-sensor_height=neutral] text:not(.static-color) {
+[data-pnid-lib-sensor_height=neutral] text:not(.static-color) {
     stroke: var(--neutral);
     fill: var(--neutral);
 }
 
-[data-pnid-quickconnect=fuel] {
+[data-pnid-lib-quickconnect=fuel] {
 	stroke: var(--fuel);
 }
-[data-pnid-quickconnect=ox] {
+[data-pnid-lib-quickconnect=ox] {
 	stroke: var(--ox);
 }
 
-[data-pnid-checkvalve=fuel] {
+[data-pnid-lib-checkvalve=fuel] {
 	stroke: var(--fuel);
 }
-[data-pnid-checkvalve=ox] {
+[data-pnid-lib-checkvalve=ox] {
 	stroke: var(--ox);
 }
