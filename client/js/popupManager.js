@@ -1010,7 +1010,7 @@ function updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, p
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: ask markus/georg; do we want this update on gui echo or on set state?
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                    if (value.toString() === rowConfig["low"])
+                    if (rawValue === 0)
                     {
                         elements.prop("checked", false);
                     }
@@ -1078,7 +1078,7 @@ function updatePopupActionReferenceState(stateName, value, rawValue, popup, rowC
                     //if the value is the echoed setpoint, update the input, if it's the sensor feedback value don't
                     //todo: this is duplicated code from gui echo and here. do I need it at both locations? is it guaranteed to stay the same?
                     elements = $(popup).find(`input#${stateName}[type=checkbox]`);
-                    if (rawValue.toString() === rowConfig["low"])
+                    if (rawValue === 0)
                     {
                         elements.prop("checked", false);
                     }

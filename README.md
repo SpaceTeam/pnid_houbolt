@@ -106,9 +106,10 @@ To enable embedding iframes, every element with an iframe may need a specific ur
 in the grafana panel config (renaming required, it's currently 4 o'clock, I want to go home :P). If grafana is 
 used with a fresh setup, following command may be used inside the browser console. It is required that the grafana dashboard in question including the panels needed are opened up inside this tab.
 
-`var panelData = {}; $("[data-panelid]").each(function(){panelData[$(this).find(".panel-title h2").html()] = $(this).attr("data-panelid");})`
-and 
-`console.log(panelData)`
+```js
+var panelData = {}; $("[data-panelid]").each(function(){panelData[$(this).find(".panel-title h2").html()] = $(this).attr("data-panelid");})
+console.log(panelData)
+```
 
 There's no guarantee this works with newer grafana versions (i.e. newer than v8.3.4). Copy the generated json object into the config file
 That's it.
