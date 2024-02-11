@@ -16,6 +16,10 @@ html body {
     height: 1000px;
 }
 
+.pin-name {
+    display: none;
+}
+
 .themeSwitcher {
     position: fixed;
     bottom: 0.5rem;
@@ -60,19 +64,19 @@ input.form-control {
 }
 
 .hitbox {
-    stroke-width:  4;
+    stroke-width: 0.1;
     stroke: var(--debug);
 }
 
 .comp {
-    stroke-width: 8;
+    stroke-width: 0.3;
     stroke: var(--default-stroke);
     fill: none;
 }
 
 .sensor-letter {
-    font-size: 100px;
-    stroke-width: 4;
+    font-size: 0.2rem;
+    stroke-width: 0.2;
     fill: var(--default-stroke);
 }
 
@@ -88,14 +92,14 @@ input.form-control {
 }
 
 .wire, .wire[data-pnid-lib-wire=empty] {
-    stroke-width: 8;
+    stroke-width: 0.3;
     stroke: var(--default-stroke); /*default color, will be overridden by --high and --low by code*/
     fill: none;
 }
 
 .value, .reference, text.Label {
-    font-size: 8.5rem;
-    stroke-width: 1;
+    font-size: 0.2rem;
+    stroke-width: 0.2;
     fill: var(--default-stroke);
 }
 

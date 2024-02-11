@@ -1,5 +1,7 @@
 function initPNID(standalone, pathOffset, themes, pnidName)
 {
+    adaptNewParserOutput();
+
     if (standalone)
     {
         let themeSwitcherContainer = $(`<div class="themeSwitcher"></div>`).appendTo($(document.body));
@@ -17,6 +19,21 @@ function initPNID(standalone, pathOffset, themes, pnidName)
 
     //add a check if we want that added (url param?)
     createLogBox();
+}
+
+//I hate that this function exists, but it needs to for two reasons:
+//1. I will *not* update the pnid software to work with a new parsed format. it's battle tested and works and I will not change that
+//2. It is vastly easier to fix some things here, after the browser parsed the string into DOM elements than it is to fix it in the string after the parser output.
+function adaptNewParserOutput() {
+    //select all texts inside the "graphics" group (the thing that is the symbol)
+    let symbols = $("g.comp");
+    symbols.each(function (index) {
+        let shapeTexts = $(symbols.eq(index).find("g")[0]).find("text").filter(":not(.pin-name)");
+        if (shapeTexts.length > 0) {
+            shapeTexts.addClass(["sensor-letter", "static-color"]);
+            shapeTexts.removeAttr("transform");
+        }
+    });
 }
 
 function loadValuesPNID(states)
@@ -165,10 +182,18 @@ function initPNIDHitboxes()
         if (getConfigData(defaultConfig, getTypeFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined ||
             getConfigData(config, getValReferenceFromClasses(pnidComps.eq(index).attr("class").split(" ")).replace("_Slim", "").replace("_Short", ""), "popup") != undefined
         ) {
-            let boundingBox = pnidComps.eq(index).find("g")[0].getBBox();
+            let elementGraphics = pnidComps.eq(index).find("g")[0];
+
+            let transform = $(elementGraphics).attr("transform");
+            let translationX = 0;
+            let translationY = 0;
+            [translationX, translationY] = transform.replace("translate(", "").replace(")", "").split(" "); //kinda jank but it works
+
+            let boundingBox = elementGraphics.getBBox();
             let oldBound = pnidComps.eq(index).children().filter('rect[pointer-events="all"]').first();
-            oldBound.attr("x", boundingBox["x"]);
-            oldBound.attr("y", boundingBox["y"]);
+
+            oldBound.attr("x", Number(translationX) + boundingBox["x"]);
+            oldBound.attr("y", Number(translationY) + boundingBox["y"]);
             oldBound.attr("width", boundingBox["width"]);
             oldBound.attr("height", boundingBox["height"]);
         }

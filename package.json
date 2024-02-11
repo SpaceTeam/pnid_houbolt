@@ -10,6 +10,7 @@
     "bootstrap": "^5.1.0",
     "express": "^4.17.1",
     "js-yaml": "^3.14.1",
+    "kicad_svg_parser": "github:SpaceTeam/kicad_svg_parser",
     "nodemon": "^2.0.12"
   },
   "scripts": {
