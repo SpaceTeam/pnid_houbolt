@@ -276,17 +276,17 @@ function extractClasses(classesString)
 //I really dislike having this hardcoded to the n-th entry in the classes, but it's the quickest and safest way to do it right now.
 function getReferenceFromClasses(classes)
 {
-    return classes[0];
+    return classes[1];
 }
 
 function getTypeFromClasses(classes)
 {
-    return classes[1];
+    return classes[2];
 }
 
 function getValReferenceFromClasses(classes)
 {
-    return classes[2];
+    return classes[3];
 }
 
 function getConfigData(config, elementName, key)
