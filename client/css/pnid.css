@@ -8,6 +8,13 @@
 	justify-content: start;
 }
 
+.pnid-svg {
+    position: relative;
+    top: 0; left: 0;
+    max-width: var(--pnid-max-width);
+    max-height: var(--pnid-max-height);
+}
+
 html body {
     background-color: var(--background-primary);
     color: var(--content-primary);
