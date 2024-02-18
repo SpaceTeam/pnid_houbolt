@@ -283,7 +283,7 @@ function runRandom()
 	$("g.comp").each(function(index)
 	{
 		var state = {};
-        let name = extractClasses($(this).attr("class"))[2]; //have to sanitize string first from weird whitespace
+        let name = getValReferenceFromClasses(extractClasses($(this).attr("class"))); //have to sanitize string first from weird whitespace
         if (name !== "comp" && name !== "wire" && name !== "")
         {
             state["name"] = name.replace(":state", "");
