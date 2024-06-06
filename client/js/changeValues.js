@@ -910,6 +910,8 @@ function applyUpdatesToPnID(stateName, element, elementType, stateType, outVars)
                 if (parentContent != undefined)
                 {
                     color = parentContent;
+                } else {
+                    color = "high"; // TODO having this hardcoded sucks. I didn't use to need that, what changed after the parser update?
                 }
             }
             else
