@@ -557,6 +557,14 @@ data-pnid-lib-battery text:not(.static-color) {
     stroke: var(--on);
     fill: var(--on);
 }
+[data-pnid-lib-heater=on] {
+    stroke: var(--on);
+    fill: var(--powered);
+}
+[data-pnid-lib-heater=on] text:not(.static-color) {
+    stroke: var(--on);
+    fill: var(--on);
+}
 [data-pnid-lib-igniter=feedback_deviation_error] {
     stroke: var(--error-color);
     fill: none;
@@ -565,8 +573,21 @@ data-pnid-lib-battery text:not(.static-color) {
     stroke: var(--error-color);
     fill: var(--error-color);
 }
+[data-pnid-lib-heater=feedback_deviation_error] {
+    stroke: var(--error-color);
+    fill: none;
+}
+[data-pnid-lib-heater=feedback_deviation_error] text:not(.static-color) {
+    stroke: var(--error-color);
+    fill: var(--error-color);
+}
 
 [data-pnid-lib-igniter=off] path, [data-pnid-lib-igniter=off] rect {
+    stroke: var(--default-stroke);
+    fill: none;
+}
+
+[data-pnid-lib-heater=off] path, [data-pnid-lib-igniter=off] rect {
     stroke: var(--default-stroke);
     fill: none;
 }
