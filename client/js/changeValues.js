@@ -347,12 +347,16 @@ function setStateNamesPNID(stateNameList)
  */
 function setStateName(state)
 {
-	let elementGroup = $(document).find("g." + state["name"].replaceAll(":","-"));
+	if (state["label"] == state["name"])
+	{
+		// return if the label doesn't actually change
+		return;
+    }
+	let elementGroup = getElement(state["name"].replaceAll(":","-"), "parent");
 	if (elementGroup.length === 0)
 	{
 		return;
 	}
-
 	elementGroup.find("text.reference").text(state["label"]);
     updatePopupTitle(state["name"].replaceAll(":","-"), state["label"]);
 }
