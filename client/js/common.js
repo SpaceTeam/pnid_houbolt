@@ -1,3 +1,5 @@
+const nrDecimalPoints = 2;
+
 const StateTypes = Object.freeze({
 	sensor: Symbol("sensor"),
 	guiEcho: Symbol("guiEcho"),

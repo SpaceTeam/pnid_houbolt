@@ -2,7 +2,7 @@
 	font-weight: bold;
 }
 
-.popup-value-out {
+.popup-value-out, .popup-value-suffix-out {
     margin-top: .7rem;
 }
 

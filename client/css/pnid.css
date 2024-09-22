@@ -8,6 +8,11 @@
 	justify-content: start;
 }
 
+
+label.popup-value-out, label.popup-value-suffix-out, text.pnid-property.value {
+    font-family: "Inconsolata", monospace;
+}
+
 .pnid-svg {
     position: relative;
     top: 0; left: 0;

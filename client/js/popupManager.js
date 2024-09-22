@@ -63,13 +63,13 @@ function hideAllPnIDPopups()
 
 function getPopupConfig(popupID, stateType, parentClasses)
 {
-    let popupConfig = getConfigData(config, popupID, "popup");
+    let popupConfig = getConfigData(config, popupID.replaceAll("-", ":"), "popup");
     if (popupConfig == undefined)
     {
         //if no config was found in the custom config, check the default config
         if (stateType == StateTypes.actionReference)
         {
-            popupConfig = getConfigData(defaultConfig, popupID, "popup");
+            popupConfig = getConfigData(defaultConfig, popupID.replaceAll("-",  ":"), "popup");
         }
         else
         {
@@ -241,13 +241,20 @@ function createCollapsibleWrapper(popupID, variable, config)
     return wrapper;
 }
 
-function createTextDisplay(variable, curValue, label = undefined)
+function createTextDisplay(variable, curValue, config = undefined)
 {
     let element = $("#textDisplayTemp").clone();
     element.removeAttr("id");
-    if (label != undefined)
+    if (config != undefined)
     {
-        element.find("a").text(label + ":").append("&nbsp;&nbsp;");
+        if (config["label"] != undefined)
+        {
+            element.find("a").text(config["label"] + ":").append("&nbsp;&nbsp;");
+        }
+        if (config["suffix"] != undefined)
+        {
+            element.find("label.popup-value-suffix-out").text(config["suffix"]);
+        }
     }
     element.find("label.popup-value-out").attr("display", variable);
     element.find("label.popup-value-out").text(curValue);
@@ -537,11 +544,11 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
                     case "text":
                         if (variableName == popupID)
                         {
-                            newContentRow = createTextDisplay(variableName, curValue, rowConfig["label"]);
+                            newContentRow = createTextDisplay(variableName, curValue, rowConfig);
                         }
                         else
                         {
-                            newContentRow = createTextDisplay(variableName, variableName, rowConfig["label"]);
+                            newContentRow = createTextDisplay(variableName, variableName, rowConfig);
                         }
                         
                         break;
@@ -931,7 +938,7 @@ function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, po
             {
                 case "text":
                     elements = $(popup).find(`[display="${stateName}"]`);
-                    elements.text(value);
+                    elements.text(value.toFixed(nrDecimalPoints));
                     break;
                 case "external": //no update needed
                     break;

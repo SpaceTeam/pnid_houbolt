@@ -1,7 +1,6 @@
 //todo: evaluate if default configs may benefit from having a state *blacklist* instead of a state *whitelist* like in the custom configs
 let defaultConfig = {};
 $.get('/pnid_config/default', function(data) {
-    //console.log("default");
     //console.log("default:", data);
     defaultConfig = data;
 });
@@ -14,6 +13,7 @@ $.get('/pnid_config/custom', function(data) {
 
 let thresholds = {};
 $.get('/pnid_config/thresholds', function(data) {
+    //console.log("thresholds:", data);
     thresholds = data;
 });
 
@@ -50,6 +50,19 @@ function initTankContent(tanks)
         contentRect.attr("transform-origin", `center ${transformOriginY}`);
         contentRect.attr("transform", "scale(1,0)");
     }
+}
+
+/**
+ * @summary A terrible hardcoded hack to get a one-off manual test to work better
+ */
+function pfuschPulse()
+{
+    console.log("pfusch pulse!");
+    let variable = "tollenoid-sensor";
+    onPNIDInput(variable, 0, Date.now()*1000);
+    setTimeout(function() {
+        onPNIDInput(variable, 1, Date.now()*1000);
+    }, 2000);
 }
 
 /**
@@ -711,7 +724,7 @@ function handleSensorState(stateName, stateValue)
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
         if (outVars["value"] == undefined)
         {
-            outVars["value"] = stateValue + unit;
+            outVars["value"] = stateValue.toFixed(nrDecimalPoints) + " " + unit;
         }
         applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.sensor, outVars);
 
