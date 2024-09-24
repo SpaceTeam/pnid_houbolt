@@ -938,7 +938,14 @@ function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, po
             {
                 case "text":
                     elements = $(popup).find(`[display="${stateName}"]`);
-                    elements.text(value.toFixed(nrDecimalPoints));
+                    if (checkStringIsNumber(value))
+                    {
+                        elements.text(value.toFixed(nrDecimalPoints));
+                    }
+                    else
+                    {
+                        elements.text(value);
+                    }
                     break;
                 case "external": //no update needed
                     break;
