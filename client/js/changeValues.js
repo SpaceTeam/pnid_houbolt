@@ -66,6 +66,29 @@ function pfuschPulse()
 }
 
 /**
+ * @summary Small hardcoded-ish hack to get a manual refresh button for a number of parameters to work
+ */
+function pollRocketParams()
+{
+    let popupRows = config["pi_controllers_popup"]["popup"];
+    for (let row of popupRows)
+    {
+        if (row["type"] == "display" && row["poll_var"] != undefined)
+        {
+            if (row["id"] != undefined)
+            {
+                let contentRow = document.getElementById(row["id"]);
+                let label = contentRow.querySelector("label.popup-value-out");
+                console.log("label", label);
+                label.innerText = "";
+            }
+            console.log("poll var", row["poll_var"])
+            stateUpdate(row["poll_var"], 1);
+        }
+    }
+}
+
+/**
  * @summary Initializes pumps for rotation animation.
  * @description Essentially just sets the appropriate transform origin for the elements that should rotate.
  */

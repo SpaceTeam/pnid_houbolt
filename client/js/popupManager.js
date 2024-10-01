@@ -480,6 +480,15 @@ function createButton(config, variable, enabled, popupID, curRawValue)
     return element;
 }
 
+
+function createHeader(text)
+{
+    let element = $("#headerTemp").clone();
+    element.removeAttr("id");
+    element.find("label").text(text);
+    return element;
+}
+
 function createSeparator()
 {
     let element = $("#separatorTemp").clone();
@@ -562,7 +571,10 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
                         break;
                     case "separator":
                         newContentRow = createSeparator();
-                        break
+                        break;
+                    case "header":
+                        newContentRow = createHeader(rowConfig["label"]);
+                        break;
                     default:
                         printLog("warning", `Unknown display style for popup (${popupID}) encountered in config: '${contentStyle}'`);
                         break;
@@ -594,6 +606,10 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
             default:
                 printLog("warning", `Unknown content type while to create popup (${popupID}): '${contentType}'`);
                 break;
+        }
+        if (rowConfig["id"] != undefined)
+        {
+            newContentRow["0"].id = rowConfig["id"]; // why JS, why? Why is the actual DOM element nested in a dict at key "0"?
         }
         if (rowConfig["collapsible"] == true)
         {
@@ -684,7 +700,6 @@ function createBundledElements(popup, parents, inputsEnabled = true, popupID = u
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
     inputsEnabled = master; //this is an ugly hack
-    console.log("enabled", inputsEnabled);
     //console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	
@@ -1304,8 +1319,8 @@ document.addEventListener('mousemove', function(event) {
             y : event.clientY
 
         };
-        target.style.left = (mousePosition.x + offset[0]) + 'px';
-        target.style.top  = (mousePosition.y + offset[1]) + 'px';
+        target.style.left = Math.min(Math.max(mousePosition.x + offset[0], 0), document.documentElement.clientWidth - 50) + 'px';
+        target.style.top  = Math.min(Math.max(mousePosition.y + offset[1], 0), document.documentElement.clientHeight - 50) + 'px';
         popupMoved = target.dataset.popupId;
         //console.log("target", popupMoved, target, event);
     }

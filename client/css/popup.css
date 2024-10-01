@@ -2,7 +2,7 @@
 	font-weight: bold;
 }
 
-.popup-value-out, .popup-value-suffix-out {
+.popup-value-out, .popup-value-suffix-out, .popup-sub-header {
     margin-top: .7rem;
 }
 
@@ -53,6 +53,12 @@
 	margin-left: 0.5em;
 }
 
+.popup-sub-header {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 0em;
+}
+
 .btn-close
 {
 	padding: 0 !important;
@@ -98,6 +104,6 @@
 	border: 0;
 	border-top: 1px solid var(--content-secondary);
 	height: 1px;
-	margin: 1.2em 0.1em 1.2em 0.1em;
+	margin: 1em 0.1em 1em 0.1em;
 	width: 100%;
 }
