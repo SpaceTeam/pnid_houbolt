@@ -143,37 +143,37 @@ input.form-control {
 	stroke: var(--ox);
 }
 
-[data-pnid-lib-valve_pneumatic=open], [data-pnid-lib-valve_servo=open],[data-pnid-lib-valve_needle_servo=open] {
+[data-pnid-lib-valve_pneumatic=open], [data-pnid-lib-valve_pneumatic_no=open], [data-pnid-lib-valve_servo=open],[data-pnid-lib-valve_needle_servo=open] {
     stroke: var(--open);
     fill: none;
 }
-[data-pnid-lib-valve_pneumatic=open] text:not(.static-color), [data-pnid-lib-valve_servo=open] text:not(.static-color), [data-pnid-lib-valve_needle_servo=open] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_b] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=open] text:not(.static-color), [data-pnid-lib-valve_pneumatic_no=open] text:not(.static-color), [data-pnid-lib-valve_servo=open] text:not(.static-color), [data-pnid-lib-valve_needle_servo=open] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_a] text:not(.static-color), [data-pnid-lib-valve_servo_3way=position_b] text:not(.static-color) {
     stroke: var(--open);
     fill: var(--open);
 }
 
-[data-pnid-lib-valve_pneumatic=closed] path, [data-pnid-lib-valve_servo=closed] path,[data-pnid-lib-valve_needle_servo=closed] path {
+[data-pnid-lib-valve_pneumatic=closed] path, [data-pnid-lib-valve_pneumatic_no=closed] path, [data-pnid-lib-valve_servo=closed] path,[data-pnid-lib-valve_needle_servo=closed] path {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
-[data-pnid-lib-valve_pneumatic=closed] text:not(.static-color), [data-pnid-lib-valve_servo=closed] text:not(.static-color),[data-pnid-lib-valve_needle_servo=closed] text:not(.static-color), [data-pnid-lib-valve_servo_3way=closed] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=closed] text:not(.static-color), [data-pnid-lib-valve_pneumatic_no=closed] text:not(.static-color), [data-pnid-lib-valve_servo=closed] text:not(.static-color),[data-pnid-lib-valve_needle_servo=closed] text:not(.static-color), [data-pnid-lib-valve_servo_3way=closed] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-lib-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-lib-valve_servo=throttle] path:nth-of-type(3), [data-pnid-lib-valve_needle_servo=throttle] path:nth-of-type(3) {
+[data-pnid-lib-valve_pneumatic=throttle] path:nth-of-type(3), [data-pnid-lib-valve_pneumatic_no=throttle] path:nth-of-type(3), [data-pnid-lib-valve_servo=throttle] path:nth-of-type(3), [data-pnid-lib-valve_needle_servo=throttle] path:nth-of-type(3) {
     stroke: var(--default-stroke);
     fill: var(--closed);
 }
 
 
-[data-pnid-lib-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-lib-valve_servo=throttle] text:not(.static-color), [data-pnid-lib-valve_needle_servo=throttle] text:not(.static-color) {
+[data-pnid-lib-valve_pneumatic=throttle] text:not(.static-color), [data-pnid-lib-valve_pneumatic_no=throttle] text:not(.static-color), [data-pnid-lib-valve_servo=throttle] text:not(.static-color), [data-pnid-lib-valve_needle_servo=throttle] text:not(.static-color) {
     stroke: var(--closed);
     fill: var(--closed);
 }
 
-[data-pnid-lib-valve_pneumatic=feedback_deviation_error] path, [data-pnid-lib-valve_servo=feedback_deviation_error] path, [data-pnid-lib-valve_needle_servo=feedback_deviation_error] path {
+[data-pnid-lib-valve_pneumatic=feedback_deviation_error] path, [data-pnid-lib-valve_pneumatic_no=feedback_deviation_error] path, [data-pnid-lib-valve_servo=feedback_deviation_error] path, [data-pnid-lib-valve_needle_servo=feedback_deviation_error] path {
     stroke: var(--error-color);
     fill: none;
 }
@@ -489,19 +489,19 @@ data-pnid-lib-battery text:not(.static-color) {
     fill: var(--ox);
 }
 
-[data-pnid-lib-led=success] {
+[data-pnid-lib-led=success] path {
     fill: var(--success-color);
 }
 
-[data-pnid-lib-led=error] {
+[data-pnid-lib-led=error] path {
     fill: var(--error-color);
 }
 
-[data-pnid-lib-led=on] {
+[data-pnid-lib-led=on] path {
     fill: var(--on);
 }
 
-[data-pnid-lib-led=off] {
+[data-pnid-lib-led=off] path {
     fill: none;
 }
 
