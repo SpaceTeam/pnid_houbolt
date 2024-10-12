@@ -703,14 +703,6 @@ data-pnid-lib-battery text:not(.static-color) {
     fill: var(--neutral);
 }
 
-[data-pnid-lib-sensor_height] .sensor-letter, [data-pnid-lib-imu] .sensor-letter, [data-pnid-lib-sensor_pressure_big] .sensor-letter {
-    font-size: var(--big-letters);
-}
-
-[data-pnid-lib-imu] .sensor-letter {
-    font-size: var(--medium-letters);
-}
-
 [data-pnid-lib-sensor_height=high] {
     stroke: var(--high);
 }
