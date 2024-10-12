@@ -505,39 +505,22 @@ data-pnid-lib-battery text:not(.static-color) {
     fill: none;
 }
 
-[data-pnid-lib-flowchart_state=good] {
-    fill: var(--flowchart-state-good);
-}
-
-[data-pnid-lib-flowchart_state=good] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=good] text:not(.static-color), [data-pnid-lib-rocket_channel=good] text:not(.static-color) {
     fill: var(--flowchart-state-good);
     stroke: var(--flowchart-state-good);
 }
 
-[data-pnid-lib-flowchart_state=bad] {
-    fill: var(--flowchart-state-on);
-}
-
-[data-pnid-lib-flowchart_state=bad] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=bad] text:not(.static-color), [data-pnid-lib-rocket_channel=bad] text:not(.static-color) {
     fill: var(--flowchart-state-bad);
     stroke: var(--flowchart-state-bad);
 }
 
-
-[data-pnid-lib-flowchart_state=unknown] {
-    fill: var(--flowchart-state-unknown);
-}
-
-[data-pnid-lib-flowchart_state=unknown] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=unknown] text:not(.static-color), [data-pnid-lib-rocket_channel=unknown] text:not(.static-color) {
     fill: var(--flowchart-state-unknown);
     stroke: var(--flowchart-state-unknown);
 }
 
-[data-pnid-lib-flowchart_state=neutral] {
-    fill: none;
-}
-
-[data-pnid-lib-flowchart_state=neutral] text:not(.static-color) {
+[data-pnid-lib-flowchart_state=neutral] text:not(.static-color), [data-pnid-lib-rocket_channel=neutral] text:not(.static-color) {
     fill: var(--default-stroke);
     stroke: var(--default-stroke);
 }
