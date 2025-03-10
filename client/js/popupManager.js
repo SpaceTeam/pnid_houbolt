@@ -906,19 +906,19 @@ function updatePopup(stateName, value, rawValue, stateType, popupID = undefined)
             {
                 //I'm not too happy with the split here as I need to go through the same
                 case StateTypes.sensor:
-                    updatePopupSensorState(stateName, value, rawValue, popup, rowConfig);
+                    updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, popupID);
                     //console.log("updating popup from sensor state type:", stateName, value, popupID);
                     break;
                 case StateTypes.guiEcho:
-                    updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig);
+                    updatePopupGuiEchoState(stateName, value, rawValue, popup, rowConfig, popupID);
                     //console.log("updating popup from gui echo state type:", stateName, value, popupID);
                     break;
                 case StateTypes.actionReference:
-                    updatePopupActionReferenceState(stateName, value, rawValue, popup, rowConfig);
+                    updatePopupActionReferenceState(stateName, value, rawValue, popup, rowConfig, popupID);
                     //console.log("updating popup from action reference state type:", stateName, value, popupID);
                     break;
                 case StateTypes.setState:
-                    updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig);
+                    updatePopupSetStateState(stateName, value, rawValue, popup, rowConfig, popupID);
                     //console.log("updating popup from set state state type:", stateName, value, popupID);
                     break;
             }
@@ -958,13 +958,25 @@ function updatePopupSensorState(stateName, value, rawValue, popup, rowConfig, po
             switch (contentStyle)
             {
                 case "checkbox":
+                    //if the value is checkbox feedback, highlight checkbox if feedback doesn't coincide with feedback
+                    //TODO THIS IS A MASSIVE HACK. WE DO NOT WANT TO USE SENS DEVIATION FOR THIS BUT WE HAVE NO OTHER WAY FOR
+                    //RELATING CHECKBOX VALUE WITH MEASUREMENT VALUE WITHOUT DUPLICATING DATA ELSEWHERE
+                    let labels = $(popup).find(`label.ckbx-label[for=${stateName}]`);
+                    let input = $(popup).find(`input.ckbx[state=${stateName}]`).first();
+                    if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
+                    {
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring popup update.`);
+                        break;
+                    }
+
+                    setCheckboxFeedback(stateName, labels, input);
                     break;
                 case "slider":
                     //if the value is sensor feedback, update the feedback slider background
                     elements = $(popup).find(`input.range-slider__range[state=${stateName}][type=range]`);
                     if (!checkStringIsNumber(rawValue)) //not really needed anymore now that there is global input validation (right when states come in value is checked for being a number)
                     {
-                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring update.`);
+                        printLog("warning", `Encountered state value that isn't a number while updating <code>'${popupID}'</code> popup with state <code>'${stateName}'</code>: ${value}. Ignoring popup update.`);
                         break;
                     }
                     
@@ -1333,5 +1345,39 @@ function toggleCollapsibleHandler(event)
         label.fadeOut(100, function(){ 
             content.fadeIn(100);
         });
+    }
+}
+
+function setCheckboxFeedback(stateName, labels, input)
+{
+    let pnidElement = getElement(stateName);
+    if (pnidElement.length == 0)
+    {
+        console.log("Tried adjusting checkbox feedback, but couldn't find corresponding PnID element");
+        return;
+    }
+    let pnidElementType = getTypeFromClasses(extractClasses(getElement(stateName)?.attr("class")));
+
+    let elementSensDeviation = getConfigData(config, stateName, "sens_deviation");
+    if (elementSensDeviation == undefined)
+    {
+        elementSensDeviation = getConfigData(defaultConfig, pnidElementType, "sens_deviation");
+    }
+    if (elementSensDeviation == undefined)
+    {
+        return;
+    }
+
+    let checkboxValue = input.is(":checked") ? 1 : 0;
+    let feedbackValue = getElement(stateName)[0].dataset.value;
+    //TODO make the following be a CSS class instead
+    eval(`var tempSensDeviation = function (feedback, setState) { ${elementSensDeviation} }`)
+    if (tempSensDeviation(feedbackValue, checkboxValue))
+    {
+        labels.css("color", "var(--error-color)");
+    }
+    else
+    {
+        labels.css("color", "");
     }
 }

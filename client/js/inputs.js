@@ -33,6 +33,9 @@ function onDigitalCheck(checkbox, action = undefined)
     {
         eval(action);
     }
+
+    //TODO this is a HACK:
+    setCheckboxFeedback(checkbox.getAttribute("state"), $($(checkbox).siblings()[0]), $(checkbox));
 }
 
 function onNumberInput(numberInput, action = undefined)
