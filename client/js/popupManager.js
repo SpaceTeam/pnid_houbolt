@@ -374,22 +374,6 @@ function createCheckbox(config, variable, enabled, popupID, curValue)
     element.find("input").attr('id', popupID).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
-    //consider completely removing this, it is currently being completely unused
-    let highThreshold = config["high"] == undefined ? "1" : config["high"];
-    let lowThreshold = config["low"] == undefined ? "0" : config["low"];
-    if (curValue === highThreshold)
-    {
-        element.find("input").prop("checked", true);
-    }
-    else if (curValue === lowThreshold)
-    {
-        element.find("input").prop("checked", false);
-    }
-    else
-    {
-        printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
-        element.find("input").prop("checked", false);
-    }
     if (!enabled) {
         element.find("input").prop('disabled', true);
     }
