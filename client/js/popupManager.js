@@ -392,11 +392,12 @@ function createSlider(config, variable, enabled, popupID, curRawValue)
         printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
         curRawValue = 0;
     }
+curRawValue = Math.min(Math.max(curRawValue, config["min"]), config["max"]);
     //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variable);
     element.find("input").attr("min", config["min"]);
     element.find("input").attr("max", config["max"]);
     element.find("input").attr("step", config["step"]);
-    element.find("input").first().val(Math.round(curRawValue/config["max"])).attr("state", variable);
+    element.find("input").first().val(curRawValue).attr("state", variable);
     rangeSlider(element);
     element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
     if (!enabled) {
