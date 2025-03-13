@@ -496,13 +496,13 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
         if (stateType == StateTypes.actionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
-            curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
+            curRawValue = getElementAttrValue(popupID, "data-action-reference-value");
         }
         else
         {
             curValue = getElementValue(popupID, "value");
             //printLog("info", curValue);
-            curRawValue = getElementValue(popupID, "valueRaw");
+            curRawValue = getElementAttrValue(popupID, "data-value");
             //printLog("info", curRawValue);
         }
         let rowConfig = popupConfig[contentIndex];
