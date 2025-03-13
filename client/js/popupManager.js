@@ -374,22 +374,6 @@ function createCheckbox(config, variable, enabled, popupID, curValue)
     element.find("input").attr('id', popupID).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
-    //consider completely removing this, it is currently being completely unused
-    let highThreshold = config["high"] == undefined ? "1" : config["high"];
-    let lowThreshold = config["low"] == undefined ? "0" : config["low"];
-    if (curValue === highThreshold)
-    {
-        element.find("input").prop("checked", true);
-    }
-    else if (curValue === lowThreshold)
-    {
-        element.find("input").prop("checked", false);
-    }
-    else
-    {
-        printLog("error", `Encountered a value that doesn't correspond to either high (${highThreshold}) or low (${lowThreshold}) value for popup (${popupID}) display: '${curValue}'! Defaulting to unchecked.`);
-        element.find("input").prop("checked", false);
-    }
     if (!enabled) {
         element.find("input").prop('disabled', true);
     }
@@ -408,11 +392,12 @@ function createSlider(config, variable, enabled, popupID, curRawValue)
         printLog("warning", `Encountered state value that isn't a number while creating <code>${popupID}</code> popup: ${curRawValue}. Defaulting to '0'.`);
         curRawValue = 0;
     }
+    curRawValue = Math.min(Math.max(curRawValue, config["min"]), config["max"]);
     //newContentRow.find("input").first().attr("value", Math.round(curRawValue)).attr("state", variable);
     element.find("input").attr("min", config["min"]);
     element.find("input").attr("max", config["max"]);
     element.find("input").attr("step", config["step"]);
-    element.find("input").first().val(Math.round(curRawValue/config["max"])).attr("state", variable);
+    element.find("input").first().val(curRawValue).attr("state", variable);
     rangeSlider(element);
     element.find(".range-slider__value").text(Math.round(curRawValue)).attr("title", popupID);
     if (!enabled) {
@@ -511,13 +496,13 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
         if (stateType == StateTypes.actionReference) // if it is action reference, load the values from there instead of the normal pnid values
         {
             curValue = getElementValue(popupID, "actionReferenceValue");
-            curRawValue = getElementValue(popupID, "actionReferenceValueRaw");
+            curRawValue = getElementAttrValue(popupID, "data-action-reference-value");
         }
         else
         {
             curValue = getElementValue(popupID, "value");
             //printLog("info", curValue);
-            curRawValue = getElementValue(popupID, "valueRaw");
+            curRawValue = getElementAttrValue(popupID, "data-value");
             //printLog("info", curRawValue);
         }
         let rowConfig = popupConfig[contentIndex];
