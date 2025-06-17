@@ -36,6 +36,27 @@ function adaptNewParserOutput() {
     });
 }
 
+function updatePNIDInputsEnabled()
+{
+    if (master && !isSequenceRunning)
+    {
+        pnidInputsEnabled = true;
+    }
+    else
+    {
+        pnidInputsEnabled = false;
+    }
+
+    if (pnidInputsEnabled)
+    {
+        $('.popup').find('input').removeAttr('disabled');
+    }
+    else
+    {
+        $('.popup').find('input').attr('disabled', 'true');
+    }
+}
+
 function loadValuesPNID(states)
 {
     for (const [key, value] of Object.entries(REFERENCE_VALUES)) 

@@ -684,7 +684,7 @@ function createBundledElements(popup, parents, inputsEnabled = true, popupID = u
 //TODO consider breaking into several smaller functions
 function createPopup(popupID, parent, stateType, x = undefined, y = undefined, width = undefined, height = undefined)
 {
-    inputsEnabled = master; //this is an ugly hack
+    inputsEnabled = pnidInputsEnabled
     //console.log("creating popup with id", popupID, "and state type", stateType);
     //printLog("info", parent);
 	

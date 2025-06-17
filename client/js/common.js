@@ -1,3 +1,5 @@
+var pnidInputsEnabled = true;
+
 const nrDecimalPoints = 2;
 
 const StateTypes = Object.freeze({
