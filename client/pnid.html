@@ -22,14 +22,13 @@
 <body>
     <div hidden id="templates">
         <div id="popupTemp" class="container-fluid popup">
-            <div class="row control-row justify-content-end">
-                <button type="button" class="btn btn-light btn-drag">
-                    <i class="bi bi-arrows-move"></i>
-                </button>
+            <div class="row popup-title control-row justify-content-end">
                 <div class="col popup-heading">Temp Name</div>
                 <button type="button" class="btn btn-outline-danger btn-close">
                     <i class="bi bi-x"></i>
                 </button>
+            </div>
+            <div class="popup-content">
             </div>
         </div>
         <div id="separatorTemp" class="row control-row popup-row">
@@ -63,10 +62,12 @@
             </div>
         </div>
         <div id="numberEntryTemp" class="row control-row popup-row">
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%">
                 <label class="popup-value-out"></label>
-                <input type="number" id="" min="" max="" class="form-control-sm"/>
-                <input type="button" onclick="" value="Set" class="btn btn-primary btn-sm"></input>
+                <div style="display: flex; width: 60%; gap: 0.5em">
+                    <input type="number" id="" min="" max="" class="form-control-sm"/>
+                    <input type="button" onclick="" value="Set" class="btn btn-primary btn-sm"></input>
+                </div>
             </div>
         </div>
         <div id="buttonEntryTemp" class="row control-row popup-row">

@@ -426,7 +426,6 @@ function createNumberEntry(config, variable, enabled, popupID, curRawValue)
     numberInput.inputSpinner();
     numberInput = element.find("input[type=number]")
     numberInput.attr("id", variable);
-    element.find("div.input-group").attr("style", "width: 60%");
     
 
     let button = element.find("input[type=button]");
@@ -485,6 +484,7 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
 {
     //all states contained in a popup which may need updating
     let containedStates = [];
+    let popupBody = popup.find("div.popup-content");
 
     //construct popup content
     for (contentIndex in popupConfig)
@@ -601,11 +601,11 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
             let wrapper = createCollapsibleWrapper(popupID, variableName, rowConfig);
             newContentRow.removeClass("popup-row");
             wrapper.find("div.popup-collapse-content").append(newContentRow);
-            popup.append(wrapper);
+            popupBody.append(wrapper);
         }
         else
         {
-            popup.append(newContentRow);
+            popupBody.append(newContentRow);
         }
     }
     return containedStates;
@@ -645,15 +645,25 @@ function createPopupTitleBar(popupClone, popupID, title)
     //gets ignored unless written with !important because the style here is more specific
     popupClone.attr('style', `width: auto; height: auto;`);
 	
-    popupClone.find("div.popup-heading").first().text(title);
-	popupClone.find("div.row").find(".btn-close").first().on('click', function(){destroyPopup(popupID);});
-	popupClone.find("div.row").find(".btn-drag").first().on('mousedown', function(e) {
+    let titleBar = popupClone.find("div.popup-title");
+    titleBar.find("div.popup-heading").first().text(title);
+    let closeButton = titleBar.find(".btn-close").first();
+    closeButton.on('click', function(){destroyPopup(popupID);});
+	titleBar.first().on('mousedown', function(e) {
+        if (event.target == closeButton[0] || event.target == closeButton[0].children[0])
+        {
+            return;
+        }
+        titleBar.addClass("grabbed")
 		isDown = true;
 		target = popupClone[0];
 		offset = [
 			popupClone[0].offsetLeft - e.clientX,
 			popupClone[0].offsetTop - e.clientY
 		];
+	});
+	titleBar.first().on('mouseup', function(e) {
+        titleBar.removeClass("grabbed")
 	});
     return popupClone;
 }

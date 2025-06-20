@@ -1,5 +1,22 @@
+.popup-title {
+	padding: 0.4rem;
+	background-color: var(--background-primary);
+	cursor: grab;
+}
+
 .popup-heading {
 	font-weight: bold;
+	font-size: 1.3em;
+	padding-left: 0.2em;
+	align-content: center;
+}
+
+.popup-title.grabbed {
+	cursor: move;
+}
+
+.popup-content {
+	padding: 0.8rem;
 }
 
 .popup-value-out, .popup-value-suffix-out, .popup-sub-header {
@@ -17,8 +34,7 @@
 	color: var(--content-primary);
 	background-color: var(--background-secondary);
 	border-radius: 0.2rem;
-	padding: 0.8rem;
-	cursor: pointer;
+	padding: 0;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
