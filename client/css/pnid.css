@@ -8,6 +8,9 @@
 	justify-content: start;
 }
 
+.pnid-global-warning {
+    background-color: var(--error-color);
+}
 
 label.popup-value-out, label.popup-value-suffix-out, text.pnid-property.value {
     font-family: "Inconsolata", monospace;

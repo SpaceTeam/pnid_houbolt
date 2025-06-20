@@ -237,6 +237,47 @@ function toggleHitboxDisplay()
     });
 }
 
+function setGlobalWarning(warningId, warningText, state)
+{
+    if (state)
+    {
+        let warningElement = document.getElementById(warningId);
+        if (!warningElement) {
+            warningElement = document.getElementById("pnidWarningTemp").cloneNode();
+        }
+        let container = document.getElementById("dynamicStatusBars");
+        if (container)
+        {
+            // running in ECUI, not standalone, add the status bar to its status bars
+            warningElement.id = warningId;
+            warningElement.innerHTML = warningText;
+        }
+        else
+        {
+            // didn't find status bar container in ECUI, running standalone
+            container = document.getElementById("pnidStatusBars");
+            if (!container)
+            {
+                console.error("Tried setting a global warning, but couldn't find container in ECUI or PnID:", warningId, " Warning was: ", warningText);
+                return;
+            }
+        }
+        container.appendChild(warningElement);
+    }
+    else
+    {
+        let warningElement = document.getElementById(warningId);
+        if (warningElement)
+        {
+            warningElement.remove();
+        }
+        else
+        {
+            console.warn("Tried removing warning element, but found none with searched ID:", warningId)
+        }
+    }
+}
+
 function authenticateGrafana()
 {
 
