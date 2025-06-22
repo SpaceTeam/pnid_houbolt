@@ -273,10 +273,6 @@ function setGlobalWarning(warningId, warningText, state)
         {
             warningElement.remove();
         }
-        else
-        {
-            console.warn("Tried removing warning element, but found none with searched ID:", warningId)
-        }
     }
 }
 
