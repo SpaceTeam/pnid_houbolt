@@ -1368,7 +1368,7 @@ function setCheckboxFeedback(stateName, labels, input)
     }
     let pnidElementType = getTypeFromClasses(extractClasses(getElement(stateName)?.attr("class")));
 
-    let elementSensDeviation = getConfigData(config, stateName, "sens_deviation");
+    let elementSensDeviation = getConfigData(config, stateName.replaceAll("-", ":"), "sens_deviation");
     if (elementSensDeviation == undefined)
     {
         elementSensDeviation = getConfigData(defaultConfig, pnidElementType, "sens_deviation");
