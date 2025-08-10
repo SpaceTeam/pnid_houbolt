@@ -657,10 +657,8 @@ function createPopupTitleBar(popupClone, popupID, title)
         titleBar.addClass("grabbed")
 		isDown = true;
 		target = popupClone[0];
-		offset = [
-			popupClone[0].offsetLeft - e.clientX,
-			popupClone[0].offsetTop - e.clientY
-		];
+		mouseMoveStart.x = popupClone[0].offsetLeft - e.clientX;
+        mouseMoveStart.y = popupClone[0].offsetTop - e.clientY;
 	});
 	titleBar.first().on('mouseup', function(e) {
         titleBar.removeClass("grabbed")
@@ -1249,7 +1247,10 @@ function clearPopupStorage()
 }
 
 var mousePosition;
-var offset = [0,0];
+var mouseMoveStart = {
+    x: 0,
+    y: 0
+};
 var target;
 var isDown = false;
 
@@ -1326,8 +1327,8 @@ document.addEventListener('mousemove', function(event) {
             y : event.clientY
 
         };
-        target.style.left = Math.min(Math.max(mousePosition.x + offset[0], 0), document.documentElement.clientWidth - 50) + 'px';
-        target.style.top  = Math.min(Math.max(mousePosition.y + offset[1], 0), document.documentElement.clientHeight - 50) + 'px';
+        target.style.left = Math.min(Math.max(mousePosition.x + mouseMoveStart.x, 0), document.documentElement.clientWidth - 50) + 'px';
+        target.style.top  = Math.min(Math.max(mousePosition.y + mouseMoveStart.y, 0), document.documentElement.clientHeight - 50) + 'px';
         popupMoved = target.dataset.popupId;
         //console.log("target", popupMoved, target, event);
     }

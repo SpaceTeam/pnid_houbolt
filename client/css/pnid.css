@@ -1,6 +1,6 @@
 :root {
     --pnid-max-width: 100%;
-    --pnid-max-height: calc(100vh - 150px);
+    --pnid-max-height: calc(100vh - 180px);
 }
 
 #pnid {
