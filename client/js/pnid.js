@@ -16,6 +16,7 @@ function initPNID(standalone, pathOffset, themes, pnidName)
     currentPnID = pnidName;
     restorePopupsFromLocalStorage();
     createWireLinks();
+    tryInitSequenceSlider();
 
     //add a check if we want that added (url param?)
     createLogBox();
@@ -273,6 +274,32 @@ function setGlobalWarning(warningId, warningText, state)
         {
             warningElement.remove();
         }
+    }
+}
+
+// NOTE this is a somewhat hardcoded "hack"
+function tryInitSequenceSlider()
+{
+    if (typeof createStepSequenceSlider === "function") {
+        console.log("initializing step sequence");
+        let states = thresholds["enums"]["state_machine"];
+        let stateDicts = [];
+        for (let i = 0; i < states.length; i++) {
+            console.log("state", states[i]);
+            let cleanedName = states[i].replace("RS_", "").replaceAll("_", " ");
+            let titleCasedNamed = cleanedName.replace(
+                /(\w)(\w*)/g,
+                (_, firstChar, rest) => firstChar + rest.toLowerCase()
+            );
+            stateDicts.push({
+                name: titleCasedNamed
+            });
+            console.log("state edited", states[i]);
+        }
+        createStepSequenceSlider(stateDicts);
+    }
+    else {
+        console.warn("Could not initialize internal sequence slider because functions were missing! This is expected when running PnID standalone (not in ECUI)");
     }
 }
 
