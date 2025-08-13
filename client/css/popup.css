@@ -33,15 +33,16 @@
 	
 	color: var(--content-primary);
 	background-color: var(--background-secondary);
-	border-radius: 0.2rem;
+	box-shadow: 0px 0px 15px black;
+	border-radius: 0.3rem;
 	padding: 0;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 	border-style: solid;
-	border-color: var(--content-secondary);
-	border-width: 0.1rem;
+	border-color: var(--background-tertiary);
+	border-width: 1px;
 
 	
 	resize: both;
