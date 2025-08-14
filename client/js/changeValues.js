@@ -17,6 +17,12 @@ $.get('/pnid_config/thresholds', function(data) {
     thresholds = data;
 });
 
+let stateMachines = {};
+$.get('/pnid_config/state_machines', function(data) {
+    //console.log("thresholds:", data);
+    stateMachines = data;
+});
+
 /**
  * @summary Initializes tanks for fill level visuals.
  * @description Finds the correct rect element to scale, enters the right content type and passes the tanks to {@link initTankContent}.

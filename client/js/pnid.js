@@ -277,26 +277,27 @@ function setGlobalWarning(warningId, warningText, state)
     }
 }
 
+function createStepSequenceValueLookup(rawStates) {
+    let lookup = {};
+    for (let i = 0; i < rawStates.length; i++) {
+        let state = rawStates[i];
+        if (lookup[state.value] != undefined) {
+            console.error("While creating reverse state value lookup a value collision was found. This is likely due to wrong config in 'stateMachines.json'! Aborting step sequence slider creation.")
+            return undefined;
+        }
+        lookup[state.value] = i;
+    }
+    return lookup;
+}
+
 // NOTE this is a somewhat hardcoded "hack"
 function tryInitSequenceSlider()
 {
     if (typeof createStepSequenceSlider === "function") {
         console.log("initializing step sequence");
-        let states = thresholds["enums"]["state_machine"];
-        let stateDicts = [];
-        for (let i = 0; i < states.length; i++) {
-            console.log("state", states[i]);
-            let cleanedName = states[i].replace("RS_", "").replaceAll("_", " ");
-            let titleCasedNamed = cleanedName.replace(
-                /(\w)(\w*)/g,
-                (_, firstChar, rest) => firstChar + rest.toLowerCase()
-            );
-            stateDicts.push({
-                name: titleCasedNamed
-            });
-            console.log("state edited", states[i]);
-        }
-        createStepSequenceSlider(stateDicts);
+        let states = stateMachines["main_ecu_sequence_slider"];
+        let statesLookup = createStepSequenceValueLookup(states);
+        createStepSequenceSlider(states, statesLookup);
     }
     else {
         console.warn("Could not initialize internal sequence slider because functions were missing! This is expected when running PnID standalone (not in ECUI)");

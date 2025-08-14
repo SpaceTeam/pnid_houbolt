@@ -50,6 +50,11 @@ app.get('/config/thresholds', (req, res) => {
 	res.sendFile(configPath + 'thresholds.json')
 });
 
+app.get('/config/state_machines', (req, res) => {
+    //let rawdata = fs.readFileSync(configPath + 'thresholds.json');
+	res.sendFile(configPath + 'stateMachines.json')
+});
+
 //Big no no security wise
 app.post('/pnid', (req, res) => {
     console.log(req.body);
