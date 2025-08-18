@@ -47,6 +47,8 @@
 	
 	resize: both;
 	overflow: auto;
+
+	z-index: 5;
 }
 
 .popup-row {
