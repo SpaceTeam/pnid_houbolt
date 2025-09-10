@@ -211,6 +211,51 @@ function extractXYFromPath(path)
     return [pathAttr[1], pathAttr[2], pathAttr[4], pathAttr[5]]; //returns startX, startY, endX, endY
 }
 
+async function populateWithDummyData()
+{
+    let testData = [
+        { "name": "ox_temp_0:sensor", "value": 45.12 },
+        { "name": "ox_pressurant_pressure:sensor", "value": 104.94 },
+        { "name": "fuel_pressurant_pressure:sensor", "value": 104.19 },
+        { "name": "pressurant_tanking_pressure:sensor", "value": 103.38 },
+        { "name": "fuel_pressurant_vent_valve:sensor", "value": 5978 },
+        { "name": "ox_pressurant_vent_valve:sensor", "value": 6121 },
+        { "name": "pressurant_vent_valve_feedback:sensor", "value": 2200 },
+        { "name": "pressurant_tanking_valve_feedback:sensor", "value": 2200 },
+        { "name": "ox_pressurant_valve:sensor", "value": 21.88 },
+        { "name": "ox_tank_pressure:sensor", "value": 35.21 },
+        { "name": "ox_vent:sensor", "value": 6528 },
+        { "name": "fuel_pressurant_valve:sensor", "value": 10.32 },
+        { "name": "fuel_tank_pressure:sensor", "value": 0.86 },
+        { "name": "fuel_vent:sensor", "value": 0 },
+        { "name": "ox_temp_1:sensor", "value": -83.95 },
+        { "name": "fuel_temp_1:sensor", "value": 21.28 },
+        { "name": "ox_main_valve:sensor", "value": 0 },
+        { "name": "fuel_main_valve:sensor", "value": 1.9 },
+        { "name": "ox_venturi_pressure:sensor", "value": 0.84 },
+        { "name": "fuel_venturi_pressure:sensor", "value": 0.9 },
+        { "name": "chamber_pressure:sensor", "value": 0.94 },
+        { "name": "rocket_weight:sensor", "value": -2.27 },
+        { "name": "internal_igniter_1_cont:sensor", "value": 1 },
+        { "name": "internal_igniter_1:sensor", "value": 0 },
+        { "name": "internal_igniter_2_cont:sensor", "value": 0 },
+        { "name": "internal_igniter_2:sensor", "value": 1 },
+        { "name": "rocket:sensor", "value": 2 },
+        { "name": "fuel_rocket:sensor", "value": 2 },
+        { "name": "ox_rocket:sensor", "value": 2 },
+        { "name": "strongback:sensor", "value": 0 },
+        { "name": "gse_elec_bob_lamp_red:sensor", "value": 100 },
+        { "name": "ventilinsel_pressure:sensor", "value": 8.18 },
+        { "name": "press_in:sensor", "value": 11.28 },
+        { "name": "dewar_pressure:sensor", "value": 2.15 },
+        { "name": "dewar_pressurize_solenoid:sensor", "value": 0 },
+        { "name": "dewar_weight:sensor", "value": 31.59 },
+        { "name": "ox_tanking_valve_feedback:sensor", "value": -1276 },
+        { "name": "engine_temp_0:sensor", "value": 26.9 },
+        { "name": "engine_temp_1:sensor", "value": -41.27 },
+    ];
+    updatePNID(testData);
+}
 
 /**
  * @summary Test function for running through some of the more important functions of the PnID to validate them.
