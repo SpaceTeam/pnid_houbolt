@@ -340,6 +340,14 @@ data-pnid-lib-battery text:not(.static-color) {
     fill: var(--low);
 }
 
+[data-pnid-lib-sensor_temperature=cryo] {
+    stroke: var(--super-low);
+}
+[data-pnid-lib-sensor_temperature=cryo] text:not(.static-color) {
+    stroke: var(--super-low);
+    fill: var(--super-low);
+}
+
 
 [data-pnid-lib-sensor_temperature=neutral] {
     stroke: var(--neutral);
