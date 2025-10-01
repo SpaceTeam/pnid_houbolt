@@ -366,11 +366,12 @@ function createExternalDisplay(config, source)
 }
 
 
-function createCheckbox(config, variable, enabled, popupID, curValue)
+function createCheckbox(config, variable, label, enabled, popupID, curValue)
 {
     let element = $("#digitalOutTemp").clone();
+    let labelText = (label == undefined || label == "") ? variable : label;
     element.removeAttr("id");
-    element.find(".ckbx-label").text(variable).attr("for", popupID);
+    element.find(".ckbx-label").text(labelText).attr("for", popupID);
     element.find("input").attr('id', popupID).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
@@ -569,7 +570,7 @@ function appendPopupContent(popup, popupConfig, inputsEnabled, popupID, stateTyp
                 switch (contentStyle)
                 {
                     case "checkbox":
-                        newContentRow = createCheckbox(rowConfig, variableName, inputsEnabled, popupID, curRawValue);
+                        newContentRow = createCheckbox(rowConfig, variableName, rowConfig["label"], inputsEnabled, popupID, curRawValue);
                         break;
                     case "slider":
                         newContentRow = createSlider(rowConfig, variableName, inputsEnabled, popupID, curRawValue);

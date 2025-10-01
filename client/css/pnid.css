@@ -250,6 +250,14 @@ data-pnid-lib-battery text:not(.static-color) {
     stroke: var(--default-stroke);
 }
 
+[data-pnid-lib-battery=battery_charging] {
+    fill: var(--battery-charging);
+}
+[data-pnid-lib-battery=battery_charging] text:not(.static-color) {
+    fill: var(--battery-charging);
+    stroke: var(--battery-charging);
+}
+
 [data-pnid-lib-battery=battery_high] {
     fill: var(--battery-high);
 }
