@@ -371,8 +371,9 @@ function createCheckbox(config, variable, label, enabled, popupID, curValue)
     let element = $("#digitalOutTemp").clone();
     let labelText = (label == undefined || label == "") ? variable : label;
     element.removeAttr("id");
-    element.find(".ckbx-label").text(labelText).attr("for", popupID);
-    element.find("input").attr('id', popupID).attr('state', variable);
+    let inputId = variable == undefined ? popupID : variable;
+    element.find(".ckbx-label").text(labelText).attr("for", inputId);
+    element.find("input").attr('id', inputId).attr('state', variable);
     element.find("input").attr("onclick", `onDigitalCheck(this, "${config['action'] != undefined ? config['action'] : ''}")`);
 
     if (!enabled) {
