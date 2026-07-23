@@ -707,24 +707,96 @@ function updateLinkedStates(state, recursionDepth = 0)
     }
 }
 
-function setStateValue(state, recursionDepth = 0)
+function setFieldValue(telemetry, recursionDepth = 0)
 {
-    state["name"] = state["name"].replaceAll(":","-");
-    //todo: I don't want to be restricted to just numbers in the future, but for now too many places in the code expect the input to be a number
-    //or at least convertible to a number.
-    if (typeof state["value"] != "number")
+    // round to 2 decimal places
+    if (typeof telemetry.value == "number")
     {
-        if (!checkStringIsNumber(state["value"]))
-        {
-            printLog("error", "Received a state update with a value that is not a number: \"" + state["name"] + "\": \"" + state["value"] + "\". Skipping to next state update. This is intended to be supported later on");
-            return;
-        }
-        state["value"] = parseFloat(state["value"]);
+        telemetry.value = Math.round((telemetry.value + Number.EPSILON) * 100) / 100;
     }
 
-    let stateType = parseStateType(state);
-    let stateName = extractStateName(state["name"], stateType);
-    let stateValue = Math.round((state["value"] + Number.EPSILON) * 100) / 100;
+    // TODO fall back to raw name as well? how does the caching handle this?
+    let elementId = telemetry.mapped_name;
+    let elementGroup = getElement(elementId);
+    if (elementGroup.length == 0)
+    {
+        elementId = telemetry.raw_name;
+        elementGroup = getElement(elementId);
+    }
+
+    // TODO this is a temporary hack for compatibility with old pnids
+    if (elementGroup.length == 0)
+    {
+        elementId = telemetry.mapped_name + "-sensor";
+        elementGroup = getElement(elementId);
+    }
+    if (elementGroup.length == 0)
+    {
+        elementId = telemetry.raw_name + "-sensor";
+        elementGroup = getElement(elementId);
+    }
+    // TODO hack end
+
+    if (elementGroup.length != 0)
+    {
+        //human visible value that may contain units or further processing
+        let valueElement = getElement(elementId, "value");
+        let unitPadding = "";
+        if (telemetry.unit.length > 2)
+        {
+            // a somewhat hacky "heuristic" for when a unit looks better with space between value and unit
+            unitPadding = " ";
+        }
+        valueElement.text(telemetry.value + unitPadding + telemetry.unit);
+        elementGroup[0].dataset.value = telemetry.value;
+    }
+    else if (findPopupWithState(elementId) != undefined)
+    {
+        //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
+        //console.log("updating contained state popups", stateName, stateValue);
+        updatePopupsFromContainedStates(elementId, telemetry.value, telemetry.value, StateTypes.sensor); //todo: should this be raw value or visible value?
+        return;
+    }
+    else
+    {
+        //console.log("sensor update but actually wire update");
+        //if no element was found, it could be a wire instead
+        handleWireState(elementId, telemetry.value);
+        return;
+    }
+    //console.log("updating sensor state");
+
+    let setPoint = elementGroup[0].dataset.setPoint;
+    //if (stateName == "pressurant_tanking_valve-sensor")
+    	//console.log("set state value", setStateValue, elementGroup[0].dataset);
+    const inVars = {
+        "this": elementId,
+        "value" : telemetry.value,
+        "logicalVal" : telemetry.logical == null ? undefined : telemetry.logical,
+        "setPoint": setPoint == "" ? undefined : setPoint,
+        "unit" : telemetry.unit
+    };
+
+    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
+    elementGroup.each(function(index) {
+        // TODO pass along logical value here and get rid of the StateTypes enum
+        let elementType = getTypeFromClasses(extractClasses($(this).attr("class")))
+        let outVars = execBehaviors(elementId, elementType, StateTypes.sensor, inVars);
+        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
+        if (outVars["value"] == undefined)
+        {
+            outVars["value"] = telemetry.value.toFixed(nrDecimalPoints) + " " + telemetry.unit;
+        }
+        applyUpdatesToPnID(elementId, $(this), elementType, StateTypes.sensor, outVars);
+
+        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
+        updatePopup(elementId, outVars["value"], telemetry.value, StateTypes.sensor);
+    });
+
+
+    // TODO split those out to other functions directly called from the socket events instead of converging then splitting again
+    return;
+
     switch (stateType)
     {
         case StateTypes.sensor:
@@ -749,62 +821,6 @@ function setStateValue(state, recursionDepth = 0)
     }
 
     updateLinkedStates(state, recursionDepth);
-}
-
-function handleSensorState(stateName, stateValue)
-{
-    let elementGroup = getElement(stateName);
-
-    let unit = "";
-    if (elementGroup.length != 0)
-    {
-        unit = findUnitFromElements(elementGroup);
-
-        //human visible value that may contain units or further processing
-        let valueElement = getElement(stateName, "value");
-        valueElement.text(stateValue + unit);
-        elementGroup[0].dataset.value = stateValue;
-    }
-    else if (findPopupWithState(stateName) != undefined)
-    {
-        //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
-        //console.log("updating contained state popups", stateName, stateValue);
-        updatePopupsFromContainedStates(stateName, stateValue, stateValue, StateTypes.sensor); //todo: should this be raw value or visible value?
-        return;
-    }
-    else
-    {
-        //console.log("sensor update but actually wire update");
-        //if no element was found, it could be a wire instead
-        handleWireState(stateName, stateValue);
-        return;
-    }
-    //console.log("updating sensor state");
-	
-    let setStateValue = elementGroup[0].dataset.setState;
-    //if (stateName == "pressurant_tanking_valve-sensor")
-    	//console.log("set state value", setStateValue, elementGroup[0].dataset);
-    const inVars = {
-        "this": stateName,
-        "value" : stateValue,
-        "setState": setStateValue == "" ? undefined : setStateValue,
-        "unit" : unit
-    };
-
-    //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
-    elementGroup.each(function(index) {
-        let elementType = getTypeFromClasses(extractClasses($(this).attr("class")))
-        let outVars = execBehaviors(stateName, elementType, StateTypes.sensor, inVars);
-        //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
-        if (outVars["value"] == undefined)
-        {
-            outVars["value"] = stateValue.toFixed(nrDecimalPoints) + " " + unit;
-        }
-        applyUpdatesToPnID(stateName, $(this), elementType, StateTypes.sensor, outVars);
-
-        //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(stateName, outVars["value"], stateValue, StateTypes.sensor);
-    });
 }
 
 function handleGuiEchoState(stateName, stateValue)
@@ -875,7 +891,7 @@ function handleTargetState(stateName, stateValue)
     if (elementGroup.length != 0)
     {
         elementGroup.each(function (index) {
-            elementGroup[index].dataset.setState = stateValue;
+            elementGroup[index].dataset.setPoint = stateValue;
         });
     }
 
@@ -910,7 +926,7 @@ function execBehaviors(stateName, elementType, stateType, inVars)
     let outVars = { };
 
     //the accuracy of the sensor in question. needed for determining whether the feedback value is acceptably close to the set point.
-    let sensorDeviationCheck = "return !(feedback == setState);";
+    let sensorDeviationCheck = "return !(feedback == setPoint);";
 
     //search for the search term in the default config and run the eval behavior code and run special update tank content function (if applicable)
     //console.log("search term", searchTerm.replace("_Slim", "").replace("_Short", ""));
@@ -957,20 +973,14 @@ function execBehaviors(stateName, elementType, stateType, inVars)
         eval(customEvalCode);
     }
 	//if (stateName == "pressurant_tanking_valve-sensor")
-		//console.log("before sens check", inVars["setState"]);
-    if ((inVars["setState"] != undefined || inVars["setState"] != null) && stateType == StateTypes.sensor && sensorDeviationCheck != null)
+		//console.log("before sens check", inVars["setPoint"]);
+    if ((inVars["setPoint"] != undefined || inVars["setPoint"] != null) && stateType == StateTypes.sensor && sensorDeviationCheck != null)
     {
-        eval(`var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
+        eval(`var sensDevChecker = function (feedback, setPoint) { ${sensorDeviationCheck} }`);
         
-        //if (stateName == "pressurant_tanking_valve-sensor")
-        	//console.log("dev check with", inVars["value"], parseFloat(inVars["setState"]));
-        //console.log('sens deviation function:', `var sensDevChecker = function (feedback, setState) { ${sensorDeviationCheck} }`);
-        if (sensDevChecker(inVars["value"], parseFloat(inVars["setState"])))
+        if (sensDevChecker(inVars["value"], parseFloat(inVars["setPoint"])))
         {
-            //console.log("feedback deviation error");
             outVars["color"] = "feedback_deviation_error";
-            
-	        //console.log("deviation error");
         }
     }
     return outVars;
