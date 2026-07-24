@@ -183,7 +183,7 @@ function updatePNID(telemetryList, recursionDepth = 0)
     
     for (let node of telemetryList.nodes)
     {
-        for (let telemetry of node["telemetry"])
+        for (let telemetry of node.telemetry)
         {
             //let stateName = stateList[stateIndex]["name"];
             //let stateValue = stateList[stateIndex]["value"];

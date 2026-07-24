@@ -718,26 +718,26 @@ function setFieldValue(telemetry, recursionDepth = 0)
     // TODO fall back to raw name as well? how does the caching handle this?
     let elementId = telemetry.mapped_name;
     let elementGroup = getElement(elementId);
-    if (elementGroup.length == 0)
+    if (elementGroup.length === 0)
     {
         elementId = telemetry.raw_name;
         elementGroup = getElement(elementId);
     }
 
     // TODO this is a temporary hack for compatibility with old pnids
-    if (elementGroup.length == 0)
+    if (elementGroup.length === 0)
     {
         elementId = telemetry.mapped_name + "-sensor";
         elementGroup = getElement(elementId);
     }
-    if (elementGroup.length == 0)
+    if (elementGroup.length === 0)
     {
         elementId = telemetry.raw_name + "-sensor";
         elementGroup = getElement(elementId);
     }
     // TODO hack end
 
-    if (elementGroup.length != 0)
+    if (elementGroup.length !== 0)
     {
         //human visible value that may contain units or further processing
         let valueElement = getElement(elementId, "value");
@@ -750,7 +750,7 @@ function setFieldValue(telemetry, recursionDepth = 0)
         valueElement.text(telemetry.value + unitPadding + telemetry.unit);
         elementGroup[0].dataset.value = telemetry.value;
     }
-    else if (findPopupWithState(elementId) != undefined)
+    else if (findPopupWithState(elementId) !== undefined)
     {
         //todo: I'd like to have the update from contained states at the end so I can run behavior code for the value output, but for now this throws too many errors that I don't want to deal with
         //console.log("updating contained state popups", stateName, stateValue);
@@ -773,24 +773,24 @@ function setFieldValue(telemetry, recursionDepth = 0)
         "this": elementId,
         "value" : telemetry.value,
         "logicalVal" : telemetry.logical == null ? undefined : telemetry.logical,
-        "setPoint": setPoint == "" ? undefined : setPoint,
+        "setPoint": setPoint === "" ? undefined : setPoint,
         "unit" : telemetry.unit
     };
 
     //Return values from eval() code specified in config.json. Will be applied to PnID and cleared for every state and every loop
     elementGroup.each(function(index) {
         // TODO pass along logical value here and get rid of the StateTypes enum
-        let elementType = getTypeFromClasses(extractClasses($(this).attr("class")))
+        let elementType = getTypeFromClasses(extractClasses($(this).attr("class")));
         let outVars = execBehaviors(elementId, elementType, StateTypes.sensor, inVars);
         //if outVars["value"] was not set by any eval behavior block, set it to the default to be able to pass it on to updatePopup.
-        if (outVars["value"] == undefined)
+        if (outVars.value === undefined)
         {
-            outVars["value"] = telemetry.value.toFixed(nrDecimalPoints) + " " + telemetry.unit;
+            outVars.value = telemetry.value.toFixed(nrDecimalPoints) + " " + telemetry.unit;
         }
         applyUpdatesToPnID(elementId, $(this), elementType, StateTypes.sensor, outVars);
 
         //update the popup corresponding to the state name. if there is none, update popups will return without doing anything. the state name could be either for a pnid element or a popup for an action reference
-        updatePopup(elementId, outVars["value"], telemetry.value, StateTypes.sensor);
+        updatePopup(elementId, outVars.value, telemetry.value, StateTypes.sensor);
     });
 
 
