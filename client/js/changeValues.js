@@ -65,9 +65,9 @@ function pfuschPulse()
 {
     console.log("pfusch pulse!");
     let variable = "tollenoid-sensor";
-    onPNIDInput(variable, 0, Date.now()*1000);
+    onPNIDInput(variable, 0);
     setTimeout(function() {
-        onPNIDInput(variable, 1, Date.now()*1000);
+        onPNIDInput(variable, 1);
     }, 2000);
 }
 
